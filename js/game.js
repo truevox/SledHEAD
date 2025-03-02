@@ -3,11 +3,11 @@
 /* SledHEAD - Core Game Loop & State Management    */
 /**************************************************/
 
-// Remove the TWEAK and GameState definitions here—they are now in utils.js.
+// (TWEAK, GameState, canvas, ctx, and keysDown are now defined in utils.js)
 
-let downhillStartTime = null;
-let lastTime = 0;
-let currentState = GameState.HOUSE;  // From utils.js
+var downhillStartTime = null;
+var lastTime = 0;
+var currentState = GameState.HOUSE;
 
 function changeState(newState) {
   currentState = newState;
@@ -29,7 +29,8 @@ function changeState(newState) {
     }
     player.velocityY = 0;
     player.xVel = 0;
-    maxCollisions = TWEAK.baseCollisionsAllowed + playerUpgrades.sledDurability;
+    // Use the new TWEAK.getMaxCollisions() function:
+    var maxCollisions = TWEAK.getMaxCollisions();
     downhillStartTime = performance.now();
   } else if (currentState === GameState.UPHILL) {
     player.xVel = 0;
@@ -53,7 +54,9 @@ function update(deltaTime) {
     player.xVel = clamp(player.xVel, -maxXVel, maxXVel);
     player.x += player.xVel;
     let prevAbsY = player.absY;
-    terrain.forEach(obstacle => {
+    // Updated collision loop using a for loop:
+    for (let i = 0; i < terrain.length; i++) {
+      let obstacle = terrain[i];
       if (checkCollision(
           player.x - player.width / 2, player.absY - player.height / 2,
           player.width, player.height,
@@ -64,14 +67,14 @@ function update(deltaTime) {
         player.velocityY = 0;
         player.absY = prevAbsY - 15;
         player.collisions++;
-        if (player.collisions >= maxCollisions) {
+        if (player.collisions >= TWEAK.getMaxCollisions()) {
           console.log("Max collisions reached. Ending run.");
           awardMoney();
           changeState(GameState.UPHILL);
-          return;
+          return; // Immediately exit update
         }
       }
-    });
+    }
     if (player.absY >= mountainHeight) {
       player.absY = mountainHeight;
       console.log("Reached bottom of mountain.");
