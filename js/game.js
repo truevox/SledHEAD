@@ -1,9 +1,7 @@
 /* game.js */
 /**************************************************/
-/* SledHEAD - Core Game Loop & State Management    */
+/* SledHEAD - Core Game Loop & State Management */
 /**************************************************/
-
-// (TWEAK, GameState, canvas, ctx, and keysDown are now defined in utils.js)
 
 var downhillStartTime = null;
 var lastTime = 0;
@@ -24,17 +22,29 @@ function changeState(newState) {
     earlyFinish = false;
     player.collisions = 0;
     player.x = canvas.width / 2;
-    if (player.absY >= mountainHeight || player.absY <= 0) {
-      player.absY = 0;
-    }
+    player.absY = 0;
     player.velocityY = 0;
     player.xVel = 0;
-    // Use the new TWEAK.getMaxCollisions() function:
-    var maxCollisions = TWEAK.getMaxCollisions();
     downhillStartTime = performance.now();
   } else if (currentState === GameState.UPHILL) {
     player.xVel = 0;
   }
+}
+
+/* Live money update function */
+function updateLiveMoney() {
+  let distanceTraveled = Math.max(1, player.absY);
+  let moneyEarned = Math.floor(distanceTraveled / 100);
+  moneyEarned = Math.max(1, moneyEarned);
+  
+  let moneyText = document.getElementById("moneyText");
+  moneyText.textContent = `Money: $${player.money} (+$${moneyEarned})`;
+
+  // Add a visual bounce effect
+  moneyText.classList.add("money-increase");
+  setTimeout(() => {
+    moneyText.classList.remove("money-increase");
+  }, 100);
 }
 
 function update(deltaTime) {
@@ -46,15 +56,20 @@ function update(deltaTime) {
     let horizontalAccel = TWEAK.baseHorizontalAccel * opticsFactor;
     let friction = TWEAK.baseFriction + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsFrictionFactorPerLevel);
     if (friction > 1.0) friction = 1.0;
+
     player.velocityY += gravity;
     player.absY += player.velocityY;
+    
     if (keysDown["ArrowLeft"]) { player.xVel -= horizontalAccel; }
     if (keysDown["ArrowRight"]) { player.xVel += horizontalAccel; }
+    
     player.xVel *= friction;
     player.xVel = clamp(player.xVel, -maxXVel, maxXVel);
     player.x += player.xVel;
+
+    updateLiveMoney(); // 💰 Updates money UI in real time
+
     let prevAbsY = player.absY;
-    // Updated collision loop using a for loop:
     for (let i = 0; i < terrain.length; i++) {
       let obstacle = terrain[i];
       if (checkCollision(
@@ -64,7 +79,6 @@ function update(deltaTime) {
           obstacle.width, obstacle.height
         )) {
         console.log("Collision detected on downhill.");
-        // Apply bounce impulse for extra bounce on collision
         player.velocityY = -TWEAK.bounceImpulse;
         player.absY = prevAbsY - TWEAK.bounceImpulse;
         player.collisions++;
@@ -72,7 +86,7 @@ function update(deltaTime) {
           console.log("Max collisions reached. Ending run.");
           awardMoney();
           changeState(GameState.UPHILL);
-          return; // Immediately exit update
+          return;
         }
       }
     }
@@ -82,7 +96,6 @@ function update(deltaTime) {
       awardMoney();
       changeState(GameState.UPHILL);
     }
-    
   } else if (currentState === GameState.UPHILL) {
     let upSpeed = TWEAK.baseUpSpeed + (playerUpgrades.fancierFootwear * TWEAK.fancierFootwearUpSpeedPerLevel);
     if (keysDown["ArrowUp"]) { player.absY -= upSpeed; }

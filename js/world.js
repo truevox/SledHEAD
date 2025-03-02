@@ -1,7 +1,7 @@
 /* world.js */
-const mountainHeight = 2000;
+const mountainHeight = 200000; // Mountain is now 100x bigger!
 let terrain = [];
-const obstacleCount = 40;
+const obstacleCount = 4000;
 let earlyFinish = false;
 function generateTerrain() {
   terrain = [];
@@ -17,11 +17,13 @@ function generateTerrain() {
   terrain.sort((a, b) => a.y - b.y);
 }
 function awardMoney() {
-  let runTime = (performance.now() - downhillStartTime) / 1000;
-  if (runTime === 0) runTime = 1;
-  let distanceFactor = Math.pow(player.absY / mountainHeight, 2);
-  let timeFactor = 30 / runTime;
-  let moneyEarned = Math.floor(100 * distanceFactor * timeFactor);
-  console.log("Awarding money: $" + moneyEarned, "(Distance factor:", distanceFactor, "Time factor:", timeFactor, ")");
-  player.money += moneyEarned;
-}
+    let distanceTraveled = Math.max(1, player.absY); // Ensure at least 1 unit
+    let moneyEarned = Math.floor(distanceTraveled / 100); // Every 100 distance = $1
+    
+    moneyEarned = Math.max(1, moneyEarned); // Guarantee at least $1
+  
+    console.log(`Awarding money: $${moneyEarned} (Distance traveled: ${distanceTraveled})`);
+    player.money += moneyEarned;
+    updateMoneyDisplay();
+  }
+  
