@@ -31,7 +31,18 @@ function changeState(newState) {
   }
 }
 
+/* Attach sound to button click */
+document.getElementById("startGame").addEventListener("click", () => {
+  console.log("Start run clicked.");
+  unlockAudioContext(); // Ensure sound works
+  playStartGameSound(); // 🔊 Play start sound immediately on button click
+  changeState(GameState.DOWNHILL);
+});
+
+
 /* Live money update function */
+let lastMoneyMilestone = 0; // Track last milestone reached
+
 function updateLiveMoney() {
   let distanceTraveled = Math.max(1, player.absY);
   let moneyEarned = Math.floor(distanceTraveled / 100);
@@ -39,6 +50,12 @@ function updateLiveMoney() {
   
   let moneyText = document.getElementById("moneyText");
   moneyText.textContent = `Money: $${player.money} (+$${moneyEarned})`;
+
+  // Check if we reached the next power of ten
+  if (moneyEarned > lastMoneyMilestone && moneyEarned % 10 === 0) {
+    lastMoneyMilestone = moneyEarned;
+    playMoneyGainSound(); // 🔊 Play money sound only at 1, 10, 100, 1000...
+  }
 
   // Add a visual bounce effect
   moneyText.classList.add("money-increase");
@@ -59,15 +76,15 @@ function update(deltaTime) {
 
     player.velocityY += gravity;
     player.absY += player.velocityY;
-    
+
     if (keysDown["ArrowLeft"]) { player.xVel -= horizontalAccel; }
     if (keysDown["ArrowRight"]) { player.xVel += horizontalAccel; }
-    
+
     player.xVel *= friction;
     player.xVel = clamp(player.xVel, -maxXVel, maxXVel);
     player.x += player.xVel;
 
-    updateLiveMoney(); // 💰 Updates money UI in real time
+    updateLiveMoney();
 
     let prevAbsY = player.absY;
     for (let i = 0; i < terrain.length; i++) {
@@ -82,27 +99,36 @@ function update(deltaTime) {
         player.velocityY = -TWEAK.bounceImpulse;
         player.absY = prevAbsY - TWEAK.bounceImpulse;
         player.collisions++;
+
         if (player.collisions >= TWEAK.getMaxCollisions()) {
           console.log("Max collisions reached. Ending run.");
           awardMoney();
+          playCrashSound(); // 🔊 Play crash sound when losing
           changeState(GameState.UPHILL);
           return;
+        } else {
+          playRockHitSound(); // 🔊 Play hit sound for non-crash collisions
         }
       }
     }
+
     if (player.absY >= mountainHeight) {
       player.absY = mountainHeight;
       console.log("Reached bottom of mountain.");
       awardMoney();
       changeState(GameState.UPHILL);
     }
+
   } else if (currentState === GameState.UPHILL) {
     let upSpeed = TWEAK.baseUpSpeed + (playerUpgrades.fancierFootwear * TWEAK.fancierFootwearUpSpeedPerLevel);
+
     if (keysDown["ArrowUp"]) { player.absY -= upSpeed; }
     if (keysDown["ArrowDown"]) { player.absY += upSpeed; }
     if (keysDown["ArrowLeft"]) { player.x -= upSpeed; }
     if (keysDown["ArrowRight"]) { player.x += upSpeed; }
+
     player.xVel = 0;
+
     terrain.forEach(obstacle => {
       if (checkCollision(
           player.x - player.width / 2, player.absY - player.height / 2,
@@ -114,6 +140,7 @@ function update(deltaTime) {
         resolveCollision(player, obstacle);
       }
     });
+
     if (player.absY <= 0) {
       player.absY = 0;
       changeState(GameState.HOUSE);
