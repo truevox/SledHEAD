@@ -1,119 +1,107 @@
 # SledHEAD Dual License Agreement
-**Version 1.0 – March 2025**  
+Version 1.0 – March 2025
 
-This License Agreement applies to SledHEAD (the "Game"), including its source code and assets, created by the original author **Marvin Bentley II** ("Licensor"). By copying, modifying, distributing, or otherwise using the Game or any of its components, you (the "Licensee") agree to the following terms:
-
----
+This License Agreement applies to SledHEAD (the "Game"), including its source code and assets, created by the original author Marvin Bentley II ("Licensor"). By copying, modifying, distributing, or otherwise using the Game or any of its components, you (the "Licensee") agree to the following terms:
 
 ## 1. Definitions
 
-- **"Source Code"**: The software code of the Game, including all scripts, programs, and software files intended to produce the Game’s functionality.
-- **"Assets"**: All non-code content in the Game, including but not limited to artwork, images, textures, models, sprites, music, sound effects, voice, dialogue, level designs, animations, and any other audiovisual or creative works included with the Game.
-- **"Mod" or "Modification"**: Any derivative work that is based on or uses any portion of the Game’s Source Code or Assets, including add-ons, plugins, expansions, or fan-made content that extends or alters the Game.
-- **"Commercial Use"**: Use of the Game or its components that is intended for or directed toward commercial advantage or monetary compensation.  
-  _(For clarity: selling the Game or Mods, charging money for access to the Game or Mods, or monetizing the Game’s Assets as standalone products are considered Commercial Use. However, monetization of gameplay videos/streams is addressed separately in Section 4.)_
-- **"You" (or "Licensee")**: Any individual or legal entity exercising the rights granted by this License (for example, a player, developer, or modder who uses the Game or its content).
-- **"Licensor"**: The original author and copyright holder of SledHEAD.
-
----
+* "Source Code": The software code of the Game, including all scripts, programs, and software files intended to produce the Game’s functionality.
+* "Assets": All non-code content in the Game, including but not limited to artwork, images, textures, models, sprites, music, sound effects, voice, dialogue, level designs, animations, and any other audiovisual or creative works included with the Game.
+* "Mod" or "Modification": Any derivative work that is based on or uses any portion of the Game’s Source Code or Assets, including add-ons, plugins, expansions, or fan-made content that extends or alters the Game.
+* "Commercial Use": Use of the Game or its components that is intended for or directed toward commercial advantage or monetary compensation. (For clarity: selling the Game or Mods, charging money for access to the Game or Mods, or monetizing the Game’s Assets as standalone products are considered Commercial Use. However, monetization of gameplay videos/streams is addressed separately in Section 4.)
+* "You" (or "Licensee"): Any individual or legal entity exercising the rights granted by this License (for example, a player, developer, or modder who uses the Game or its content).
+* "Licensor": The original author and copyright holder of SledHEAD.
 
 ## 2. Open Source License for Source Code
 
-The Source Code of SledHEAD is licensed to you under the terms of the **GNU Affero General Public License, version 3 (AGPLv3)**, or (at your option) any later version of the AGPL published by the Free Software Foundation. This means:
+The Source Code of SledHEAD is licensed to you under the terms of the GNU Affero General Public License, version 3 (AGPLv3), or (at your option) any later version of the AGPL published by the Free Software Foundation. This means:
 
-- You may **use, study, copy, modify, and distribute** the Source Code freely, provided you comply with the AGPLv3 terms.  
-  - **If you distribute your modified version of the Source Code or make it available for use over a network** (e.g., running a modified game server for others to play), **you must make your Source Code modifications publicly available** under the same license (AGPLv3).
-- The full text of the AGPLv3 is provided along with this agreement (usually in a file named `AGPL-3.0.txt` or similar). By accepting this License, you agree to abide by the conditions of AGPLv3 for the Game’s Source Code.
-- **No Additional Restrictions on Source Code**:  
-  Except as expressly stated in this Agreement, you **may not impose any further restrictions** on the exercise of the rights granted under the AGPLv3 for the Source Code. _(In other words, the Source Code remains free and open under AGPLv3 terms whenever it is distributed or deployed, unless a separate Commercial License is obtained as described in Section 6.)_
-
----
+* You may use, study, copy, modify, and distribute the Source Code freely, provided you comply with the AGPLv3 terms. In particular, if you distribute your modified version of the Source Code or if you make it available for use over a network (e.g. running a modified game server for others to play), you must make your Source Code modifications publicly available under the same license (AGPLv3).
+* The full text of the AGPLv3 is provided along with this agreement (usually in a file named AGPL-3.0.txt or similar). By accepting this License, you agree to abide by the conditions of AGPLv3 for the Game’s Source Code.
+* No Additional Restrictions on Source Code: Except as expressly stated in this Agreement, you may not impose any further restrictions on the exercise of the rights granted or affirmed under the AGPLv3 for the Source Code. (In other words, the Source Code remains free and open under AGPLv3 terms whenever it is distributed or deployed, unless a separate Commercial License is obtained as described in Section 6.)
 
 ## 3. Creative Commons License for Assets
 
-All Assets of SledHEAD (non-code content) are licensed under the **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)**. Under this license:
+All Assets of SledHEAD (non-code content) are licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0). Under this license:
 
-- **You are free to:**
-  - **Share** – Copy and redistribute the Assets in any medium or format.
-  - **Adapt** – Remix, transform, and build upon the Assets for any non-commercial purpose.
-
-- **Conditions:**
-  - **Attribution** – You must give appropriate credit to the original author _(see Section 5)_, provide a link to the **CC BY-NC-SA 4.0 license**, and indicate if changes were made.
-  - **NonCommercial** – You may **not** use the Assets for commercial purposes.  
-    _(For example, you cannot charge money for a soundtrack that includes the Game’s music or use the Game’s art in a paid product, unless you obtain a separate Commercial License per Section 6.)_
-  - **ShareAlike** – If you remix, transform, or build upon the Assets, you **must** distribute your contributions under the **same license** (CC BY-NC-SA 4.0) or a **more permissive** license _(such as CC BY-SA or CC BY)_.
-
-- **No Commercial Exploitation of Assets**:  
-  You **cannot sell, license, or otherwise commercially exploit** the Game’s Assets on their own or as part of another product, unless you obtain a separate **Commercial License** _(see Section 6)_.
-
----
+* You are free to:
+  * Share – copy and redistribute the Assets in any medium or format.
+  * Adapt – remix, transform, and build upon the Assets for any non-commercial purpose.
+* Attribution – You must give appropriate credit to the original author (see Section 5), provide a link to the CC BY-NC-SA 4.0 license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the Licensor endorses you or your use.
+* NonCommercial – You may not use the Assets for commercial purposes. (Using the Assets or any derivative of them to generate revenue or for any commercial advantage is prohibited unless you have obtained a separate Commercial License as per Section 6.)
+* ShareAlike – If you remix, transform, or build upon the Assets, you must distribute your contributions under the same license (CC BY-NC-SA 4.0) or a license that is more permissive. “More permissive” means any license that grants equal or greater rights to the public than CC BY-NC-SA (for example, you may choose to release your own original derivative Assets under CC BY-SA or CC BY, which would allow commercial use or omit the ShareAlike requirement, but you cannot apply a more restrictive license or make the assets wholly proprietary).
+* The full text of the CC BY-NC-SA 4.0 license is provided with this agreement (or accessible via the Creative Commons website). By using the Game’s Assets, you agree to the terms of CC BY-NC-SA 4.0.
+* No Commercial Exploitation of Assets: For clarity, you cannot sell, license, or otherwise commercially exploit the Game’s Assets (original or modified) on their own or as part of a product, except under a separate Commercial License (Section 6). For example, you cannot charge money for a soundtrack that includes the Game’s music, or include the Game’s art in a paid product, without permission.
 
 ## 4. Permission for Videos, Streaming, and Screenshots
 
-The Licensor **explicitly grants permission** to capture, use, and share audiovisual content from the Game, including gameplay videos, streams, screenshots, and similar content, **even if monetized**, as long as:
+The Licensor explicitly grants permission to all users to capture, use, and share audiovisual content from the Game (including gameplay videos, streams, screenshots, and similar content), even if monetized, without needing any additional license or permission, as long as such use does not misrepresent the origin of the Game. This means:
 
-- The Game’s origin is not misrepresented.
-- Monetized streaming on platforms like **Twitch, YouTube, etc.** is explicitly **allowed** and is **not considered Commercial Use** under this License.
-- You **do not need permission** to create Let’s Play videos, reviews, or live streams of SledHEAD.
-
-This permission **does not** grant you the right to extract Assets for separate use in other commercial products.
-
----
+* You may stream or record gameplay on platforms like Twitch, YouTube, etc., and you may monetize these videos/streams (for example, through ads, sponsorships, or donations). This use is allowed and considered non-commercial with respect to the Game’s Assets because it is promotional/fan content by the community. The NonCommercial restriction in Section 3 is waived for this specific type of content creation.
+* You do not need to ask the Licensor for permission to create let’s play videos, reviews, or live streams of SledHEAD. This is encouraged as part of community engagement. Attribution (such as naming the Game) in the video/stream description or verbally is appreciated but not strictly required beyond what the platform norms are, since the content itself usually makes it clear it’s SledHEAD. (However, you still must not claim to be the creator of the Game.)
+* This permission for videos/streams does not grant you the right to extract the Assets and use them separately in other commercial products (Section 3’s NonCommercial rule still applies to the Assets themselves). It only covers the use of recorded or displayed in-game content as part of video/stream content. For example, using a game’s music as background of an unrelated commercial video would not be covered by this clause, but showing the game’s music as it plays during gameplay footage is fine.
 
 ## 5. Attribution Requirement
 
-Whenever you distribute or publicly use the Game, you **must** provide attribution to the original author _(Licensor)_. The attribution should be placed appropriately, such as:
+You must give appropriate credit to the original author (Licensor) when you distribute or publicly use the Game (or any substantial portion of it, including Mods). This is a condition of the CC BY-NC-SA license for Assets and is hereby made a condition of this overall license. The attribution should be placed in a manner appropriate to the medium:
 
-- If distributing the Game unmodified: Retain the original credits.
-- If creating a **Mod or fork**: Credit **SledHEAD** and the original author _(e.g., in an “About” menu, credits screen, or README)_.
-- If using the Source Code: Retain copyright and license notices in all applicable files.
-
----
+* If you distribute the Game in unmodified form, include the original credits (which should already list the author) and license information. Typically, the Game already contains an in-game credits section or documentation listing the author and contributors — retain that.
+* If you create a Mod or a fork of the Game, you must credit SledHEAD and the original author somewhere in your project. For example, in an “About” menu, “Credits” screen, README file, or documentation for your Mod, include a notice such as: “This project is based on SledHEAD, originally created by Marvin Bentley II. SledHEAD is © 2024 Marvin Bentley II and is licensed under AGPLv3 (code) and CC BY-NC-SA 4.0 (assets).” Adjust the wording as appropriate, but it should be reasonably prominent, as appropriate for the medium.
+* If you use parts of the Source Code in another project, you must keep the copyright and license notices in those source files per AGPL requirements. Additionally, an attribution in your project’s documentation or credits to the SledHEAD project is required.
+* The attribution requirement is not intended to be burdensome: it’s mainly to ensure the original creators are acknowledged. A single mention in a credits section or README is typically sufficient, as long as it's accessible to users of your product or Mod.
 
 ## 6. Modding and Derivative Works
 
-SledHEAD is **mod-friendly** under the following conditions:
+SledHEAD is mod-friendly and open to community contributions, under the following conditions:
 
-- **Mods - Source Code:**  
-  - If your Mod includes or is based on the Game’s Source Code, **it must be released under the AGPLv3** _(or a more permissive license)_.
-  - **Closed-source Mods are not allowed** unless a separate Commercial License is obtained _(see Section 7)_.
-
-- **Mods - Assets:**  
-  - If your Mod **includes or modifies** any Game Assets, those Assets **must** be licensed under **CC BY-NC-SA 4.0** _(or a more permissive license)_.
-
-- **Paid Mods:**  
-  - Selling a Mod **is discouraged** under this license.  
-  - If sold, its **Source Code must still be AGPLv3**, meaning buyers **can legally share** it with others for free.
-  - If it contains any of SledHEAD’s **original Assets**, it **cannot** be sold without a Commercial License.
-
----
+* **Mods - Source Code:** If you create a Mod that includes or is based on the Game’s Source Code, the Mod’s source code must be released under the AGPLv3 (same as the Game) or an even more permissive open-source license. More permissive licenses include, for example, GNU GPLv3, MIT, Apache 2.0, etc., which do not impose additional restrictions beyond AGPL. This ensures that anyone who plays or uses your Mod has the same rights to obtain and modify the source. You cannot make a closed-source mod using the Game’s code without a separate Commercial License (see Section 7).
+* **Mods - Assets:** If your Mod includes or modifies any of the Game’s Assets, then all such Assets in your Mod must be licensed under CC BY-NC-SA 4.0 (the same license as the base game assets) or a more permissive license. “More permissive” in this context could be, for example, CC BY-SA 4.0 (which allows commercial use but still requires ShareAlike) or CC BY 4.0 (which allows commercial use and no ShareAlike). You may choose a more permissive license for your original assets if you want to allow broader use, but you must at least allow the same scope of use that CC BY-NC-SA permits. You cannot put additional restrictions on derivatives of the Game’s Assets beyond CC BY-NC-SA.
+* **No circumvention via Mods:** You may not create a Mod or derivative work that is essentially a way to evade the NonCommercial restriction on the original Assets. For example, you can’t repackage a level of SledHEAD as a “mod” and sell it, claiming the new level’s art is under a different license. Any part of a Mod derived from original Assets inherits the NonCommercial restriction.
+* **Paid Mods:** SledHEAD’s open licenses are designed such that Mods are freely shareable and open. While charging money for a Mod is strongly discouraged under this license scheme, we acknowledge it can happen. If you choose to sell or paywall a Mod, you do so at your own risk under the license terms:
+  * The Mod’s source code must still be AGPLv3 (or open-source), meaning anyone who obtains the Mod (even by purchasing it) must have access to the source and the right to redistribute it. Practically, this means once one person has bought your Mod, they have the legal right to share the code with others for free. You cannot revoke that right, so a paywalled open-source mod is of limited enforceability (the “paywall” is more of a donation or early access mechanism, not a true sale of exclusive rights).
+  * Any of the Mod’s assets that derive from SledHEAD Assets carry the NonCommercial clause. This means you technically cannot charge for those assets or any product containing them. If your Mod contains only your own original assets and you license them under a more permissive license (such as CC BY-SA or even a proprietary license you own), you have more leeway to charge for the Mod. However, by including SledHEAD’s original game content or requiring the Game to run, your Mod is still a derivative work of the Game as a whole, and thus selling it without the Licensor’s permission could violate the spirit of the NonCommercial clause.
+  * In summary: If you want to monetize a Mod, you should seek a Commercial License from the Licensor (see Section 7) to cover that, or ensure that your Mod is completely your own independent work and doesn’t include NonCommercial content. Otherwise, anyone is legally free to redistribute your Mod for non-commercial purposes (or as allowed by whatever license you chose) without paying, and the Licensor reserves the right to enforce the NonCommercial clause if needed.
+* **Mods Must Credit Original:** As noted in Section 5, Mods should credit SledHEAD and the original author. Making mods open-source and crediting the base game helps build a healthy community and is a condition of using the Game’s content.
+* **Upstream Contributions:** If you make improvements or fixes to the base Game’s Source Code (as opposed to separate mods), you are encouraged to contribute them back to the main project. You can do this by submitting patches or pull requests to the original repository. Note that by contributing, you agree that your contribution will be licensed under the same terms as this License (so it remains AGPL for code and CC BY-NC-SA for any assets you contribute, unless otherwise agreed). The Licensor may ask you to sign a contributor agreement (see Section 9) to clarify licensing of contributions.
 
 ## 7. Commercial License Option
 
-A **Commercial License** is available upon request for parties who wish to:
+The Licensor offers the possibility of a separate Commercial License for parties interested in using SledHEAD in ways not permitted by the above open licenses (AGPL and CC BY-NC-SA). This could apply if, for example, you want to: distribute the game in a proprietary (closed-source) manner, use the Assets commercially, include SledHEAD in a commercial product, or otherwise not comply with AGPL/CC BY-NC-SA terms. The following terms govern the Commercial License option:
 
-- **Distribute SledHEAD as a closed-source project.**
-- **Use the Game’s Assets commercially.**
-- **Include SledHEAD in a paid product.**
+* **By Request:** You must contact the Licensor to request a Commercial License. Terms (including scope, duration, and fees) are negotiable on a case-by-case basis. For instance, the Licensor may offer a one-time purchase license, a revenue-sharing agreement, or a subscription model, depending on the nature of the use.
+* **No Guaranteed Approval:** The Licensor has sole discretion to decide whether or not to grant a Commercial License to any requesting party. Simply requesting a Commercial License does not guarantee you will receive one. The Licensor may decline for any reason or require certain conditions.
+* **Override of Open Terms:** A duly granted Commercial License will override or modify the AGPL and CC BY-NC-SA terms for the party to whom it is granted, as specified in that license agreement. For example, a Commercial License may allow you to keep your source code modifications proprietary, or to use the Assets in a commercial game, notwithstanding Sections 2 and 3. The exact permissions and exceptions will be written in that separate agreement. Unless and until you have a signed Commercial License, you are bound by the AGPL and CC BY-NC-SA terms described in this document.
+* **Closed Source Allowed with Commercial License:** Under a Commercial License, the Licensor may permit you to create a closed-source derivative or include SledHEAD code in a larger proprietary project. This is an exception to the copyleft requirement, granted only through the Commercial License.
+* **Written Agreement:** Any Commercial License will be provided in writing (which may be a separate contract or license document). It will detail the rights granted, any limitations, and the financial terms. You will likely be required to prominently credit the original author even in commercial use, unless otherwise agreed.
 
-### Commercial Licensing Terms:
+## 8. Reservation of Rights and Future Relicensing
 
-- **By Request:** You must contact the Licensor to negotiate terms.
-- **No Guarantee:** A Commercial License is granted at the Licensor’s discretion.
-- **Overrides Open Terms:** A granted Commercial License **modifies or overrides** the AGPLv3 and CC BY-NC-SA 4.0 terms as specified in the agreement.
+* **Ownership:** The Licensor (original author) retains all rights, title, and interest in SledHEAD and its Source Code and Assets, except for the licenses expressly granted to you under this Agreement. No trademark rights are granted (the name SledHEAD is not necessarily covered by this license—separate permissions may be needed to use the name or logos in commercial contexts).
+* **Right to Relicense:** The Licensor reserves the right to relicense or release parts or all of the Game under different terms in the future, including more permissive open-source licenses. For example, the Licensor may later decide to release certain Assets under a license like CC BY 4.0 (which would allow commercial use) or even dedicate some components to the public domain. Similarly, future versions of the Source Code might be released under a license like MIT or GPL, etc., at the Licensor’s discretion.
+* **Effect on Existing License:** Any such re-licensing by the Licensor in the future will not retroactively revoke the rights you've obtained under this Agreement. (For example, if you received the game under AGPL/CC BY-NC-SA, that specific release is still under those terms for you.) However, the Licensor may offer upgraded license terms for future versions or for specific components, which you can opt to use under those new terms.
+* **Contributions from Others:** If the project receives contributions from other developers (community contributions), the Licensor will ensure that those contributions are either made under a contributor agreement or appropriate terms such that the Licensor can include them in future releases. This is to maintain the ability to relicense if needed. (See Section 9 about contributor agreements.)
+* **No Obligation to Future Licensing:** Nothing in this clause guarantees that the Licensor will release a more permissive version, only that it’s a possibility. Users and contributors should be aware that license terms might be adjusted in future releases, but any such change will be clearly communicated and, if necessary, consent from contributors will be obtained.
 
----
+## 9. Contributor License Agreement (CLA) (for external contributors)
 
-## 8. Disclaimer of Warranty & Liability
+At present (initial release), all code and assets in SledHEAD are authored by the original Licensor. If you wish to contribute to the project (e.g., by submitting code or asset improvements), the Licensor may ask you to sign a Contributor License Agreement. A CLA typically confirms that: (a) you have the right to contribute what you send, (b) you grant the Licensor permission to use and relicense your contribution under this project’s license and potentially other licenses in the future, and (c) you understand your contribution is provided under the same open license to all users.
 
-- The Game is provided **“as is”** without any warranties.
-- The Licensor is **not responsible** for any damages resulting from the use of the Game.
+* **Necessity of CLA:** The CLA is intended to make future license changes or commercial licensing of the project smoother, by ensuring all contributors agree on how their contributions can be used. If you do not sign such an agreement, the Licensor might not be able to accept your contribution, especially if it’s significant, because it could complicate the ability to relicense or offer commercial terms later.
+* **Timing:** You generally won’t need to sign a CLA until you are about to make the first contribution that will be merged into the project. Simply using or modding the game doesn’t require a CLA. It’s only for when you contribute code or assets back to the official project. The Licensor may publish the CLA text and a process (e.g., an online sign-off) when the project starts accepting outside contributions.
+* **Contributor Rights:** Even after signing a CLA, you (as a contributor) still retain copyright to your contributions and you can reuse your contributed code elsewhere. The CLA just gives the Licensor a broad right to include your work in SledHEAD and relicense as needed (for instance, if in the future SledHEAD moves to a different license or a commercial dual-license model, your contribution can be included).
+* **No CLA at Initial Release:** If you are simply downloading or using the game, this section doesn’t affect you. It’s informational in case the project grows with community help. The Licensor will announce when a CLA becomes required (likely before accepting the first non-trivial external commit).
 
----
+## 10. Disclaimer of Warranty
 
-## 9. License Acceptance
+THE GAME (INCLUDING SOURCE CODE AND ASSETS) IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND. To the fullest extent permitted by law, the Licensor disclaims all warranties, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement. You accept all risk as to the quality and performance of the Game. Should the Game prove defective, you assume the cost of all necessary servicing, repair, or correction. No oral or written information or advice provided by the Licensor shall create any warranty. (This disclaimer is in line with Section 15 of the AGPLv3 and Section 5 of CC BY-NC-SA 4.0.)
 
-By using SledHEAD, you **agree** to this License.  
-If you **do not agree**, you **do not** have permission to use the Game.
+## 11. Limitation of Liability
 
-**© 2024 Marvin Bentley II. All rights reserved.**
+Under no circumstances and under no legal theory (including, without limitation, tort (including negligence), contract, or otherwise) shall the Licensor, or anyone who has contributed to the Game, be liable to you for any direct, indirect, incidental, consequential, special, or exemplary damages arising out of or relating to this License or the use of the Game, even if the Licensor has been advised of the possibility of such damages. In jurisdictions that do not allow the exclusion or limitation of certain damages, the Licensor’s liability shall be limited to the minimum extent permitted by law. You acknowledge that the Licensor is not liable for how you use the Game or Mods, or any outcomes of using it (for example, no liability for loss of data, loss of profits, or legal issues you might incur by violating this Agreement).
+
+## 12. General
+
+* **Severability:** If any provision of this License is held to be unenforceable or invalid by a court of competent jurisdiction, that provision will be modified to the minimum extent necessary to make it enforceable (or severed if necessary), and the rest of the License will remain in effect.
+* **No Endorsement:** Nothing in this License gives you rights to use the name, logos, or trademarks of SledHEAD or the Licensor for promotional purposes (aside from factual attribution as required). You cannot imply that your Mod or product is endorsed by the original author without separate permission.
+* **License Acceptance:** By using the Game (or any of its Source Code or Assets), you indicate your acceptance of this License. If you do not agree to these terms, you do not have permission to use the Game or its contents.
+* **Copyright Notice:** © 2024 Marvin Bentley II. All rights reserved, except as explicitly granted by this License.
