@@ -4,25 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SledHEAD</title>
-  <link rel="stylesheet" href="styles.css" />
+  <!-- Global UI styles, House menu styles, and Gameplay styles -->
+  <link rel="stylesheet" href="css/ui.css">
+  <link rel="stylesheet" href="css/house.css">
+  <link rel="stylesheet" href="css/gameplay.css">
 </head>
 <body>
-  <!-- Title at top -->
+  <!-- Title (Global UI) -->
   <h1>SledHEAD</h1>
   
-  <!-- Money Display in the upper right corner -->
+  <!-- Money Display (Global UI, upper right corner) -->
   <div id="moneyDisplay">
     <p id="moneyText">Money: $200</p>
   </div>
 
-  <!-- The main game screen (hidden until we leave the House state) -->
+  <!-- Game Screen (Canvas for gameplay; hidden during house phase) -->
   <div id="game-screen" style="display: none;">
     <canvas id="gameCanvas" width="800" height="600"></canvas>
   </div>
 
-  <!-- Upgrade Menu (shown by default in HOUSE state) -->
+  <!-- House/Upgrade Menu -->
   <div id="upgrade-menu">
-    <!-- Start button at top -->
+    <!-- Start Button -->
     <button id="startGame">Start Sled Run</button>
     
     <div class="upgrade-menu-columns">
@@ -57,6 +60,7 @@
             Less time climbing, more time sledding.
           </p>
         </div>
+        <!-- The remaining personal upgrades are locked for now -->
         <div class="upgrade-entry">
           <button id="upgradeGrapplingAnchor">Grappling Anchor (Lv 0/0)</button>
           <p class="upgrade-desc">
@@ -178,7 +182,12 @@
     <p id="bestTimeText">Best Time: N/A</p>
   </div>
 
-  <script src="game.js"></script>
+  <!-- Load JS files in proper order -->
+  <script src="js/utils.js"></script>
+  <script src="js/upgrades.js"></script>
+  <script src="js/world.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/entities.js"></script>
+  <script src="js/game.js"></script>
 </body>
 </html>
-
