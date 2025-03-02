@@ -1,29 +1,13 @@
 /* game.js */
 /**************************************************/
-/* SledHEAD - Game Code with Economy & Upgrades   */
-/* and Tweakable Variables                        */
+/* SledHEAD - Core Game Loop & State Management    */
 /**************************************************/
 
-/* ======================== TWEAKABLE VARIABLES ========================= */
-const TWEAK = {
-  sledMass: 1.0,
-  baseGravity: 0.1,
-  baseHorizontalAccel: 0.15,
-  baseFriction: 0.95,
-  baseMaxXVel: 3,
-  rocketSurgeryFactorPerLevel: 0.05,
-  optimalOpticsAccelFactorPerLevel: 0.02,
-  optimalOpticsFrictionFactorPerLevel: 0.005,
-  fancierFootwearUpSpeedPerLevel: 0.1,
-  baseUpSpeed: 2,
-  baseCollisionsAllowed: 3,
-  starterCash: 200
-};
-/* =================== END TWEAKABLE VARIABLES SECTION ================== */
+// Remove the TWEAK and GameState definitions here—they are now in utils.js.
 
 let downhillStartTime = null;
 let lastTime = 0;
-let currentState = GameState.HOUSE;
+let currentState = GameState.HOUSE;  // From utils.js
 
 function changeState(newState) {
   currentState = newState;

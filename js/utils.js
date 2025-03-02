@@ -1,5 +1,32 @@
 /* utils.js */
-function formatUpgradeName(name) {
+/* Global Configuration & Shared Globals */
+const TWEAK = {
+    sledMass: 1.0,             
+    baseGravity: 0.1,          
+    baseHorizontalAccel: 0.15, 
+    baseFriction: 0.95,        
+    baseMaxXVel: 3,            
+    rocketSurgeryFactorPerLevel: 0.05,  
+    optimalOpticsAccelFactorPerLevel: 0.02,  
+    optimalOpticsFrictionFactorPerLevel: 0.005, 
+    fancierFootwearUpSpeedPerLevel: 0.1,  
+    baseUpSpeed: 2,            
+    baseCollisionsAllowed: 3,
+    starterCash: 200           
+  };
+  
+  const GameState = {
+    HOUSE: 'house',
+    DOWNHILL: 'downhill',
+    UPHILL: 'uphill'
+  };
+  
+  // Get the canvas and context—make sure the canvas element exists in the DOM.
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  
+  /* Utility functions */
+  function formatUpgradeName(name) {
     let formattedName = name.replace(/([A-Z])/g, ' $1').trim();
     return formattedName.charAt(0).toUpperCase() + formattedName.slice(1);
   }
