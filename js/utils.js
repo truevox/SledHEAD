@@ -1,9 +1,11 @@
+/* utils.js */
+/* Global Configuration & Shared Globals */
 var TWEAK = {
-    tweakNob: 10, // Global multiplier for all tweak values
+    tweakNob: 1, // Global multiplier for all tweak values
     
     // Underlying base values
     _sledMass: 1.0,
-    _baseGravity: 0.1,
+    _baseGravity: 0.2,
     _baseHorizontalAccel: 0.15,
     _baseFriction: 0.95,
     _baseMaxXVel: 3,
@@ -13,7 +15,9 @@ var TWEAK = {
     _fancierFootwearUpSpeedPerLevel: 0.1,
     _baseUpSpeed: 2,
     _baseCollisionsAllowed: 3,
-    _starterCash: 200,
+    _starterCash: 3300, // Jacked up for testing
+    
+    _bounceImpulse: 3,  // New bounce impulse value
     
     // Getters to apply tweakNob multiplier
     get sledMass() { return this._sledMass * this.tweakNob; },
@@ -50,8 +54,12 @@ var TWEAK = {
     set baseCollisionsAllowed(val) { this._baseCollisionsAllowed = val; },
     
     get starterCash() { return this._starterCash * this.tweakNob; },
-    set starterCash(val) { this._starterCash = val; }
-  };
+    set starterCash(val) { this._starterCash = val; },
+    
+    // New dynamic bounceImpulse getter/setter
+    get bounceImpulse() { return this._bounceImpulse * this.tweakNob; },
+    set bounceImpulse(val) { this._bounceImpulse = val; }
+};
   
 // New: function to compute max collisions
 TWEAK.getMaxCollisions = function() {

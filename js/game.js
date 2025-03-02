@@ -64,8 +64,9 @@ function update(deltaTime) {
           obstacle.width, obstacle.height
         )) {
         console.log("Collision detected on downhill.");
-        player.velocityY = 0;
-        player.absY = prevAbsY - 15;
+        // Apply bounce impulse for extra bounce on collision
+        player.velocityY = -TWEAK.bounceImpulse;
+        player.absY = prevAbsY - TWEAK.bounceImpulse;
         player.collisions++;
         if (player.collisions >= TWEAK.getMaxCollisions()) {
           console.log("Max collisions reached. Ending run.");
