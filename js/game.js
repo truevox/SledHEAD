@@ -77,8 +77,9 @@ function update(deltaTime) {
     player.velocityY += gravity;
     player.absY += player.velocityY;
 
-    if (keysDown["ArrowLeft"]) { player.xVel -= horizontalAccel; }
-    if (keysDown["ArrowRight"]) { player.xVel += horizontalAccel; }
+    // Support for WASD and Arrow Keys
+    if (keysDown["ArrowLeft"] || keysDown["a"]) { player.xVel -= horizontalAccel; }
+    if (keysDown["ArrowRight"] || keysDown["d"]) { player.xVel += horizontalAccel; }
 
     player.xVel *= friction;
     player.xVel = clamp(player.xVel, -maxXVel, maxXVel);
@@ -122,10 +123,10 @@ function update(deltaTime) {
   } else if (currentState === GameState.UPHILL) {
     let upSpeed = TWEAK.baseUpSpeed + (playerUpgrades.fancierFootwear * TWEAK.fancierFootwearUpSpeedPerLevel);
 
-    if (keysDown["ArrowUp"]) { player.absY -= upSpeed; }
-    if (keysDown["ArrowDown"]) { player.absY += upSpeed; }
-    if (keysDown["ArrowLeft"]) { player.x -= upSpeed; }
-    if (keysDown["ArrowRight"]) { player.x += upSpeed; }
+    if (keysDown["ArrowUp"] || keysDown["w"]) { player.absY -= upSpeed; }
+    if (keysDown["ArrowDown"] || keysDown["s"]) { player.absY += upSpeed; }
+    if (keysDown["ArrowLeft"] || keysDown["a"]) { player.x -= upSpeed; }
+    if (keysDown["ArrowRight"] || keysDown["d"]) { player.x += upSpeed; }
 
     player.xVel = 0;
 

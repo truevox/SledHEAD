@@ -79,14 +79,30 @@ var ctx = canvas.getContext('2d');
 
 /* NEW: Global keysDown object and event listeners */
 var keysDown = {};
+var spacePressed = false;
 
-window.addEventListener("keydown", function(e) {
+window.addEventListener("keydown", function (e) {
     keysDown[e.key] = true;
+
+    // Track when space is pressed
+    if (e.key === " " && currentState === GameState.HOUSE) {
+        spacePressed = true;
+    }
 });
 
-window.addEventListener("keyup", function(e) {
+window.addEventListener("keyup", function (e) {
     delete keysDown[e.key];
+
+    // Start the game when space is released
+    if (e.key === " " && spacePressed && currentState === GameState.HOUSE) {
+        spacePressed = false;
+        console.log("Space released, starting sled run.");
+        unlockAudioContext();
+        playStartGameSound();
+        changeState(GameState.DOWNHILL);
+    }
 });
+
 
 /* Utility functions */
 function formatUpgradeName(name) {
