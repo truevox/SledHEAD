@@ -1,397 +1,212 @@
-/**************************************************/
-/* SledHEAD - Game Code with Economy & Upgrades   */
-/* and Tweakable Variables!                       */
-/**************************************************/
+/***********************************************
+ * Sledding Roguelike - Phaser Version (Revised)
+ * Bubbles is proud of ya, bud! 🎿🔥
+ ***********************************************/
 
-/* ======================== TWEAKABLE VARIABLES ========================= */
-const TWEAK = {
-  sledMass: 1.0,             
-  baseGravity: 0.1,          
-  baseHorizontalAccel: 0.15, 
-  baseFriction: 0.95,        
-  baseMaxXVel: 3,            
-  rocketSurgeryFactorPerLevel: 0.05,  
-  optimalOpticsAccelFactorPerLevel: 0.02,  
-  optimalOpticsFrictionFactorPerLevel: 0.005, 
-  fancierFootwearUpSpeedPerLevel: 0.1,  
-  baseUpSpeed: 2,            
-  baseCollisionsAllowed: 3,
-  starterCash: 200           
-};
-/* =================== END TWEAKABLE VARIABLES SECTION ================== */
+window.onload = () => {
+  // Phaser config
+  const config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+    parent: "game-container", // Attach the game to our <div id="game-container">
+    physics: {
+      default: "arcade",
+      arcade: {
+        gravity: { y: 0 }, // We'll apply custom gravity in the scene
+        debug: true        // Turn on debugging so you can see bounding boxes
+      }
+    },
+    scene: [SleddingGame, UpgradeShop]
+  };
 
-/* ---------------------- Game States ---------------------- */
-const GameState = {
-  HOUSE: 'house',
-  DOWNHILL: 'downhill',
-  UPHILL: 'uphill'
-};
-let currentState = GameState.HOUSE;
-
-/* ---------------------- Canvas & Context ---------------------- */
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-
-/* ---------------------- Mountain & Terrain ---------------------- */
-const mountainHeight = 2000;
-let terrain = [];
-const obstacleCount = 40;
-let earlyFinish = false;
-
-/* ---------------------- Upgrade Definitions ---------------------- */
-let playerUpgrades = {
-  rocketSurgery: 0,
-  optimalOptics: 0,
-  sledDurability: 0,
-  fancierFootwear: 0,
-  grapplingAnchor: 0,
-  attendLegDay: 0,
-  shortcutAwareness: 0,
-  crowdHypeman: 0,
-  crowdWeaver: 0,
-  weatherWarrior: 0
-};
-let mountainUpgrades = {
-  skiLifts: 0,
-  snowmobileRentals: 0,
-  eateries: 0,
-  groomedTrails: 0,
-  firstAidStations: 0,
-  scenicOverlooks: 0,
-  advertisingRamps: 0,
-  resortLodges: 0,
-  nightLighting: 0,
-  weatherControl: 0
-};
-/* ---------------------- Define Each Upgrade's Max ---------------------- */
-const upgradeMaxLevel = {
-  rocketSurgery: 10,
-  optimalOptics: 10,
-  sledDurability: 10,
-  fancierFootwear: 10,
-  grapplingAnchor: 0,
-  attendLegDay: 0,
-  shortcutAwareness: 0,
-  crowdHypeman: 0,
-  crowdWeaver: 0,
-  weatherWarrior: 0,
-  skiLifts: 0,
-  snowmobileRentals: 0,
-  eateries: 0,
-  groomedTrails: 0,
-  firstAidStations: 0,
-  scenicOverlooks: 0,
-  advertisingRamps: 0,
-  resortLodges: 0,
-  nightLighting: 0,
-  weatherControl: 0
+  new Phaser.Game(config);
 };
 
-/* ---------------------- Player Object ---------------------- */
-let player = {
-  x: canvas.width / 2,
-  absY: 0,
-  width: 20,
-  height: 20,
-  velocityY: 0,
-  xVel: 0,
-  collisions: 0,
-  bestTime: Infinity,
-  money: TWEAK.starterCash
-};
-let maxCollisions = TWEAK.baseCollisionsAllowed + playerUpgrades.sledDurability;
-let downhillStartTime = null;
-let lastTime = 0;
-
-/* ---------------------- Key Input ---------------------- */
-let keysDown = {};
-
-/* ---------------------- Upgrade Cost & Money Display Functions ---------------------- */
-function getUpgradeCost(upgradeKey, currentLevel) {
-  return Math.floor(100 * Math.pow(1.1, currentLevel + 1));
-}
-
-function updateMoneyDisplay() {
-  const moneyText = document.getElementById("moneyText");
-  if (moneyText) {
-    moneyText.textContent = "Money: $" + player.money;
+class SleddingGame extends Phaser.Scene {
+  constructor() {
+    super({ key: "SleddingGame" });
   }
-}
 
-function getUpgradeDisplayText(upgradeKey, currentLevel, maxLevel) {
-  let text = formatUpgradeName(upgradeKey) + ` (Lv ${currentLevel}/${maxLevel})`;
-  if (maxLevel > 0 && currentLevel < maxLevel) {
-    let cost = getUpgradeCost(upgradeKey, currentLevel);
-    text += " – Cost: $" + cost;
+  preload() {
+    // Load images (make sure these files exist or adjust paths)
+    this.load.image("player", "assets/player.png");
+    this.load.image("obstacle", "assets/obstacle.png");
   }
-  return text;
-}
 
-function initUpgradeButton(upgradeKey, upgradeValue) {
-  const maxLevel = upgradeMaxLevel[upgradeKey];
-  const btnId = `upgrade${capitalizeFirstLetter(upgradeKey)}`;
-  const button = document.getElementById(btnId);
-  button.innerText = getUpgradeDisplayText(upgradeKey, upgradeValue, maxLevel);
-  if (maxLevel === 0 || upgradeValue >= maxLevel) {
-    button.disabled = true;
-  }
-}
+  create() {
+    // Pull upgrade data from the registry or create defaults
+    // We'll store them as dictionaries:
+    //   - "equipmentUpgrades"
+    //   - "mountainUpgrades"
+    let equipmentUpgrades = this.registry.get("equipmentUpgrades") || {};
+    let mountainUpgrades = this.registry.get("mountainUpgrades") || {};
 
-/* ---------------------- Helper: Format & Capitalize ---------------------- */
-function formatUpgradeName(name) {
-  let formattedName = name.replace(/([A-Z])/g, ' $1').trim();
-  return formattedName.charAt(0).toUpperCase() + formattedName.slice(1);
-}
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
+    // If they're not set, initialize them with some sample keys
+    // e.g., "WaxedSled", "GrapplingHook", etc.
+    if (!Object.keys(equipmentUpgrades).length) {
+      equipmentUpgrades = {
+        WaxedSled: 0,
+        GrapplingHook: 0
+      };
+      this.registry.set("equipmentUpgrades", equipmentUpgrades);
+    }
 
-/* ---------------------- MISSING FUNCTION: Purchase Upgrade ---------------------- */
-function purchaseUpgrade(upgradeType, upgradeKey) {
-  const currentLevel = upgradeType[upgradeKey];
-  const maxLevel = upgradeMaxLevel[upgradeKey];
-  if (maxLevel === 0 || currentLevel >= maxLevel) {
-    console.log("Upgrade", upgradeKey, "is locked or already maxed.");
-    return;
-  }
-  const cost = getUpgradeCost(upgradeKey, currentLevel);
-  if (player.money < cost) {
-    console.log("Not enough money to purchase", upgradeKey, ". Cost:", cost, "Money:", player.money);
-    return;
-  }
-  player.money -= cost;
-  upgradeType[upgradeKey]++;
-  const newLevel = upgradeType[upgradeKey];
-  const btnId = `upgrade${capitalizeFirstLetter(upgradeKey)}`;
-  document.getElementById(btnId).innerText = getUpgradeDisplayText(upgradeKey, newLevel, maxLevel);
-  if (newLevel >= maxLevel) {
-    document.getElementById(btnId).disabled = true;
-  }
-  updateMoneyDisplay();
-  console.log("Purchased upgrade", upgradeKey, "New level:", newLevel, "Remaining money:", player.money);
-}
+    // e.g., "AvalancheBeacon", "BetterBoots", etc.
+    if (!Object.keys(mountainUpgrades).length) {
+      mountainUpgrades = {
+        AvalancheBeacon: 0,
+        BetterBoots: 0
+      };
+      this.registry.set("mountainUpgrades", mountainUpgrades);
+    }
 
-/* ---------------------- Collision Resolution for UPHILL ---------------------- */
-function resolveCollision(player, obstacle) {
-  let playerCenterX = player.x;
-  let playerCenterY = player.absY;
-  let obstacleCenterX = obstacle.x + obstacle.width / 2;
-  let obstacleCenterY = obstacle.y + obstacle.height / 2;
-  let halfWidthPlayer = player.width / 2;
-  let halfWidthObstacle = obstacle.width / 2;
-  let halfHeightPlayer = player.height / 2;
-  let halfHeightObstacle = obstacle.height / 2;
-  let dx = playerCenterX - obstacleCenterX;
-  let dy = playerCenterY - obstacleCenterY;
-  let overlapX = halfWidthPlayer + halfWidthObstacle - Math.abs(dx);
-  let overlapY = halfHeightPlayer + halfHeightObstacle - Math.abs(dy);
-  if (overlapX < 0 || overlapY < 0) return;
-  if (overlapX < overlapY) {
-    if (dx > 0) {
-      player.x += overlapX * 0.3;
+    // Set up a bestTime in the registry if it doesn't exist
+    if (this.registry.get("bestTime") === undefined) {
+      this.registry.set("bestTime", Infinity);
+    }
+
+    // Keep track of collisions in this scene
+    this.collisions = 0;
+    this.maxCollisions = 3;
+
+    // Start time for the run
+    this.startTime = this.time.now;
+
+    // Create a random "mountain" full of obstacles
+    this.mountainHeight = 2000;
+    this.physics.world.setBounds(0, 0, 800, this.mountainHeight);
+
+    // Create the player (center at x=400, y=0)
+    this.player = this.physics.add.sprite(400, 0, "player");
+    this.player.setCollideWorldBounds(true);
+
+    // Example: Let's make WaxedSled level boost downward speed
+    let waxedLevel = equipmentUpgrades.WaxedSled || 0;
+    // Increase gravity based on waxedLevel
+    this.player.setGravityY(200 + waxedLevel * 50);
+
+    // A little bounciness for collisions
+    this.player.setBounce(0.3);
+
+    // Set up camera to follow the player
+    this.cameras.main.startFollow(this.player);
+    this.cameras.main.setBounds(0, 0, 800, this.mountainHeight);
+
+    // A group for obstacles
+    this.obstacles = this.physics.add.staticGroup();
+
+    // Generate random obstacles
+    for (let i = 0; i < 40; i++) {
+      let x = Phaser.Math.Between(50, 750);
+      let y = Phaser.Math.Between(50, this.mountainHeight - 50);
+      let obs = this.obstacles.create(x, y, "obstacle");
+      // If you have a bigger sprite, you might scale it
+      obs.setScale(0.5).refreshBody();
+    }
+
+    // Add collision detection
+    this.physics.add.collider(this.player, this.obstacles, this.handleCollision, null, this);
+
+    // Basic cursor input
+    this.cursors = this.input.keyboard.createCursorKeys();
+  }
+
+  handleCollision(player, obstacle) {
+    this.collisions++;
+    console.log(`Collision ${this.collisions} of ${this.maxCollisions}, bud!`);
+
+    if (this.collisions >= this.maxCollisions) {
+      console.log("Too many collisions—run ended early!");
+      this.endRun();
+    }
+  }
+
+  update() {
+    // Horizontal movement
+    if (this.cursors.left.isDown) {
+      this.player.setVelocityX(-160);
+    } else if (this.cursors.right.isDown) {
+      this.player.setVelocityX(160);
     } else {
-      player.x -= overlapX * 0.3;
+      this.player.setVelocityX(0);
     }
-  } else {
-    if (dy > 0) {
-      player.absY += overlapY * 0.3;
-    } else {
-      player.absY -= overlapY * 0.3;
+
+    // Minimal "downhill" check:
+    // If the player goes past mountainHeight, end the run
+    if (this.player.y >= this.mountainHeight) {
+      console.log("Reached bottom, bud!");
+      this.endRun();
     }
+  }
+
+  endRun() {
+    let timeTaken = (this.time.now - this.startTime) / 1000;
+    let bestTime = this.registry.get("bestTime");
+
+    if (timeTaken < bestTime) {
+      this.registry.set("bestTime", timeTaken);
+      console.log(`New best time: ${timeTaken.toFixed(2)} s`);
+    }
+    // Switch to shop scene
+    this.scene.start("UpgradeShop");
   }
 }
 
-/* ---------------------- Terrain Generation ---------------------- */
-function generateTerrain() {
-  terrain = [];
-  for (let i = 0; i < obstacleCount; i++) {
-    let obstacle = {
-      x: Math.random() * (canvas.width - 70) + 10,
-      y: Math.random() * mountainHeight,
-      width: 30 + Math.random() * 40,
-      height: 10 + Math.random() * 20
-    };
-    terrain.push(obstacle);
+class UpgradeShop extends Phaser.Scene {
+  constructor() {
+    super({ key: "UpgradeShop" });
   }
-  terrain.sort((a, b) => a.y - b.y);
-}
 
-/* ---------------------- Award Money Function ---------------------- */
-function awardMoney() {
-  let runTime = (performance.now() - downhillStartTime) / 1000;
-  if (runTime === 0) runTime = 1;
-  let distanceFactor = Math.pow(player.absY / mountainHeight, 2);
-  let timeFactor = 30 / runTime;
-  let moneyEarned = Math.floor(100 * distanceFactor * timeFactor);
-  console.log("Awarding money: $" + moneyEarned, "(Distance factor:", distanceFactor, "Time factor:", timeFactor, ")");
-  player.money += moneyEarned;
-}
+  create() {
+    // Retrieve best time
+    let bestTime = this.registry.get("bestTime");
+    let displayTime = bestTime === Infinity ? "N/A" : bestTime.toFixed(2) + " s";
 
-/* ---------------------- State Management ---------------------- */
-function changeState(newState) {
-  currentState = newState;
-  if (currentState === GameState.HOUSE) {
-    document.getElementById("upgrade-menu").style.display = "block";
-    document.getElementById("game-screen").style.display = "none";
-    const bestTimeText = document.getElementById("bestTimeText");
-    bestTimeText.textContent = player.bestTime === Infinity ? "Best Time: N/A" : `Best Time: ${player.bestTime.toFixed(2)}s`;
-    updateMoneyDisplay();
-  } else if (currentState === GameState.DOWNHILL) {
-    document.getElementById("upgrade-menu").style.display = "none";
-    document.getElementById("game-screen").style.display = "block";
-    generateTerrain();
-    earlyFinish = false;
-    player.collisions = 0;
-    player.x = canvas.width / 2;
-    // For a new run, if it's a full run, set absY to 0; for partial runs, retain the position.
-    if (player.absY >= mountainHeight || player.absY <= 0) {
-      player.absY = 0;
-    }
-    player.velocityY = 0;
-    player.xVel = 0;
-    maxCollisions = TWEAK.baseCollisionsAllowed + playerUpgrades.sledDurability;
-    downhillStartTime = performance.now();
-  } else if (currentState === GameState.UPHILL) {
-    player.xVel = 0;
-  }
-}
+    this.add.text(100, 100, `Best Time: ${displayTime}`, { fontSize: "24px", fill: "#fff" });
 
-/* ---------------------- Input Listeners ---------------------- */
-document.addEventListener("keydown", (e) => { keysDown[e.key] = true; });
-document.addEventListener("keyup", (e) => { keysDown[e.key] = false; });
+    // Retrieve upgrade dictionaries
+    let equipmentUpgrades = this.registry.get("equipmentUpgrades");
+    let mountainUpgrades = this.registry.get("mountainUpgrades");
 
-/* ---------------------- Collision Helpers ---------------------- */
-function checkCollision(ax, ay, aw, ah, bx, by, bw, bh) {
-  return ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by;
-}
-function clamp(val, min, max) {
-  return Math.max(min, Math.min(max, val));
-}
-function getCameraOffset() {
-  let offset = player.absY - canvas.height / 2;
-  return clamp(offset, 0, mountainHeight - canvas.height);
-}
+    // Show & increment Equipment Upgrades
+    // We'll demonstrate WaxedSled and GrapplingHook
+    let eqTextY = 160;
+    for (let eqKey in equipmentUpgrades) {
+      this.add.text(100, eqTextY, `${eqKey} Lv: ${equipmentUpgrades[eqKey]}`, { fill: "#ff9900" })
+        .setInteractive()
+        .on("pointerdown", () => {
+          equipmentUpgrades[eqKey] += 1;
+          this.registry.set("equipmentUpgrades", equipmentUpgrades);
+          console.log(`Upgraded ${eqKey} to Lv ${equipmentUpgrades[eqKey]}!`);
+          // Restart the run
+          this.scene.start("SleddingGame");
+        });
+      eqTextY += 40;
+    }
 
-/* ---------------------- Update & Draw Functions ---------------------- */
-function update(deltaTime) {
-  if (currentState === GameState.DOWNHILL) {
-    let rocketFactor = 1 + (playerUpgrades.rocketSurgery * TWEAK.rocketSurgeryFactorPerLevel);
-    let gravity = TWEAK.baseGravity * rocketFactor;
-    let maxXVel = TWEAK.baseMaxXVel * rocketFactor;
-    let opticsFactor = 1 + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsAccelFactorPerLevel);
-    let horizontalAccel = TWEAK.baseHorizontalAccel * opticsFactor;
-    let friction = TWEAK.baseFriction + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsFrictionFactorPerLevel);
-    if (friction > 1.0) friction = 1.0;
-    
-    player.velocityY += gravity;
-    player.absY += player.velocityY;
-    
-    if (keysDown["ArrowLeft"]) { player.xVel -= horizontalAccel; }
-    if (keysDown["ArrowRight"]) { player.xVel += horizontalAccel; }
-    player.xVel *= friction;
-    player.xVel = clamp(player.xVel, -maxXVel, maxXVel);
-    player.x += player.xVel;
-    
-    let prevAbsY = player.absY;
-    for (let obstacle of terrain) {
-      if (checkCollision(
-          player.x - player.width / 2, player.absY - player.height / 2,
-          player.width, player.height,
-          obstacle.x, obstacle.y,
-          obstacle.width, obstacle.height
-        )) {
-        console.log("Collision detected on downhill.");
-        player.velocityY = 0;
-        player.absY = prevAbsY - 15;
-        player.collisions++;
-        if (player.collisions >= maxCollisions) {
-          console.log("Max collisions reached. Ending run.");
-          awardMoney();
-          changeState(GameState.UPHILL);
-          return;
-        }
-      }
+    // Show & increment Mountain Upgrades
+    // We'll demonstrate AvalancheBeacon and BetterBoots
+    let mtTextY = eqTextY + 40;
+    for (let mtKey in mountainUpgrades) {
+      this.add.text(100, mtTextY, `${mtKey} Lv: ${mountainUpgrades[mtKey]}`, { fill: "#ff9900" })
+        .setInteractive()
+        .on("pointerdown", () => {
+          mountainUpgrades[mtKey] += 1;
+          this.registry.set("mountainUpgrades", mountainUpgrades);
+          console.log(`Upgraded ${mtKey} to Lv ${mountainUpgrades[mtKey]}!`);
+          // Restart the run
+          this.scene.start("SleddingGame");
+        });
+      mtTextY += 40;
     }
-    if (player.absY >= mountainHeight) {
-      player.absY = mountainHeight;
-      console.log("Reached bottom of mountain.");
-      awardMoney();
-      changeState(GameState.UPHILL);
-    }
-    
-  } else if (currentState === GameState.UPHILL) {
-    let upSpeed = TWEAK.baseUpSpeed + (playerUpgrades.fancierFootwear * TWEAK.fancierFootwearUpSpeedPerLevel);
-    if (keysDown["ArrowUp"]) { player.absY -= upSpeed; }
-    if (keysDown["ArrowDown"]) { player.absY += upSpeed; }
-    if (keysDown["ArrowLeft"]) { player.x -= upSpeed; }
-    if (keysDown["ArrowRight"]) { player.x += upSpeed; }
-    player.xVel = 0;
-    
-    for (let obstacle of terrain) {
-      if (checkCollision(
-          player.x - player.width / 2, player.absY - player.height / 2,
-          player.width, player.height,
-          obstacle.x, obstacle.y,
-          obstacle.width, obstacle.height
-        )) {
-        console.log("Collision detected on uphill.");
-        resolveCollision(player, obstacle);
-      }
-    }
-    if (player.absY <= 0) {
-      player.absY = 0;
-      changeState(GameState.HOUSE);
-    }
+
+    // "Play Again" text if they don't wanna upgrade
+    this.add.text(100, mtTextY + 60, "Click to Play Again", { fill: "#fff" })
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.scene.start("SleddingGame");
+      });
   }
 }
-
-function draw() {
-  if (currentState === GameState.DOWNHILL || currentState === GameState.UPHILL) {
-    let cameraOffset = getCameraOffset();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = currentState === GameState.DOWNHILL ? "#ADD8E6" : "#98FB98";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    terrain.forEach(obstacle => {
-      if (obstacle.y >= cameraOffset - 50 && obstacle.y <= cameraOffset + canvas.height + 50) {
-        ctx.fillStyle = "#8B4513";
-        ctx.fillRect(obstacle.x, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
-      }
-    });
-    let playerDrawY = player.absY - cameraOffset;
-    ctx.fillStyle = "#FF0000";
-    ctx.fillRect(player.x - player.width / 2, playerDrawY - player.height / 2, player.width, player.height);
-  }
-}
-
-function gameLoop(timestamp) {
-  let deltaTime = timestamp - lastTime;
-  lastTime = timestamp;
-  update(deltaTime);
-  draw();
-  requestAnimationFrame(gameLoop);
-}
-
-/* ---------------------- Initialization (Run Immediately) ---------------------- */
-Object.keys(playerUpgrades).forEach(upg => {
-  initUpgradeButton(upg, playerUpgrades[upg]);
-  const btnId = `upgrade${capitalizeFirstLetter(upg)}`;
-  document.getElementById(btnId).addEventListener("click", () => {
-    console.log("Upgrade button clicked:", upg, "Current money:", player.money);
-    purchaseUpgrade(playerUpgrades, upg);
-  });
-});
-Object.keys(mountainUpgrades).forEach(upg => {
-  initUpgradeButton(upg, mountainUpgrades[upg]);
-  const btnId = `upgrade${capitalizeFirstLetter(upg)}`;
-  document.getElementById(btnId).addEventListener("click", () => {
-    console.log("Upgrade button clicked:", upg, "Current money:", player.money);
-    purchaseUpgrade(mountainUpgrades, upg);
-  });
-});
-document.getElementById("startGame").addEventListener("click", () => {
-  console.log("Start run clicked.");
-  changeState(GameState.DOWNHILL);
-});
-changeState(GameState.HOUSE);
-requestAnimationFrame(gameLoop);
 

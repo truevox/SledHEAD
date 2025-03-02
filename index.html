@@ -1,184 +1,238 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SledHEAD</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <!-- Title at top -->
-  <h1>SledHEAD</h1>
-  
-  <!-- Money Display in the upper right corner -->
-  <div id="moneyDisplay">
-    <p id="moneyText">Money: $200</p>
-  </div>
+/***********************************************
+ * Sledding Roguelike - Phaser Version (Revised)
+ * Bubbles is proud of ya, bud! 🎿🔥
+ ***********************************************/
 
-  <!-- The main game screen (hidden until we leave the House state) -->
-  <div id="game-screen" style="display: none;">
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
-  </div>
+window.onload = () => {
+  const config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+    parent: "game-container", // Attach the canvas here
+    physics: {
+      default: "arcade",
+      arcade: {
+        gravity: { y: 0 }, // Gravity will be set per phase
+        debug: true        // Enable debug so you can see collision boxes
+      }
+    },
+    scene: [SleddingGame, UpgradeShop]
+  };
 
-  <!-- Upgrade Menu (shown by default in HOUSE state) -->
-  <div id="upgrade-menu">
-    <!-- Start button at top -->
-    <button id="startGame">Start Sled Run</button>
+  new Phaser.Game(config);
+};
+
+class SleddingGame extends Phaser.Scene {
+  constructor() {
+    super({ key: "SleddingGame" });
+  }
+
+  preload() {
+    // Load assets—make sure these files exist in your assets folder!
+    this.load.image("player", "assets/player.png");
+    this.load.image("obstacle", "assets/obstacle.png");
+  }
+
+  create() {
+    // Retrieve or initialize upgrade data in the registry
+    let equipmentUpgrades = this.registry.get("equipmentUpgrades") || {};
+    let mountainUpgrades = this.registry.get("mountainUpgrades") || {};
+
+    if (!Object.keys(equipmentUpgrades).length) {
+      equipmentUpgrades = {
+        WaxedSled: 0,
+        GrapplingHook: 0
+      };
+      this.registry.set("equipmentUpgrades", equipmentUpgrades);
+    }
+    if (!Object.keys(mountainUpgrades).length) {
+      mountainUpgrades = {
+        AvalancheBeacon: 0,
+        BetterBoots: 0
+      };
+      this.registry.set("mountainUpgrades", mountainUpgrades);
+    }
+    if (this.registry.get("bestTime") === undefined) {
+      this.registry.set("bestTime", Infinity);
+    }
+
+    // Initialize collision count and run timer
+    this.collisions = 0;
+    this.maxCollisions = 3;
+    this.startTime = this.time.now;
     
-    <div class="upgrade-menu-columns">
-      <!-- Left Column: Personal Upgrades -->
-      <div class="upgrade-column">
-        <h2>Personal Upgrades</h2>
-        <div class="upgrade-entry">
-          <button id="upgradeRocketSurgery">Rocket Surgery (Lv 0/10 – Cost: $110)</button>
-          <p class="upgrade-desc">
-            Speed down the mountain with red paint, sled wax, and more!<br>
-            Boosts top speed &amp; acceleration for faster downhill runs.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeOptimalOptics">Optimal Optics (Lv 0/10 – Cost: $110)</button>
-          <p class="upgrade-desc">
-            Go from phone to GoPro/drone for better footage!<br>
-            Frees focus &amp; boosts fan engagement for easier weaving.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeSledDurability">Sled Durability (Lv 0/10 – Cost: $110)</button>
-          <p class="upgrade-desc">
-            Reinforce your sled to withstand bigger impacts.<br>
-            +1 collision allowed before a crash occurs.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeFancierFootwear">Fancier Footwear (Lv 0/10 – Cost: $110)</button>
-          <p class="upgrade-desc">
-            Hike faster &amp; slip less on icy terrain.<br>
-            Less time climbing, more time sledding.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeGrapplingAnchor">Grappling Anchor (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Hook onto terrain to swing into tricky spots.<br>
-            Longer range &amp; stronger anchor with each upgrade.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeAttendLegDay">Attend Leg Day (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Reduce stamina cost for climbing back up.<br>
-            Run out of stamina, and the day is done.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeShortcutAwareness">Shortcut Awareness (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Reveal hidden shortcuts &amp; groomed trails.<br>
-            Optimize your route to beat best times.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeCrowdHypeman">Crowd Hypeman (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Perform tricks near fans for speed &amp; cash boosts.<br>
-            Chain multiple fans for even bigger bonuses!
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeCrowdWeaver">Crowd Weaver (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Non-fan crowds move aside more often.<br>
-            Fans already dodge, so this reduces obstacles further.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeWeatherWarrior">Weather Warrior (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Storms &amp; blizzards barely slow you down.<br>
-            Keep performance steady in harsh weather.
-          </p>
-        </div>
-      </div>
-      <!-- Right Column: Mountain Upgrades -->
-      <div class="upgrade-column">
-        <h2>Mountain Upgrades</h2>
-        <div class="upgrade-entry">
-          <button id="upgradeSkiLifts">High-Speed Ski Lift Expansion (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Add lifts for more visitors &amp; bigger crowds.<br>
-            Ride lifts up the mountain faster yourself.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeSnowmobileRentals">Snowmobile Rentals (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Rent out snowmobiles for income &amp; new obstacles.<br>
-            You can also rent one to speed up your ascent.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeEateries">Eateries &amp; Snack Bars (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Install stands for visitors &amp; extra cash flow.<br>
-            Eating there restores your stamina.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeGroomedTrails">Groomed Trails (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Smooth paths attract crowds (and hazards).<br>
-            Sometimes grants speed boosts downhill.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeFirstAidStations">Safety &amp; First-Aid Stations (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            More safety = more popularity &amp; money.<br>
-            Use them to heal &amp; reduce collision penalties.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeScenicOverlooks">Scenic Overlook Platforms (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Build scenic spots to lure tourists &amp; sponsors.<br>
-            If not crowded, can be used as shortcuts.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeAdvertisingRamps">Advertising Ramp-Billboards (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Boost sponsor revenue with flashy ads.<br>
-            Doubles as ramps for epic tricks.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeResortLodges">Resort Amenities &amp; Lodges (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Add luxury lodges for high-end guests.<br>
-            You can start runs from these remote spots.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeNightLighting">Night Lighting Upgrades (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Enable night sledding for 24/7 fun.<br>
-            Unlock special night-only runs &amp; bigger rewards.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeWeatherControl">Weather Control Systems (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Moderate snow &amp; ice conditions at will.<br>
-            Reduce hazards or ramp up challenge for more rewards.
-          </p>
-        </div>
-      </div>
-    </div>
-    <p id="bestTimeText">Best Time: N/A</p>
-  </div>
+    // Define mountain boundaries
+    this.mountainHeight = 2000;
+    this.physics.world.setBounds(0, 0, 800, this.mountainHeight);
 
-  <script src="game.js"></script>
-</body>
-</html>
+    // Create a group for obstacles and generate random obstacles
+    this.obstacles = this.physics.add.staticGroup();
+    for (let i = 0; i < 40; i++) {
+      let x = Phaser.Math.Between(50, 750);
+      let y = Phaser.Math.Between(50, this.mountainHeight - 50);
+      let obs = this.obstacles.create(x, y, "obstacle");
+      obs.setScale(0.5).refreshBody();
+    }
+
+    // Create the player sprite at the top center
+    this.player = this.physics.add.sprite(400, 0, "player");
+    this.player.setCollideWorldBounds(true);
+
+    // Start in the "downhill" phase: enable gravity based on WaxedSled upgrade
+    let waxedLevel = equipmentUpgrades.WaxedSled || 0;
+    this.player.setGravityY(200 + waxedLevel * 50);
+    this.player.setBounce(0.3);
+
+    // Set the phase to "downhill"
+    this.phase = "downhill";
+
+    // Enable collision detection in downhill phase
+    this.physics.add.collider(this.player, this.obstacles, this.handleCollision, null, this);
+
+    // Set up cursor input
+    this.cursors = this.input.keyboard.createCursorKeys();
+  }
+
+  handleCollision(player, obstacle) {
+    if (this.phase === "downhill") {
+      this.collisions++;
+      console.log(`Collision ${this.collisions} of ${this.maxCollisions}, bud!`);
+      if (this.collisions >= this.maxCollisions) {
+        console.log("Too many collisions—run ended early!");
+        this.endRun();
+      }
+    }
+    // In uphill phase, we handle collisions manually in update.
+  }
+
+  update() {
+    if (this.phase === "downhill") {
+      // Downhill phase: horizontal movement controlled by arrow keys
+      if (this.cursors.left.isDown) {
+        this.player.setVelocityX(-160);
+      } else if (this.cursors.right.isDown) {
+        this.player.setVelocityX(160);
+      } else {
+        this.player.setVelocityX(0);
+      }
+      
+      // When the player reaches the bottom, switch to uphill phase
+      if (this.player.y >= this.mountainHeight) {
+        console.log("Reached bottom, bud! Now climbing...");
+        this.phase = "uphill";
+        // Disable gravity and reset velocity for climbing
+        this.player.setGravityY(0);
+        this.player.setVelocity(0);
+      }
+    } else if (this.phase === "uphill") {
+      // Uphill phase: manually control movement
+      // Save previous position to revert if colliding
+      let prevX = this.player.x;
+      let prevY = this.player.y;
+      
+      // Determine climb speed using BetterBoots upgrade from mountainUpgrades
+      let mountainUpgrades = this.registry.get("mountainUpgrades");
+      let climbSpeed = 160 + (mountainUpgrades.BetterBoots || 0) * 20;
+      
+      // Horizontal movement
+      if (this.cursors.left.isDown) {
+        this.player.x -= 3;
+      } else if (this.cursors.right.isDown) {
+        this.player.x += 3;
+      }
+      // Vertical movement: up arrow to climb up, down arrow to descend
+      if (this.cursors.up.isDown) {
+        this.player.y -= climbSpeed * this.game.loop.delta / 1000;
+      } else if (this.cursors.down.isDown) {
+        this.player.y += climbSpeed * this.game.loop.delta / 1000;
+      }
+      
+      // Manual collision check: if overlapping any obstacle, revert position
+      let collided = false;
+      this.obstacles.children.iterate((obs) => {
+        if (this.checkOverlap(this.player, obs)) {
+          collided = true;
+        }
+      });
+      if (collided) {
+        this.player.x = prevX;
+        this.player.y = prevY;
+      }
+      
+      // If the player reaches the top, finish the run
+      if (this.player.y <= 0) {
+        console.log("Climbed back up, bud!");
+        this.endRun();
+      }
+    }
+  }
+
+  checkOverlap(spriteA, spriteB) {
+    let boundsA = spriteA.getBounds();
+    let boundsB = spriteB.getBounds();
+    return Phaser.Geom.Intersects.RectangleToRectangle(boundsA, boundsB);
+  }
+
+  endRun() {
+    let timeTaken = (this.time.now - this.startTime) / 1000;
+    let bestTime = this.registry.get("bestTime");
+    if (timeTaken < bestTime) {
+      this.registry.set("bestTime", timeTaken);
+      console.log(`New best time: ${timeTaken.toFixed(2)} s`);
+    }
+    this.scene.start("UpgradeShop");
+  }
+}
+
+class UpgradeShop extends Phaser.Scene {
+  constructor() {
+    super({ key: "UpgradeShop" });
+  }
+
+  create() {
+    // Display best time
+    let bestTime = this.registry.get("bestTime");
+    let displayTime = bestTime === Infinity ? "N/A" : bestTime.toFixed(2) + " s";
+    this.add.text(100, 100, `Best Time: ${displayTime}`, { fontSize: "24px", fill: "#fff" });
+
+    // Retrieve upgrade dictionaries
+    let equipmentUpgrades = this.registry.get("equipmentUpgrades");
+    let mountainUpgrades = this.registry.get("mountainUpgrades");
+
+    // Show & increment Equipment Upgrades
+    let eqTextY = 160;
+    for (let eqKey in equipmentUpgrades) {
+      this.add.text(100, eqTextY, `${eqKey} Lv: ${equipmentUpgrades[eqKey]}`, { fill: "#ff9900" })
+        .setInteractive()
+        .on("pointerdown", () => {
+          equipmentUpgrades[eqKey] += 1;
+          this.registry.set("equipmentUpgrades", equipmentUpgrades);
+          console.log(`Upgraded ${eqKey} to Lv ${equipmentUpgrades[eqKey]}!`);
+          this.scene.start("SleddingGame");
+        });
+      eqTextY += 40;
+    }
+
+    // Show & increment Mountain Upgrades
+    let mtTextY = eqTextY + 40;
+    for (let mtKey in mountainUpgrades) {
+      this.add.text(100, mtTextY, `${mtKey} Lv: ${mountainUpgrades[mtKey]}`, { fill: "#ff9900" })
+        .setInteractive()
+        .on("pointerdown", () => {
+          mountainUpgrades[mtKey] += 1;
+          this.registry.set("mountainUpgrades", mountainUpgrades);
+          console.log(`Upgraded ${mtKey} to Lv ${mountainUpgrades[mtKey]}!`);
+          this.scene.start("SleddingGame");
+        });
+      mtTextY += 40;
+    }
+
+    // "Play Again" option if no upgrades are desired
+    this.add.text(100, mtTextY + 60, "Click to Play Again", { fill: "#fff" })
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.scene.start("SleddingGame");
+      });
+  }
+}
 
