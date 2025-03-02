@@ -1,0 +1,76 @@
+/* house.css */
+/* Styles for the house phase & upgrade menu */
+#upgrade-menu {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 50px);
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 20px;
+    box-sizing: border-box;
+    display: block;
+    overflow-y: auto;
+  }
+  .upgrade-menu-columns {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .upgrade-column {
+    width: 45%;
+    margin: 10px 0;
+  }
+  .upgrade-column h2 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .upgrade-entry {
+    margin-bottom: 15px;
+  }
+  .upgrade-entry button {
+    width: 100%;
+    margin: 5px 0 2px 0;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  .upgrade-entry button:hover {
+    background-color: #0056b3;
+  }
+  .upgrade-entry button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+  }
+  .upgrade-desc {
+    font-size: 14px;
+    line-height: 1.2;
+    margin: 0;
+    color: #ccc;
+  }
+  #bestTimeText {
+    margin-top: 20px;
+    text-align: center;
+    color: #fff;
+  }
+  #startGame {
+    display: block;
+    margin: 10px auto;
+    font-size: 16px;
+    padding: 8px 16px;
+    cursor: pointer;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+  }
+  #startGame:hover {
+    background-color: #218838;
+  }
+  
