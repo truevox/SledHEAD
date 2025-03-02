@@ -3,7 +3,6 @@ const mountainHeight = 2000;
 let terrain = [];
 const obstacleCount = 40;
 let earlyFinish = false;
-
 function generateTerrain() {
   terrain = [];
   for (let i = 0; i < obstacleCount; i++) {
@@ -17,7 +16,6 @@ function generateTerrain() {
   }
   terrain.sort((a, b) => a.y - b.y);
 }
-
 function awardMoney() {
   let runTime = (performance.now() - downhillStartTime) / 1000;
   if (runTime === 0) runTime = 1;

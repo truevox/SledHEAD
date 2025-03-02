@@ -45,18 +45,15 @@ let playerUpgrades = {
     nightLighting: 0,
     weatherControl: 0
   };
-  
   function getUpgradeCost(upgradeKey, currentLevel) {
     return Math.floor(100 * Math.pow(1.1, currentLevel + 1));
   }
-  
   function updateMoneyDisplay() {
     const moneyText = document.getElementById("moneyText");
     if (moneyText) {
       moneyText.textContent = "Money: $" + player.money;
     }
   }
-  
   function getUpgradeDisplayText(upgradeKey, currentLevel, maxLevel) {
     let text = formatUpgradeName(upgradeKey) + ` (Lv ${currentLevel}/${maxLevel})`;
     if (maxLevel > 0 && currentLevel < maxLevel) {
@@ -65,7 +62,6 @@ let playerUpgrades = {
     }
     return text;
   }
-  
   function initUpgradeButton(upgradeKey, upgradeValue) {
     const maxLevel = upgradeMaxLevel[upgradeKey];
     const btnId = `upgrade${capitalizeFirstLetter(upgradeKey)}`;
@@ -75,7 +71,6 @@ let playerUpgrades = {
       button.disabled = true;
     }
   }
-  
   function purchaseUpgrade(upgradeType, upgradeKey) {
     const currentLevel = upgradeType[upgradeKey];
     const maxLevel = upgradeMaxLevel[upgradeKey];

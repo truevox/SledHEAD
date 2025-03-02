@@ -27,7 +27,6 @@ function resolveCollision(player, obstacle) {
     }
   }
 }
-
 function drawEntities() {
   let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
