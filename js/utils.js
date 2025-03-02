@@ -106,3 +106,62 @@ function getCameraOffset(playerAbsY, canvasHeight, mountainHeight) {
     let offset = playerAbsY - canvasHeight / 2;
     return clamp(offset, 0, mountainHeight - canvasHeight);
 }
+
+/* Ensure Web Audio API is unlocked */
+let audioCtx;
+function unlockAudioContext() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+}
+
+/* Audio Utility Functions */
+function playTone(frequency = 440, type = "sine", duration = 0.5, volume = 0.3) {
+    unlockAudioContext(); // Ensure audio context is unlocked
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+
+    oscillator.type = type;
+    oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+
+    gainNode.gain.setValueAtTime(volume, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + duration);
+}
+
+/* Sound Effects */
+function playStartGameSound() {
+    playTone(440, "triangle", 0.5); // Classic smooth start sound
+}
+
+function playCrashSound() {
+    unlockAudioContext();
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+
+    oscillator.type = "sawtooth";
+    oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.5);
+
+    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + 0.5);
+}
+
+function playRockHitSound() {
+    playTone(200, "square", 0.2); // Quick low-pitched bang
+}
+
+function playMoneyGainSound() {
+    playTone(1000, "sine", 0.15, 0.2); // Small beep
+}
