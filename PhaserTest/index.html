@@ -1,0 +1,238 @@
+/***********************************************
+ * Sledding Roguelike - Phaser Version (Revised)
+ * Bubbles is proud of ya, bud! 🎿🔥
+ ***********************************************/
+
+window.onload = () => {
+  const config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+    parent: "game-container", // Attach the canvas here
+    physics: {
+      default: "arcade",
+      arcade: {
+        gravity: { y: 0 }, // Gravity will be set per phase
+        debug: true        // Enable debug so you can see collision boxes
+      }
+    },
+    scene: [SleddingGame, UpgradeShop]
+  };
+
+  new Phaser.Game(config);
+};
+
+class SleddingGame extends Phaser.Scene {
+  constructor() {
+    super({ key: "SleddingGame" });
+  }
+
+  preload() {
+    // Load assets—make sure these files exist in your assets folder!
+    this.load.image("player", "assets/player.png");
+    this.load.image("obstacle", "assets/obstacle.png");
+  }
+
+  create() {
+    // Retrieve or initialize upgrade data in the registry
+    let equipmentUpgrades = this.registry.get("equipmentUpgrades") || {};
+    let mountainUpgrades = this.registry.get("mountainUpgrades") || {};
+
+    if (!Object.keys(equipmentUpgrades).length) {
+      equipmentUpgrades = {
+        WaxedSled: 0,
+        GrapplingHook: 0
+      };
+      this.registry.set("equipmentUpgrades", equipmentUpgrades);
+    }
+    if (!Object.keys(mountainUpgrades).length) {
+      mountainUpgrades = {
+        AvalancheBeacon: 0,
+        BetterBoots: 0
+      };
+      this.registry.set("mountainUpgrades", mountainUpgrades);
+    }
+    if (this.registry.get("bestTime") === undefined) {
+      this.registry.set("bestTime", Infinity);
+    }
+
+    // Initialize collision count and run timer
+    this.collisions = 0;
+    this.maxCollisions = 3;
+    this.startTime = this.time.now;
+    
+    // Define mountain boundaries
+    this.mountainHeight = 2000;
+    this.physics.world.setBounds(0, 0, 800, this.mountainHeight);
+
+    // Create a group for obstacles and generate random obstacles
+    this.obstacles = this.physics.add.staticGroup();
+    for (let i = 0; i < 40; i++) {
+      let x = Phaser.Math.Between(50, 750);
+      let y = Phaser.Math.Between(50, this.mountainHeight - 50);
+      let obs = this.obstacles.create(x, y, "obstacle");
+      obs.setScale(0.5).refreshBody();
+    }
+
+    // Create the player sprite at the top center
+    this.player = this.physics.add.sprite(400, 0, "player");
+    this.player.setCollideWorldBounds(true);
+
+    // Start in the "downhill" phase: enable gravity based on WaxedSled upgrade
+    let waxedLevel = equipmentUpgrades.WaxedSled || 0;
+    this.player.setGravityY(200 + waxedLevel * 50);
+    this.player.setBounce(0.3);
+
+    // Set the phase to "downhill"
+    this.phase = "downhill";
+
+    // Enable collision detection in downhill phase
+    this.physics.add.collider(this.player, this.obstacles, this.handleCollision, null, this);
+
+    // Set up cursor input
+    this.cursors = this.input.keyboard.createCursorKeys();
+  }
+
+  handleCollision(player, obstacle) {
+    if (this.phase === "downhill") {
+      this.collisions++;
+      console.log(`Collision ${this.collisions} of ${this.maxCollisions}, bud!`);
+      if (this.collisions >= this.maxCollisions) {
+        console.log("Too many collisions—run ended early!");
+        this.endRun();
+      }
+    }
+    // In uphill phase, we handle collisions manually in update.
+  }
+
+  update() {
+    if (this.phase === "downhill") {
+      // Downhill phase: horizontal movement controlled by arrow keys
+      if (this.cursors.left.isDown) {
+        this.player.setVelocityX(-160);
+      } else if (this.cursors.right.isDown) {
+        this.player.setVelocityX(160);
+      } else {
+        this.player.setVelocityX(0);
+      }
+      
+      // When the player reaches the bottom, switch to uphill phase
+      if (this.player.y >= this.mountainHeight) {
+        console.log("Reached bottom, bud! Now climbing...");
+        this.phase = "uphill";
+        // Disable gravity and reset velocity for climbing
+        this.player.setGravityY(0);
+        this.player.setVelocity(0);
+      }
+    } else if (this.phase === "uphill") {
+      // Uphill phase: manually control movement
+      // Save previous position to revert if colliding
+      let prevX = this.player.x;
+      let prevY = this.player.y;
+      
+      // Determine climb speed using BetterBoots upgrade from mountainUpgrades
+      let mountainUpgrades = this.registry.get("mountainUpgrades");
+      let climbSpeed = 160 + (mountainUpgrades.BetterBoots || 0) * 20;
+      
+      // Horizontal movement
+      if (this.cursors.left.isDown) {
+        this.player.x -= 3;
+      } else if (this.cursors.right.isDown) {
+        this.player.x += 3;
+      }
+      // Vertical movement: up arrow to climb up, down arrow to descend
+      if (this.cursors.up.isDown) {
+        this.player.y -= climbSpeed * this.game.loop.delta / 1000;
+      } else if (this.cursors.down.isDown) {
+        this.player.y += climbSpeed * this.game.loop.delta / 1000;
+      }
+      
+      // Manual collision check: if overlapping any obstacle, revert position
+      let collided = false;
+      this.obstacles.children.iterate((obs) => {
+        if (this.checkOverlap(this.player, obs)) {
+          collided = true;
+        }
+      });
+      if (collided) {
+        this.player.x = prevX;
+        this.player.y = prevY;
+      }
+      
+      // If the player reaches the top, finish the run
+      if (this.player.y <= 0) {
+        console.log("Climbed back up, bud!");
+        this.endRun();
+      }
+    }
+  }
+
+  checkOverlap(spriteA, spriteB) {
+    let boundsA = spriteA.getBounds();
+    let boundsB = spriteB.getBounds();
+    return Phaser.Geom.Intersects.RectangleToRectangle(boundsA, boundsB);
+  }
+
+  endRun() {
+    let timeTaken = (this.time.now - this.startTime) / 1000;
+    let bestTime = this.registry.get("bestTime");
+    if (timeTaken < bestTime) {
+      this.registry.set("bestTime", timeTaken);
+      console.log(`New best time: ${timeTaken.toFixed(2)} s`);
+    }
+    this.scene.start("UpgradeShop");
+  }
+}
+
+class UpgradeShop extends Phaser.Scene {
+  constructor() {
+    super({ key: "UpgradeShop" });
+  }
+
+  create() {
+    // Display best time
+    let bestTime = this.registry.get("bestTime");
+    let displayTime = bestTime === Infinity ? "N/A" : bestTime.toFixed(2) + " s";
+    this.add.text(100, 100, `Best Time: ${displayTime}`, { fontSize: "24px", fill: "#fff" });
+
+    // Retrieve upgrade dictionaries
+    let equipmentUpgrades = this.registry.get("equipmentUpgrades");
+    let mountainUpgrades = this.registry.get("mountainUpgrades");
+
+    // Show & increment Equipment Upgrades
+    let eqTextY = 160;
+    for (let eqKey in equipmentUpgrades) {
+      this.add.text(100, eqTextY, `${eqKey} Lv: ${equipmentUpgrades[eqKey]}`, { fill: "#ff9900" })
+        .setInteractive()
+        .on("pointerdown", () => {
+          equipmentUpgrades[eqKey] += 1;
+          this.registry.set("equipmentUpgrades", equipmentUpgrades);
+          console.log(`Upgraded ${eqKey} to Lv ${equipmentUpgrades[eqKey]}!`);
+          this.scene.start("SleddingGame");
+        });
+      eqTextY += 40;
+    }
+
+    // Show & increment Mountain Upgrades
+    let mtTextY = eqTextY + 40;
+    for (let mtKey in mountainUpgrades) {
+      this.add.text(100, mtTextY, `${mtKey} Lv: ${mountainUpgrades[mtKey]}`, { fill: "#ff9900" })
+        .setInteractive()
+        .on("pointerdown", () => {
+          mountainUpgrades[mtKey] += 1;
+          this.registry.set("mountainUpgrades", mountainUpgrades);
+          console.log(`Upgraded ${mtKey} to Lv ${mountainUpgrades[mtKey]}!`);
+          this.scene.start("SleddingGame");
+        });
+      mtTextY += 40;
+    }
+
+    // "Play Again" option if no upgrades are desired
+    this.add.text(100, mtTextY + 60, "Click to Play Again", { fill: "#fff" })
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.scene.start("SleddingGame");
+      });
+  }
+}
+
