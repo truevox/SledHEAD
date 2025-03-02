@@ -1,5 +1,5 @@
 # SledHEAD Dual License Agreement
-Version 1.0 – March 2025
+Version 1.2 – March 2025
 
 This License Agreement applies to SledHEAD (the "Game"), including its source code and assets, created by the original author Marvin Bentley II ("Licensor"). By copying, modifying, distributing, or otherwise using the Game or any of its components, you (the "Licensee") agree to the following terms:
 
