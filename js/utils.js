@@ -1,20 +1,58 @@
-/* utils.js */
-/* Global Configuration & Shared Globals */
 var TWEAK = {
-    sledMass: 1.0,             
-    baseGravity: 0.1,          
-    baseHorizontalAccel: 0.15, 
-    baseFriction: 0.95,        
-    baseMaxXVel: 3,            
-    rocketSurgeryFactorPerLevel: 0.05,  
-    optimalOpticsAccelFactorPerLevel: 0.02,  
-    optimalOpticsFrictionFactorPerLevel: 0.005, 
-    fancierFootwearUpSpeedPerLevel: 0.1,  
-    baseUpSpeed: 2,            
-    baseCollisionsAllowed: 3,
-    starterCash: 200
-};
-
+    tweakNob: 10, // Global multiplier for all tweak values
+    
+    // Underlying base values
+    _sledMass: 1.0,
+    _baseGravity: 0.1,
+    _baseHorizontalAccel: 0.15,
+    _baseFriction: 0.95,
+    _baseMaxXVel: 3,
+    _rocketSurgeryFactorPerLevel: 0.05,
+    _optimalOpticsAccelFactorPerLevel: 0.02,
+    _optimalOpticsFrictionFactorPerLevel: 0.005,
+    _fancierFootwearUpSpeedPerLevel: 0.1,
+    _baseUpSpeed: 2,
+    _baseCollisionsAllowed: 3,
+    _starterCash: 200,
+    
+    // Getters to apply tweakNob multiplier
+    get sledMass() { return this._sledMass * this.tweakNob; },
+    set sledMass(val) { this._sledMass = val; },
+    
+    get baseGravity() { return this._baseGravity * this.tweakNob; },
+    set baseGravity(val) { this._baseGravity = val; },
+    
+    get baseHorizontalAccel() { return this._baseHorizontalAccel * this.tweakNob; },
+    set baseHorizontalAccel(val) { this._baseHorizontalAccel = val; },
+    
+    get baseFriction() { return this._baseFriction * this.tweakNob; },
+    set baseFriction(val) { this._baseFriction = val; },
+    
+    get baseMaxXVel() { return this._baseMaxXVel * this.tweakNob; },
+    set baseMaxXVel(val) { this._baseMaxXVel = val; },
+    
+    get rocketSurgeryFactorPerLevel() { return this._rocketSurgeryFactorPerLevel * this.tweakNob; },
+    set rocketSurgeryFactorPerLevel(val) { this._rocketSurgeryFactorPerLevel = val; },
+    
+    get optimalOpticsAccelFactorPerLevel() { return this._optimalOpticsAccelFactorPerLevel * this.tweakNob; },
+    set optimalOpticsAccelFactorPerLevel(val) { this._optimalOpticsAccelFactorPerLevel = val; },
+    
+    get optimalOpticsFrictionFactorPerLevel() { return this._optimalOpticsFrictionFactorPerLevel * this.tweakNob; },
+    set optimalOpticsFrictionFactorPerLevel(val) { this._optimalOpticsFrictionFactorPerLevel = val; },
+    
+    get fancierFootwearUpSpeedPerLevel() { return this._fancierFootwearUpSpeedPerLevel * this.tweakNob; },
+    set fancierFootwearUpSpeedPerLevel(val) { this._fancierFootwearUpSpeedPerLevel = val; },
+    
+    get baseUpSpeed() { return this._baseUpSpeed * this.tweakNob; },
+    set baseUpSpeed(val) { this._baseUpSpeed = val; },
+    
+    get baseCollisionsAllowed() { return this._baseCollisionsAllowed * this.tweakNob; },
+    set baseCollisionsAllowed(val) { this._baseCollisionsAllowed = val; },
+    
+    get starterCash() { return this._starterCash * this.tweakNob; },
+    set starterCash(val) { this._starterCash = val; }
+  };
+  
 // New: function to compute max collisions
 TWEAK.getMaxCollisions = function() {
     // Ensure playerUpgrades exists before accessing it
