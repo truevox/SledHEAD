@@ -212,4 +212,35 @@ function playMoneyGainSound() {
 function mapRange(value, inMin, inMax, outMin, outMax) {
     return outMin + ((value - inMin) * (outMax - outMin)) / (inMax - inMin);
 }
+
+// Helper function: Convert hex color string to an RGB object.
+function hexToRgb(hex) {
+    hex = hex.replace(/^#/, '');
+    if (hex.length === 3) {
+      hex = hex.split('').map(c => c + c).join('');
+    }
+    let bigint = parseInt(hex, 16);
+    let r = (bigint >> 16) & 255;
+    let g = (bigint >> 8) & 255;
+    let b = bigint & 255;
+    return { r, g, b };
+  }
+  
+  // Helper function: Convert an RGB object to a hex color string.
+  function rgbToHex(r, g, b) {
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b)
+      .toString(16)
+      .slice(1)
+      .toUpperCase();
+  }
+  
+  // Helper function: Linearly interpolate between two hex colors.
+  function lerpColor(color1, color2, t) {
+    let c1 = hexToRgb(color1);
+    let c2 = hexToRgb(color2);
+    let r = Math.round(c1.r + (c2.r - c1.r) * t);
+    let g = Math.round(c1.g + (c2.g - c1.g) * t);
+    let b = Math.round(c1.b + (c2.b - c1.b) * t);
+    return rgbToHex(r, g, b);
+  }
   

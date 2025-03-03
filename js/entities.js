@@ -65,20 +65,27 @@ function drawCameraOverlay() {
   ctx.closePath();
   ctx.fill();
 
-  // Draw the altitude line
-  let altitudePosition = centerY - (player.altitudeLine / 100) * coneLength;
+  // Calculate altitude line position (only goes half as far)
+  let altitudePosition = centerY - (player.altitudeLine / 100) * (coneLength / 2);
+
+  // Compute gradient colors based on altitudeLine value (0 = blue, 100 = red)
+  let t = player.altitudeLine / 100;
+  let leftColor = lerpColor("#0000FF", "#FF0000", t);  // From blue to red
+  let rightColor = lerpColor("#FF0000", "#0000FF", t); // Reverse for a gradient effect
+
   let gradient = ctx.createLinearGradient(centerX - 50, altitudePosition, centerX + 50, altitudePosition);
-  gradient.addColorStop(0, TWEAK.altitudeGradientStart);
-  gradient.addColorStop(1, TWEAK.altitudeGradientEnd);
+  gradient.addColorStop(0, leftColor);
+  gradient.addColorStop(1, rightColor);
+
   ctx.strokeStyle = gradient;
   ctx.lineWidth = 3;
 
-  // Determine flashing speed based on the animal's altitude, if an animal exists
+  // Flashing effect: use a default flash speed if no animal exists
   let flashSpeed;
   if (typeof animal !== 'undefined' && animal && animal.y !== undefined) {
     flashSpeed = mapRange(Math.abs(player.altitudeLine - animal.y), 0, 100, TWEAK.altitudeFlashMaxSpeed, TWEAK.altitudeFlashMinSpeed);
   } else {
-    flashSpeed = TWEAK.altitudeFlashMinSpeed; // Default flash speed when no animal exists
+    flashSpeed = TWEAK.altitudeFlashMinSpeed;
   }
 
   if (Math.floor(Date.now() / flashSpeed) % 2 === 0) {
@@ -88,6 +95,7 @@ function drawCameraOverlay() {
     ctx.stroke();
   }
 }
+
 
 
 function isAnimalInsideCone(animal) {
