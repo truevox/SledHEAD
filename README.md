@@ -1,5 +1,5 @@
 # **SledHEAD**
-**Genre:** Roguelike | Time Trial Racer | Adventure  
+**Genre:** Roguelike | Trick & Time Trial Racer | Adventure  
 **Platform:** Web-based (PC, potentially mobile)  
 **Target Audience:** Arcade racing fans, adventure/simulation players, streamers & content creators  
 
