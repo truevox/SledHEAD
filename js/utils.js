@@ -9,7 +9,7 @@ var TWEAK = {
     minIdleTime: 1000, // Minimum time an animal sits still (1 sec)
     maxIdleTime: 20000, // Maximum time an animal sits still (20 sec)
     minMoveSpeed: 0.3, // Slowest movement speed for animals
-    maxMoveSpeed: 1.2, // Fastest movement speed for animals
+    maxMoveSpeed: 11.2, // Fastest movement speed for animals
     fleeAngle: 40, // Default flee angle off screen
     photoCooldown: 1000, // Must wait 1 second between photos
     repeatPhotoPenalty: 0.5, // 50% less money if the same animal is photographed again

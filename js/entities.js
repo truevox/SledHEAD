@@ -147,49 +147,84 @@ let lastPhotoTime = 0;
 function spawnAnimal() {
     if (activeAnimal) return; // Only one animal at a time
 
-    let type = Math.random() < 0.5 ? "bear" : "bird"; // 50/50 chance of either
-    let isBear = type === "bear";
-    
+    // Decide type: 50% bear, 50% bird.
+    let type = Math.random() < 0.5 ? "bear" : "bird";
+    let isBear = (type === "bear");
+
+    // Always spawn just off the top of the screen.
+    let spawnY = -50;
+    let spawnX = Math.random() * canvas.width;
+
+    // Choose a target position within the middle 80% of the screen.
+    let targetX = Math.random() * (canvas.width * 0.8) + canvas.width * 0.1;
+    let targetY = Math.random() * (canvas.height * 0.8) + canvas.height * 0.1;
+
     activeAnimal = {
         type: type,
-        x: Math.random() < 0.5 ? -50 : canvas.width + 50, // Left or right off-screen
-        y: Math.random() * (canvas.height * 0.8) + (isBear ? canvas.height * 0.1 : 0), // Bears lower, birds higher
-        altitude: Math.random() < 0.8 ? (isBear ? 20 : 80) : (isBear ? 80 : 20), // 80% chance of normal altitude
+        x: spawnX,
+        y: spawnY,
+        targetX: targetX,
+        targetY: targetY,
+        // For now, we use fixed altitude values: bears tend to be lower, birds higher.
+        altitude: isBear ? 20 : 80,
         width: isBear ? player.width * 2 : player.width / 2,
         height: isBear ? player.height * 2 : player.height / 2,
-        state: "sitting", // Starts sitting
+        state: "approaching", // States: "approaching", "sitting", "fleeing"
         hasBeenPhotographed: false,
         idleTime: Math.random() * (TWEAK.maxIdleTime - TWEAK.minIdleTime) + TWEAK.minIdleTime,
         speed: Math.random() * (TWEAK.maxMoveSpeed - TWEAK.minMoveSpeed) + TWEAK.minMoveSpeed,
-        direction: Math.random() < 0.5 ? -1 : 1 // Move left or right
+        fleeAngleActual: 0 // Will be set when transitioning to fleeing
     };
 
-    setTimeout(() => {
-        if (activeAnimal) activeAnimal.state = "moving";
-    }, activeAnimal.idleTime);
-    console.log(`Spawned animal of type ${activeAnimal.type} at (${activeAnimal.x}, ${activeAnimal.y})`);
-
+    console.log(`Spawned ${activeAnimal.type} at (${activeAnimal.x.toFixed(2)}, ${activeAnimal.y.toFixed(2)}) moving to (${activeAnimal.targetX.toFixed(2)}, ${activeAnimal.targetY.toFixed(2)})`);
 }
 
-// Function to update animal movement
 function updateAnimal() {
     if (!activeAnimal) return;
 
-    if (activeAnimal.state === "moving") {
-        activeAnimal.x += activeAnimal.direction * activeAnimal.speed;
-        activeAnimal.y += Math.tan(TWEAK.fleeAngle * Math.PI / 180) * activeAnimal.speed; // Flee at angle
-
-        if (activeAnimal.x < -100 || activeAnimal.x > canvas.width + 100) {
-            activeAnimal = null; // Remove when off-screen
+    if (activeAnimal.state === "approaching") {
+        // Calculate vector toward the target.
+        let dx = activeAnimal.targetX - activeAnimal.x;
+        let dy = activeAnimal.targetY - activeAnimal.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < 5) {
+            // Reached target, switch to sitting.
+            activeAnimal.state = "sitting";
+            // After idleTime, switch to fleeing.
+            setTimeout(() => {
+                if (activeAnimal) {
+                    activeAnimal.state = "fleeing";
+                    // Choose a flee direction: base is 0° (right) or 180° (left), then add random offset up to TWEAK.fleeAngle.
+                    let baseAngle = Math.random() < 0.5 ? 0 : 180;
+                    let angleOffset = Math.random() * TWEAK.fleeAngle;
+                    activeAnimal.fleeAngleActual = baseAngle + (Math.random() < 0.5 ? -angleOffset : angleOffset);
+                }
+            }, activeAnimal.idleTime);
+        } else {
+            // Move toward the target.
+            let vx = (dx / distance) * activeAnimal.speed;
+            let vy = (dy / distance) * activeAnimal.speed;
+            activeAnimal.x += vx;
+            activeAnimal.y += vy;
+        }
+    } else if (activeAnimal.state === "fleeing") {
+        // Move off-screen at the determined flee angle.
+        let rad = activeAnimal.fleeAngleActual * Math.PI / 180;
+        activeAnimal.x += Math.cos(rad) * activeAnimal.speed;
+        activeAnimal.y += Math.sin(rad) * activeAnimal.speed;
+        // If the animal goes off-screen, remove it and schedule the next spawn.
+        if (activeAnimal.x < -100 || activeAnimal.x > canvas.width + 100 ||
+            activeAnimal.y < -100 || activeAnimal.y > canvas.height + 100) {
+            activeAnimal = null;
             setTimeout(spawnAnimal, Math.random() * (TWEAK.maxSpawnTime - TWEAK.minSpawnTime) + TWEAK.minSpawnTime);
         }
     }
+    // "sitting" state: do nothing.
 }
 
-// Function to draw the animal
 function drawAnimal() {
-  if (!activeAnimal) return;
-  // Set color: bears become black, birds become purple.
-  ctx.fillStyle = activeAnimal.type === "bear" ? "#000000" : "#800080";
-  ctx.fillRect(activeAnimal.x, activeAnimal.y, activeAnimal.width, activeAnimal.height);
+    if (!activeAnimal) return;
+    // Draw bears in black and birds in purple.
+    ctx.fillStyle = activeAnimal.type === "bear" ? "#000000" : "#800080";
+    ctx.fillRect(activeAnimal.x, activeAnimal.y, activeAnimal.width, activeAnimal.height);
 }
