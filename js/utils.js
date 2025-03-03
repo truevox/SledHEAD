@@ -105,9 +105,13 @@ var keysDown = {};
 var spacePressed = false;
 
 window.addEventListener("keydown", function (e) {
+    // Prevent default behavior for arrow keys and space to ensure they are captured correctly
+    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", " "].includes(e.key)) {
+        e.preventDefault();
+    }
     keysDown[e.key] = true;
 
-    // Track when space is pressed
+    // Track when space is pressed in the house state
     if (e.key === " " && currentState === GameState.HOUSE) {
         spacePressed = true;
     }
@@ -204,3 +208,8 @@ function playRockHitSound() {
 function playMoneyGainSound() {
     playTone(1000, "sine", 0.15, 0.2); // Small beep
 }
+
+function mapRange(value, inMin, inMax, outMin, outMax) {
+    return outMin + ((value - inMin) * (outMax - outMin)) / (inMax - inMin);
+}
+  

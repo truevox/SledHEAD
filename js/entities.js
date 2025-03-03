@@ -50,12 +50,12 @@ function drawCameraOverlay() {
   let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
   let centerX = player.x;
   let centerY = player.absY - cameraOffset;
+  let coneLength = 300;  // Length of the camera cone
 
-  // 📸 Camera POV Cone
+  // Draw the camera POV Cone
   let povAngle = TWEAK.basePOVAngle + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsPOVIncrease);
   let leftAngle = (player.cameraAngle - povAngle / 2) * (Math.PI / 180);
   let rightAngle = (player.cameraAngle + povAngle / 2) * (Math.PI / 180);
-  let coneLength = 300;  // Length of the camera cone
 
   ctx.fillStyle = "rgba(255, 255, 0, 0.2)";
   ctx.beginPath();
@@ -65,7 +65,7 @@ function drawCameraOverlay() {
   ctx.closePath();
   ctx.fill();
 
-  // 📏 Altitude Line
+  // Draw the altitude line
   let altitudePosition = centerY - (player.altitudeLine / 100) * coneLength;
   let gradient = ctx.createLinearGradient(centerX - 50, altitudePosition, centerX + 50, altitudePosition);
   gradient.addColorStop(0, TWEAK.altitudeGradientStart);
@@ -73,12 +73,13 @@ function drawCameraOverlay() {
   ctx.strokeStyle = gradient;
   ctx.lineWidth = 3;
 
-  // Flashing effect
-  let flashSpeed = mapRange(
-    Math.abs(player.altitudeLine - animal.y), // Distance between altitude and animal
-    0, 100, 
-    TWEAK.altitudeFlashMaxSpeed, TWEAK.altitudeFlashMinSpeed
-  );
+  // Determine flashing speed based on the animal's altitude, if an animal exists
+  let flashSpeed;
+  if (typeof animal !== 'undefined' && animal && animal.y !== undefined) {
+    flashSpeed = mapRange(Math.abs(player.altitudeLine - animal.y), 0, 100, TWEAK.altitudeFlashMaxSpeed, TWEAK.altitudeFlashMinSpeed);
+  } else {
+    flashSpeed = TWEAK.altitudeFlashMinSpeed; // Default flash speed when no animal exists
+  }
 
   if (Math.floor(Date.now() / flashSpeed) % 2 === 0) {
     ctx.beginPath();
@@ -87,6 +88,7 @@ function drawCameraOverlay() {
     ctx.stroke();
   }
 }
+
 
 function isAnimalInsideCone(animal) {
   let povAngle = TWEAK.basePOVAngle + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsPOVIncrease);
