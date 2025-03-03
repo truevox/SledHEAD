@@ -77,8 +77,9 @@ function drawCameraOverlay() {
   let offsetTop = ((coneLength / 2) + player.height); // let offsetTop = -((coneLength / 2) + (player.height / 2));
   let offsetBottom = player.height / 2;
 
-  // Expand altitude movement range by increasing the offset values
-  let offset = mapRange(player.altitudeLine, 0, 100, coneLength / 2, -coneLength / 2);
+  // Convert altitudeLine (0..100) into offset along camera's central axis
+
+  let offset = mapRange(player.altitudeLine, 0, 100, offsetTop, offsetBottom);
 
   // Position along the camera's central axis
   let rad = player.cameraAngle * Math.PI / 180;
@@ -268,7 +269,10 @@ function drawCameraOverlay() {
   // Altitude Line:
   // Map altitudeLine [0,100] to an offset along the camera's central axis such that
   // 0 aligns with the player sprite’s bottom and 100 with its top.
-  let offset = mapRange(player.altitudeLine, 0, 100, player.height / 2, -player.height / 2);
+  let offsetTop = ((coneLength / 2) + player.height);
+  let offsetBottom = player.height / 2;
+  let offset = mapRange(player.altitudeLine, 0, 100, offsetTop, offsetBottom);
+
   let rad = player.cameraAngle * Math.PI / 180;
   let lineCenterX = centerX + offset * Math.cos(rad);
   let lineCenterY = centerY + offset * Math.sin(rad);
@@ -284,7 +288,7 @@ function drawCameraOverlay() {
 
   // Color: blue when altitudeLine is 100 (top) and red when 0 (bottom)
   let t = 1 - (player.altitudeLine / 100);
-  let altitudeColor = lerpColor("#0000FF", "#FF0000", t);
+  let altitudeColor = lerpColor("#FF0000", "#0000FF", t);
   ctx.strokeStyle = altitudeColor;
   ctx.lineWidth = 3;
 
