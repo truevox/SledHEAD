@@ -47,6 +47,9 @@ function drawEntities() {
 }
 
 function drawCameraOverlay() {
+  // Only show the overlay when in the UPHILL state
+  if (currentState !== GameState.UPHILL) return;
+
   let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
   let centerX = player.x;
   let centerY = player.absY - cameraOffset;
@@ -65,34 +68,46 @@ function drawCameraOverlay() {
   ctx.closePath();
   ctx.fill();
 
-  // Calculate altitude line center position along the camera's central axis.
-  // altitudeLine=0 gives an offset of -coneLength/2 (top of cone),
-  // altitudeLine=50 gives 0 (center), and 100 gives +coneLength/2 (bottom).
-  let offset = (player.altitudeLine / 100 - 0.5) * coneLength;
+  /*
+    Altitude Line Offset:
+    altitudeLine=0  => top of sprite (slightly above)
+    altitudeLine=100 => bottom of sprite
+  */
+  let offsetTop = ((coneLength / 2) + player.height); // let offsetTop = -((coneLength / 2) + (player.height / 2));
+  let offsetBottom = player.height / 2;
+
+  // Convert altitudeLine (0..100) into offset along camera's central axis
+  let offset = mapRange(player.altitudeLine, 0, 100, offsetTop, offsetBottom);
+
+  // Position along the camera's central axis
   let rad = player.cameraAngle * Math.PI / 180;
   let lineCenterX = centerX + offset * Math.cos(rad);
   let lineCenterY = centerY + offset * Math.sin(rad);
 
-  // Draw the altitude line perpendicular to the camera's central direction.
-  let lineLength = 100; // fixed length of the altitude line
-  // Compute perpendicular unit vector to the camera direction.
+  // The altitude line is drawn perpendicular to camera direction
+  let lineLength = 100; 
   let perpX = -Math.sin(rad);
   let perpY = Math.cos(rad);
+
   let x1 = lineCenterX - (lineLength / 2) * perpX;
   let y1 = lineCenterY - (lineLength / 2) * perpY;
   let x2 = lineCenterX + (lineLength / 2) * perpX;
   let y2 = lineCenterY + (lineLength / 2) * perpY;
 
-  // Determine the altitude line's color: blue at 0 (top) and red at 100 (bottom).
+  // Color from blue (#0000FF) at altitudeLine=0 to red (#FF0000) at 100
   let t = player.altitudeLine / 100;
-  let altitudeColor = lerpColor("#0000FF", "#FF0000", t); // 0→blue, 100→red
-
+  let altitudeColor = lerpColor("#0000FF", "#FF0000", t);
   ctx.strokeStyle = altitudeColor;
   ctx.lineWidth = 3;
 
-  // Flashing: only if an animal exists and is inside the POV cone.
+  // Flash only if there's an animal inside the POV cone
   if (typeof animal !== "undefined" && animal && isAnimalInsideCone(animal)) {
-    let flashSpeed = mapRange(Math.abs(player.altitudeLine - animal.y), 0, 100, TWEAK.altitudeFlashMaxSpeed, TWEAK.altitudeFlashMinSpeed);
+    let flashSpeed = mapRange(
+      Math.abs(player.altitudeLine - animal.y),
+      0, 100,
+      TWEAK.altitudeFlashMaxSpeed,
+      TWEAK.altitudeFlashMinSpeed
+    );
     if (Math.floor(Date.now() / flashSpeed) % 2 === 0) {
       ctx.beginPath();
       ctx.moveTo(x1, y1);
@@ -100,13 +115,15 @@ function drawCameraOverlay() {
       ctx.stroke();
     }
   } else {
-    // Draw steadily if no animal is in the cone.
+    // Draw steadily if no animal is in the cone
     ctx.beginPath();
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
     ctx.stroke();
   }
 }
+
+
 
 function isAnimalInsideCone(animal) {
   let povAngle = TWEAK.basePOVAngle + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsPOVIncrease);
