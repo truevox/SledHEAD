@@ -131,8 +131,8 @@ function update(deltaTime) {
     // 🎯 Camera Aiming (Arrow Keys)
     if (keysDown["ArrowLeft"]) { player.cameraAngle -= 2; }
     if (keysDown["ArrowRight"]) { player.cameraAngle += 2; }
-    if (keysDown["ArrowUp"]) { player.altitudeLine = Math.max(0, player.altitudeLine - 2); }
-    if (keysDown["ArrowDown"]) { player.altitudeLine = Math.min(100, player.altitudeLine + 2); }
+    if (keysDown["ArrowUp"]) { player.altitudeLine = Math.min(100, player.altitudeLine + 2); }
+    if (keysDown["ArrowDown"]) { player.altitudeLine = Math.max(0, player.altitudeLine - 2); }    
 
     // Wrap camera angle within 360 degrees
     if (player.cameraAngle < 0) player.cameraAngle += 360;
