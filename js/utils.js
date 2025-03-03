@@ -9,10 +9,10 @@ var TWEAK = {
     _baseHorizontalAccel: 0.15,
     _baseFriction: 0.95,
     _baseMaxXVel: 3,
-    _rocketSurgeryFactorPerLevel: 0.05,
+    _rocketSurgeryFactorPerLevel: 0.1,
     _optimalOpticsAccelFactorPerLevel: 0.02,
     _optimalOpticsFrictionFactorPerLevel: 0.005,
-    _fancierFootwearUpSpeedPerLevel: 0.1,
+    _fancierFootwearUpSpeedPerLevel: 0.3,
     _baseUpSpeed: 2,
     _baseCollisionsAllowed: 3,
     _starterCash: 3300, // Jacked up for testing
