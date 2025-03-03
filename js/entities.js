@@ -146,23 +146,21 @@ let activeAnimal = null;
 let lastPhotoTime = 0;
 
 function spawnAnimal() {
-    if (activeAnimal) return; // Only one animal at a time
+    // if (activeAnimal) return; // Only one animal at a time
 
     let type = Math.random() < 0.5 ? "bear" : "bird";
     let isBear = (type === "bear");
 
-    // Spawn from just off the top of the screen
-    let spawnY = -50;
     let spawnX = Math.random() * canvas.width;
 
     // Choose a target within the middle 80% of the screen
     let targetX = Math.random() * (canvas.width * 0.8) + canvas.width * 0.1;
-    let targetY = Math.random() * (canvas.height * 0.8) + canvas.height * 0.1;
+    let targetY = player.absY + (canvas.height * 0.8) + canvas.height * 0.1;
 
     activeAnimal = {
         type: type,
         x: spawnX,
-        y: spawnY,
+        y: 0,
         targetX: targetX,
         targetY: targetY,
         // Bears tend to be low (20) and birds high (80)
@@ -176,7 +174,23 @@ function spawnAnimal() {
         fleeAngleActual: 0 // Will be set when switching to fleeing
     };
 
-    console.log(`Spawned ${activeAnimal.type} at (${activeAnimal.x.toFixed(2)}, ${activeAnimal.y.toFixed(2)}) moving to (${activeAnimal.targetX.toFixed(2)}, ${activeAnimal.targetY.toFixed(2)})`);
+    // Spawn from just off the top of the screen
+    let spawnY = player.absY - 500; // ADJUST ME
+    activeAnimal.y = spawnY;
+
+    activeAnimal.state = "sitting";
+
+    setTimeout(() => {
+        if (activeAnimal) {
+            activeAnimal.state = "fleeing";
+            // Choose flee direction: base 0° (right) or 180° (left) plus a random offset up to TWEAK.fleeAngle.
+            let baseAngle = Math.random() < 0.5 ? 0 : 180;
+            let angleOffset = Math.random() * TWEAK.fleeAngle;
+            activeAnimal.fleeAngleActual = baseAngle + (Math.random() < 0.5 ? -angleOffset : angleOffset);
+        }
+    }, activeAnimal.idleTime);
+
+    console.log(`Spawned ${activeAnimal.type} at (${activeAnimal.x.toFixed(2)}, ${activeAnimal.y.toFixed(2)}) moving to (${activeAnimal.targetX.toFixed(2)}, ${activeAnimal.targetY.toFixed(2)}) moving to (${activeAnimal.targetX.toFixed(2)}, ${activeAnimal.targetY.toFixed(2)})`);
 }
 
 function updateAnimal() {
@@ -185,24 +199,9 @@ function updateAnimal() {
     if (activeAnimal.state === "approaching") {
         let dx = activeAnimal.targetX - activeAnimal.x;
         let dy = activeAnimal.targetY - activeAnimal.y;
-        let distance = Math.sqrt(dx * dx + dy * dy);
+        let distance = Math.sqrt(dx * dx + dy * dy) / 200;
         if (distance < 5) {
             activeAnimal.state = "sitting";
-            // After idleTime, switch to fleeing.
-            setTimeout(() => {
-                if (activeAnimal) {
-                    activeAnimal.state = "fleeing";
-                    // Choose flee direction: base 0° (right) or 180° (left) plus a random offset up to TWEAK.fleeAngle.
-                    let baseAngle = Math.random() < 0.5 ? 0 : 180;
-                    let angleOffset = Math.random() * TWEAK.fleeAngle;
-                    activeAnimal.fleeAngleActual = baseAngle + (Math.random() < 0.5 ? -angleOffset : angleOffset);
-                }
-            }, activeAnimal.idleTime);
-        } else {
-            let vx = (dx / distance) * activeAnimal.speed;
-            let vy = (dy / distance) * activeAnimal.speed;
-            activeAnimal.x += vx;
-            activeAnimal.y += vy;
         }
     } else if (activeAnimal.state === "fleeing") {
         let rad = activeAnimal.fleeAngleActual * Math.PI / 180;
@@ -215,7 +214,6 @@ function updateAnimal() {
             setTimeout(spawnAnimal, Math.random() * (TWEAK.maxSpawnTime - TWEAK.minSpawnTime) + TWEAK.minSpawnTime);
         }
     }
-    // "sitting" state: no movement update.
 }
 
 function drawAnimal() {
