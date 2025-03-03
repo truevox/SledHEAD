@@ -4,17 +4,19 @@ var TWEAK = {
     tweakNob: 1,
 
     // Animal spawning and movement
-    minSpawnTime: 5000,
-    maxSpawnTime: 10000,
-    minIdleTime: 1000,
-    maxIdleTime: 20000,
-    minMoveSpeed: 0.3,
-    maxMoveSpeed: 1.2,
-    fleeAngle: 40,
+    minSpawnTime: 5000, // Minimum delay between spawns (5 sec)
+    maxSpawnTime: 10000, // Maximum delay between spawns (10 sec)
+    minIdleTime: 1000, // Minimum time an animal sits still (1 sec)
+    maxIdleTime: 20000, // Maximum time an animal sits still (20 sec)
+    minMoveSpeed: 0.3, // Slowest movement speed for animals
+    maxMoveSpeed: 1.2, // Fastest movement speed for animals
+    fleeAngle: 40, // Default flee angle off screen
+    photoCooldown: 1000, // Must wait 1 second between photos
+    repeatPhotoPenalty: 0.5, // 50% less money if the same animal is photographed again
 
     // Camera and aiming
-    basePOVAngle: 30,   // Base field of view for the camera
-    optimalOpticsPOVIncrease: 5,  // How much each level of optimal optics expands the POV
+    basePOVAngle: 30,
+    optimalOpticsPOVIncrease: 5,
     altitudeFlashMinSpeed: 200,
     altitudeFlashMaxSpeed: 50,
     altitudeGradientStart: "blue",
@@ -25,6 +27,10 @@ var TWEAK = {
     altitudeMatchMultiplier: 2,
     centerPOVMultiplier: 1.5,
     movingAnimalMultiplier: 3,
+
+    // Animal multipliers
+    bearMultiplier: 1.5,
+    birdMultiplier: 1,
     
     // Underlying base values
     _sledMass: 1.0,
@@ -115,6 +121,16 @@ window.addEventListener("keydown", function (e) {
     if (e.key === " " && currentState === GameState.HOUSE) {
         spacePressed = true;
     }
+    // Take a photo when space is pressed (only uphill)
+    if (e.key === " " && currentState === GameState.UPHILL) {
+    takePhoto();
+    }
+    // Press "E" to manually spawn an animal (only while in UPHILL mode) // DEBUG
+    if (e.key.toLowerCase() === 'e' && currentState === GameState.UPHILL) {
+        spawnAnimal();
+    }
+
+
 });
 
 window.addEventListener("keyup", function (e) {

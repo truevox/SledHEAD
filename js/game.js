@@ -77,7 +77,7 @@ function update(deltaTime) {
     player.velocityY += gravity;
     player.absY += player.velocityY;
 
-    // Support for WASD and Arrow Keys
+    // Support for WASD keys (no arrow keys for movement)
     if (keysDown["a"]) { player.xVel -= horizontalAccel; }
     if (keysDown["d"]) { player.xVel += horizontalAccel; }
 
@@ -133,7 +133,7 @@ function update(deltaTime) {
     if (keysDown["ArrowRight"]) { player.cameraAngle += 2; }
     if (keysDown["ArrowUp"]) { player.altitudeLine = Math.max(0, player.altitudeLine - 2); }
     if (keysDown["ArrowDown"]) { player.altitudeLine = Math.min(100, player.altitudeLine + 2); }
-       
+
     // Wrap camera angle within 360 degrees
     if (player.cameraAngle < 0) player.cameraAngle += 360;
     if (player.cameraAngle >= 360) player.cameraAngle -= 360;
@@ -152,13 +152,15 @@ function update(deltaTime) {
       }
     });
 
+    // Call updateAnimal() in the uphill phase so that animals update every frame
+    updateAnimal();
+
     if (player.absY <= 0) {
       player.absY = 0;
       changeState(GameState.HOUSE);
     }
   }
 }
-
 
 function gameLoop(timestamp) {
   let deltaTime = timestamp - lastTime;
@@ -191,3 +193,26 @@ document.getElementById("startGame").addEventListener("click", () => {
 });
 changeState(GameState.HOUSE);
 requestAnimationFrame(gameLoop);
+
+function takePhoto() {
+  let now = Date.now();
+  if (now - lastPhotoTime < TWEAK.photoCooldown) return; // Enforce cooldown
+
+  if (!activeAnimal || !isAnimalInsideCone(activeAnimal)) return;
+
+  lastPhotoTime = now;
+  let baseValue = TWEAK.basePhotoValue;
+  let altitudeMatchBonus = Math.abs(player.altitudeLine - activeAnimal.altitude) < 10 ? TWEAK.altitudeMatchMultiplier : 1;
+  let centerBonus = Math.abs(player.cameraAngle - (activeAnimal.x > player.x ? 0 : 180)) < 10 ? TWEAK.centerPOVMultiplier : 1;
+  let movementBonus = activeAnimal.state === "moving" ? TWEAK.movingAnimalMultiplier : 1;
+  let animalTypeMultiplier = activeAnimal.type === "bear" ? TWEAK.bearMultiplier : TWEAK.birdMultiplier;
+  let repeatPenalty = activeAnimal.hasBeenPhotographed ? TWEAK.repeatPhotoPenalty : 1;
+
+  let totalMoney = Math.floor(baseValue * altitudeMatchBonus * centerBonus * movementBonus * animalTypeMultiplier * repeatPenalty);
+
+  player.money += totalMoney;
+  updateMoneyDisplay();
+  console.log(`📸 Captured ${activeAnimal.type}! Earned $${totalMoney}.`);
+
+  activeAnimal.hasBeenPhotographed = true;
+}

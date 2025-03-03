@@ -40,11 +40,12 @@ function drawEntities() {
     }
   });
   let playerDrawY = player.absY - cameraOffset;
-  ctx.fillStyle = "#FF0000";
+  ctx.fillStyle = "#964B00";
   ctx.fillRect(player.x - player.width / 2, playerDrawY - player.height / 2, player.width, player.height);
   drawCameraOverlay();
-
+  drawAnimal(); // Add this call so the animal is drawn
 }
+
 
 function drawCameraOverlay() {
   // Only show the overlay when in the UPHILL state
@@ -134,4 +135,61 @@ function isAnimalInsideCone(animal) {
   if (angleToAnimal < 0) angleToAnimal += 360;
 
   return angleToAnimal >= leftLimit && angleToAnimal <= rightLimit;
+}
+
+/* ============================= */
+/* ANIMAL SPAWNING AND BEHAVIOR  */
+/* ============================= */
+
+let activeAnimal = null;
+let lastPhotoTime = 0;
+
+function spawnAnimal() {
+    if (activeAnimal) return; // Only one animal at a time
+
+    let type = Math.random() < 0.5 ? "bear" : "bird"; // 50/50 chance of either
+    let isBear = type === "bear";
+    
+    activeAnimal = {
+        type: type,
+        x: Math.random() < 0.5 ? -50 : canvas.width + 50, // Left or right off-screen
+        y: Math.random() * (canvas.height * 0.8) + (isBear ? canvas.height * 0.1 : 0), // Bears lower, birds higher
+        altitude: Math.random() < 0.8 ? (isBear ? 20 : 80) : (isBear ? 80 : 20), // 80% chance of normal altitude
+        width: isBear ? player.width * 2 : player.width / 2,
+        height: isBear ? player.height * 2 : player.height / 2,
+        state: "sitting", // Starts sitting
+        hasBeenPhotographed: false,
+        idleTime: Math.random() * (TWEAK.maxIdleTime - TWEAK.minIdleTime) + TWEAK.minIdleTime,
+        speed: Math.random() * (TWEAK.maxMoveSpeed - TWEAK.minMoveSpeed) + TWEAK.minMoveSpeed,
+        direction: Math.random() < 0.5 ? -1 : 1 // Move left or right
+    };
+
+    setTimeout(() => {
+        if (activeAnimal) activeAnimal.state = "moving";
+    }, activeAnimal.idleTime);
+    console.log(`Spawned animal of type ${activeAnimal.type} at (${activeAnimal.x}, ${activeAnimal.y})`);
+
+}
+
+// Function to update animal movement
+function updateAnimal() {
+    if (!activeAnimal) return;
+
+    if (activeAnimal.state === "moving") {
+        activeAnimal.x += activeAnimal.direction * activeAnimal.speed;
+        activeAnimal.y += Math.tan(TWEAK.fleeAngle * Math.PI / 180) * activeAnimal.speed; // Flee at angle
+
+        if (activeAnimal.x < -100 || activeAnimal.x > canvas.width + 100) {
+            activeAnimal = null; // Remove when off-screen
+            setTimeout(spawnAnimal, Math.random() * (TWEAK.maxSpawnTime - TWEAK.minSpawnTime) + TWEAK.minSpawnTime);
+        }
+    }
+}
+
+// Function to draw the animal
+function drawAnimal() {
+  if (!activeAnimal) return;
+  // Set color: bears become black, birds become purple.
+  ctx.fillStyle = activeAnimal.type === "bear" ? "#000000" : "#800080";
+  ctx.fillRect(activeAnimal.x, activeAnimal.y, activeAnimal.width, activeAnimal.height);
 }
