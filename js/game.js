@@ -152,7 +152,7 @@ function update(deltaTime) {
       }
     });
 
-    // Call updateAnimal() in the uphill phase so that animals update every frame
+    // Update animal behavior on each frame
     updateAnimal();
 
     if (player.absY <= 0) {
