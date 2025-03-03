@@ -8,6 +8,10 @@ let player = {
     xVel: 0,
     collisions: 0,
     bestTime: Infinity,
-    money: TWEAK.starterCash
+    money: TWEAK.starterCash,
+    // Camera aim properties
+    cameraAngle: 270,  // Camera rotation in degrees
+    altitudeLine: 50, // Starts at 50% of the view range
+
   };
   

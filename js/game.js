@@ -78,8 +78,8 @@ function update(deltaTime) {
     player.absY += player.velocityY;
 
     // Support for WASD and Arrow Keys
-    if (keysDown["ArrowLeft"] || keysDown["a"]) { player.xVel -= horizontalAccel; }
-    if (keysDown["ArrowRight"] || keysDown["d"]) { player.xVel += horizontalAccel; }
+    if (keysDown["a"]) { player.xVel -= horizontalAccel; }
+    if (keysDown["d"]) { player.xVel += horizontalAccel; }
 
     player.xVel *= friction;
     player.xVel = clamp(player.xVel, -maxXVel, maxXVel);
@@ -123,10 +123,20 @@ function update(deltaTime) {
   } else if (currentState === GameState.UPHILL) {
     let upSpeed = TWEAK.baseUpSpeed + (playerUpgrades.fancierFootwear * TWEAK.fancierFootwearUpSpeedPerLevel);
 
-    if (keysDown["ArrowUp"] || keysDown["w"]) { player.absY -= upSpeed; }
-    if (keysDown["ArrowDown"] || keysDown["s"]) { player.absY += upSpeed; }
-    if (keysDown["ArrowLeft"] || keysDown["a"]) { player.x -= upSpeed; }
-    if (keysDown["ArrowRight"] || keysDown["d"]) { player.x += upSpeed; }
+    if (keysDown["w"]) { player.absY -= upSpeed; }
+    if (keysDown["s"]) { player.absY += upSpeed; }
+    if (keysDown["a"]) { player.x -= upSpeed; }
+    if (keysDown["d"]) { player.x += upSpeed; }
+
+    // 🎯 Camera Aiming (Arrow Keys)
+    if (keysDown["ArrowLeft"]) { player.cameraAngle -= 2; }
+    if (keysDown["ArrowRight"]) { player.cameraAngle += 2; }
+    if (keysDown["ArrowUp"]) { player.altitudeLine = Math.max(0, player.altitudeLine - 2); }
+    if (keysDown["ArrowDown"]) { player.altitudeLine = Math.min(100, player.altitudeLine + 2); }
+       
+    // Wrap camera angle within 360 degrees
+    if (player.cameraAngle < 0) player.cameraAngle += 360;
+    if (player.cameraAngle >= 360) player.cameraAngle -= 360;
 
     player.xVel = 0;
 
@@ -148,6 +158,7 @@ function update(deltaTime) {
     }
   }
 }
+
 
 function gameLoop(timestamp) {
   let deltaTime = timestamp - lastTime;

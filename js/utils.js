@@ -1,7 +1,30 @@
 /* utils.js */
 /* Global Configuration & Shared Globals */
 var TWEAK = {
-    tweakNob: 1, // Global multiplier for all tweak values
+    tweakNob: 1,
+
+    // Animal spawning and movement
+    minSpawnTime: 5000,
+    maxSpawnTime: 10000,
+    minIdleTime: 1000,
+    maxIdleTime: 20000,
+    minMoveSpeed: 0.3,
+    maxMoveSpeed: 1.2,
+    fleeAngle: 40,
+
+    // Camera and aiming
+    basePOVAngle: 30,   // Base field of view for the camera
+    optimalOpticsPOVIncrease: 5,  // How much each level of optimal optics expands the POV
+    altitudeFlashMinSpeed: 200,
+    altitudeFlashMaxSpeed: 50,
+    altitudeGradientStart: "blue",
+    altitudeGradientEnd: "red",
+
+    // Photo scoring
+    basePhotoValue: 50, // Base money earned from a photo
+    altitudeMatchMultiplier: 2,
+    centerPOVMultiplier: 1.5,
+    movingAnimalMultiplier: 3,
     
     // Underlying base values
     _sledMass: 1.0,
@@ -82,9 +105,13 @@ var keysDown = {};
 var spacePressed = false;
 
 window.addEventListener("keydown", function (e) {
+    // Prevent default behavior for arrow keys and space to ensure they are captured correctly
+    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", " "].includes(e.key)) {
+        e.preventDefault();
+    }
     keysDown[e.key] = true;
 
-    // Track when space is pressed
+    // Track when space is pressed in the house state
     if (e.key === " " && currentState === GameState.HOUSE) {
         spacePressed = true;
     }
@@ -181,3 +208,39 @@ function playRockHitSound() {
 function playMoneyGainSound() {
     playTone(1000, "sine", 0.15, 0.2); // Small beep
 }
+
+function mapRange(value, inMin, inMax, outMin, outMax) {
+    return outMin + ((value - inMin) * (outMax - outMin)) / (inMax - inMin);
+}
+
+// Helper function: Convert hex color string to an RGB object.
+function hexToRgb(hex) {
+    hex = hex.replace(/^#/, '');
+    if (hex.length === 3) {
+      hex = hex.split('').map(c => c + c).join('');
+    }
+    let bigint = parseInt(hex, 16);
+    let r = (bigint >> 16) & 255;
+    let g = (bigint >> 8) & 255;
+    let b = bigint & 255;
+    return { r, g, b };
+  }
+  
+  // Helper function: Convert an RGB object to a hex color string.
+  function rgbToHex(r, g, b) {
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b)
+      .toString(16)
+      .slice(1)
+      .toUpperCase();
+  }
+  
+  // Helper function: Linearly interpolate between two hex colors.
+  function lerpColor(color1, color2, t) {
+    let c1 = hexToRgb(color1);
+    let c2 = hexToRgb(color2);
+    let r = Math.round(c1.r + (c2.r - c1.r) * t);
+    let g = Math.round(c1.g + (c2.g - c1.g) * t);
+    let b = Math.round(c1.b + (c2.b - c1.b) * t);
+    return rgbToHex(r, g, b);
+  }
+  
