@@ -65,36 +65,34 @@ function drawCameraOverlay() {
   ctx.closePath();
   ctx.fill();
 
-  // Calculate altitude line position (only goes half as far)
+  // Calculate altitude line position (now only goes half as far)
   let altitudePosition = centerY - (player.altitudeLine / 100) * (coneLength / 2);
 
-  // Compute gradient colors based on altitudeLine value (0 = blue, 100 = red)
+  // Determine altitude line color: red at the bottom (altitudeLine=0) to blue at the top (altitudeLine=100)
   let t = player.altitudeLine / 100;
-  let leftColor = lerpColor("#0000FF", "#FF0000", t);  // From blue to red
-  let rightColor = lerpColor("#FF0000", "#0000FF", t); // Reverse for a gradient effect
+  let altitudeColor = lerpColor("#FF0000", "#0000FF", t); 
 
-  let gradient = ctx.createLinearGradient(centerX - 50, altitudePosition, centerX + 50, altitudePosition);
-  gradient.addColorStop(0, leftColor);
-  gradient.addColorStop(1, rightColor);
-
-  ctx.strokeStyle = gradient;
+  ctx.strokeStyle = altitudeColor;
   ctx.lineWidth = 3;
 
-  // Flashing effect: use a default flash speed if no animal exists
-  let flashSpeed;
-  if (typeof animal !== 'undefined' && animal && animal.y !== undefined) {
-    flashSpeed = mapRange(Math.abs(player.altitudeLine - animal.y), 0, 100, TWEAK.altitudeFlashMaxSpeed, TWEAK.altitudeFlashMinSpeed);
+  // Only flash the altitude line if an animal exists and is inside the POV cone
+  if (typeof animal !== "undefined" && animal && isAnimalInsideCone(animal)) {
+    let flashSpeed = mapRange(Math.abs(player.altitudeLine - animal.y), 0, 100, TWEAK.altitudeFlashMaxSpeed, TWEAK.altitudeFlashMinSpeed);
+    if (Math.floor(Date.now() / flashSpeed) % 2 === 0) {
+      ctx.beginPath();
+      ctx.moveTo(centerX - 50, altitudePosition);
+      ctx.lineTo(centerX + 50, altitudePosition);
+      ctx.stroke();
+    }
   } else {
-    flashSpeed = TWEAK.altitudeFlashMinSpeed;
-  }
-
-  if (Math.floor(Date.now() / flashSpeed) % 2 === 0) {
+    // If no animal in the cone, draw the altitude line steadily without blinking
     ctx.beginPath();
     ctx.moveTo(centerX - 50, altitudePosition);
     ctx.lineTo(centerX + 50, altitudePosition);
     ctx.stroke();
   }
 }
+
 
 
 
