@@ -1,7 +1,30 @@
 /* utils.js */
 /* Global Configuration & Shared Globals */
 var TWEAK = {
-    tweakNob: 1, // Global multiplier for all tweak values
+    tweakNob: 1,
+
+    // Animal spawning and movement
+    minSpawnTime: 5000,
+    maxSpawnTime: 10000,
+    minIdleTime: 1000,
+    maxIdleTime: 20000,
+    minMoveSpeed: 0.3,
+    maxMoveSpeed: 1.2,
+    fleeAngle: 40,
+
+    // Camera and aiming
+    basePOVAngle: 30,   // Base field of view for the camera
+    optimalOpticsPOVIncrease: 5,  // How much each level of optimal optics expands the POV
+    altitudeFlashMinSpeed: 200,
+    altitudeFlashMaxSpeed: 50,
+    altitudeGradientStart: "blue",
+    altitudeGradientEnd: "red",
+
+    // Photo scoring
+    basePhotoValue: 50, // Base money earned from a photo
+    altitudeMatchMultiplier: 2,
+    centerPOVMultiplier: 1.5,
+    movingAnimalMultiplier: 3,
     
     // Underlying base values
     _sledMass: 1.0,

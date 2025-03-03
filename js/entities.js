@@ -27,6 +27,7 @@ function resolveCollision(player, obstacle) {
     }
   }
 }
+
 function drawEntities() {
   let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -41,4 +42,59 @@ function drawEntities() {
   let playerDrawY = player.absY - cameraOffset;
   ctx.fillStyle = "#FF0000";
   ctx.fillRect(player.x - player.width / 2, playerDrawY - player.height / 2, player.width, player.height);
+  drawCameraOverlay();
+
+}
+
+function drawCameraOverlay() {
+  let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
+  let centerX = player.x;
+  let centerY = player.absY - cameraOffset;
+
+  // 📸 Camera POV Cone
+  let povAngle = TWEAK.basePOVAngle + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsPOVIncrease);
+  let leftAngle = (player.cameraAngle - povAngle / 2) * (Math.PI / 180);
+  let rightAngle = (player.cameraAngle + povAngle / 2) * (Math.PI / 180);
+  let coneLength = 300;  // Length of the camera cone
+
+  ctx.fillStyle = "rgba(255, 255, 0, 0.2)";
+  ctx.beginPath();
+  ctx.moveTo(centerX, centerY);
+  ctx.lineTo(centerX + coneLength * Math.cos(leftAngle), centerY + coneLength * Math.sin(leftAngle));
+  ctx.lineTo(centerX + coneLength * Math.cos(rightAngle), centerY + coneLength * Math.sin(rightAngle));
+  ctx.closePath();
+  ctx.fill();
+
+  // 📏 Altitude Line
+  let altitudePosition = centerY - (player.altitudeLine / 100) * coneLength;
+  let gradient = ctx.createLinearGradient(centerX - 50, altitudePosition, centerX + 50, altitudePosition);
+  gradient.addColorStop(0, TWEAK.altitudeGradientStart);
+  gradient.addColorStop(1, TWEAK.altitudeGradientEnd);
+  ctx.strokeStyle = gradient;
+  ctx.lineWidth = 3;
+
+  // Flashing effect
+  let flashSpeed = mapRange(
+    Math.abs(player.altitudeLine - animal.y), // Distance between altitude and animal
+    0, 100, 
+    TWEAK.altitudeFlashMaxSpeed, TWEAK.altitudeFlashMinSpeed
+  );
+
+  if (Math.floor(Date.now() / flashSpeed) % 2 === 0) {
+    ctx.beginPath();
+    ctx.moveTo(centerX - 50, altitudePosition);
+    ctx.lineTo(centerX + 50, altitudePosition);
+    ctx.stroke();
+  }
+}
+
+function isAnimalInsideCone(animal) {
+  let povAngle = TWEAK.basePOVAngle + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsPOVIncrease);
+  let leftLimit = player.cameraAngle - povAngle / 2;
+  let rightLimit = player.cameraAngle + povAngle / 2;
+
+  let angleToAnimal = Math.atan2(animal.y - player.absY, animal.x - player.x) * (180 / Math.PI);
+  if (angleToAnimal < 0) angleToAnimal += 360;
+
+  return angleToAnimal >= leftLimit && angleToAnimal <= rightLimit;
 }
