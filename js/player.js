@@ -10,7 +10,7 @@ let player = {
     bestTime: Infinity,
     money: TWEAK.starterCash,
     // Camera aim properties
-    cameraAngle: 0,  // Camera rotation in degrees
+    cameraAngle: 270,  // Camera rotation in degrees
     altitudeLine: 50, // Starts at 50% of the view range
 
   };

@@ -65,36 +65,48 @@ function drawCameraOverlay() {
   ctx.closePath();
   ctx.fill();
 
-  // Calculate altitude line position (now only goes half as far)
-  let altitudePosition = centerY - (player.altitudeLine / 100) * (coneLength / 2);
+  // Calculate altitude line center position along the camera's central axis.
+  // altitudeLine=0 gives an offset of -coneLength/2 (top of cone),
+  // altitudeLine=50 gives 0 (center), and 100 gives +coneLength/2 (bottom).
+  let offset = (player.altitudeLine / 100 - 0.5) * coneLength;
+  let rad = player.cameraAngle * Math.PI / 180;
+  let lineCenterX = centerX + offset * Math.cos(rad);
+  let lineCenterY = centerY + offset * Math.sin(rad);
 
-  // Determine altitude line color: red at the bottom (altitudeLine=0) to blue at the top (altitudeLine=100)
+  // Draw the altitude line perpendicular to the camera's central direction.
+  let lineLength = 100; // fixed length of the altitude line
+  // Compute perpendicular unit vector to the camera direction.
+  let perpX = -Math.sin(rad);
+  let perpY = Math.cos(rad);
+  let x1 = lineCenterX - (lineLength / 2) * perpX;
+  let y1 = lineCenterY - (lineLength / 2) * perpY;
+  let x2 = lineCenterX + (lineLength / 2) * perpX;
+  let y2 = lineCenterY + (lineLength / 2) * perpY;
+
+  // Determine the altitude line's color: blue at 0 (top) and red at 100 (bottom).
   let t = player.altitudeLine / 100;
-  let altitudeColor = lerpColor("#FF0000", "#0000FF", t); 
+  let altitudeColor = lerpColor("#0000FF", "#FF0000", t); // 0→blue, 100→red
 
   ctx.strokeStyle = altitudeColor;
   ctx.lineWidth = 3;
 
-  // Only flash the altitude line if an animal exists and is inside the POV cone
+  // Flashing: only if an animal exists and is inside the POV cone.
   if (typeof animal !== "undefined" && animal && isAnimalInsideCone(animal)) {
     let flashSpeed = mapRange(Math.abs(player.altitudeLine - animal.y), 0, 100, TWEAK.altitudeFlashMaxSpeed, TWEAK.altitudeFlashMinSpeed);
     if (Math.floor(Date.now() / flashSpeed) % 2 === 0) {
       ctx.beginPath();
-      ctx.moveTo(centerX - 50, altitudePosition);
-      ctx.lineTo(centerX + 50, altitudePosition);
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
       ctx.stroke();
     }
   } else {
-    // If no animal in the cone, draw the altitude line steadily without blinking
+    // Draw steadily if no animal is in the cone.
     ctx.beginPath();
-    ctx.moveTo(centerX - 50, altitudePosition);
-    ctx.lineTo(centerX + 50, altitudePosition);
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
     ctx.stroke();
   }
 }
-
-
-
 
 function isAnimalInsideCone(animal) {
   let povAngle = TWEAK.basePOVAngle + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsPOVIncrease);
