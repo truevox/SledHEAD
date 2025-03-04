@@ -1,7 +1,7 @@
 /* utils.js */
 /* Global Configuration & Shared Globals */
 var TWEAK = {
-    tweakNob: 1,
+    tweakNob: 3,
 
     // Animal spawning and movement
     minSpawnTime: 5000, // Minimum delay between spawns (5 sec)
@@ -10,7 +10,7 @@ var TWEAK = {
     maxIdleTime: 20000, // Maximum time an animal sits still (20 sec)
     minMoveSpeed: 0.3, // Slowest movement speed for animals
     maxMoveSpeed: 11.2, // Fastest movement speed for animals
-    fleeAngle: 40, // Default flee angle off screen
+    fleeAngle: 70, // Default flee angle off screen
     photoCooldown: 1000, // Must wait 1 second between photos
     repeatPhotoPenalty: 0.5, // 50% less money if the same animal is photographed again
 

@@ -146,52 +146,48 @@ let activeAnimal = null;
 let lastPhotoTime = 0;
 
 function spawnAnimal() {
-    // if (activeAnimal) return; // Only one animal at a time
+  if (activeAnimal) return; // Only one animal at a time
+  let type = Math.random() < 0.5 ? "bear" : "bird";
+  let isBear = (type === "bear");
 
-    let type = Math.random() < 0.5 ? "bear" : "bird";
-    let isBear = (type === "bear");
+  // Spawn just outside the viewport horizontally
+  let spawnX = Math.random() * window.innerWidth
+  let spawnY = player.absY -(window.innerWidth / 2) // player.absY + 100 // (Math.random() - 0.5) * 200;
+  let targetX = Math.random() * canvas.width;
+  let targetY = Math.random() * canvas.height;
 
-    let spawnX = Math.random() * canvas.width;
+  activeAnimal = {
+      type: type,
+      x: spawnX,
+      y: spawnY,
+      targetX: targetX,
+      targetY: targetY,
+      altitude: isBear ? 20 : 80,
+      width: isBear ? player.width * 2 : player.width / 2,
+      height: isBear ? player.height * 2 : player.height / 2,
+      state: "sitting",
+      hasBeenPhotographed: false,
+      idleTime: Math.random() * (TWEAK.maxIdleTime - TWEAK.minIdleTime) + TWEAK.minIdleTime,
+      speed: Math.random() * (TWEAK.maxMoveSpeed - TWEAK.minMoveSpeed) + TWEAK.minMoveSpeed,
+      fleeAngleActual: 0,
+      despawnTimer: null
+  };
 
-    // Choose a target within the middle 80% of the screen
-    let targetX = Math.random() * (canvas.width * 0.8) + canvas.width * 0.1;
-    let targetY = player.absY + (canvas.height * 0.8) + canvas.height * 0.1;
+  let distanceToPlayer = Math.sqrt((spawnX - player.x) ** 2 + (spawnY - player.absY) ** 2);
+  let inViewport = spawnX >= 0 && spawnX <= canvas.width && spawnY >= 0 && spawnY <= canvas.height;
+  console.log(`[Spawn] ${activeAnimal.type} at (${spawnX.toFixed(2)}, ${spawnY.toFixed(2)}) | Player at (${player.x.toFixed(2)}, ${player.absY.toFixed(2)}) | In Viewport: ${inViewport} | Distance to Player: ${distanceToPlayer.toFixed(2)}`);
 
-    activeAnimal = {
-        type: type,
-        x: spawnX,
-        y: 0,
-        targetX: targetX,
-        targetY: targetY,
-        // Bears tend to be low (20) and birds high (80)
-        altitude: isBear ? 20 : 80,
-        width: isBear ? player.width * 2 : player.width / 2,
-        height: isBear ? player.height * 2 : player.height / 2,
-        state: "approaching", // "approaching", "sitting", "fleeing"
-        hasBeenPhotographed: false,
-        idleTime: Math.random() * (TWEAK.maxIdleTime - TWEAK.minIdleTime) + TWEAK.minIdleTime,
-        speed: Math.random() * (TWEAK.maxMoveSpeed - TWEAK.minMoveSpeed) + TWEAK.minMoveSpeed,
-        fleeAngleActual: 0 // Will be set when switching to fleeing
-    };
-
-    // Spawn from just off the top of the screen
-    let spawnY = player.absY - 500; // ADJUST ME
-    activeAnimal.y = spawnY;
-
-    activeAnimal.state = "sitting";
-
-    setTimeout(() => {
-        if (activeAnimal) {
-            activeAnimal.state = "fleeing";
-            // Choose flee direction: base 0° (right) or 180° (left) plus a random offset up to TWEAK.fleeAngle.
-            let baseAngle = Math.random() < 0.5 ? 0 : 180;
-            let angleOffset = Math.random() * TWEAK.fleeAngle;
-            activeAnimal.fleeAngleActual = baseAngle + (Math.random() < 0.5 ? -angleOffset : angleOffset);
-        }
-    }, activeAnimal.idleTime);
-
-    console.log(`Spawned ${activeAnimal.type} at (${activeAnimal.x.toFixed(2)}, ${activeAnimal.y.toFixed(2)}) moving to (${activeAnimal.targetX.toFixed(2)}, ${activeAnimal.targetY.toFixed(2)})`);
-    console.log(`Animal idleTime: ${activeAnimal.idleTime.toFixed(2)}`); // Debug idleTime
+  setTimeout(() => {
+      if (activeAnimal) {
+          activeAnimal.state = "fleeing";
+          let baseAngle = Math.random() < 0.5 ? 0 : 180;
+          let angleOffset = Math.random() * TWEAK.fleeAngle;
+          activeAnimal.fleeAngleActual = baseAngle + (Math.random() < 0.5 ? -angleOffset : angleOffset);
+          let distanceToPlayerFlee = Math.sqrt((activeAnimal.x - player.x) ** 2 + (activeAnimal.y - player.absY) ** 2);
+          let inViewportFlee = activeAnimal.x >= 0 && activeAnimal.x <= canvas.width && activeAnimal.y >= 0 && activeAnimal.y <= canvas.height;
+          console.log(`[Flee] ${activeAnimal.type} fleeing towards (${targetX.toFixed(2)}, ${targetY.toFixed(2)}) | In Viewport: ${inViewportFlee} | Distance to Player: ${distanceToPlayerFlee.toFixed(2)}`);
+      }
+  }, activeAnimal.idleTime);
 }
 
 function updateAnimal() {
