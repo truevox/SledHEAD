@@ -10,7 +10,7 @@ var TWEAK = {
     maxIdleTime: 20000, // Maximum time an animal sits still (20 sec)
     minMoveSpeed: 0.3, // Slowest movement speed for animals
     maxMoveSpeed: 11.2, // Fastest movement speed for animals
-    fleeAngle: 70, // Default flee angle off screen
+    fleeAngle: 45, // Default flee angle off screen
     photoCooldown: 1000, // Must wait 1 second between photos
     repeatPhotoPenalty: 0.5, // 50% less money if the same animal is photographed again
 
@@ -18,7 +18,7 @@ var TWEAK = {
     basePOVAngle: 30,
     optimalOpticsPOVIncrease: 5,
     altitudeFlashMinSpeed: 200,
-    altitudeFlashMaxSpeed: 50,
+    altitudeFlashMaxSpeed: 10,
     altitudeGradientStart: "blue",
     altitudeGradientEnd: "red",
 
@@ -55,7 +55,7 @@ var TWEAK = {
     get baseGravity() { return this._baseGravity * this.tweakNob; },
     set baseGravity(val) { this._baseGravity = val; },
     
-    get baseHorizontalAccel() { return this._baseHorizontalAccel * this.tweakNob; },
+    get baseHorizontalAccel() { return this._baseHorizontalAccel; },
     set baseHorizontalAccel(val) { this._baseHorizontalAccel = val; },
     
     get baseFriction() { return this._baseFriction * this.tweakNob; },

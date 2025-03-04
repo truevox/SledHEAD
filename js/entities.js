@@ -28,24 +28,6 @@ function resolveCollision(player, obstacle) {
   }
 }
 
-function drawEntities() {
-  let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = currentState === GameState.DOWNHILL ? "#ADD8E6" : "#98FB98";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  terrain.forEach(obstacle => {
-    if (obstacle.y >= cameraOffset - 50 && obstacle.y <= cameraOffset + canvas.height + 50) {
-      ctx.fillStyle = "#8B4513";
-      ctx.fillRect(obstacle.x, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
-    }
-  });
-  let playerDrawY = player.absY - cameraOffset;
-  ctx.fillStyle = "#964B00";
-  ctx.fillRect(player.x - player.width / 2, playerDrawY - player.height / 2, player.width, player.height);
-  drawCameraOverlay();
-  drawAnimal(); // Add this call so the animal is drawn
-}
-
 
 function drawCameraOverlay() {
   // Only show the overlay when in the UPHILL state
@@ -152,16 +134,12 @@ function spawnAnimal() {
 
   // Spawn just outside the viewport horizontally
   let spawnX = Math.random() * window.innerWidth
-  let spawnY = player.absY -(window.innerWidth / 2) // player.absY + 100 // (Math.random() - 0.5) * 200;
-  let targetX = Math.random() * canvas.width;
-  let targetY = Math.random() * canvas.height;
+  let spawnY = player.absY -(window.innerHeight / 2)
 
   activeAnimal = {
       type: type,
       x: spawnX,
       y: spawnY,
-      targetX: targetX,
-      targetY: targetY,
       altitude: isBear ? 20 : 80,
       width: isBear ? player.width * 2 : player.width / 2,
       height: isBear ? player.height * 2 : player.height / 2,
@@ -180,12 +158,13 @@ function spawnAnimal() {
   setTimeout(() => {
       if (activeAnimal) {
           activeAnimal.state = "fleeing";
-          let baseAngle = Math.random() < 0.5 ? 0 : 180;
+          // Set flee angle to be generally downwards (90 degrees) with a random offset
+          let baseAngle = Math.random() * (135 - TWEAK.fleeAngle) + TWEAK.fleeAngle; // Downwards
           let angleOffset = Math.random() * TWEAK.fleeAngle;
           activeAnimal.fleeAngleActual = baseAngle + (Math.random() < 0.5 ? -angleOffset : angleOffset);
           let distanceToPlayerFlee = Math.sqrt((activeAnimal.x - player.x) ** 2 + (activeAnimal.y - player.absY) ** 2);
           let inViewportFlee = activeAnimal.x >= 0 && activeAnimal.x <= canvas.width && activeAnimal.y >= 0 && activeAnimal.y <= canvas.height;
-          console.log(`[Flee] ${activeAnimal.type} fleeing towards (${targetX.toFixed(2)}, ${targetY.toFixed(2)}) | In Viewport: ${inViewportFlee} | Distance to Player: ${distanceToPlayerFlee.toFixed(2)}`);
+          console.log(`[Flee] ${activeAnimal.type} fleeing | In Viewport: ${inViewportFlee} | Distance to Player: ${distanceToPlayerFlee.toFixed(2)}`);
       }
   }, activeAnimal.idleTime);
 }
@@ -196,24 +175,7 @@ function updateAnimal() {
     // Debugging logs in updateAnimal function
     console.log(`Update Animal - State: ${activeAnimal.state}, Pos: (${activeAnimal.x.toFixed(2)}, ${activeAnimal.y.toFixed(2)})`);
 
-    if (activeAnimal.state === "approaching") {
-        let dx = activeAnimal.targetX - activeAnimal.x;
-        let dy = activeAnimal.targetY - activeAnimal.y;
-        let distance = Math.sqrt(dx * dx + dy * dy) / 200;
-        if (distance < 5) {
-            activeAnimal.state = "sitting";
-        }
-    } else if (activeAnimal.state === "fleeing") {
-        let rad = activeAnimal.fleeAngleActual * Math.PI / 180;
-        activeAnimal.x += Math.cos(rad) * activeAnimal.speed;
-        activeAnimal.y += Math.sin(rad) * activeAnimal.speed;
-        // When the animal moves completely off screen, remove it and schedule the next spawn.
-        if (activeAnimal.x < -100 || activeAnimal.x > canvas.width + 100 ||
-            activeAnimal.y < -100 || activeAnimal.y > canvas.height + 100) {
-            activeAnimal = null;
-            setTimeout(spawnAnimal, Math.random() * (TWEAK.maxSpawnTime - TWEAK.minSpawnTime) + TWEAK.minSpawnTime);
-        }
-    } else if (activeAnimal.state === "fleeing") {
+    if (activeAnimal.state === "fleeing") {
         // Debug log when animal starts fleeing
         if (activeAnimal.fleeingLogOnce !== true) {
             console.log(`Animal fleeing - Angle: ${activeAnimal.fleeAngleActual.toFixed(2)}, Speed: ${activeAnimal.speed.toFixed(2)}`);
@@ -227,10 +189,12 @@ function updateAnimal() {
         // Debug log during fleeing movement
         console.log(`Animal fleeing - Pos: (${activeAnimal.x.toFixed(2)}, ${activeAnimal.y.toFixed(2)})`);
 
-        // When the animal moves completely off screen, remove it and schedule the next spawn.
-        if (activeAnimal.x < -100 || activeAnimal.x > canvas.width + 100 ||
-            activeAnimal.y < -100 || activeAnimal.y > canvas.height + 100) {
-            console.log(`Animal offscreen - removed`); // Debug log when animal is removed
+        // Debug log for animal position relative to screen bounds
+        console.log(`Animal position: (${activeAnimal.x.toFixed(2)}, ${activeAnimal.y.toFixed(2)}), Canvas: ${canvas.width}x${canvas.height}`);
+        
+        // Only despawn when the animal is at least 1000 units south of the player
+        if (activeAnimal.y > player.absY + 1000) {
+            console.log(`Animal moved 1000 units south of player - removed`);
             activeAnimal = null;
             setTimeout(spawnAnimal, Math.random() * (TWEAK.maxSpawnTime - TWEAK.minSpawnTime) + TWEAK.minSpawnTime);
         }
