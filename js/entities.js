@@ -190,11 +190,15 @@ function spawnAnimal() {
         }
     }, activeAnimal.idleTime);
 
-    console.log(`Spawned ${activeAnimal.type} at (${activeAnimal.x.toFixed(2)}, ${activeAnimal.y.toFixed(2)}) moving to (${activeAnimal.targetX.toFixed(2)}, ${activeAnimal.targetY.toFixed(2)}) moving to (${activeAnimal.targetX.toFixed(2)}, ${activeAnimal.targetY.toFixed(2)})`);
+    console.log(`Spawned ${activeAnimal.type} at (${activeAnimal.x.toFixed(2)}, ${activeAnimal.y.toFixed(2)}) moving to (${activeAnimal.targetX.toFixed(2)}, ${activeAnimal.targetY.toFixed(2)})`);
+    console.log(`Animal idleTime: ${activeAnimal.idleTime.toFixed(2)}`); // Debug idleTime
 }
 
 function updateAnimal() {
     if (!activeAnimal) return;
+
+    // Debugging logs in updateAnimal function
+    console.log(`Update Animal - State: ${activeAnimal.state}, Pos: (${activeAnimal.x.toFixed(2)}, ${activeAnimal.y.toFixed(2)})`);
 
     if (activeAnimal.state === "approaching") {
         let dx = activeAnimal.targetX - activeAnimal.x;
@@ -210,6 +214,27 @@ function updateAnimal() {
         // When the animal moves completely off screen, remove it and schedule the next spawn.
         if (activeAnimal.x < -100 || activeAnimal.x > canvas.width + 100 ||
             activeAnimal.y < -100 || activeAnimal.y > canvas.height + 100) {
+            activeAnimal = null;
+            setTimeout(spawnAnimal, Math.random() * (TWEAK.maxSpawnTime - TWEAK.minSpawnTime) + TWEAK.minSpawnTime);
+        }
+    } else if (activeAnimal.state === "fleeing") {
+        // Debug log when animal starts fleeing
+        if (activeAnimal.fleeingLogOnce !== true) {
+            console.log(`Animal fleeing - Angle: ${activeAnimal.fleeAngleActual.toFixed(2)}, Speed: ${activeAnimal.speed.toFixed(2)}`);
+            activeAnimal.fleeingLogOnce = true; // Prevent repeated logs
+        }
+
+        let rad = activeAnimal.fleeAngleActual * Math.PI / 180;
+        activeAnimal.x += Math.cos(rad) * activeAnimal.speed * 0.5; // Slow down flee speed by 50%
+        activeAnimal.y += Math.sin(rad) * activeAnimal.speed * 0.5; // Slow down flee speed by 50%
+
+        // Debug log during fleeing movement
+        console.log(`Animal fleeing - Pos: (${activeAnimal.x.toFixed(2)}, ${activeAnimal.y.toFixed(2)})`);
+
+        // When the animal moves completely off screen, remove it and schedule the next spawn.
+        if (activeAnimal.x < -100 || activeAnimal.x > canvas.width + 100 ||
+            activeAnimal.y < -100 || activeAnimal.y > canvas.height + 100) {
+            console.log(`Animal offscreen - removed`); // Debug log when animal is removed
             activeAnimal = null;
             setTimeout(spawnAnimal, Math.random() * (TWEAK.maxSpawnTime - TWEAK.minSpawnTime) + TWEAK.minSpawnTime);
         }
