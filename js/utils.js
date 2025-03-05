@@ -1,7 +1,7 @@
 /* utils.js */
 /* Global Configuration & Shared Globals */
 var TWEAK = {
-    tweakNob: 3,
+    tweakNob: 1,
 
     // Animal spawning and movement
     minSpawnTime: 5000, // Minimum delay between spawns (5 sec)
