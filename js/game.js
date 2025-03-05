@@ -205,9 +205,48 @@ function takePhoto() {
 
   lastPhotoTime = now;
   let baseValue = TWEAK.basePhotoValue;
-  let altitudeMatchBonus = Math.abs(player.altitudeLine - activeAnimal.altitude) < 10 ? TWEAK.altitudeMatchMultiplier : 1;
-  let centerBonus = Math.abs(player.cameraAngle - (activeAnimal.x > player.x ? 0 : 180)) < 10 ? TWEAK.centerPOVMultiplier : 1;
-  let movementBonus = activeAnimal.state === "moving" ? TWEAK.movingAnimalMultiplier : 1;
+
+  // Altitude Bonus: Exponential falloff within 50 units.
+  let diffAlt = Math.abs(player.altitudeLine - activeAnimal.altitude);
+  let altitudeMatchBonus;
+  if (diffAlt > 50) {
+    altitudeMatchBonus = 1;
+  } else {
+    altitudeMatchBonus = 1 + (TWEAK.altitudeMatchMultiplier - 1) * Math.exp(-diffAlt / 15);
+  }
+  /* Linear taper alternative (DO NOT REMOVE):
+  let altitudeMatchBonus = diffAlt <= 50 ? TWEAK.altitudeMatchMultiplier - (TWEAK.altitudeMatchMultiplier - 1) * (diffAlt / 50) : 1;
+  */
+
+  // Center Bonus: Exponential taper based on angle difference.
+  let animalAngle = Math.atan2(activeAnimal.y - player.absY, activeAnimal.x - player.x) * (180 / Math.PI);
+  if (animalAngle < 0) animalAngle += 360;
+  let diffAngle = Math.abs(animalAngle - player.cameraAngle);
+  if (diffAngle > 180) diffAngle = 360 - diffAngle;
+  let coneAngle = TWEAK.basePOVAngle + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsPOVIncrease);
+  let sweetSpotPercentage = 0.10 + (playerUpgrades.optimalOptics * 0.01);
+  let sweetSpotAngle = coneAngle * sweetSpotPercentage;
+  let centerBonus;
+  if (diffAngle <= sweetSpotAngle) {
+    centerBonus = TWEAK.centerPOVMultiplier;
+  } else if (diffAngle < coneAngle / 2) {
+    let factor = (diffAngle - sweetSpotAngle) / (coneAngle / 2 - sweetSpotAngle);
+    centerBonus = 1 + (TWEAK.centerPOVMultiplier - 1) * Math.exp(-factor * 3);
+  } else {
+    centerBonus = 1;
+  }
+  /* Linear taper alternative (DO NOT REMOVE):
+  if (diffAngle <= sweetSpotAngle) {
+    centerBonus = TWEAK.centerPOVMultiplier;
+  } else if (diffAngle < coneAngle / 2) {
+    centerBonus = TWEAK.centerPOVMultiplier - (TWEAK.centerPOVMultiplier - 1) * ((diffAngle - sweetSpotAngle) / (coneAngle / 2 - sweetSpotAngle));
+  } else {
+    centerBonus = 1;
+  }
+  */
+
+  // Movement Bonus: Applies when the animal is not sitting.
+  let movementBonus = activeAnimal.state !== "sitting" ? TWEAK.movingAnimalMultiplier : 1;
   let animalTypeMultiplier = activeAnimal.type === "bear" ? TWEAK.bearMultiplier : TWEAK.birdMultiplier;
   let repeatPenalty = activeAnimal.hasBeenPhotographed ? TWEAK.repeatPhotoPenalty : 1;
 
@@ -215,7 +254,7 @@ function takePhoto() {
 
   player.money += totalMoney;
   updateMoneyDisplay();
-  console.log(`📸 Captured ${activeAnimal.type}! Earned $${totalMoney}.`);
+  console.log(`📸 Captured ${activeAnimal.type}! Calculation details: Base=$${baseValue}, AltitudeBonus=${altitudeMatchBonus.toFixed(2)}, CenterBonus=${centerBonus.toFixed(2)}, MovementBonus=${movementBonus.toFixed(2)}, AnimalTypeMultiplier=${animalTypeMultiplier}, RepeatPenalty=${repeatPenalty}, Total=$${totalMoney}.`);
 
   activeAnimal.hasBeenPhotographed = true;
 }
