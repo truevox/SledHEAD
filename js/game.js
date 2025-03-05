@@ -68,11 +68,14 @@ function update(deltaTime) {
   if (currentState === GameState.DOWNHILL) {
     let rocketFactor = 1 + (playerUpgrades.rocketSurgery * TWEAK.rocketSurgeryFactorPerLevel);
     let gravity = TWEAK.baseGravity * rocketFactor;
-    let maxXVel = TWEAK.baseMaxXVel * rocketFactor;
+    let maxXVel = TWEAK.baseMaxXVel * (rocketFactor - (playerUpgrades.optimalOptics * TWEAK.optimalOpticsFrictionFactorPerLevel));
+    maxXVel = Math.max(0, maxXVel);
     let opticsFactor = 1 + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsAccelFactorPerLevel);
     let horizontalAccel = TWEAK.baseHorizontalAccel * opticsFactor;
-    let friction = TWEAK.baseFriction + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsFrictionFactorPerLevel);
-    if (friction > 1.0) friction = 1.0;
+    let friction = TWEAK.baseFriction - (playerUpgrades.optimalOptics * TWEAK.optimalOpticsFrictionFactorPerLevel);
+    // Optionally, clamp friction so it doesn't drop below a minimum value (e.g., 0.8)
+    if (friction < 0.8) friction = 0.8;
+
 
     player.velocityY += gravity;
     player.absY += player.velocityY;

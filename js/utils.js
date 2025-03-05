@@ -8,9 +8,9 @@ var TWEAK = {
     maxSpawnTime: 10000, // Maximum delay between spawns (10 sec)
     minIdleTime: 1000, // Minimum time an animal sits still (1 sec)
     maxIdleTime: 20000, // Maximum time an animal sits still (20 sec)
-    minMoveSpeed: 0.3, // Slowest movement speed for animals
+    minMoveSpeed: 5, // Slowest movement speed for animals
     maxMoveSpeed: 11.2, // Fastest movement speed for animals
-    fleeAngle: 45, // Default flee angle off screen
+    fleeAngle: 45, // This may be obsolete - confirm before removing
     photoCooldown: 1000, // Must wait 1 second between photos
     repeatPhotoPenalty: 0.5, // 50% less money if the same animal is photographed again
 
@@ -58,7 +58,7 @@ var TWEAK = {
     get baseHorizontalAccel() { return this._baseHorizontalAccel; },
     set baseHorizontalAccel(val) { this._baseHorizontalAccel = val; },
     
-    get baseFriction() { return this._baseFriction * this.tweakNob; },
+    get baseFriction() { return this._baseFriction; }, // * this.tweakNob
     set baseFriction(val) { this._baseFriction = val; },
     
     get baseMaxXVel() { return this._baseMaxXVel * this.tweakNob; },

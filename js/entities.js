@@ -133,7 +133,7 @@ function spawnAnimal() {
   let isBear = (type === "bear");
 
   // Spawn just outside the viewport horizontally
-  let spawnX = Math.random() * window.innerWidth
+  let spawnX = (window.innerWidth * 0.1) + (Math.random() * window.innerWidth * 0.9)
   let spawnY = player.absY -(window.innerHeight / 2)
 
   activeAnimal = {
@@ -159,7 +159,14 @@ function spawnAnimal() {
       if (activeAnimal) {
           activeAnimal.state = "fleeing";
           // Set flee angle to be generally downwards (90 degrees) with a random offset
-          let baseAngle = Math.random() * (135 - TWEAK.fleeAngle) + TWEAK.fleeAngle; // Downwards
+          let baseAngle;
+          if (spawnX > window.innerWidth / 2) {
+            // Animal spawns on right side, so it should flee leftwards.
+            baseAngle = Math.random() * (170 - 135) + 135;
+          } else {
+            // Animal spawns on left side, so it should flee rightwards.
+            baseAngle = Math.random() * (55 - 20) + 20;
+          }
           let angleOffset = Math.random() * TWEAK.fleeAngle;
           activeAnimal.fleeAngleActual = baseAngle + (Math.random() < 0.5 ? -angleOffset : angleOffset);
           let distanceToPlayerFlee = Math.sqrt((activeAnimal.x - player.x) ** 2 + (activeAnimal.y - player.absY) ** 2);
@@ -192,11 +199,18 @@ function updateAnimal() {
         // Debug log for animal position relative to screen bounds
         console.log(`Animal position: (${activeAnimal.x.toFixed(2)}, ${activeAnimal.y.toFixed(2)}), Canvas: ${canvas.width}x${canvas.height}`);
         
-        // Only despawn when the animal is at least 1000 units south of the player
-        if (activeAnimal.y > player.absY + 1000) {
-            console.log(`Animal moved 1000 units south of player - removed`);
-            activeAnimal = null;
-            setTimeout(spawnAnimal, Math.random() * (TWEAK.maxSpawnTime - TWEAK.minSpawnTime) + TWEAK.minSpawnTime);
+        // Despawn the animal if it moves off screen horizontally or too far down vertically
+        if (
+          activeAnimal.x < -100 ||
+          activeAnimal.x > window.innerWidth + 100 ||
+          activeAnimal.y > player.absY + 1000 // activeAnimal.y > window.innerHeight + 100
+        ) {
+          console.log(`Animal moved off screen - removed`);
+          activeAnimal = null;
+          setTimeout(
+            spawnAnimal,
+            Math.random() * (TWEAK.maxSpawnTime - TWEAK.minSpawnTime) + TWEAK.minSpawnTime
+          );
         }
     }
 }
