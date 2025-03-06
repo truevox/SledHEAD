@@ -189,3 +189,11 @@
   <script src="js/game.js"></script>
 </body>
 </html>
+
+<script>
+  document.getElementById("startGame").addEventListener("click", () => {
+    unlockAudioContext();
+    playStartGameSound();
+    changeState(GameState.DOWNHILL);
+  });
+</script>

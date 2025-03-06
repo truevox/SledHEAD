@@ -14,6 +14,15 @@ var TWEAK = {
     photoCooldown: 1000, // Must wait 1 second between photos
     repeatPhotoPenalty: 0.5, // 50% less money if the same animal is photographed again
 
+
+    // Jumping stuff
+    jumpType: "immediate",               // "immediate" or "charge" - DO NOT REMOVE
+    jumpCollisionMultiplier: 3,
+    jumpBaseAscent: 300,                 // Base ascent time (ms)
+    jumpMaxHoldTime: 1000,               // Maximum charge duration (1 sec)
+    jumpPeakScale: 2,                    // Peak visual jump scale
+
+
     // Camera and aiming
     basePOVAngle: 30,
     optimalOpticsPOVIncrease: 5,
@@ -136,8 +145,7 @@ window.addEventListener("keydown", function (e) {
 window.addEventListener("keyup", function (e) {
     delete keysDown[e.key];
 
-    // Start the game when space is released
-    if (e.key === " " && spacePressed && currentState === GameState.HOUSE) {
+    if (e.key === " " && currentState === GameState.HOUSE) {
         spacePressed = false;
         console.log("Space released, starting sled run.");
         unlockAudioContext();
@@ -145,6 +153,7 @@ window.addEventListener("keyup", function (e) {
         changeState(GameState.DOWNHILL);
     }
 });
+
 
 
 /* Utility functions */
