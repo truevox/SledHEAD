@@ -6,6 +6,9 @@
 var downhillStartTime = null;
 var lastTime = 0;
 var currentState = GameState.HOUSE;
+var jumpOsc = null;
+var jumpGain = null;
+
 
 function changeState(newState) {
   currentState = newState;
@@ -125,6 +128,28 @@ function update(deltaTime) {
     if (player.isJumping) {
       player.jumpTimer += deltaTime;
       let progress = player.jumpTimer / player.jumpDuration;
+
+      if (player.isJumping && jumpOsc) {
+        // Define frequency values in Hz:
+        let f_start = 300;
+        let f_peak = 800;
+        let f_end = 300;
+        let freq;
+        
+        // 'progress' is the fraction (0 to 1) of the jump completed
+        if (progress < 0.5) {
+          // During ascent: non-linearly increase pitch (quadratic curve)
+          let t = progress / 0.5; // Normalize to [0,1]
+          freq = f_start + (f_peak - f_start) * (t * t);
+        } else {
+          // During descent: non-linearly decrease pitch (quadratic curve)
+          let t = (progress - 0.5) / 0.5; // Normalize to [0,1]
+          freq = f_peak - (f_peak - f_end) * (t * t);
+        }
+        jumpOsc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      }
+      
+
       if (!player.hasReachedJumpPeak && progress >= 0.5) {
         player.hasReachedJumpPeak = true;
         onPlayerJumpPeak();
@@ -357,16 +382,30 @@ function takePhoto() {
 }
 
 function onPlayerJumpStart() {
-  // Hook: Called when a jump starts.
-  console.log("Jump started.");
+  console.log("Jump initiated!");
+  // Create a new oscillator and gain node for the jump sound
+  unlockAudioContext();
+  jumpOsc = audioCtx.createOscillator();
+  jumpGain = audioCtx.createGain();
+  jumpOsc.type = "sine";
+  // Set an initial volume
+  jumpGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+  jumpOsc.connect(jumpGain);
+  jumpGain.connect(audioCtx.destination);
+  jumpOsc.start();
 }
 
 function onPlayerJumpPeak() {
-  // Hook: Called when the jump reaches its peak.
-  console.log("Jump peak reached.");
+  console.log("Reached peak of jump.");
+  // You can optionally add a distinct sound here if desired.
 }
 
 function onPlayerLand() {
-  // Hook: Called when the player lands.
-  console.log("Player landed.");
+  console.log("Landed from jump.");
+  // Stop the jump sound
+  if (jumpOsc) {
+    jumpOsc.stop();
+    jumpOsc = null;
+    jumpGain = null;
+  }
 }
