@@ -221,3 +221,117 @@ All of these are stored in the **TWEAK object** for easy adjustments:
 - **Mountain regeneration rules**.
 - **Trick scoring multipliers**.
 - **Photograph accuracy bonuses**. 
+
+
+In both the prototype, and the full game, we'll need a goal. For the prototype, it will be repaying the cost of the mountain.
+
+In the full game, it will be in stages (think Tom Nook). The first repayment will be for your house. That will let you start buying "Mountain" upgrades like ski lifts. Once you pay off your house, there will be a MUCH bigger cost to pay off your mountain. Once you pay off your mountain, you can buy a new mountain (with new environments like Lava Mountain, Space Mountain, and Undersea Mountain). You'll start off with zero mountain upgrades, but you'll keep your personal upgrades.
+
+There will be unique upgrades required to access each mountain, and you may only find a few per mountain, so the choice of where to go next might be somewhat limited (but you can always look for more upgrades on other, snowy, mountains, which are also cheaper). Mountains:
+
+Lava Mountain 🌋
+A sizzling, active volcanic mountain filled with flowing lava rivers, steaming geysers, and rocky outcrops. Navigate carefully to avoid molten streams and superheated vents spewing smoke and embers, obscuring visibility. Occasionally, lava bombs shoot into the air, crashing down to form temporary obstacles. Some rocks glow red-hot and will severely damage or slow down your sled if touched. Volcanic tremors randomly shake the terrain, altering the slope and creating sudden fissures. The intense heat waves cause visual distortion, adding extra challenge to steering precision and timing.
+
+Heat Meter: Overheat means game over unless you hit cool-off zones.
+Ash Clouds: Temporarily block visibility, so you gotta steer careful-like!
+
+Power-Up: Heat Shielding Sled Coating Required upgrade to unlock Lava Mountain. Protects sled from high temperatures and damage from heat-related hazards. On other mountains, it slightly reduces friction, boosting downhill speed.
+
+Space Mountain 🌌
+Located on the Moon or Mars, sledding in low gravity means you achieve massive airtime, creating endless opportunities for tricks. Terrain features huge craters, steep cliffs, and rugged extraterrestrial rocks that make landing tricky. Cosmic dust clouds obscure your path, and meteor showers periodically introduce new hazards. Sudden gravity anomalies can briefly increase or decrease gravitational pull, complicating control. Watch out for floating debris from crashed spacecraft, acting as dynamic obstacles. Without atmosphere, sounds are muffled and vision limited—focusing on clear visibility is critical for landing safely.
+
+Low Gravity: Higher jumps, longer airtime, easier flips 'n tricks.
+Meteor Showers: Random meteor strikes make obstacles and ramps mid-run.
+
+Power-Up: Gravity Stabilizer Sled Upgrade
+Required to unlock Space Mountain. Stabilizes your sled against gravity fluctuations, ensuring smoother jumps and controlled landings. On other levels, it slightly reduces airtime instability, making aerial tricks easier to execute consistently.
+
+Underwater Mountain 🌊
+Navigate submerged slopes with slow-motion sledding physics. Your stamina acts as your oxygen meter, adding urgency. Seaweed forests slow down your sled, and coral formations present complex obstacles. Hidden underwater currents shift unpredictably, pushing your sled off-course or assisting your route if timed correctly. Schools of fish swim across your path, potentially blocking or guiding your sled. Occasional bubbles provide small boosts of oxygen/stamina if timed correctly. Deep-sea creatures periodically move across the screen, adding surprise obstacles and dynamic interactions to your descent. Visibility is affected by depth, gradually dimming unless illuminated by bio-luminescent plants.
+
+Air Meter (Stamina): Replenished by air bubbles or surface spots.
+Sea Creatures: Sharks n' dolphins can either help push or hinder you—depends on their mood, eh!
+
+Power-up: Aqua-Lung Mittens
+Required to enter Underwater Mountain. These magical mittens constantly replenish your stamina (oxygen) at a slow rate underwater. On other mountains, they slightly reduce stamina drain, allowing for longer uphill treks without rest.
+
+Garbage Dump Glacier 🗑️❄️
+A frozen landfill offers icy runs littered with piles of refuse. Old refrigerators, discarded furniture, and random heaps of recycling materials form the obstacle course. Oil slicks on the ice speed you up unpredictably, while sticky garbage mounds bog you down. Aggressive seagulls swoop and harass you, periodically pecking at your sled and reducing your control. Occasional avalanches of trash can drastically alter terrain mid-run. Watch out for rogue shopping carts barreling downhill unpredictably and patches of sharp metallic debris that damage sled durability. Some discarded objects offer hidden ramps or shortcuts if approached carefully.
+
+Seagull Attacks: Briefly impair your steering if ya get pecked.
+Sticky Garbage Areas: Slow down yer sled unless you’ve got special wax upgrades.
+
+Power-up: Slick Wax Spray
+Required to unlock Garbage Dump Glacier. Prevents sticky garbage terrain from slowing you down significantly, and reduces friction slightly on all levels, providing a small but constant speed boost.
+
+Micro Mountain 🐜🌱
+Shrunk down to microscopic size, you’ll sled through an enormous backyard landscape. Slide down blades of grass, dodge oversized ants, and navigate pollen clusters and dirt clods. Dew droplets create slippery, ultra-fast ramps, while cobwebs and leaves present sticky traps to avoid. Encounter various garden insects acting as dynamic, moving obstacles or even temporary platforms. Raindrops can create instant slippery spots, boosting or hindering your momentum randomly. Bright sunlight through magnifying glasses creates hot spots that damage your sled if you're exposed too long, while shadows from passing insects cause sudden visibility changes.
+
+Grass Blades and Dew Drops: Bouncy, unpredictable terrain.
+Ants & Bugs: Movin’ hazards—some might even carry your sled briefly!
+
+Power-up: Antigrav Wax
+Required for Micro Mountain. Dramatically reduces friction, letting you glide smoothly over sticky surfaces like pollen and cobwebs. On other mountains, it slightly improves your sled’s overall glide efficiency, reducing stamina drain from steering.
+
+Candy Cane Canyon 🍭
+Sweet, candy-themed slopes with chocolate rivers, caramel waterfalls, gummy bear obstacles, and peppermint jumps. Sticky candy patches slow your descent, while marshmallow cushions offer extra bounce, requiring careful timing. Sugar rush zones temporarily increase your speed, but candy floss clouds slow descent if you collide with them. Periodically, candy meteor showers rain gumdrops onto the slopes, forming temporary obstacles. Sugary quicksand areas trap your sled briefly unless you quickly jump clear. Caramel drizzles form slippery streams, while chocolate areas melt and slow you down if you linger too long.
+
+Sticky Sweets: Slow yer sled and reduce jump height temporarily.
+Sugar Rush Zones: Briefly double yer speed but harder to steer—sweet chaos!
+
+Power-up: Sweet-Tooth Coating
+Required for Candy Cane Canyon. Prevents your sled from sticking or sinking into candy traps and melted chocolate. Elsewhere, slightly reduces the effect of mud, snow, or other terrain types that would typically slow you down.
+
+Crystal Cave Cavern 🔮
+Sled through glittering crystal caverns, navigating tight turns around massive stalactites and delicate crystal formations. Crystals break upon impact, temporarily obscuring visibility with sparkling shards. Echoing acoustics make audio cues exaggerated, adding complexity to navigation. Bioluminescent fungi occasionally illuminate secret passages, guiding you to hidden shortcuts. Deep chasms force you to execute jumps carefully, while icy paths require precise control to avoid sliding off ledges. Bats swarm periodically, creating mobile aerial obstacles. Slippery ice sections inside caves alter your steering responsiveness unpredictably.
+
+Fragile Obstacles: Hittin’ em slows you down but destroys them permanently.
+Glowing Crystals: Temporarily illuminate hidden shortcuts or secret ramps.
+
+Power-up: Crystal Clear Goggles
+Required for Crystal Cave Cavern. Enhances visibility, reducing the impact of obscuring effects like dust or crystal shards. Provides improved vision through poor visibility conditions across all mountains.
+
+Haunted Graveyard Hill 👻
+Navigate spooky slopes littered with gravestones, eerie trees, and wandering ghosts. Phantom obstacles fade in and out unpredictably. Spooky mist slows movement and obscures vision. Sudden ghostly apparitions scare your sled into abrupt speed bursts or momentary freezes. Occasional supernatural gusts alter sled trajectory, either helping or hindering your progress unpredictably. Spectral whispers provide audio clues to hidden shortcuts or upcoming hazards. Watch out for haunted patches of ground that momentarily seize your sled, causing slight directional disruptions.
+
+Ghost Encounters: Randomly appear, block vision, or temporarily invert your controls.
+Phantom Fans: Provide boosts if ya take spooky snapshots uphill!
+
+Power-up: Spirit Lantern
+Required to access Haunted Graveyard Hill. Illuminates and reveals ghostly obstacles and hidden pathways. Slightly increases visibility and awareness of hidden elements across all maps.
+
+Sky Jellyfish Mountain ☁️🪼
+Soar and bounce across ethereal clouds populated by luminous sky jellyfish. Physics become ultra-bouncy, creating unpredictable trajectories. Jellyfish platforms shift and pulse rhythmically, affecting landing precision. Air currents push you unpredictably, aiding or hindering your path. Occasional lightning strikes briefly illuminate the slopes, creating momentary visibility boosts. Clouds dissolve randomly, forcing quick route adjustments. Watch out for lightning jellyfish that electrify your sled temporarily, reducing control.
+
+Bounce Physics: Jump higher and farther, but risk losin’ control on landin'.
+Air Gusts: Boost ya sideways unexpectedly, for good or ill.
+
+Power-up: Stabilizer Sled Rails
+Required for Sky Jellyfish Mountain. These advanced rails significantly improve landing stability after jumps. Across other mountains, they generally reduce bounce and improve landing precision.
+
+Mechanical Mountain (Steampunk Slopes) ⚙️🎩
+Steampunk slopes feature gears, conveyor belts, and mechanical contraptions that constantly shift and rotate terrain. Steam jets sporadically push your sled in unexpected directions. Rotating gears can be ground on for trick points but risk sudden changes in direction. Conveyor belts alter your trajectory and speed dramatically. Piston-driven platforms lift and drop at intervals, providing dynamic jump points. Rusty oil slicks enhance speed but reduce control.
+
+Timed Obstacles: Movin’ platforms appear and vanish rhythmically—precision’s key!
+Gear Grinds: Successful grindin' across gears gives huge cash bonuses.
+
+Power-up: Clockwork Treads
+Required to unlock Mechanical Mountain. Provide superior traction on moving surfaces like conveyor belts. On other levels, they slightly enhance overall sled handling and turning radius.
+
+Pyramid Peak 🐫🏜️
+Ancient Egyptian pyramid slopes covered in sand and ancient ruins. Sandstorms intermittently obscure your view. Falling boulders form temporary obstacles. Hieroglyphic doors randomly open to reveal shortcuts or hidden chambers filled with treasure. Scarab swarms periodically chase you, slightly pushing you off course. Quick-sand traps slow you down significantly unless avoided promptly.
+
+Sandstorms: Slow you down or obscure yer vision.
+Hidden Pitfalls: Collapsin’ floors reveal secret ramps or dangerous traps.
+
+Power-up: Sandrunner Skis
+Required for Pyramid Peak. Let you glide smoothly over sandy terrain without losing speed. Improve performance slightly on loose or rough terrains in other environments.
+
+Digital Mountain (Cyber Slopes) 💻🔮
+Traverse neon-lit digital slopes filled with glitches, data streams, and pop-up malware ads obstructing your vision. Data packets form temporary ramps; corrupted data areas distort controls. Glitch fields teleport or flicker you unpredictably across short distances. Virtual hazards like firewall walls periodically appear, forcing rapid dodging maneuvers. Randomly appearing portals shift your sled between points on the slope unexpectedly.
+
+Glitch Zones: Randomly teleport ya a short distance forward or backward.
+Malware Hazards: Briefly invert yer controls if ya collide with ’em.
+
+Power-up: Data Shielding
+Required to access Digital Mountain. Protects your sled from malware hazards, significantly reducing random steering disruptions. Slightly improves resistance to environmental status effects across all maps.
