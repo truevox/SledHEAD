@@ -73,48 +73,149 @@ function update(deltaTime) {
     let opticsFactor = 1 + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsAccelFactorPerLevel);
     let horizontalAccel = TWEAK.baseHorizontalAccel * opticsFactor;
     let friction = TWEAK.baseFriction - (playerUpgrades.optimalOptics * TWEAK.optimalOpticsFrictionFactorPerLevel);
-    // Optionally, clamp friction so it doesn't drop below a minimum value (e.g., 0.8)
     if (friction < 0.8) friction = 0.8;
 
+    // --- Jump Input Handling ---
+    // Immediate Mode: start jump on space key press
+    if (TWEAK.jumpType === "immediate") {
+      if (keysDown[" "] && !player.isJumping && player.canJump) {
+        player.isJumping = true;
+        player.canJump = false;
+        player.isCharging = false;
+        player.jumpHeightFactor = 1;      // Full height jump
+        player.jumpDuration = 500;         // Base jump duration (ms)
+        player.jumpTimer = 0;
+        player.hasReachedJumpPeak = false;
+        onPlayerJumpStart();
+      }
+    }
+    // Charge Mode: accumulate charge on key hold; launch jump on key release
+    else if (TWEAK.jumpType === "charge") {
+      if (keysDown[" "] && !player.isJumping && !player.isCharging && player.canJump) {
+        player.isCharging = true;
+        player.canJump = false;
+        player.jumpChargeTime = 0;
+      }
+      if (player.isCharging) {
+        player.jumpChargeTime += deltaTime;
+        if (!keysDown[" "]) {
+          // Launch jump using charge ratio (capped by TWEAK.jumpMaxHoldTime)
+          let chargeRatio = Math.min(1, player.jumpChargeTime / TWEAK.jumpMaxHoldTime);
+          player.isCharging = false;
+          player.isJumping = true;
+          player.jumpHeightFactor = chargeRatio;
+          player.jumpDuration = 500 + 500 * chargeRatio;  // Longer jump for higher charge
+          player.jumpTimer = 0;
+          player.hasReachedJumpPeak = false;
+          onPlayerJumpStart();
+        } else if (player.jumpChargeTime >= TWEAK.jumpMaxHoldTime) {
+          // Auto-launch at max charge
+          player.isCharging = false;
+          player.isJumping = true;
+          player.jumpHeightFactor = 1;
+          player.jumpDuration = 1000;
+          player.jumpTimer = 0;
+          player.hasReachedJumpPeak = false;
+          onPlayerJumpStart();
+        }
+      }
+    }
 
+    // Update jump animation if a jump is in progress
+    if (player.isJumping) {
+      player.jumpTimer += deltaTime;
+      let progress = player.jumpTimer / player.jumpDuration;
+      if (!player.hasReachedJumpPeak && progress >= 0.5) {
+        player.hasReachedJumpPeak = true;
+        onPlayerJumpPeak();
+      }
+      if (progress >= 1) {
+        // End jump: reset jump state and restore sprite scale
+        player.isJumping = false;
+        player.jumpTimer = 0;
+        player.hasReachedJumpPeak = false;
+        player.width = player.baseWidth;
+        player.height = player.baseHeight;
+        onPlayerLand();
+
+        // Check for collision on landing and apply penalty if needed
+        for (let i = 0; i < terrain.length; i++) {
+          let obstacle = terrain[i];
+          if (checkCollision(
+              player.x - player.width / 2, player.absY - player.height / 2,
+              player.width, player.height,
+              obstacle.x, obstacle.y,
+              obstacle.width, obstacle.height
+          )) {
+            console.log("Collision detected on landing.");
+            player.velocityY = -TWEAK.bounceImpulse * TWEAK.jumpCollisionMultiplier;
+            player.absY -= TWEAK.bounceImpulse * TWEAK.jumpCollisionMultiplier;
+            player.collisions++;
+            if (player.collisions >= TWEAK.getMaxCollisions()) {
+              console.log("Max collisions reached on landing. Ending run.");
+              awardMoney();
+              playCrashSound();
+              changeState(GameState.UPHILL);
+              return;
+            } else {
+              playRockHitSound();
+            }
+            break;  // Only handle one collision penalty per landing
+          }
+        }
+      } else {
+        // Calculate sprite scale using a sine curve for a smooth jump arc.
+        // At progress = 0 => scale = 1; at progress = 0.5 => scale = TWEAK.jumpPeakScale; at progress = 1 => scale = 1.
+        let scale = 1 + (TWEAK.jumpPeakScale - 1) * Math.sin(Math.PI * progress) * player.jumpHeightFactor;
+        player.width = player.baseWidth * scale;
+        player.height = player.baseHeight * scale;
+      }
+    }
+
+    // Allow new jump initiation when the space key is released
+    if (!keysDown[" "]) {
+      player.canJump = true;
+    }
+
+    // --- Normal Downhill Physics & Collision Handling (skip collisions during jump) ---
+    let prevAbsY = player.absY;
+    if (!player.isJumping) {
+      for (let i = 0; i < terrain.length; i++) {
+        let obstacle = terrain[i];
+        if (checkCollision(
+            player.x - player.width / 2, player.absY - player.height / 2,
+            player.width, player.height,
+            obstacle.x, obstacle.y,
+            obstacle.width, obstacle.height
+        )) {
+          console.log("Collision detected on downhill.");
+          player.velocityY = -TWEAK.bounceImpulse;
+          player.absY = prevAbsY - TWEAK.bounceImpulse;
+          player.collisions++;
+          if (player.collisions >= TWEAK.getMaxCollisions()) {
+            console.log("Max collisions reached. Ending run.");
+            awardMoney();
+            playCrashSound();
+            changeState(GameState.UPHILL);
+            return;
+          } else {
+            playRockHitSound();
+          }
+        }
+      }
+    }
+
+    // Continue with normal physics updates
     player.velocityY += gravity;
     player.absY += player.velocityY;
 
-    // Support for WASD keys (no arrow keys for movement)
     if (keysDown["a"]) { player.xVel -= horizontalAccel; }
     if (keysDown["d"]) { player.xVel += horizontalAccel; }
-
     player.xVel *= friction;
     player.xVel = clamp(player.xVel, -maxXVel, maxXVel);
     player.x += player.xVel;
 
     updateLiveMoney();
-
-    let prevAbsY = player.absY;
-    for (let i = 0; i < terrain.length; i++) {
-      let obstacle = terrain[i];
-      if (checkCollision(
-          player.x - player.width / 2, player.absY - player.height / 2,
-          player.width, player.height,
-          obstacle.x, obstacle.y,
-          obstacle.width, obstacle.height
-        )) {
-        console.log("Collision detected on downhill.");
-        player.velocityY = -TWEAK.bounceImpulse;
-        player.absY = prevAbsY - TWEAK.bounceImpulse;
-        player.collisions++;
-
-        if (player.collisions >= TWEAK.getMaxCollisions()) {
-          console.log("Max collisions reached. Ending run.");
-          awardMoney();
-          playCrashSound(); // 🔊 Play crash sound when losing
-          changeState(GameState.UPHILL);
-          return;
-        } else {
-          playRockHitSound(); // 🔊 Play hit sound for non-crash collisions
-        }
-      }
-    }
 
     if (player.absY >= mountainHeight) {
       player.absY = mountainHeight;
@@ -122,7 +223,6 @@ function update(deltaTime) {
       awardMoney();
       changeState(GameState.UPHILL);
     }
-
   } else if (currentState === GameState.UPHILL) {
     let upSpeed = TWEAK.baseUpSpeed + (playerUpgrades.fancierFootwear * TWEAK.fancierFootwearUpSpeedPerLevel);
 
@@ -131,13 +231,11 @@ function update(deltaTime) {
     if (keysDown["a"]) { player.x -= upSpeed; }
     if (keysDown["d"]) { player.x += upSpeed; }
 
-    // 🎯 Camera Aiming (Arrow Keys)
     if (keysDown["ArrowLeft"]) { player.cameraAngle -= 2; }
     if (keysDown["ArrowRight"]) { player.cameraAngle += 2; }
     if (keysDown["ArrowUp"]) { player.altitudeLine = Math.max(0, player.altitudeLine - 2); }
     if (keysDown["ArrowDown"]) { player.altitudeLine = Math.min(100, player.altitudeLine + 2); }
 
-    // Wrap camera angle within 360 degrees
     if (player.cameraAngle < 0) player.cameraAngle += 360;
     if (player.cameraAngle >= 360) player.cameraAngle -= 360;
 
@@ -149,13 +247,12 @@ function update(deltaTime) {
           player.width, player.height,
           obstacle.x, obstacle.y,
           obstacle.width, obstacle.height
-        )) {
+      )) {
         console.log("Collision detected on uphill.");
         resolveCollision(player, obstacle);
       }
     });
 
-    // Update animal behavior on each frame
     updateAnimal();
 
     if (player.absY <= 0) {
@@ -257,4 +354,19 @@ function takePhoto() {
   console.log(`📸 Captured ${activeAnimal.type}! Calculation details: Base=$${baseValue}, AltitudeBonus=${altitudeMatchBonus.toFixed(2)}, CenterBonus=${centerBonus.toFixed(2)}, MovementBonus=${movementBonus.toFixed(2)}, AnimalTypeMultiplier=${animalTypeMultiplier}, RepeatPenalty=${repeatPenalty}, Total=$${totalMoney}.`);
 
   activeAnimal.hasBeenPhotographed = true;
+}
+
+function onPlayerJumpStart() {
+  // Hook: Called when a jump starts.
+  console.log("Jump started.");
+}
+
+function onPlayerJumpPeak() {
+  // Hook: Called when the jump reaches its peak.
+  console.log("Jump peak reached.");
+}
+
+function onPlayerLand() {
+  // Hook: Called when the player lands.
+  console.log("Player landed.");
 }
