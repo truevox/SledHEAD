@@ -23,8 +23,8 @@ function updateLoanButton() {
       document.getElementById("victoryBanner").style.display = "block";
     } else {
       loanButton.textContent = `Pay Loan ($${loanAmount.toLocaleString()})`;
-      // Only disable if loan is paid off
-      loanButton.disabled = loanAmount <= 0;
+      // Never disable the button as long as there's a loan to pay
+      loanButton.disabled = false;
     }
   }
 }
@@ -93,7 +93,6 @@ function changeState(newState) {
   } else if (currentState === GameState.DOWNHILL) {
     document.getElementById("upgrade-menu").style.display = "none";
     document.getElementById("game-screen").style.display = "block";
-    generateTerrain();
     earlyFinish = false;
     player.collisions = 0;
     player.x = canvas.width / 2;
@@ -495,12 +494,16 @@ Object.keys(mountainUpgrades).forEach(upg => {
     purchaseUpgrade(mountainUpgrades, upg);
   });
 });
+// Initialize core game systems
+generateTerrain(); // Generate terrain once at game start
+changeState(GameState.HOUSE);
+requestAnimationFrame(gameLoop);
+
+// Set up event listeners
 document.getElementById("startGame").addEventListener("click", () => {
   console.log("Start run clicked.");
   changeState(GameState.DOWNHILL);
 });
-changeState(GameState.HOUSE);
-requestAnimationFrame(gameLoop);
 
 function takePhoto() {
   let now = Date.now();

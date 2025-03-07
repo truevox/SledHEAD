@@ -1,7 +1,7 @@
 /* world.js */
 const mountainHeight = 200000; // Mountain is now 100x bigger!
 let terrain = [];
-const obstacleCount = 4000;
+const obstacleCount = 2000;
 let earlyFinish = false;
 function generateTerrain() {
   terrain = [];
