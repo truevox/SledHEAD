@@ -179,25 +179,16 @@ function spawnAnimal() {
 function updateAnimal() {
     if (!activeAnimal) return;
 
-    // Debugging logs in updateAnimal function
-    console.log(`Update Animal - State: ${activeAnimal.state}, Pos: (${activeAnimal.x.toFixed(2)}, ${activeAnimal.y.toFixed(2)})`);
-
     if (activeAnimal.state === "fleeing") {
-        // Debug log when animal starts fleeing
+        // Log only when animal starts fleeing
         if (activeAnimal.fleeingLogOnce !== true) {
-            console.log(`Animal fleeing - Angle: ${activeAnimal.fleeAngleActual.toFixed(2)}, Speed: ${activeAnimal.speed.toFixed(2)}`);
-            activeAnimal.fleeingLogOnce = true; // Prevent repeated logs
+            console.log(`🦁 Animal fleeing - Type: ${activeAnimal.type}, Angle: ${activeAnimal.fleeAngleActual.toFixed(2)}°`);
+            activeAnimal.fleeingLogOnce = true;
         }
 
         let rad = activeAnimal.fleeAngleActual * Math.PI / 180;
-        activeAnimal.x += Math.cos(rad) * activeAnimal.speed * 0.5; // Slow down flee speed by 50%
-        activeAnimal.y += Math.sin(rad) * activeAnimal.speed * 0.5; // Slow down flee speed by 50%
-
-        // Debug log during fleeing movement
-        console.log(`Animal fleeing - Pos: (${activeAnimal.x.toFixed(2)}, ${activeAnimal.y.toFixed(2)})`);
-
-        // Debug log for animal position relative to screen bounds
-        console.log(`Animal position: (${activeAnimal.x.toFixed(2)}, ${activeAnimal.y.toFixed(2)}), Canvas: ${canvas.width}x${canvas.height}`);
+        activeAnimal.x += Math.cos(rad) * activeAnimal.speed * 0.5;
+        activeAnimal.y += Math.sin(rad) * activeAnimal.speed * 0.5;
         
         // Despawn the animal if it moves off screen horizontally or too far down vertically
         if (
@@ -235,8 +226,41 @@ function drawEntities() {
     }
   });
   let playerDrawY = player.absY - cameraOffset;
+
+  // Draw player & sled based on current trick state
+  ctx.save();  // Save the current context state
+  
+  // Apply trick-specific transformations
+  if (player.currentTrick) {
+    if (player.currentTrick === "leftHelicopter" || player.currentTrick === "rightHelicopter") {
+      // Rotate around center for helicopter tricks
+      ctx.translate(player.x, playerDrawY);
+      ctx.rotate(player.trickRotation * Math.PI / 180);
+      ctx.translate(-player.x, -playerDrawY);
+    } else if (player.currentTrick === "airBrake" || player.currentTrick === "parachute") {
+      // Offset for air brake/parachute tricks
+      if (player.currentTrick === "airBrake") {
+        playerDrawY += player.trickOffset;  // Move sled behind player
+      } else {
+        playerDrawY -= player.trickOffset;  // Move player above sled for parachute
+      }
+    }
+  }
+
+  // Draw the sled (red square)
   ctx.fillStyle = "#FF0000";
   ctx.fillRect(player.x - player.width / 2, playerDrawY - player.height / 2, player.width, player.height);
+
+  // Draw the player (yellow circle) - only if doing air brake or parachute
+  if (player.currentTrick === "airBrake" || player.currentTrick === "parachute") {
+    ctx.fillStyle = "#FFFF00";
+    ctx.beginPath();
+    ctx.arc(player.x, playerDrawY - player.trickOffset, player.width / 3, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  ctx.restore();  // Restore the context state
+  
   drawCameraOverlay();
   drawAnimal();
 }

@@ -18,9 +18,12 @@ var TWEAK = {
     // Jumping stuff
     jumpType: "immediate",               // "immediate" or "charge" - DO NOT REMOVE
     jumpCollisionMultiplier: 3,
-    jumpBaseAscent: 300,                 // Base ascent time (ms)
+    jumpBaseAscent: 1000,                 // Base ascent time (ms)
     jumpMaxHoldTime: 1000,               // Maximum charge duration (1 sec)
-    jumpPeakScale: 2,                    // Peak visual jump scale
+    jumpPeakScale: 2,                    // Base peak visual jump scale
+    jumpHeightPerRocketSurgery: 0.05,    // Each level adds 5% to jump height
+    jumpTimePerRocketSurgery: 0.05,      // Each level adds 5% to jump duration
+    jumpZoomPerHeightIncrease: 0.5,      // For every 100% height increase, add 50% more zoom
 
 
     // Camera and aiming
@@ -43,8 +46,8 @@ var TWEAK = {
     
     // Underlying base values
     _sledMass: 1.0,
-    _baseGravity: 0.2,
-    _baseHorizontalAccel: 0.15,
+    _baseGravity: 0.1,
+    _baseHorizontalAccel: 0.25,
     _baseFriction: 0.95,
     _baseMaxXVel: 3,
     _rocketSurgeryFactorPerLevel: 0.1,
@@ -56,8 +59,19 @@ var TWEAK = {
     _starterCash: 200, // Jacked up for testing
     
     _bounceImpulse: 3,  // New bounce impulse value
+
+    // Trick system configuration
+    _trickCooldown: 5000,          // Base cooldown per trick (5 sec)
+    _trickTimeMultiplier: 1.0,     // Global trick duration multiplier
+    _trickTimeAdder: 0,            // Global trick duration additive time
+    _trickBaseDuration: 150,       // Base duration for tricks (ms)
+    _trickRotationSpeed: 1080,     // Degrees per second for helicopter tricks (3 full spins)
+    _trickOffsetDistance: 40,      // Pixels to offset sled for air brake/parachute
+    _trickMoneyBase: 50,           // Base money earned per trick
+    _trickChainMultiplier: 1.5,    // Multiplier for chaining different tricks
     
     // Getters to apply tweakNob multiplier
+
     get sledMass() { return this._sledMass * this.tweakNob; },
     set sledMass(val) { this._sledMass = val; },
     

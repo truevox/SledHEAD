@@ -8,6 +8,12 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <!-- Victory Banner (hidden by default) -->
+  <div id="victoryBanner" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: gold; padding: 20px; border-radius: 10px; text-align: center; font-size: 24px; font-weight: bold; z-index: 1000;">
+    🎉 VICTORY! 🎉<br>
+    You've paid off your loan!
+  </div>
+
   <!-- Title (Global UI) -->
   <h1>SledHEAD</h1>
   
@@ -23,8 +29,11 @@
 
   <!-- House/Upgrade Menu -->
   <div id="upgrade-menu">
-    <!-- Start Button -->
-    <button id="startGame">Start Sled Run</button>
+    <!-- Game Control Buttons -->
+    <div class="game-controls">
+      <button id="startGame">Start Sled Run</button>
+      <button id="payLoan">Pay Loan ($100,000)</button>
+    </div>
     
     <div class="upgrade-menu-columns">
       <!-- Left Column: Personal Upgrades -->
@@ -196,4 +205,11 @@
     playStartGameSound();
     changeState(GameState.DOWNHILL);
   });
+
+  document.getElementById("payLoan").addEventListener("click", () => {
+    payLoan();
+  });
+
+  // Initialize loan button state
+  updateLoanButton();
 </script>

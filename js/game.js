@@ -3,11 +3,83 @@
 /* SledHEAD - Core Game Loop & State Management */
 /**************************************************/
 
+// Gameplay variables
 var downhillStartTime = null;
 var lastTime = 0;
 var currentState = GameState.HOUSE;
 var jumpOsc = null;
 var jumpGain = null;
+
+// Loan system
+var loanAmount = 100000; // Initial loan amount
+
+function updateLoanButton() {
+  const loanButton = document.getElementById("payLoan");
+  if (loanButton) {
+    if (loanAmount <= 0) {
+      loanButton.textContent = "LOAN PAID OFF!";
+      loanButton.disabled = true;
+      // Show victory banner
+      document.getElementById("victoryBanner").style.display = "block";
+    } else {
+      loanButton.textContent = `Pay Loan ($${loanAmount.toLocaleString()})`;
+      // Never disable the button as long as there's a loan to pay
+      loanButton.disabled = false;
+    }
+  }
+}
+
+function payLoan() {
+  if (player.money > 0) {
+    const payment = Math.min(player.money, loanAmount);
+    loanAmount -= payment;
+    player.money -= payment;
+    updateMoneyDisplay();
+    updateLoanButton();
+    
+    if (loanAmount <= 0) {
+      console.log("🎉 Loan paid off! Victory!");
+      playTone(800, "sine", 0.3, 0.5); // Victory sound
+    } else {
+      console.log(`💰 Loan payment: $${payment}. Remaining: $${loanAmount}`);
+      playTone(600, "sine", 0.1, 0.2); // Payment sound
+    }
+  }
+}
+
+// Floating text system
+var floatingTexts = [];
+class FloatingText {
+  constructor(text, x, y) {
+    this.text = text;
+    this.x = x;
+    this.initialY = y; // Store initial Y position relative to player
+    this.age = 0;
+    this.lifetime = 1000; // 1 second
+    this.visualOffsetY = -30; // Start above player
+  }
+
+  update(deltaTime) {
+    this.age += deltaTime;
+    this.visualOffsetY -= deltaTime * 0.25; // Slow upward float
+    return this.age < this.lifetime;
+  }
+
+  draw(ctx, cameraY) {
+    const alpha = 1 - (this.age / this.lifetime);
+    // Black text with alpha
+    ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
+    ctx.font = "bold 24px Arial";
+    ctx.textAlign = "center";
+    // Follow player's Y position plus visual offset
+    const screenY = player.absY - cameraY + this.visualOffsetY;
+    ctx.fillText(this.text, this.x, screenY);
+  }
+}
+
+function addFloatingText(text, x, y) {
+  floatingTexts.push(new FloatingText(text, x, y - 30)); // Offset up by 30 pixels
+}
 
 
 function changeState(newState) {
@@ -21,7 +93,6 @@ function changeState(newState) {
   } else if (currentState === GameState.DOWNHILL) {
     document.getElementById("upgrade-menu").style.display = "none";
     document.getElementById("game-screen").style.display = "block";
-    generateTerrain();
     earlyFinish = false;
     player.collisions = 0;
     player.x = canvas.width / 2;
@@ -58,9 +129,19 @@ function updateLiveMoney() {
   if (moneyEarned > lastMoneyMilestone && moneyEarned % 10 === 0) {
     lastMoneyMilestone = moneyEarned;
     playMoneyGainSound(); // 🔊 Play money sound only at 1, 10, 100, 1000...
+    showMoneyGain(moneyEarned);
   }
+}
 
-  // Add a visual bounce effect
+// Generic function to show money gained with bounce effect
+function showMoneyGain(amount, source = "") {
+  let moneyText = document.getElementById("moneyText");
+  if (source) {
+    moneyText.textContent = `Money: $${player.money} (+$${amount} ${source})`;
+  } else {
+    moneyText.textContent = `Money: $${player.money} (+$${amount})`;
+  }
+  
   moneyText.classList.add("money-increase");
   setTimeout(() => {
     moneyText.classList.remove("money-increase");
@@ -68,6 +149,7 @@ function updateLiveMoney() {
 }
 
 function update(deltaTime) {
+  deltaTime *= 1;
   if (currentState === GameState.DOWNHILL) {
     let rocketFactor = 1 + (playerUpgrades.rocketSurgery * TWEAK.rocketSurgeryFactorPerLevel);
     let gravity = TWEAK.baseGravity * rocketFactor;
@@ -85,10 +167,24 @@ function update(deltaTime) {
         player.isJumping = true;
         player.canJump = false;
         player.isCharging = false;
-        player.jumpHeightFactor = 1;      // Full height jump
-        player.jumpDuration = 500;         // Base jump duration (ms)
+        
+        // Calculate Rocket Surgery bonuses
+        let heightBonus = 1 + (playerUpgrades.rocketSurgery * TWEAK.jumpHeightPerRocketSurgery);
+        let timeBonus = 1 + (playerUpgrades.rocketSurgery * TWEAK.jumpTimePerRocketSurgery);
+        
+        // Calculate zoom scale based on height increase
+        let heightIncrease = heightBonus - 1;  // Convert 1.5x to 50% increase
+        let extraZoom = heightIncrease * TWEAK.jumpZoomPerHeightIncrease;
+        
+        player.jumpHeightFactor = heightBonus;     // Apply height boost
+        player.jumpDuration = TWEAK.jumpBaseAscent * timeBonus;  // Apply duration boost
+        player.jumpZoomBonus = extraZoom;          // Store zoom bonus for visuals
         player.jumpTimer = 0;
         player.hasReachedJumpPeak = false;
+        
+        if (playerUpgrades.rocketSurgery > 0) {
+          console.log(`Jump boosted by Rocket Surgery ${playerUpgrades.rocketSurgery}: Height x${heightBonus.toFixed(2)}, Time x${timeBonus.toFixed(2)}, Zoom +${(extraZoom*100).toFixed(0)}%`);
+        }
         onPlayerJumpStart();
       }
     }
@@ -150,15 +246,86 @@ function update(deltaTime) {
       }
       
 
+      // Check for trick inputs during jump
+      if (!player.currentTrick && player.isJumping) {
+        if (keysDown["ArrowLeft"]) {
+          startTrick("leftHelicopter");
+        } else if (keysDown["ArrowRight"]) {
+          startTrick("rightHelicopter");
+        } else if (keysDown["ArrowUp"]) {
+          startTrick("airBrake");
+        } else if (keysDown["ArrowDown"]) {
+          startTrick("parachute");
+        }
+      }
+
+      // Update active trick if one is running
+      if (player.currentTrick) {
+        player.trickTimer += deltaTime;
+        let trickProgress = player.trickTimer / (TWEAK._trickBaseDuration * TWEAK._trickTimeMultiplier + TWEAK._trickTimeAdder);
+
+        // Update trick-specific animations
+        switch (player.currentTrick) {
+          case "leftHelicopter":
+            player.trickRotation -= TWEAK._trickRotationSpeed * (deltaTime / 1000);
+            break;
+          case "rightHelicopter":
+            player.trickRotation += TWEAK._trickRotationSpeed * (deltaTime / 1000);
+            break;
+          case "airBrake":
+          case "parachute":
+            player.trickOffset = TWEAK._trickOffsetDistance * Math.sin(Math.PI * trickProgress);
+            break;
+        }
+
+        // Check for trick completion
+        if (trickProgress >= 1) {
+          // Award money based on chain multiplier and cooldown value
+          let trickMoney = TWEAK._trickMoneyBase;
+          let chainBonus = 1;
+          if (player.lastTrick && player.lastTrick !== player.currentTrick) {
+            player.trickChainCount++;
+            chainBonus = Math.pow(TWEAK._trickChainMultiplier, player.trickChainCount);
+            trickMoney *= chainBonus;
+          } else {
+            player.trickChainCount = 0;
+          }
+          
+          // Apply cooldown penalty
+          trickMoney *= player.currentTrickValueMultiplier;
+          let finalMoney = Math.floor(trickMoney);
+          player.money += finalMoney;
+          showMoneyGain(finalMoney, `(${player.currentTrick})`);
+          addFloatingText(`+$${finalMoney} ${player.currentTrick}`, player.x, player.absY);
+          
+          // Log trick completion with detailed money breakdown
+          console.log(`🎯 ${player.currentTrick} completed! +$${finalMoney} (Chain: x${chainBonus.toFixed(2)}, Value: ${(player.currentTrickValueMultiplier * 100).toFixed(0)}%)`);
+
+          // Reset trick state
+          player.lastTrick = player.currentTrick;
+          player.currentTrick = null;
+          player.trickTimer = 0;
+          player.trickRotation = 0;
+          player.trickOffset = 0;
+          playTrickCompleteSound();
+        }
+      }
+
       if (!player.hasReachedJumpPeak && progress >= 0.5) {
         player.hasReachedJumpPeak = true;
         onPlayerJumpPeak();
       }
       if (progress >= 1) {
-        // End jump: reset jump state and restore sprite scale
+        // End jump: reset jump state, trick state, and restore sprite scale
         player.isJumping = false;
         player.jumpTimer = 0;
         player.hasReachedJumpPeak = false;
+        player.currentTrick = null;
+        player.trickTimer = 0;
+        player.trickRotation = 0;
+        player.trickOffset = 0;
+        player.lastTrick = null;
+        player.trickChainCount = 0;
         player.width = player.baseWidth;
         player.height = player.baseHeight;
         onPlayerLand();
@@ -176,6 +343,8 @@ function update(deltaTime) {
             player.velocityY = -TWEAK.bounceImpulse * TWEAK.jumpCollisionMultiplier;
             player.absY -= TWEAK.bounceImpulse * TWEAK.jumpCollisionMultiplier;
             player.collisions++;
+            // Remove the obstacle we hit
+            terrain.splice(i, 1);
             if (player.collisions >= TWEAK.getMaxCollisions()) {
               console.log("Max collisions reached on landing. Ending run.");
               awardMoney();
@@ -189,9 +358,11 @@ function update(deltaTime) {
           }
         }
       } else {
-        // Calculate sprite scale using a sine curve for a smooth jump arc.
-        // At progress = 0 => scale = 1; at progress = 0.5 => scale = TWEAK.jumpPeakScale; at progress = 1 => scale = 1.
-        let scale = 1 + (TWEAK.jumpPeakScale - 1) * Math.sin(Math.PI * progress) * player.jumpHeightFactor;
+        // Calculate sprite scale using a sine curve for a smooth jump arc
+        // Base scale from jumpPeakScale (2x at peak) plus any Rocket Surgery zoom bonus
+        let baseScale = TWEAK.jumpPeakScale + player.jumpZoomBonus;
+        let scale = 1 + (baseScale - 1) * Math.sin(Math.PI * progress) * player.jumpHeightFactor;
+        
         player.width = player.baseWidth * scale;
         player.height = player.baseHeight * scale;
       }
@@ -217,6 +388,8 @@ function update(deltaTime) {
           player.velocityY = -TWEAK.bounceImpulse;
           player.absY = prevAbsY - TWEAK.bounceImpulse;
           player.collisions++;
+          // Remove the obstacle we hit
+          terrain.splice(i, 1);
           if (player.collisions >= TWEAK.getMaxCollisions()) {
             console.log("Max collisions reached. Ending run.");
             awardMoney();
@@ -290,8 +463,21 @@ function update(deltaTime) {
 function gameLoop(timestamp) {
   let deltaTime = timestamp - lastTime;
   lastTime = timestamp;
+  
+  // Update game state
   update(deltaTime);
+  
+  // Update and clean up floating texts
+  floatingTexts = floatingTexts.filter(text => text.update(deltaTime));
+  
+  // Draw everything
   drawEntities();
+  
+  // Draw floating texts last so they're on top
+  ctx.save();
+  floatingTexts.forEach(text => text.draw(ctx, player.absY - canvas.height / 2));
+  ctx.restore();
+  
   requestAnimationFrame(gameLoop);
 }
 
@@ -312,12 +498,16 @@ Object.keys(mountainUpgrades).forEach(upg => {
     purchaseUpgrade(mountainUpgrades, upg);
   });
 });
+// Initialize core game systems
+generateTerrain(); // Generate terrain once at game start
+changeState(GameState.HOUSE);
+requestAnimationFrame(gameLoop);
+
+// Set up event listeners
 document.getElementById("startGame").addEventListener("click", () => {
   console.log("Start run clicked.");
   changeState(GameState.DOWNHILL);
 });
-changeState(GameState.HOUSE);
-requestAnimationFrame(gameLoop);
 
 function takePhoto() {
   let now = Date.now();
@@ -375,7 +565,8 @@ function takePhoto() {
   let totalMoney = Math.floor(baseValue * altitudeMatchBonus * centerBonus * movementBonus * animalTypeMultiplier * repeatPenalty);
 
   player.money += totalMoney;
-  updateMoneyDisplay();
+  showMoneyGain(totalMoney, `(📸 ${activeAnimal.type})`);
+  addFloatingText(`+$${totalMoney} 📸`, player.x, player.absY);
   console.log(`📸 Captured ${activeAnimal.type}! Calculation details: Base=$${baseValue}, AltitudeBonus=${altitudeMatchBonus.toFixed(2)}, CenterBonus=${centerBonus.toFixed(2)}, MovementBonus=${movementBonus.toFixed(2)}, AnimalTypeMultiplier=${animalTypeMultiplier}, RepeatPenalty=${repeatPenalty}, Total=$${totalMoney}.`);
 
   activeAnimal.hasBeenPhotographed = true;
@@ -400,12 +591,47 @@ function onPlayerJumpPeak() {
   // You can optionally add a distinct sound here if desired.
 }
 
-function onPlayerLand() {
-  console.log("Landed from jump.");
-  // Stop the jump sound
+function cleanupJumpSound() {
   if (jumpOsc) {
     jumpOsc.stop();
+    jumpOsc.disconnect();
     jumpOsc = null;
+  }
+  if (jumpGain) {
+    jumpGain.disconnect();
     jumpGain = null;
   }
+}
+
+function onPlayerLand() {
+  console.log("Landed from jump.");
+  cleanupJumpSound();
+}
+
+function startTrick(trickName) {
+  // Don't start a new trick if one is already running
+  if (player.currentTrick) return;
+
+  // Start the trick
+  player.currentTrick = trickName;
+  player.trickTimer = 0;
+  player.trickRotation = 0;
+  player.trickOffset = 0;
+
+  // Calculate cooldown penalty (0 to 1, where 1 means full value)
+  let now = Date.now();
+  let cooldownEnd = player.trickCooldowns[trickName] || 0;
+  let timeLeft = Math.max(0, cooldownEnd - now);
+  player.currentTrickValueMultiplier = timeLeft > 0 ?
+    Math.max(0.1, 1 - (timeLeft / TWEAK._trickCooldown)) : 1;
+
+  // Update cooldown timestamp
+  player.trickCooldowns[trickName] = now + TWEAK._trickCooldown;
+  
+  // Debug logging
+  console.log(`Starting ${trickName} (Value: ${(player.currentTrickValueMultiplier * 100).toFixed(0)}%)`);
+}
+
+function playTrickCompleteSound() {
+  playTone(600, "sine", 0.1, 0.2); // Short, high-pitched success sound
 }
