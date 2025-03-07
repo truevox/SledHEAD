@@ -87,12 +87,23 @@ function update(deltaTime) {
         player.canJump = false;
         player.isCharging = false;
         
-        // Calculate jump boost from Rocket Surgery
-        let rocketBoost = 1 + (playerUpgrades.rocketSurgery * TWEAK._rocketSurgeryJumpBoost);
-        player.jumpHeightFactor = rocketBoost;      // Boost jump height
-        player.jumpDuration = TWEAK._baseJumpDuration * rocketBoost;  // Extend jump duration
+        // Calculate Rocket Surgery bonuses
+        let heightBonus = 1 + (playerUpgrades.rocketSurgery * TWEAK.jumpHeightPerRocketSurgery);
+        let timeBonus = 1 + (playerUpgrades.rocketSurgery * TWEAK.jumpTimePerRocketSurgery);
+        
+        // Calculate zoom scale based on height increase
+        let heightIncrease = heightBonus - 1;  // Convert 1.5x to 50% increase
+        let extraZoom = heightIncrease * TWEAK.jumpZoomPerHeightIncrease;
+        
+        player.jumpHeightFactor = heightBonus;     // Apply height boost
+        player.jumpDuration = TWEAK.jumpBaseAscent * timeBonus;  // Apply duration boost
+        player.jumpZoomBonus = extraZoom;          // Store zoom bonus for visuals
         player.jumpTimer = 0;
         player.hasReachedJumpPeak = false;
+        
+        if (playerUpgrades.rocketSurgery > 0) {
+          console.log(`Jump boosted by Rocket Surgery ${playerUpgrades.rocketSurgery}: Height x${heightBonus.toFixed(2)}, Time x${timeBonus.toFixed(2)}, Zoom +${(extraZoom*100).toFixed(0)}%`);
+        }
         onPlayerJumpStart();
       }
     }
@@ -476,14 +487,21 @@ function onPlayerJumpPeak() {
   // You can optionally add a distinct sound here if desired.
 }
 
-function onPlayerLand() {
-  console.log("Landed from jump.");
-  // Stop the jump sound
+function cleanupJumpSound() {
   if (jumpOsc) {
     jumpOsc.stop();
+    jumpOsc.disconnect();
     jumpOsc = null;
+  }
+  if (jumpGain) {
+    jumpGain.disconnect();
     jumpGain = null;
   }
+}
+
+function onPlayerLand() {
+  console.log("Landed from jump.");
+  cleanupJumpSound();
 }
 
 function startTrick(trickName) {
