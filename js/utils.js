@@ -18,7 +18,7 @@ var TWEAK = {
     // Jumping stuff
     jumpType: "immediate",               // "immediate" or "charge" - DO NOT REMOVE
     jumpCollisionMultiplier: 3,
-    jumpBaseAscent: 500,                 // Base ascent time (ms)
+    jumpBaseAscent: 1000,                 // Base ascent time (ms)
     jumpMaxHoldTime: 1000,               // Maximum charge duration (1 sec)
     jumpPeakScale: 2,                    // Base peak visual jump scale
     jumpHeightPerRocketSurgery: 0.05,    // Each level adds 5% to jump height
@@ -46,8 +46,8 @@ var TWEAK = {
     
     // Underlying base values
     _sledMass: 1.0,
-    _baseGravity: 0.2,
-    _baseHorizontalAccel: 0.15,
+    _baseGravity: 0.1,
+    _baseHorizontalAccel: 0.25,
     _baseFriction: 0.95,
     _baseMaxXVel: 3,
     _rocketSurgeryFactorPerLevel: 0.1,

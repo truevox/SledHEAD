@@ -9,6 +9,38 @@ var currentState = GameState.HOUSE;
 var jumpOsc = null;
 var jumpGain = null;
 
+// Floating text system
+var floatingTexts = [];
+class FloatingText {
+  constructor(text, x, y) {
+    this.text = text;
+    this.x = x;
+    this.y = y;
+    this.age = 0;
+    this.lifetime = 1000; // 1 second
+    this.offsetY = 0;
+  }
+
+  update(deltaTime) {
+    this.age += deltaTime;
+    this.offsetY -= deltaTime * 0.05; // Float upward
+    return this.age < this.lifetime;
+  }
+
+  draw(ctx, cameraY) {
+    const alpha = 1 - (this.age / this.lifetime);
+    ctx.fillStyle = `rgba(255, 255, 0, ${alpha})`;
+    ctx.font = "16px Arial";
+    ctx.textAlign = "center";
+    const screenY = this.y - cameraY + this.offsetY;
+    ctx.fillText(this.text, this.x, screenY);
+  }
+}
+
+function addFloatingText(text, x, y) {
+  floatingTexts.push(new FloatingText(text, x, y - 30)); // Offset up by 30 pixels
+}
+
 
 function changeState(newState) {
   currentState = newState;
@@ -58,9 +90,19 @@ function updateLiveMoney() {
   if (moneyEarned > lastMoneyMilestone && moneyEarned % 10 === 0) {
     lastMoneyMilestone = moneyEarned;
     playMoneyGainSound(); // 🔊 Play money sound only at 1, 10, 100, 1000...
+    showMoneyGain(moneyEarned);
   }
+}
 
-  // Add a visual bounce effect
+// Generic function to show money gained with bounce effect
+function showMoneyGain(amount, source = "") {
+  let moneyText = document.getElementById("moneyText");
+  if (source) {
+    moneyText.textContent = `Money: $${player.money} (+$${amount} ${source})`;
+  } else {
+    moneyText.textContent = `Money: $${player.money} (+$${amount})`;
+  }
+  
   moneyText.classList.add("money-increase");
   setTimeout(() => {
     moneyText.classList.remove("money-increase");
@@ -214,7 +256,8 @@ function update(deltaTime) {
           trickMoney *= player.currentTrickValueMultiplier;
           let finalMoney = Math.floor(trickMoney);
           player.money += finalMoney;
-          updateMoneyDisplay();
+          showMoneyGain(finalMoney, `(${player.currentTrick})`);
+          addFloatingText(`+$${finalMoney} ${player.currentTrick}`, player.x, player.absY);
           
           // Log trick completion with detailed money breakdown
           console.log(`🎯 ${player.currentTrick} completed! +$${finalMoney} (Chain: x${chainBonus.toFixed(2)}, Value: ${(player.currentTrickValueMultiplier * 100).toFixed(0)}%)`);
@@ -377,8 +420,21 @@ function update(deltaTime) {
 function gameLoop(timestamp) {
   let deltaTime = timestamp - lastTime;
   lastTime = timestamp;
+  
+  // Update game state
   update(deltaTime);
+  
+  // Update and clean up floating texts
+  floatingTexts = floatingTexts.filter(text => text.update(deltaTime));
+  
+  // Draw everything
   drawEntities();
+  
+  // Draw floating texts last so they're on top
+  ctx.save();
+  floatingTexts.forEach(text => text.draw(ctx, player.absY - canvas.height / 2));
+  ctx.restore();
+  
   requestAnimationFrame(gameLoop);
 }
 
@@ -462,7 +518,8 @@ function takePhoto() {
   let totalMoney = Math.floor(baseValue * altitudeMatchBonus * centerBonus * movementBonus * animalTypeMultiplier * repeatPenalty);
 
   player.money += totalMoney;
-  updateMoneyDisplay();
+  showMoneyGain(totalMoney, `(📸 ${activeAnimal.type})`);
+  addFloatingText(`+$${totalMoney} 📸`, player.x, player.absY);
   console.log(`📸 Captured ${activeAnimal.type}! Calculation details: Base=$${baseValue}, AltitudeBonus=${altitudeMatchBonus.toFixed(2)}, CenterBonus=${centerBonus.toFixed(2)}, MovementBonus=${movementBonus.toFixed(2)}, AnimalTypeMultiplier=${animalTypeMultiplier}, RepeatPenalty=${repeatPenalty}, Total=$${totalMoney}.`);
 
   activeAnimal.hasBeenPhotographed = true;
