@@ -343,6 +343,8 @@ function update(deltaTime) {
             player.velocityY = -TWEAK.bounceImpulse * TWEAK.jumpCollisionMultiplier;
             player.absY -= TWEAK.bounceImpulse * TWEAK.jumpCollisionMultiplier;
             player.collisions++;
+            // Remove the obstacle we hit
+            terrain.splice(i, 1);
             if (player.collisions >= TWEAK.getMaxCollisions()) {
               console.log("Max collisions reached on landing. Ending run.");
               awardMoney();
@@ -386,6 +388,8 @@ function update(deltaTime) {
           player.velocityY = -TWEAK.bounceImpulse;
           player.absY = prevAbsY - TWEAK.bounceImpulse;
           player.collisions++;
+          // Remove the obstacle we hit
+          terrain.splice(i, 1);
           if (player.collisions >= TWEAK.getMaxCollisions()) {
             console.log("Max collisions reached. Ending run.");
             awardMoney();
