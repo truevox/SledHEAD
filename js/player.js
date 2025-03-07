@@ -35,7 +35,8 @@ let player = {
   jumpDuration: 0,           // Total duration of the jump (ascent + descent)
   jumpChargeTime: 0,         // Accumulated hold time for charge mode
   hasReachedJumpPeak: false, // Flag to trigger the peak hook only once per jump
-  jumpHeightFactor: 0,       // Normalized jump height factor (0 to 1) based on charge
+  jumpHeightFactor: 0,       // Height multiplier from Rocket Surgery (1.0 = normal)
+  jumpZoomBonus: 0,         // Extra zoom from increased jump height
   baseWidth: 20,             // Original sprite width (for scaling)
   baseHeight: 20             // Original sprite height (for scaling)
 };

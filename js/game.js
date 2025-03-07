@@ -86,8 +86,11 @@ function update(deltaTime) {
         player.isJumping = true;
         player.canJump = false;
         player.isCharging = false;
-        player.jumpHeightFactor = 1;      // Full height jump
-        player.jumpDuration = 500;         // Base jump duration (ms)
+        
+        // Calculate jump boost from Rocket Surgery
+        let rocketBoost = 1 + (playerUpgrades.rocketSurgery * TWEAK._rocketSurgeryJumpBoost);
+        player.jumpHeightFactor = rocketBoost;      // Boost jump height
+        player.jumpDuration = TWEAK._baseJumpDuration * rocketBoost;  // Extend jump duration
         player.jumpTimer = 0;
         player.hasReachedJumpPeak = false;
         onPlayerJumpStart();
@@ -260,9 +263,11 @@ function update(deltaTime) {
           }
         }
       } else {
-        // Calculate sprite scale using a sine curve for a smooth jump arc.
-        // At progress = 0 => scale = 1; at progress = 0.5 => scale = TWEAK.jumpPeakScale; at progress = 1 => scale = 1.
-        let scale = 1 + (TWEAK.jumpPeakScale - 1) * Math.sin(Math.PI * progress) * player.jumpHeightFactor;
+        // Calculate sprite scale using a sine curve for a smooth jump arc
+        // Base scale from jumpPeakScale (2x at peak) plus any Rocket Surgery zoom bonus
+        let baseScale = TWEAK.jumpPeakScale + player.jumpZoomBonus;
+        let scale = 1 + (baseScale - 1) * Math.sin(Math.PI * progress) * player.jumpHeightFactor;
+        
         player.width = player.baseWidth * scale;
         player.height = player.baseHeight * scale;
       }

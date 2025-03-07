@@ -20,7 +20,10 @@ var TWEAK = {
     jumpCollisionMultiplier: 3,
     jumpBaseAscent: 500,                 // Base ascent time (ms)
     jumpMaxHoldTime: 1000,               // Maximum charge duration (1 sec)
-    jumpPeakScale: 2,                    // Peak visual jump scale
+    jumpPeakScale: 2,                    // Base peak visual jump scale
+    jumpHeightPerRocketSurgery: 0.05,    // Each level adds 5% to jump height
+    jumpTimePerRocketSurgery: 0.05,      // Each level adds 5% to jump duration
+    jumpZoomPerHeightIncrease: 0.5,      // For every 100% height increase, add 50% more zoom
 
 
     // Camera and aiming
