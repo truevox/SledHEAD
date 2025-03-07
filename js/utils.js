@@ -56,8 +56,19 @@ var TWEAK = {
     _starterCash: 200, // Jacked up for testing
     
     _bounceImpulse: 3,  // New bounce impulse value
+
+    // Trick system configuration
+    _trickCooldown: 10000,         // Base cooldown per trick (10 sec)
+    _trickTimeMultiplier: 1.0,     // Global trick duration multiplier
+    _trickTimeAdder: 0,            // Global trick duration additive time
+    _trickBaseDuration: 500,       // Base duration for tricks (ms)
+    _trickRotationSpeed: 360,      // Degrees per second for helicopter tricks
+    _trickOffsetDistance: 30,      // Pixels to offset sled for air brake/parachute
+    _trickMoneyBase: 50,           // Base money earned per trick
+    _trickChainMultiplier: 1.5,    // Multiplier for chaining different tricks
     
     // Getters to apply tweakNob multiplier
+
     get sledMass() { return this._sledMass * this.tweakNob; },
     set sledMass(val) { this._sledMass = val; },
     

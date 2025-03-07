@@ -235,8 +235,41 @@ function drawEntities() {
     }
   });
   let playerDrawY = player.absY - cameraOffset;
+
+  // Draw player & sled based on current trick state
+  ctx.save();  // Save the current context state
+  
+  // Apply trick-specific transformations
+  if (player.currentTrick) {
+    if (player.currentTrick === "leftHelicopter" || player.currentTrick === "rightHelicopter") {
+      // Rotate around center for helicopter tricks
+      ctx.translate(player.x, playerDrawY);
+      ctx.rotate(player.trickRotation * Math.PI / 180);
+      ctx.translate(-player.x, -playerDrawY);
+    } else if (player.currentTrick === "airBrake" || player.currentTrick === "parachute") {
+      // Offset for air brake/parachute tricks
+      if (player.currentTrick === "airBrake") {
+        playerDrawY += player.trickOffset;  // Move sled behind player
+      } else {
+        playerDrawY -= player.trickOffset;  // Move player above sled for parachute
+      }
+    }
+  }
+
+  // Draw the sled (red square)
   ctx.fillStyle = "#FF0000";
   ctx.fillRect(player.x - player.width / 2, playerDrawY - player.height / 2, player.width, player.height);
+
+  // Draw the player (yellow circle) - only if doing air brake or parachute
+  if (player.currentTrick === "airBrake" || player.currentTrick === "parachute") {
+    ctx.fillStyle = "#FFFF00";
+    ctx.beginPath();
+    ctx.arc(player.x, playerDrawY - player.trickOffset, player.width / 3, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  ctx.restore();  // Restore the context state
+  
   drawCameraOverlay();
   drawAnimal();
 }

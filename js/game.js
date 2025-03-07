@@ -68,6 +68,7 @@ function updateLiveMoney() {
 }
 
 function update(deltaTime) {
+  deltaTime *= 0.25;
   if (currentState === GameState.DOWNHILL) {
     let rocketFactor = 1 + (playerUpgrades.rocketSurgery * TWEAK.rocketSurgeryFactorPerLevel);
     let gravity = TWEAK.baseGravity * rocketFactor;
@@ -150,15 +151,76 @@ function update(deltaTime) {
       }
       
 
+      // Check for trick inputs during jump
+      if (!player.currentTrick && player.isJumping) {
+        if (keysDown["ArrowLeft"]) {
+          startTrick("leftHelicopter");
+        } else if (keysDown["ArrowRight"]) {
+          startTrick("rightHelicopter");
+        } else if (keysDown["ArrowUp"]) {
+          startTrick("airBrake");
+        } else if (keysDown["ArrowDown"]) {
+          startTrick("parachute");
+        }
+      }
+
+      // Update active trick if one is running
+      if (player.currentTrick) {
+        player.trickTimer += deltaTime;
+        let trickProgress = player.trickTimer / (TWEAK._trickBaseDuration * TWEAK._trickTimeMultiplier + TWEAK._trickTimeAdder);
+
+        // Update trick-specific animations
+        switch (player.currentTrick) {
+          case "leftHelicopter":
+            player.trickRotation -= TWEAK._trickRotationSpeed * (deltaTime / 1000);
+            break;
+          case "rightHelicopter":
+            player.trickRotation += TWEAK._trickRotationSpeed * (deltaTime / 1000);
+            break;
+          case "airBrake":
+          case "parachute":
+            player.trickOffset = TWEAK._trickOffsetDistance * Math.sin(Math.PI * trickProgress);
+            break;
+        }
+
+        // Check for trick completion
+        if (trickProgress >= 1) {
+          // Award money based on chain multiplier
+          let trickMoney = TWEAK._trickMoneyBase;
+          if (player.lastTrick && player.lastTrick !== player.currentTrick) {
+            player.trickChainCount++;
+            trickMoney *= Math.pow(TWEAK._trickChainMultiplier, player.trickChainCount);
+          } else {
+            player.trickChainCount = 0;
+          }
+          player.money += Math.floor(trickMoney);
+          updateMoneyDisplay();
+
+          // Reset trick state
+          player.lastTrick = player.currentTrick;
+          player.currentTrick = null;
+          player.trickTimer = 0;
+          player.trickRotation = 0;
+          player.trickOffset = 0;
+          playTrickCompleteSound();
+        }
+      }
+
       if (!player.hasReachedJumpPeak && progress >= 0.5) {
         player.hasReachedJumpPeak = true;
         onPlayerJumpPeak();
       }
       if (progress >= 1) {
-        // End jump: reset jump state and restore sprite scale
+        // End jump: reset jump state, trick state, and restore sprite scale
         player.isJumping = false;
         player.jumpTimer = 0;
         player.hasReachedJumpPeak = false;
+        player.currentTrick = null;
+        player.trickTimer = 0;
+        player.trickRotation = 0;
+        player.trickOffset = 0;
+        player.lastTrick = null;
+        player.trickChainCount = 0;
         player.width = player.baseWidth;
         player.height = player.baseHeight;
         onPlayerLand();
@@ -408,4 +470,28 @@ function onPlayerLand() {
     jumpOsc = null;
     jumpGain = null;
   }
+}
+
+function startTrick(trickName) {
+  // Don't start a new trick if one is already running
+  if (player.currentTrick) return;
+
+  // Check cooldown
+  if (player.trickCooldowns[trickName] > Date.now()) return;
+
+  // Start the trick
+  player.currentTrick = trickName;
+  player.trickTimer = 0;
+  player.trickRotation = 0;
+  player.trickOffset = 0;
+
+  // Set cooldown
+  player.trickCooldowns[trickName] = Date.now() + TWEAK._trickCooldown;
+  
+  // Debug logging
+  console.log(`Starting trick: ${trickName} | Timer: ${player.trickTimer} | Rotation: ${player.trickRotation} | Offset: ${player.trickOffset}`);
+}
+
+function playTrickCompleteSound() {
+  playTone(600, "sine", 0.1, 0.2); // Short, high-pitched success sound
 }

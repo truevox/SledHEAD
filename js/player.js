@@ -13,6 +13,20 @@ let player = {
   cameraAngle: 270,  // Camera rotation in degrees
   altitudeLine: 50,  // Starts at 50% of the view range
 
+  // Trick system properties
+  currentTrick: null,        // Currently active trick
+  trickTimer: 0,            // Time elapsed in current trick
+  trickRotation: 0,         // Current rotation angle for helicopter tricks
+  trickOffset: 0,           // Current offset for air brake/parachute
+  lastTrick: null,          // Last completed trick for chain tracking
+  trickChainCount: 0,       // Number of different tricks chained
+  trickCooldowns: {         // Individual cooldown timers for each trick
+    leftHelicopter: 0,
+    rightHelicopter: 0,
+    airBrake: 0,
+    parachute: 0
+  },
+
   // *** NEW: Jump State Properties ***
   isJumping: false,          // Are we in a jump?
   isCharging: false,         // For "charge" mode to accumulate jump time
