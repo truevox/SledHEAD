@@ -15,24 +15,26 @@ class FloatingText {
   constructor(text, x, y) {
     this.text = text;
     this.x = x;
-    this.y = y;
+    this.initialY = y; // Store initial Y position relative to player
     this.age = 0;
     this.lifetime = 1000; // 1 second
-    this.offsetY = 0;
+    this.visualOffsetY = -30; // Start above player
   }
 
   update(deltaTime) {
     this.age += deltaTime;
-    this.offsetY -= deltaTime * 0.05; // Float upward
+    this.visualOffsetY -= deltaTime * 0.25; // Slow upward float
     return this.age < this.lifetime;
   }
 
   draw(ctx, cameraY) {
     const alpha = 1 - (this.age / this.lifetime);
-    ctx.fillStyle = `rgba(255, 255, 0, ${alpha})`;
-    ctx.font = "16px Arial";
+    // Black text with alpha
+    ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
+    ctx.font = "bold 24px Arial";
     ctx.textAlign = "center";
-    const screenY = this.y - cameraY + this.offsetY;
+    // Follow player's Y position plus visual offset
+    const screenY = player.absY - cameraY + this.visualOffsetY;
     ctx.fillText(this.text, this.x, screenY);
   }
 }
