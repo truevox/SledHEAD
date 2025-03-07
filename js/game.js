@@ -23,7 +23,8 @@ function updateLoanButton() {
       document.getElementById("victoryBanner").style.display = "block";
     } else {
       loanButton.textContent = `Pay Loan ($${loanAmount.toLocaleString()})`;
-      loanButton.disabled = player.money <= 0;
+      // Only disable if loan is paid off
+      loanButton.disabled = loanAmount <= 0;
     }
   }
 }
