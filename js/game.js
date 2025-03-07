@@ -68,7 +68,7 @@ function updateLiveMoney() {
 }
 
 function update(deltaTime) {
-  deltaTime *= 0.25;
+  deltaTime *= 1;
   if (currentState === GameState.DOWNHILL) {
     let rocketFactor = 1 + (playerUpgrades.rocketSurgery * TWEAK.rocketSurgeryFactorPerLevel);
     let gravity = TWEAK.baseGravity * rocketFactor;
@@ -185,16 +185,25 @@ function update(deltaTime) {
 
         // Check for trick completion
         if (trickProgress >= 1) {
-          // Award money based on chain multiplier
+          // Award money based on chain multiplier and cooldown value
           let trickMoney = TWEAK._trickMoneyBase;
+          let chainBonus = 1;
           if (player.lastTrick && player.lastTrick !== player.currentTrick) {
             player.trickChainCount++;
-            trickMoney *= Math.pow(TWEAK._trickChainMultiplier, player.trickChainCount);
+            chainBonus = Math.pow(TWEAK._trickChainMultiplier, player.trickChainCount);
+            trickMoney *= chainBonus;
           } else {
             player.trickChainCount = 0;
           }
-          player.money += Math.floor(trickMoney);
+          
+          // Apply cooldown penalty
+          trickMoney *= player.currentTrickValueMultiplier;
+          let finalMoney = Math.floor(trickMoney);
+          player.money += finalMoney;
           updateMoneyDisplay();
+          
+          // Log trick completion with detailed money breakdown
+          console.log(`🎯 ${player.currentTrick} completed! +$${finalMoney} (Chain: x${chainBonus.toFixed(2)}, Value: ${(player.currentTrickValueMultiplier * 100).toFixed(0)}%)`);
 
           // Reset trick state
           player.lastTrick = player.currentTrick;
@@ -476,20 +485,24 @@ function startTrick(trickName) {
   // Don't start a new trick if one is already running
   if (player.currentTrick) return;
 
-  // Check cooldown
-  if (player.trickCooldowns[trickName] > Date.now()) return;
-
   // Start the trick
   player.currentTrick = trickName;
   player.trickTimer = 0;
   player.trickRotation = 0;
   player.trickOffset = 0;
 
-  // Set cooldown
-  player.trickCooldowns[trickName] = Date.now() + TWEAK._trickCooldown;
+  // Calculate cooldown penalty (0 to 1, where 1 means full value)
+  let now = Date.now();
+  let cooldownEnd = player.trickCooldowns[trickName] || 0;
+  let timeLeft = Math.max(0, cooldownEnd - now);
+  player.currentTrickValueMultiplier = timeLeft > 0 ?
+    Math.max(0.1, 1 - (timeLeft / TWEAK._trickCooldown)) : 1;
+
+  // Update cooldown timestamp
+  player.trickCooldowns[trickName] = now + TWEAK._trickCooldown;
   
   // Debug logging
-  console.log(`Starting trick: ${trickName} | Timer: ${player.trickTimer} | Rotation: ${player.trickRotation} | Offset: ${player.trickOffset}`);
+  console.log(`Starting ${trickName} (Value: ${(player.currentTrickValueMultiplier * 100).toFixed(0)}%)`);
 }
 
 function playTrickCompleteSound() {

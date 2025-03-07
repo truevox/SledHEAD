@@ -179,25 +179,16 @@ function spawnAnimal() {
 function updateAnimal() {
     if (!activeAnimal) return;
 
-    // Debugging logs in updateAnimal function
-    console.log(`Update Animal - State: ${activeAnimal.state}, Pos: (${activeAnimal.x.toFixed(2)}, ${activeAnimal.y.toFixed(2)})`);
-
     if (activeAnimal.state === "fleeing") {
-        // Debug log when animal starts fleeing
+        // Log only when animal starts fleeing
         if (activeAnimal.fleeingLogOnce !== true) {
-            console.log(`Animal fleeing - Angle: ${activeAnimal.fleeAngleActual.toFixed(2)}, Speed: ${activeAnimal.speed.toFixed(2)}`);
-            activeAnimal.fleeingLogOnce = true; // Prevent repeated logs
+            console.log(`🦁 Animal fleeing - Type: ${activeAnimal.type}, Angle: ${activeAnimal.fleeAngleActual.toFixed(2)}°`);
+            activeAnimal.fleeingLogOnce = true;
         }
 
         let rad = activeAnimal.fleeAngleActual * Math.PI / 180;
-        activeAnimal.x += Math.cos(rad) * activeAnimal.speed * 0.5; // Slow down flee speed by 50%
-        activeAnimal.y += Math.sin(rad) * activeAnimal.speed * 0.5; // Slow down flee speed by 50%
-
-        // Debug log during fleeing movement
-        console.log(`Animal fleeing - Pos: (${activeAnimal.x.toFixed(2)}, ${activeAnimal.y.toFixed(2)})`);
-
-        // Debug log for animal position relative to screen bounds
-        console.log(`Animal position: (${activeAnimal.x.toFixed(2)}, ${activeAnimal.y.toFixed(2)}), Canvas: ${canvas.width}x${canvas.height}`);
+        activeAnimal.x += Math.cos(rad) * activeAnimal.speed * 0.5;
+        activeAnimal.y += Math.sin(rad) * activeAnimal.speed * 0.5;
         
         // Despawn the animal if it moves off screen horizontally or too far down vertically
         if (

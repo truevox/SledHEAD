@@ -18,7 +18,7 @@ var TWEAK = {
     // Jumping stuff
     jumpType: "immediate",               // "immediate" or "charge" - DO NOT REMOVE
     jumpCollisionMultiplier: 3,
-    jumpBaseAscent: 300,                 // Base ascent time (ms)
+    jumpBaseAscent: 500,                 // Base ascent time (ms)
     jumpMaxHoldTime: 1000,               // Maximum charge duration (1 sec)
     jumpPeakScale: 2,                    // Peak visual jump scale
 
@@ -58,12 +58,12 @@ var TWEAK = {
     _bounceImpulse: 3,  // New bounce impulse value
 
     // Trick system configuration
-    _trickCooldown: 10000,         // Base cooldown per trick (10 sec)
+    _trickCooldown: 5000,          // Base cooldown per trick (5 sec)
     _trickTimeMultiplier: 1.0,     // Global trick duration multiplier
     _trickTimeAdder: 0,            // Global trick duration additive time
-    _trickBaseDuration: 500,       // Base duration for tricks (ms)
-    _trickRotationSpeed: 360,      // Degrees per second for helicopter tricks
-    _trickOffsetDistance: 30,      // Pixels to offset sled for air brake/parachute
+    _trickBaseDuration: 150,       // Base duration for tricks (ms)
+    _trickRotationSpeed: 1080,     // Degrees per second for helicopter tricks (3 full spins)
+    _trickOffsetDistance: 40,      // Pixels to offset sled for air brake/parachute
     _trickMoneyBase: 50,           // Base money earned per trick
     _trickChainMultiplier: 1.5,    // Multiplier for chaining different tricks
     
