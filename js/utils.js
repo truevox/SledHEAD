@@ -25,6 +25,17 @@ var TWEAK = {
     jumpTimePerRocketSurgery: 0.05,      // Each level adds 5% to jump duration
     jumpZoomPerHeightIncrease: 0.5,      // For every 100% height increase, add 50% more zoom
 
+    // Re-Hit Jump System
+    reHitWindowStart: 0.70,              // When re-hit window opens (70% through jump)
+    reHitIndicatorScale: 2.5,            // Size multiplier for indicator circle
+    reHitIndicatorColor: "rgba(255, 0, 255, 0.4)",  // Bright magenta with more opacity
+    reHitIndicatorOutlineColor: "#FF00FF", // Solid magenta outline
+    reHitBonusDuration: 1.2,             // Duration multiplier for re-hit jumps
+    
+    // Trick Physics Adjustments
+    parachuteGravityFactor: 0.8,         // Gravity reduction during parachute
+    airBrakeFrictionMultiplier: 0.85,    // Speed reduction during air brake
+
 
     // Camera and aiming
     basePOVAngle: 30,

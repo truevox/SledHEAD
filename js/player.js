@@ -31,6 +31,7 @@ let player = {
   isJumping: false,          // Are we in a jump?
   isCharging: false,         // For "charge" mode to accumulate jump time
   canJump: true,             // Ensures jump is triggered only once per key press
+  reHitActivated: false,     // Prevents multiple re-hits during one key press
   jumpTimer: 0,              // Elapsed time since jump started (ms)
   jumpDuration: 0,           // Total duration of the jump (ascent + descent)
   jumpChargeTime: 0,         // Accumulated hold time for charge mode

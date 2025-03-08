@@ -225,6 +225,46 @@ function update(deltaTime) {
       player.jumpTimer += deltaTime;
       let progress = player.jumpTimer / player.jumpDuration;
 
+      // Check for re-hit window and draw indicator if we're in it
+      if (progress >= TWEAK.reHitWindowStart && progress < 1.0) {
+        // Draw indicator above all other elements
+        ctx.save();
+        ctx.beginPath();
+        const radius = (player.baseWidth * TWEAK.reHitIndicatorScale) / 2;
+        
+        // Pin indicator directly below the player with a fixed offset
+        const indicatorY = player.absY - getCameraOffset(player.absY, canvas.height, mountainHeight) + player.height;
+        
+        // Draw with glow effect
+        ctx.shadowColor = TWEAK.reHitIndicatorOutlineColor;
+        ctx.shadowBlur = 15;
+        ctx.globalCompositeOperation = 'source-over';
+        
+        // Draw the indicator circle with animation
+        const pulseScale = 1 + Math.sin(Date.now() / 100) * 0.1; // Subtle pulse animation
+        ctx.arc(player.x, indicatorY, radius * pulseScale, 0, Math.PI * 2);
+        ctx.fillStyle = TWEAK.reHitIndicatorColor;
+        ctx.fill();
+        ctx.strokeStyle = TWEAK.reHitIndicatorOutlineColor;
+        ctx.stroke();
+        ctx.closePath();
+        ctx.restore();
+        
+        // Check for jump key press during re-hit window
+        if (keysDown[" "] && !player.reHitActivated && !player.isCharging) {
+          console.log("Re-hit jump activated!");
+          player.reHitActivated = true;  // Prevent further re-hits until key release
+          // Reset jump timer but keep the chain and current velocity
+          player.jumpTimer = 0;
+          player.jumpDuration *= TWEAK.reHitBonusDuration;
+          // Reset jump charge for new jump while keeping the trick chain
+          player.jumpHeightFactor = 1;
+          // Play feedback
+          playTone(600, "sine", 0.1, 0.3);
+          return;
+        }
+      }
+
       if (player.isJumping && jumpOsc) {
         // Define frequency values in Hz:
         let f_start = 300;
@@ -404,8 +444,14 @@ function update(deltaTime) {
     }
 
     // Continue with normal physics updates
-    player.velocityY += gravity;
+    // Use base gravity during jumps to keep jump height consistent
+    player.velocityY += player.isJumping ? TWEAK.baseGravity : gravity;
     player.absY += player.velocityY;
+
+    // Track peak height during jump
+    if (player.isJumping && player.absY > player.jumpPeakY) {
+        player.jumpPeakY = player.absY;
+    }
 
     if (keysDown["a"]) { player.xVel -= horizontalAccel; }
     if (keysDown["d"]) { player.xVel += horizontalAccel; }
@@ -460,6 +506,38 @@ function update(deltaTime) {
   }
 }
 
+function drawReHitIndicator() {
+  if (!player.isJumping) return;
+  
+  const progress = player.jumpTimer / player.jumpDuration;
+  if (progress >= TWEAK.reHitWindowStart && progress < 1.0) {
+    // Draw indicator on top of everything
+    ctx.save();
+    ctx.beginPath();
+    
+    const radius = (player.baseWidth * TWEAK.reHitIndicatorScale) / 2;
+    const cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
+    const screenY = canvas.height/2 + (player.absY - cameraOffset - canvas.height/2);
+    
+    // Extra visible effects
+    ctx.shadowColor = TWEAK.reHitIndicatorOutlineColor;
+    ctx.shadowBlur = 20;
+    ctx.lineWidth = 3;
+    
+    // Animated scale
+    const pulseScale = 1 + Math.sin(Date.now() / 100) * 0.1;
+    ctx.arc(player.x, screenY, radius * pulseScale, 0, Math.PI * 2);
+    
+    // Draw fill and stroke
+    ctx.fillStyle = TWEAK.reHitIndicatorColor;
+    ctx.fill();
+    ctx.strokeStyle = TWEAK.reHitIndicatorOutlineColor;
+    ctx.stroke();
+    ctx.closePath();
+    ctx.restore();
+  }
+}
+
 function gameLoop(timestamp) {
   let deltaTime = timestamp - lastTime;
   lastTime = timestamp;
@@ -473,10 +551,13 @@ function gameLoop(timestamp) {
   // Draw everything
   drawEntities();
   
-  // Draw floating texts last so they're on top
+  // Draw floating texts
   ctx.save();
   floatingTexts.forEach(text => text.draw(ctx, player.absY - canvas.height / 2));
   ctx.restore();
+  
+  // Draw re-hit indicator last, on top of everything
+  drawReHitIndicator();
   
   requestAnimationFrame(gameLoop);
 }
@@ -571,9 +652,12 @@ function takePhoto() {
 
   activeAnimal.hasBeenPhotographed = true;
 }
-
 function onPlayerJumpStart() {
-  console.log("Jump initiated!");
+  player.jumpStartTime = performance.now();
+  player.jumpStartY = player.absY;
+  player.jumpPeakY = player.absY;
+  console.log("🦘 Jump initiated at Y:", player.jumpStartY.toFixed(1));
+  // Create a new oscillator and gain node for the jump sound
   // Create a new oscillator and gain node for the jump sound
   unlockAudioContext();
   jumpOsc = audioCtx.createOscillator();
@@ -604,7 +688,10 @@ function cleanupJumpSound() {
 }
 
 function onPlayerLand() {
-  console.log("Landed from jump.");
+  const jumpTime = (performance.now() - player.jumpStartTime) / 1000; // Convert to seconds
+  const jumpHeight = player.jumpPeakY - player.jumpStartY;
+  const totalDistance = player.absY - player.jumpStartY;
+  console.log(`🏁 Jump complete! Time: ${jumpTime.toFixed(2)}s, Peak Height: ${jumpHeight.toFixed(1)}, Total Distance: ${totalDistance.toFixed(1)}`);
   cleanupJumpSound();
 }
 
