@@ -19,6 +19,8 @@
 6. [Game Balance & Tweakable Variables](#game-balance--tweakable-variables)
 7. [Mountain Themes & Progression](#mountain-themes--progression)
 8. [Mini-Games in SledHEAD](#mini-games-in-sledhead)
+9. [NPCs & Mountain Town Ecosystem](#npcs--mountain-town-ecosystem)
+
 
 ---
 
@@ -553,3 +555,130 @@ All these are stored in the **TWEAK object** for easy adjustments:
   - Avalanche races, night rides, and hazard runs.
 - **Risk/Challenge:**  
   - Limited battery life, high winds, and signal loss in deep snow.
+
+## 🏔️ **NPCs & Mountain Town Ecosystem**
+SledHEAD’s world is filled with **unique characters** who contribute to your journey as a **trick-riding, fan-growing, upgrade-building, sled-stunting** legend. Some run the town, some enhance your sledding skills, and others add depth to the **roguelike adventure**.
+
+---
+
+### 🏡 **Core Resort & Business Owners (Essential Infrastructure)**
+These **support your base mountain**—they run the town, drive your economy, and keep the game loop running.
+
+#### 🏂 **The Sled Tech (Sled Repairs & Mods)**
+- **Purpose:** Repairs damage, sells sled mods.
+- **Upgrades Unlocked:** **Custom wax, shock absorbers, reinforced sleds.**
+- **Best Quote:** “What’d ya do, run into a moose? I can fix it… for a price.”
+
+#### 🍔 **The Food Vendor (Buffs & Endurance Recovery)**
+- **Purpose:** Sells food that restores stamina and gives **temporary buffs** for sledding.
+- **Best Quote:** “Hot cocoa makes you go faster, I swear. Try it.”
+
+#### 🎥 **The Stream Manager (Audience Growth & Sponsorships)**
+- **Purpose:** Manages your in-game audience; unlocks **sponsorship deals**.
+- **Best Quote:** “If you don’t clip the trick, did you even land it?”
+
+#### 🏁 **The Race Commissioner (Tournaments & Time Trials)**
+- **Purpose:** Hosts **time trials, speedrun events, and competitive circuits**.
+- **Best Quote:** “Half a second off the record? C’mon, I thought you were good.”
+
+#### 🚠 **The Lift Operator (Ski Lift & Shortcut Unlocks)**
+- **Purpose:** Lets you **unlock ski lifts** for quicker uphill trips.
+- **Upgrades Unlocked:** **Gondola expansions, VIP lift passes.**
+- **Best Quote:** “Sure, you could walk… or you could bribe me.”
+
+---
+
+### 💨 **Trick & Racing-Oriented NPCs (For Stunts, Style, & Money)**
+These folks help you **push your limits**, pull off **sick tricks**, and **maximize profits**.
+
+#### 🎿 **The Trick Trainer (Advanced Trick Lessons)**
+- **Purpose:** Unlocks **trick combos & advanced air control.**
+- **Best Quote:** “No guts, no glory. You wanna spin faster? Listen up.”
+
+#### 📸 **The Hype Photographer (Proof-Based Challenges & Bonus Money)**
+- **Purpose:** **Trick verification & photography mini-games**.
+- **Upgrades Unlocked:** **Slow-mo replays, sponsorship boosts for sick shots.**
+- **Best Quote:** “A trick’s only worth money if people see it.”
+
+#### 💰 **The Black Market Gear Dealer (Risky Upgrades & Illegal Mods)**
+- **Purpose:** Sells **risky sled tech** (illegal nitro boosts, magnetized rails for grinds).
+- **Upgrades Unlocked:** **Unstable overclocked sled parts**.
+- **Best Quote:** “No refunds. Don’t ask what’s in it.”
+
+#### 🤡 **The Stunt Organizer (Jackass-Style Events & Side Hustles)**
+- **Purpose:** Hosts **insane trick challenges** with **huge risk & reward**.
+- **Best Quote:** “Land a quadruple flip, and I’ll give you something real nice.”
+
+---
+
+### 🌎 **Worldbuilding NPCs (Exploration, Hidden Routes, & Fan Engagement)**
+These folks **expand the world** and **give reasons to explore**.
+
+#### ⛷️ **The Retired Pro (Hidden Sledding Routes & Legend Quests)**
+- **Purpose:** Tells **lore, hidden trails, and backstory of previous champions.**
+- **Upgrades Unlocked:** **Secret mountain shortcuts & sled blueprints.**
+- **Best Quote:** “Before you, there was someone else. And he disappeared.”
+
+#### 🦊 **The Wildlife Researcher (Animal Photography & Rare Fan Unlocks)**
+- **Purpose:** Ties into **wildlife photography mini-games**.
+- **Upgrades Unlocked:** **Animal-based sled skins & rare sponsor deals.**
+- **Best Quote:** “Snow leopards? They’re watching you, too.”
+
+#### 📡 **The Event Broadcaster (Commentary & Competitive Meta)**
+- **Purpose:** Gives **updates on leaderboards, rival NPCs, and changing conditions**.
+- **Upgrades Unlocked:** **"Breaking News" reports on your achievements.**
+- **Best Quote:** “The fans are watching, buddy. Make it count.”
+
+---
+
+### 🛤️ **The Travel-Ready NPCs (Appear Across Multiple Mountains)**
+They **don’t just stay in one place**—you’ll run into them as you unlock new peaks.
+
+#### 🎭 **The Rival (Dynamic Trick & Time Trial Duels)**
+- **Purpose:** Appears on any unlocked mountain to **challenge your records**.
+- **Best Quote:** “Your best time? That’s cute.”
+
+#### 🛠️ **The Tinkerer (Experimental Sled Mods)**
+- **Purpose:** Sells **unstable, high-risk sled modifications**.
+- **Upgrades Unlocked:** **Prototype sled tech.**
+- **Best Quote:** “This is 50% science and 50% dumb luck.”
+
+#### 🎩 **The Mysterious Merchant (Random Legendary Gear)**
+- **Purpose:** Appears randomly, selling **rare sleds & gear**.
+- **Best Quote:** “You don’t know what you need… until you see it.”
+
+---
+
+### 🎭 **The Wild Cards (Weird & Legendary NPCs)**
+These folks are **just strange**, but they add **flavor, mystery, and unpredictability**.
+
+#### 👻 **The Ghost of the Mountain (Phantom Races & Haunted Challenges)**
+- **Purpose:** Unlocks **ghost time trials & haunted trick courses**.
+- **Best Quote:** “You ride my path, you race my shadow.”
+
+#### 🧙‍♂️ **The Winter Shaman (Weather Manipulation & Magic Sleds)**
+- **Purpose:** **Controls mountain weather** for harder/easier runs.
+- **Best Quote:** “Blizzards make legends.”
+
+#### 🐻 **The Bear Whisperer (Bear Sled Racing Mini-Game)**
+- **Purpose:** Lets you **race against trained bears** for money.
+- **Best Quote:** “You sled. They sled. Only one wins.”
+
+#### 🥶 **The Ice Sculptor (Sled Cosmetics & Customization)**
+- **Purpose:** Crafts **one-of-a-kind sled designs**.
+- **Best Quote:** “Your ride should be a masterpiece.”
+
+#### 🔮 **The Time Traveler (Future & Past Sled Tech)**
+- **Purpose:** Unlocks **anachronistic sled models** (steampunk, cyberpunk, caveman logs).
+- **Best Quote:** “The future’s fast. The past is brutal.”
+
+---
+
+## **🏔️ Final Thoughts**
+This crew **perfectly balances**:
+✅ **Core game economy & upgrades**  
+✅ **High-speed trick-focused gameplay**  
+✅ **Exploration & hidden content**  
+✅ **Hilarious but valuable side NPCs**  
+
+These **NPCs make the town feel alive, push competitive play, and add world depth**. Get ready to **build, race, trick, and explore** with this **cast of unforgettable characters**.  
