@@ -47,7 +47,7 @@ In the **downhill phase**, you’re controlling your sled as it races down proce
 #### **Trick System:**
 - Tricks are executed using combinations of **Up, Down, Left, and Right Arrows**.
 - Landing tricks successfully grants extra money and fan engagement.
-- Be mindful of **landing angles**—mess up, and you could crash!
+- Be mindful of your timing - land while doing a trick, and you could crash!
 
 #### **Hazards & Interactions:**
 - **Tourists:** Sometimes they move, sometimes they don’t—dodge carefully!
@@ -72,7 +72,7 @@ Once you reach the bottom, it’s time to **make your way back up**. The mountai
 - **Food Stalls & Rest Areas** restore stamina—plan your route accordingly!
 
 #### **Wildlife Photography Mini-Game 📸**
-- While hiking, **animals appear every 5-10 seconds**.
+- While hiking, **animals appear every few seconds**.
 - Aim the camera using **Arrow Keys**, and take a shot with **Spacebar**.
 - Align your camera with the **altitude line** for a perfect photo.
 - **Moving animals give higher rewards** but are harder to capture.
