@@ -6,7 +6,8 @@ import { changeState, GameStates } from '../game.js';
 
 export default class UphillScene {
   constructor() {
-    console.log("UphillScene: Starting uphill climb.");
+    const timestamp = new Date().toISOString();
+    console.log(`[${timestamp}] 🚠 SCENE: UphillScene initialized, starting uphill climb`);
     player.xVel = 0;
   }
 
@@ -37,6 +38,8 @@ export default class UphillScene {
 
     if (player.absY <= 0) {
       player.absY = 0;
+      const timestamp = new Date().toISOString();
+      console.log(`[${timestamp}] 🔙 SCENE: UphillScene complete, transitioning to HouseScene`);
       changeState(GameStates.HOUSE);
     }
   }

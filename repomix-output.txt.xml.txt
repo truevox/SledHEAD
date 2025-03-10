@@ -1,0 +1,2736 @@
+This file is a merged representation of a subset of the codebase, containing files not matching ignore patterns, combined into a single document by Repomix.
+The content has been processed where empty lines have been removed, line numbers have been added.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching these patterns are excluded: OLD Codebase.xml
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Empty lines have been removed from all files
+- Line numbers have been added to the beginning of each line
+</notes>
+
+<additional_info>
+
+</additional_info>
+
+</file_summary>
+
+<directory_structure>
+src/
+  gameplay/
+    Fans.js
+    Obstacles.js
+    Player.js
+    Terrain.js
+    Wildlife.js
+  mechanics/
+    LoanSystem.js
+    PhotoSystem.js
+    StaminaSystem.js
+    TrickSystem.js
+    UpgradeSystem.js
+  rendering/
+    Camera.js
+    Effects.js
+    Renderer.js
+  scenes/
+    BootScene.js
+    DownhillScene.js
+    HouseScene.js
+    MainMenuScene.js
+    UIScene.js
+    UphillScene.js
+  utils/
+    AudioUtils.js
+    Constants.js
+    MathUtils.js
+    PhysicsUtils.js
+    UIUtils.js
+  game.js
+.gitignore
+index.html
+LICENSE.md
+README.md
+styles.css
+todo.txt
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="src/gameplay/Fans.js">
+1: // src/gameplay/Fans.js
+2: export function updateFans(deltaTime) {
+3:     // Placeholder for fan logic (cheering interactions, etc.)
+4:   }
+5:   export function drawFans(ctx) {
+6:     // Placeholder for drawing fans on the canvas
+7:   }
+</file>
+
+<file path="src/gameplay/Obstacles.js">
+1: // src/gameplay/Obstacles.js
+2: export { terrain } from './Terrain.js';
+3: // Additional obstacle-related logic can be added here.
+</file>
+
+<file path="src/gameplay/Player.js">
+ 1: // src/gameplay/Player.js
+ 2: export const player = {
+ 3:     x: window.innerWidth / 2,
+ 4:     absY: 0,
+ 5:     width: 20,
+ 6:     height: 20,
+ 7:     velocityY: 0,
+ 8:     xVel: 0,
+ 9:     collisions: 0,
+10:     bestTime: Infinity,
+11:     money: 200, // Starter cash
+12:     cameraAngle: 270,
+13:     altitudeLine: 50,
+14:     currentTrick: null,
+15:     trickTimer: 0,
+16:     trickRotation: 0,
+17:     trickOffset: 0,
+18:     lastTrick: null,
+19:     trickChainCount: 0,
+20:     trickCooldowns: {
+21:       leftHelicopter: 0,
+22:       rightHelicopter: 0,
+23:       airBrake: 0,
+24:       parachute: 0
+25:     },
+26:     isJumping: false,
+27:     isCharging: false,
+28:     canJump: true,
+29:     reHitActivated: false,
+30:     jumpTimer: 0,
+31:     jumpDuration: 0,
+32:     jumpChargeTime: 0,
+33:     hasReachedJumpPeak: false,
+34:     jumpHeightFactor: 0,
+35:     jumpZoomBonus: 0,
+36:     baseWidth: 20,
+37:     baseHeight: 20,
+38:     jumpStartTime: 0,
+39:     jumpStartY: 0,
+40:     jumpPeakY: 0,
+41:     jumpOsc: null,
+42:     jumpGain: null
+43:   };
+44:   export function onPlayerJumpStart() {
+45:     player.isJumping = true;
+46:     player.canJump = false;
+47:     player.reHitActivated = false;
+48:     player.jumpTimer = 0;
+49:     player.jumpDuration = 800; // Base jump duration in ms
+50:     player.jumpHeightFactor = 1;
+51:     player.jumpStartTime = performance.now();
+52:     player.jumpStartY = player.absY;
+53:     player.jumpPeakY = player.absY;
+54:     player.velocityY = -10; // Initial upward velocity
+55:     console.log("🦘 Jump initiated at Y:", player.jumpStartY.toFixed(1));
+56:     // Initialize jump sound
+57:     import('../utils/AudioUtils.js').then(({ onPlayerJumpStart: initJumpSound }) => {
+58:       initJumpSound();
+59:     });
+60:   }
+61:   export function onPlayerJumpPeak() {
+62:     console.log("Reached peak of jump.");
+63:     // Trigger jump peak sound effect
+64:     import('../utils/AudioUtils.js').then(({ onPlayerJumpPeak: triggerJumpPeakSound }) => {
+65:       triggerJumpPeakSound();
+66:     });
+67:   }
+68:   export function cleanupJumpSound() {
+69:     // Use the AudioUtils version of cleanupJumpSound
+70:     import('../utils/AudioUtils.js').then(({ cleanupJumpSound: cleanupAudio }) => {
+71:       cleanupAudio();
+72:     });
+73:   }
+74:   export function onPlayerLand() {
+75:     const jumpTime = (performance.now() - player.jumpStartTime) / 1000;
+76:     const jumpHeight = player.jumpPeakY - player.jumpStartY;
+77:     const totalDistance = player.absY - player.jumpStartY;
+78:     console.log(`🏁 Jump complete! Time: ${jumpTime.toFixed(2)}s, Peak Height: ${jumpHeight.toFixed(1)}, Total Distance: ${totalDistance.toFixed(1)}`);
+79:     cleanupJumpSound();
+80:   }
+</file>
+
+<file path="src/gameplay/Terrain.js">
+ 1: // src/gameplay/Terrain.js
+ 2: export let terrain = [];
+ 3: export function generateTerrain() {
+ 4:   terrain = [];
+ 5:   let numObstacles = 20;
+ 6:   for (let i = 0; i < numObstacles; i++) {
+ 7:     terrain.push({
+ 8:       x: Math.random() * window.innerWidth,
+ 9:       y: i * 150 + 100,
+10:       width: 30,
+11:       height: 30
+12:     });
+13:   }
+14: }
+15: import { checkCollision, resolveCollision } from '../utils/PhysicsUtils.js';
+16: export function updateTerrainCollisions(player) {
+17:   for (let i = 0; i < terrain.length; i++) {
+18:     let obstacle = terrain[i];
+19:     if (checkCollision(
+20:       player.x - player.width / 2, player.absY - player.height / 2,
+21:       player.width, player.height,
+22:       obstacle.x, obstacle.y,
+23:       obstacle.width, obstacle.height
+24:     )) {
+25:       resolveCollision(player, obstacle);
+26:     }
+27:   }
+28: }
+</file>
+
+<file path="src/gameplay/Wildlife.js">
+  1: // src/gameplay/Wildlife.js
+  2: import { player } from './Player.js';
+  3: import { getCameraOffset } from '../utils/MathUtils.js';
+  4: import { checkCollision, resolveCollision } from '../utils/PhysicsUtils.js';
+  5: import { addFloatingText, playTone, updateMoneyDisplay } from '../utils/UIUtils.js';
+  6: export let activeAnimal = null;
+  7: let lastPhotoTime = 0;
+  8: // Constants for photo system
+  9: const TWEAK = {
+ 10:   photoCooldown: 1000, // 1 second cooldown between photos
+ 11:   basePhotoValue: 200, // Base money value for a photo
+ 12:   altitudeMatchMultiplier: 2.5, // Bonus for matching altitude
+ 13:   centerPOVMultiplier: 2.0, // Bonus for centering the animal
+ 14:   movingAnimalMultiplier: 1.5, // Bonus for photographing moving animals
+ 15:   bearMultiplier: 1.5, // Bonus for photographing bears
+ 16:   birdMultiplier: 1.2, // Bonus for photographing birds
+ 17:   repeatPhotoPenalty: 0.5, // Penalty for photographing the same animal again
+ 18:   basePOVAngle: 60 // Base field of view angle for the camera
+ 19: };
+ 20: export function spawnAnimal() {
+ 21:   if (activeAnimal) return;
+ 22:   let type = Math.random() < 0.5 ? "bear" : "bird";
+ 23:   let isBear = (type === "bear");
+ 24:   let spawnX = (window.innerWidth * 0.1) + (Math.random() * window.innerWidth * 0.9);
+ 25:   let spawnY = player.absY - (window.innerHeight / 2);
+ 26:   activeAnimal = {
+ 27:     type: type,
+ 28:     x: spawnX,
+ 29:     y: spawnY,
+ 30:     altitude: isBear ? 20 : 80,
+ 31:     width: isBear ? player.width * 2 : player.width / 2,
+ 32:     height: isBear ? player.height * 2 : player.height / 2,
+ 33:     state: "sitting",
+ 34:     hasBeenPhotographed: false,
+ 35:     idleTime: Math.random() * (20000 - 1000) + 1000,
+ 36:     speed: Math.random() * (11.2 - 5) + 5,
+ 37:     fleeAngleActual: 0,
+ 38:     despawnTimer: null
+ 39:   };
+ 40:   console.log(`[Spawn] ${activeAnimal.type} spawned.`);
+ 41:   setTimeout(() => {
+ 42:     if (activeAnimal) {
+ 43:       activeAnimal.state = "fleeing";
+ 44:       let baseAngle = spawnX > window.innerWidth / 2 
+ 45:         ? (Math.random() * (170 - 135) + 135) 
+ 46:         : (Math.random() * (55 - 20) + 20);
+ 47:       let angleOffset = Math.random() * 45;
+ 48:       activeAnimal.fleeAngleActual = baseAngle + (Math.random() < 0.5 ? -angleOffset : angleOffset);
+ 49:       console.log(`[Flee] ${activeAnimal.type} fleeing at angle ${activeAnimal.fleeAngleActual.toFixed(2)}°`);
+ 50:     }
+ 51:   }, activeAnimal.idleTime);
+ 52: }
+ 53: export function updateAnimal() {
+ 54:   if (!activeAnimal) return;
+ 55:   if (activeAnimal.state === "fleeing") {
+ 56:     if (!activeAnimal.fleeingLogOnce) {
+ 57:       console.log(`Animal fleeing - Type: ${activeAnimal.type}`);
+ 58:       activeAnimal.fleeingLogOnce = true;
+ 59:     }
+ 60:     let rad = activeAnimal.fleeAngleActual * Math.PI / 180;
+ 61:     activeAnimal.x += Math.cos(rad) * activeAnimal.speed * 0.5;
+ 62:     activeAnimal.y += Math.sin(rad) * activeAnimal.speed * 0.5;
+ 63:     if (activeAnimal.x < -100 || activeAnimal.x > window.innerWidth + 100 || activeAnimal.y > player.absY + 1000) {
+ 64:       console.log("Animal moved off screen - removed");
+ 65:       activeAnimal = null;
+ 66:       setTimeout(spawnAnimal, Math.random() * (10000 - 5000) + 5000);
+ 67:     }
+ 68:   }
+ 69: }
+ 70: export function updateWildlifeCollision(player) {
+ 71:   if (activeAnimal) {
+ 72:     if (checkCollision(
+ 73:       player.x - player.width / 2, player.absY - player.height / 2,
+ 74:       player.width, player.height,
+ 75:       activeAnimal.x, activeAnimal.y,
+ 76:       activeAnimal.width, activeAnimal.height
+ 77:     )) {
+ 78:       resolveCollision(player, activeAnimal);
+ 79:     }
+ 80:   }
+ 81: }
+ 82: export function drawAnimal(ctx) {
+ 83:   if (!activeAnimal) return;
+ 84:   let cameraOffset = getCameraOffset(player.absY, window.innerHeight, 1000);
+ 85:   ctx.fillStyle = activeAnimal.type === "bear" ? "#000000" : "#800080";
+ 86:   ctx.fillRect(activeAnimal.x, activeAnimal.y - cameraOffset, activeAnimal.width, activeAnimal.height);
+ 87: }
+ 88: /**
+ 89:  * Check if an animal is inside the player's camera field of view
+ 90:  * @param {Object} animal - The animal to check
+ 91:  * @returns {boolean} - Whether the animal is in the camera's field of view
+ 92:  */
+ 93: function isAnimalInsideCone(animal) {
+ 94:   if (!animal) return false;
+ 95:   // Calculate angle to animal
+ 96:   let animalAngle = Math.atan2(animal.y - player.absY, animal.x - player.x) * (180 / Math.PI);
+ 97:   if (animalAngle < 0) animalAngle += 360;
+ 98:   // Calculate difference in angle
+ 99:   let diffAngle = Math.abs(animalAngle - player.cameraAngle);
+100:   if (diffAngle > 180) diffAngle = 360 - diffAngle;
+101:   // Check if animal is within camera cone
+102:   return diffAngle <= TWEAK.basePOVAngle / 2;
+103: }
+104: /**
+105:  * Take a photo of an animal if one is in view
+106:  * @returns {boolean} - Whether a photo was successfully taken
+107:  */
+108: export function takePhoto() {
+109:   const now = Date.now();
+110:   // Check cooldown
+111:   if (now - lastPhotoTime < TWEAK.photoCooldown) return false;
+112:   // Check if there's an animal in view
+113:   if (!activeAnimal || !isAnimalInsideCone(activeAnimal)) return false;
+114:   // Update last photo time
+115:   lastPhotoTime = now;
+116:   // Calculate photo value
+117:   let baseValue = TWEAK.basePhotoValue;
+118:   // Altitude bonus: Exponential falloff within 50 units
+119:   let diffAlt = Math.abs(player.altitudeLine - activeAnimal.altitude);
+120:   let altitudeMatchBonus;
+121:   if (diffAlt > 50) {
+122:     altitudeMatchBonus = 1;
+123:   } else {
+124:     altitudeMatchBonus = 1 + (TWEAK.altitudeMatchMultiplier - 1) * Math.exp(-diffAlt / 15);
+125:   }
+126:   // Center bonus: Exponential taper based on angle difference
+127:   let animalAngle = Math.atan2(activeAnimal.y - player.absY, activeAnimal.x - player.x) * (180 / Math.PI);
+128:   if (animalAngle < 0) animalAngle += 360;
+129:   let diffAngle = Math.abs(animalAngle - player.cameraAngle);
+130:   if (diffAngle > 180) diffAngle = 360 - diffAngle;
+131:   const sweetSpotPercentage = 0.10;
+132:   const sweetSpotAngle = TWEAK.basePOVAngle * sweetSpotPercentage;
+133:   let centerBonus;
+134:   if (diffAngle <= sweetSpotAngle) {
+135:     centerBonus = TWEAK.centerPOVMultiplier;
+136:   } else if (diffAngle < TWEAK.basePOVAngle / 2) {
+137:     let factor = (diffAngle - sweetSpotAngle) / (TWEAK.basePOVAngle / 2 - sweetSpotAngle);
+138:     centerBonus = 1 + (TWEAK.centerPOVMultiplier - 1) * Math.exp(-factor * 3);
+139:   } else {
+140:     centerBonus = 1;
+141:   }
+142:   // Movement bonus: Applies when the animal is not sitting
+143:   let movementBonus = activeAnimal.state !== "sitting" ? TWEAK.movingAnimalMultiplier : 1;
+144:   // Animal type multiplier
+145:   let animalTypeMultiplier = activeAnimal.type === "bear" ? TWEAK.bearMultiplier : TWEAK.birdMultiplier;
+146:   // Repeat penalty
+147:   let repeatPenalty = activeAnimal.hasBeenPhotographed ? TWEAK.repeatPhotoPenalty : 1;
+148:   // Calculate total money
+149:   let totalMoney = Math.floor(
+150:     baseValue * 
+151:     altitudeMatchBonus * 
+152:     centerBonus * 
+153:     movementBonus * 
+154:     animalTypeMultiplier * 
+155:     repeatPenalty
+156:   );
+157:   // Add money to player
+158:   player.money += totalMoney;
+159:   updateMoneyDisplay();
+160:   // Show floating text with enhanced styling
+161:   addFloatingText(
+162:     `+$${totalMoney} 📸 ${activeAnimal.type}`, 
+163:     player.x, 
+164:     player.absY,
+165:     { 
+166:       color: '#00FFFF', // Cyan color for photos
+167:       size: 28,
+168:       lifetime: 1500 // Longer lifetime for photo notifications
+169:     }
+170:   );
+171:   // Play camera sound
+172:   playPhotoSound();
+173:   // Mark animal as photographed
+174:   activeAnimal.hasBeenPhotographed = true;
+175:   console.log(`📸 Captured ${activeAnimal.type}! Money: +$${totalMoney}`);
+176:   return true;
+177: }
+178: /**
+179:  * Play a camera shutter sound
+180:  */
+181: function playPhotoSound() {
+182:   // High pitch click sound
+183:   playTone(1200, "sine", 0.05, 0.2);
+184:   // Then a lower confirmation tone
+185:   setTimeout(() => {
+186:     playTone(800, "sine", 0.1, 0.15);
+187:   }, 50);
+188: }
+</file>
+
+<file path="src/mechanics/LoanSystem.js">
+ 1: // src/mechanics/LoanSystem.js
+ 2: import { player } from '../gameplay/Player.js';
+ 3: import { updateMoneyDisplay, playTone } from '../utils/UIUtils.js';
+ 4: // Initial loan amount
+ 5: let loanAmount = 100000;
+ 6: /**
+ 7:  * Updates the loan payment button text and state based on the current loan amount
+ 8:  */
+ 9: export function updateLoanButton() {
+10:   const loanButton = document.getElementById("payLoan");
+11:   if (loanButton) {
+12:     if (loanAmount <= 0) {
+13:       loanButton.textContent = "LOAN PAID OFF!";
+14:       loanButton.disabled = true;
+15:       // Show victory banner
+16:       document.getElementById("victoryBanner").style.display = "block";
+17:     } else {
+18:       loanButton.textContent = `Pay Loan ($${loanAmount.toLocaleString()})`;
+19:       // Never disable the button as long as there's a loan to pay
+20:       loanButton.disabled = false;
+21:     }
+22:   }
+23: }
+24: /**
+25:  * Processes a loan payment using the player's available money
+26:  */
+27: export function payLoan() {
+28:   if (player.money > 0) {
+29:     const payment = Math.min(player.money, loanAmount);
+30:     loanAmount -= payment;
+31:     player.money -= payment;
+32:     updateMoneyDisplay();
+33:     updateLoanButton();
+34:     if (loanAmount <= 0) {
+35:       console.log("🎉 Loan paid off! Victory!");
+36:       playTone(800, "sine", 0.3, 0.5); // Victory sound
+37:     } else {
+38:       console.log(`💰 Loan payment: $${payment}. Remaining: $${loanAmount}`);
+39:       playTone(600, "sine", 0.1, 0.2); // Payment sound
+40:     }
+41:   }
+42: }
+43: /**
+44:  * Returns the current loan amount
+45:  */
+46: export function getLoanAmount() {
+47:   return loanAmount;
+48: }
+49: /**
+50:  * Sets up the loan payment button and initializes the loan system
+51:  */
+52: export function initLoanSystem() {
+53:   const loanButton = document.getElementById("payLoan");
+54:   if (loanButton) {
+55:     loanButton.addEventListener("click", payLoan);
+56:     updateLoanButton();
+57:   }
+58: }
+</file>
+
+<file path="src/mechanics/PhotoSystem.js">
+  1: // src/mechanics/PhotoSystem.js
+  2: import { player } from '../gameplay/Player.js';
+  3: import { activeAnimal } from '../gameplay/Wildlife.js';
+  4: import { addFloatingText } from '../utils/UIUtils.js';
+  5: import { playTone } from '../utils/UIUtils.js';
+  6: // Constants for photo system
+  7: const PHOTO_SETTINGS = {
+  8:   baseCooldown: 1000, // 1 second cooldown between photos
+  9:   basePhotoValue: 200, // Base money value for a photo
+ 10:   altitudeMatchMultiplier: 2.5, // Bonus for matching altitude
+ 11:   centerPOVMultiplier: 2.0, // Bonus for centering the animal
+ 12:   movingAnimalMultiplier: 1.5, // Bonus for photographing moving animals
+ 13:   bearMultiplier: 1.5, // Bonus for photographing bears
+ 14:   birdMultiplier: 1.2, // Bonus for photographing birds
+ 15:   repeatPhotoPenalty: 0.5 // Penalty for photographing the same animal again
+ 16: };
+ 17: let lastPhotoTime = 0;
+ 18: /**
+ 19:  * Check if an animal is inside the player's camera field of view
+ 20:  * @param {Object} animal - The animal to check
+ 21:  * @returns {boolean} - Whether the animal is in the camera's field of view
+ 22:  */
+ 23: function isAnimalInsideCone(animal) {
+ 24:   if (!animal) return false;
+ 25:   // Calculate angle to animal
+ 26:   let animalAngle = Math.atan2(animal.y - player.absY, animal.x - player.x) * (180 / Math.PI);
+ 27:   if (animalAngle < 0) animalAngle += 360;
+ 28:   // Calculate difference in angle
+ 29:   let diffAngle = Math.abs(animalAngle - player.cameraAngle);
+ 30:   if (diffAngle > 180) diffAngle = 360 - diffAngle;
+ 31:   // Base POV angle (could be modified by upgrades later)
+ 32:   const povAngle = 60;
+ 33:   // Check if animal is within camera cone
+ 34:   return diffAngle <= povAngle / 2;
+ 35: }
+ 36: /**
+ 37:  * Take a photo of an animal if one is in view
+ 38:  * @returns {boolean} - Whether a photo was successfully taken
+ 39:  */
+ 40: export function takePhoto() {
+ 41:   const now = Date.now();
+ 42:   // Check cooldown
+ 43:   if (now - lastPhotoTime < PHOTO_SETTINGS.baseCooldown) return false;
+ 44:   // Check if there's an animal in view
+ 45:   if (!activeAnimal || !isAnimalInsideCone(activeAnimal)) return false;
+ 46:   // Update last photo time
+ 47:   lastPhotoTime = now;
+ 48:   // Calculate photo value
+ 49:   let baseValue = PHOTO_SETTINGS.basePhotoValue;
+ 50:   // Altitude bonus
+ 51:   let diffAlt = Math.abs(player.altitudeLine - activeAnimal.altitude);
+ 52:   let altitudeMatchBonus = diffAlt <= 50 
+ 53:     ? 1 + (PHOTO_SETTINGS.altitudeMatchMultiplier - 1) * Math.exp(-diffAlt / 15) 
+ 54:     : 1;
+ 55:   // Center bonus
+ 56:   let animalAngle = Math.atan2(activeAnimal.y - player.absY, activeAnimal.x - player.x) * (180 / Math.PI);
+ 57:   if (animalAngle < 0) animalAngle += 360;
+ 58:   let diffAngle = Math.abs(animalAngle - player.cameraAngle);
+ 59:   if (diffAngle > 180) diffAngle = 360 - diffAngle;
+ 60:   const povAngle = 60; // Base POV angle
+ 61:   const sweetSpotPercentage = 0.10;
+ 62:   const sweetSpotAngle = povAngle * sweetSpotPercentage;
+ 63:   let centerBonus;
+ 64:   if (diffAngle <= sweetSpotAngle) {
+ 65:     centerBonus = PHOTO_SETTINGS.centerPOVMultiplier;
+ 66:   } else if (diffAngle < povAngle / 2) {
+ 67:     let factor = (diffAngle - sweetSpotAngle) / (povAngle / 2 - sweetSpotAngle);
+ 68:     centerBonus = 1 + (PHOTO_SETTINGS.centerPOVMultiplier - 1) * Math.exp(-factor * 3);
+ 69:   } else {
+ 70:     centerBonus = 1;
+ 71:   }
+ 72:   // Movement bonus
+ 73:   let movementBonus = activeAnimal.state !== "sitting" 
+ 74:     ? PHOTO_SETTINGS.movingAnimalMultiplier 
+ 75:     : 1;
+ 76:   // Animal type multiplier
+ 77:   let animalTypeMultiplier = activeAnimal.type === "bear" 
+ 78:     ? PHOTO_SETTINGS.bearMultiplier 
+ 79:     : PHOTO_SETTINGS.birdMultiplier;
+ 80:   // Repeat penalty
+ 81:   let repeatPenalty = activeAnimal.hasBeenPhotographed 
+ 82:     ? PHOTO_SETTINGS.repeatPhotoPenalty 
+ 83:     : 1;
+ 84:   // Calculate total money
+ 85:   let totalMoney = Math.floor(
+ 86:     baseValue * 
+ 87:     altitudeMatchBonus * 
+ 88:     centerBonus * 
+ 89:     movementBonus * 
+ 90:     animalTypeMultiplier * 
+ 91:     repeatPenalty
+ 92:   );
+ 93:   // Add money to player
+ 94:   player.money += totalMoney;
+ 95:   // Show floating text with enhanced styling
+ 96:   addFloatingText(
+ 97:     `+$${totalMoney} 📸 ${activeAnimal.type}`, 
+ 98:     player.x, 
+ 99:     player.absY,
+100:     { 
+101:       color: '#00FFFF', // Cyan color for photos
+102:       size: 28,
+103:       lifetime: 1500 // Longer lifetime for photo notifications
+104:     }
+105:   );
+106:   // Play camera sound
+107:   playPhotoSound();
+108:   // Mark animal as photographed
+109:   activeAnimal.hasBeenPhotographed = true;
+110:   console.log(`📸 Captured ${activeAnimal.type}! Money: +$${totalMoney}`);
+111:   return true;
+112: }
+113: /**
+114:  * Play a camera shutter sound
+115:  */
+116: function playPhotoSound() {
+117:   // High pitch click sound
+118:   playTone(1200, "sine", 0.05, 0.2);
+119:   // Then a lower confirmation tone
+120:   setTimeout(() => {
+121:     playTone(800, "sine", 0.1, 0.15);
+122:   }, 50);
+123: }
+124: /**
+125:  * Initialize the photo system
+126:  */
+127: export function initPhotoSystem() {
+128:   // Set up key event listener for space bar to take photos
+129:   document.addEventListener('keydown', (event) => {
+130:     if (event.code === 'Space' && !event.repeat) {
+131:       takePhoto();
+132:     }
+133:   });
+134:   console.log("Photo system initialized");
+135: }
+</file>
+
+<file path="src/mechanics/StaminaSystem.js">
+1: // src/mechanics/StaminaSystem.js
+2: export let stamina = 100;
+3: export function updateStamina(deltaTime) {
+4:   // Decrease stamina over time (e.g., while climbing)
+5:   stamina = Math.max(0, stamina - deltaTime * 0.01);
+6: }
+7: export function resetStamina() {
+8:   stamina = 100;
+9: }
+</file>
+
+<file path="src/mechanics/TrickSystem.js">
+ 1: // src/mechanics/TrickSystem.js
+ 2: import { player } from '../gameplay/Player.js';
+ 3: import { addFloatingText, playTone, playTrickCompleteSound } from '../utils/UIUtils.js';
+ 4: export function startTrick(trickName) {
+ 5:   if (player.currentTrick) return;
+ 6:   player.currentTrick = trickName;
+ 7:   player.trickTimer = 0;
+ 8:   player.trickRotation = 0;
+ 9:   player.trickOffset = 0;
+10:   let now = Date.now();
+11:   let cooldownEnd = player.trickCooldowns[trickName] || 0;
+12:   let timeLeft = Math.max(0, cooldownEnd - now);
+13:   player.currentTrickValueMultiplier = timeLeft > 0 ? Math.max(0.1, 1 - (timeLeft / 5000)) : 1;
+14:   player.trickCooldowns[trickName] = now + 5000;
+15:   console.log(`Starting ${trickName} (Value: ${(player.currentTrickValueMultiplier * 100).toFixed(0)}%)`);
+16: }
+17: export function updateTrick(deltaTime) {
+18:   if (player.currentTrick) {
+19:     player.trickTimer += deltaTime;
+20:     switch (player.currentTrick) {
+21:       case "leftHelicopter":
+22:         player.trickRotation -= 720 * (deltaTime / 1000);
+23:         break;
+24:       case "rightHelicopter":
+25:         player.trickRotation += 720 * (deltaTime / 1000);
+26:         break;
+27:       case "airBrake":
+28:       case "parachute":
+29:         player.trickOffset = 40 * Math.sin(Math.PI * (player.trickTimer / 1000));
+30:         break;
+31:     }
+32:     if (player.trickTimer >= 1000) {
+33:       completeTrick();
+34:     }
+35:   }
+36: }
+37: function completeTrick() {
+38:   let trickMoney = 50;
+39:   let chainBonus = 1;
+40:   if (player.lastTrick && player.lastTrick !== player.currentTrick) {
+41:     player.trickChainCount++;
+42:     chainBonus = Math.pow(1.5, player.trickChainCount);
+43:     trickMoney *= chainBonus;
+44:   } else {
+45:     player.trickChainCount = 0;
+46:   }
+47:   trickMoney *= player.currentTrickValueMultiplier;
+48:   let finalMoney = Math.floor(trickMoney);
+49:   player.money += finalMoney;
+50:   addFloatingText(`+$${finalMoney} (${player.currentTrick})`, player.x, player.absY);
+51:   console.log(`${player.currentTrick} completed! +$${finalMoney}`);
+52:   player.lastTrick = player.currentTrick;
+53:   player.currentTrick = null;
+54:   player.trickTimer = 0;
+55:   player.trickRotation = 0;
+56:   player.trickOffset = 0;
+57:   playTrickCompleteSound();
+58: }
+</file>
+
+<file path="src/mechanics/UpgradeSystem.js">
+  1: // src/mechanics/UpgradeSystem.js
+  2: export let playerUpgrades = {
+  3:     rocketSurgery: 0,
+  4:     optimalOptics: 0,
+  5:     sledDurability: 0,
+  6:     fancierFootwear: 0,
+  7:     grapplingAnchor: 0,
+  8:     attendLegDay: 0,
+  9:     shortcutAwareness: 0,
+ 10:     crowdHypeman: 0,
+ 11:     crowdWeaver: 0,
+ 12:     weatherWarrior: 0
+ 13:   };
+ 14:   export let mountainUpgrades = {
+ 15:     skiLifts: 0,
+ 16:     snowmobileRentals: 0,
+ 17:     eateries: 0,
+ 18:     groomedTrails: 0,
+ 19:     firstAidStations: 0,
+ 20:     scenicOverlooks: 0,
+ 21:     advertisingRamps: 0,
+ 22:     resortLodges: 0,
+ 23:     nightLighting: 0,
+ 24:     weatherControl: 0
+ 25:   };
+ 26:   const upgradeMaxLevel = {
+ 27:     rocketSurgery: 10,
+ 28:     optimalOptics: 10,
+ 29:     sledDurability: 10,
+ 30:     fancierFootwear: 10,
+ 31:     grapplingAnchor: 0,
+ 32:     attendLegDay: 0,
+ 33:     shortcutAwareness: 0,
+ 34:     crowdHypeman: 0,
+ 35:     crowdWeaver: 0,
+ 36:     weatherWarrior: 0,
+ 37:     skiLifts: 0,
+ 38:     snowmobileRentals: 0,
+ 39:     eateries: 0,
+ 40:     groomedTrails: 0,
+ 41:     firstAidStations: 0,
+ 42:     scenicOverlooks: 0,
+ 43:     advertisingRamps: 0,
+ 44:     resortLodges: 0,
+ 45:     nightLighting: 0,
+ 46:     weatherControl: 0
+ 47:   };
+ 48:   export function getUpgradeCost(upgradeKey, currentLevel) {
+ 49:     return Math.floor(100 * Math.pow(1.1, currentLevel + 1));
+ 50:   }
+ 51:   export function getUpgradeDisplayText(upgradeKey, currentLevel, maxLevel) {
+ 52:     let text = upgradeKey.charAt(0).toUpperCase() + upgradeKey.slice(1) + ` (Lv ${currentLevel}/${maxLevel})`;
+ 53:     if (maxLevel > 0 && currentLevel < maxLevel) {
+ 54:       let cost = getUpgradeCost(upgradeKey, currentLevel);
+ 55:       text += " – Cost: $" + cost;
+ 56:     }
+ 57:     return text;
+ 58:   }
+ 59:   export function initUpgradeButtons() {
+ 60:     Object.keys(playerUpgrades).forEach(upg => {
+ 61:       initUpgradeButton(upg, playerUpgrades[upg]);
+ 62:     });
+ 63:     Object.keys(mountainUpgrades).forEach(upg => {
+ 64:       initUpgradeButton(upg, mountainUpgrades[upg]);
+ 65:     });
+ 66:   }
+ 67:   function initUpgradeButton(upgradeKey, upgradeValue) {
+ 68:     const maxLevel = upgradeMaxLevel[upgradeKey];
+ 69:     const btnId = `upgrade${upgradeKey.charAt(0).toUpperCase() + upgradeKey.slice(1)}`;
+ 70:     const button = document.getElementById(btnId);
+ 71:     if (button) {
+ 72:       button.innerText = getUpgradeDisplayText(upgradeKey, upgradeValue, maxLevel);
+ 73:       if (maxLevel === 0 || upgradeValue >= maxLevel) {
+ 74:         button.disabled = true;
+ 75:       }
+ 76:       button.addEventListener("click", () => {
+ 77:         purchaseUpgrade(upgradeKey);
+ 78:       });
+ 79:     }
+ 80:   }
+ 81:   export function purchaseUpgrade(upgradeKey) {
+ 82:     let currentLevel = playerUpgrades.hasOwnProperty(upgradeKey)
+ 83:       ? playerUpgrades[upgradeKey]
+ 84:       : mountainUpgrades[upgradeKey];
+ 85:     let maxLevel = upgradeMaxLevel[upgradeKey];
+ 86:     if (maxLevel === 0 || currentLevel >= maxLevel) {
+ 87:       console.log("Upgrade", upgradeKey, "is locked or already maxed.");
+ 88:       return;
+ 89:     }
+ 90:     const cost = getUpgradeCost(upgradeKey, currentLevel);
+ 91:     Promise.all([
+ 92:       import('../gameplay/Player.js'),
+ 93:       import('../utils/UIUtils.js')
+ 94:     ]).then(([playerModule, uiModule]) => {
+ 95:       let player = playerModule.player;
+ 96:       if (player.money < cost) {
+ 97:         console.log("Not enough money to purchase", upgradeKey, ". Cost:", cost, "Money:", player.money);
+ 98:         // Play error sound and show feedback
+ 99:         uiModule.playTone(200, "square", 0.1, 0.2);
+100:         uiModule.addFloatingText("Not enough money!", window.innerWidth / 2, window.innerHeight / 2, {
+101:           color: '#FF4444',
+102:           size: 24
+103:         });
+104:         return;
+105:       }
+106:       // Process the purchase
+107:       player.money -= cost;
+108:       if (playerUpgrades.hasOwnProperty(upgradeKey)) {
+109:         playerUpgrades[upgradeKey]++;
+110:       } else {
+111:         mountainUpgrades[upgradeKey]++;
+112:       }
+113:       // Update UI
+114:       let newLevel = playerUpgrades.hasOwnProperty(upgradeKey)
+115:         ? playerUpgrades[upgradeKey]
+116:         : mountainUpgrades[upgradeKey];
+117:       const btnId = `upgrade${upgradeKey.charAt(0).toUpperCase() + upgradeKey.slice(1)}`;
+118:       let button = document.getElementById(btnId);
+119:       if (button) {
+120:         button.innerText = getUpgradeDisplayText(upgradeKey, newLevel, maxLevel);
+121:         if (newLevel >= maxLevel) {
+122:           button.disabled = true;
+123:         }
+124:       }
+125:       // Visual and audio feedback
+126:       console.log("Purchased upgrade", upgradeKey, "New level:", newLevel, "Remaining money:", player.money);
+127:       uiModule.updateMoneyDisplay();
+128:       uiModule.playTone(600, "sine", 0.1, 0.3);
+129:       uiModule.addFloatingText(
+130:         `Upgraded ${upgradeKey} to Lv ${newLevel}!`,
+131:         window.innerWidth / 2,
+132:         window.innerHeight / 2,
+133:         {
+134:           color: '#00FF00',
+135:           size: 24
+136:         }
+137:       );
+138:     });
+139:   }
+140:   // ---- Loan System ----
+141:   import { updateMoneyDisplay, playTone } from '../utils/UIUtils.js';
+142:   export let loanAmount = 100000;
+143:   export function updateLoanButton() {
+144:     const loanButton = document.getElementById("payLoan");
+145:     if (loanButton) {
+146:       if (loanAmount <= 0) {
+147:         loanButton.textContent = "LOAN PAID OFF!";
+148:         loanButton.disabled = true;
+149:         document.getElementById("victoryBanner").style.display = "block";
+150:       } else {
+151:         loanButton.textContent = `Pay Loan ($${loanAmount.toLocaleString()})`;
+152:         loanButton.disabled = false;
+153:       }
+154:     }
+155:   }
+156:   export function payLoan() {
+157:     import('../gameplay/Player.js').then(module => {
+158:       let player = module.player;
+159:       if (player.money > 0) {
+160:         const payment = Math.min(player.money, loanAmount);
+161:         loanAmount -= payment;
+162:         player.money -= payment;
+163:         updateMoneyDisplay();
+164:         updateLoanButton();
+165:         if (loanAmount <= 0) {
+166:           console.log("🎉 Loan paid off! Victory!");
+167:           playTone(800, "sine", 0.3, 0.5);
+168:         } else {
+169:           console.log(`💰 Loan payment: $${payment}. Remaining: $${loanAmount}`);
+170:           playTone(600, "sine", 0.1, 0.2);
+171:         }
+172:       }
+173:     });
+174:   }
+</file>
+
+<file path="src/rendering/Camera.js">
+ 1: // src/rendering/Camera.js
+ 2: export default class Camera {
+ 3:     constructor(canvasHeight, mountainHeight) {
+ 4:       this.canvasHeight = canvasHeight;
+ 5:       this.mountainHeight = mountainHeight;
+ 6:       this.offset = 0;
+ 7:       this.zoom = 1;
+ 8:     }
+ 9:     update(playerAbsY) {
+10:       // Simple camera offset: center the player vertically
+11:       this.offset = playerAbsY - this.canvasHeight / 2;
+12:       // Future zoom logic can be added here if needed
+13:     }
+14:     getOffset() {
+15:       return this.offset;
+16:     }
+17:   }
+</file>
+
+<file path="src/rendering/Effects.js">
+ 1: // src/rendering/Effects.js
+ 2: import { mapRange, lerpColor } from '../utils/MathUtils.js';
+ 3: import { player } from '../gameplay/Player.js';
+ 4: import { activeAnimal } from '../gameplay/Wildlife.js';
+ 5: export function drawCameraOverlay(ctx, player, canvas, mountainHeight) {
+ 6:   // Only display overlay in UPHILL state
+ 7:   if (window.currentState !== 'UPHILL') return;
+ 8:   let cameraOffset = player.absY - (canvas.height / 2); // or use getCameraOffset()
+ 9:   let centerX = player.x;
+10:   let centerY = player.absY - cameraOffset;
+11:   let coneLength = 300;
+12:   // Calculate POV angle using a base value plus any upgrade bonus (example: 30° base and +5° per level)
+13:   let povAngle = 30 + (player.optimalOptics ? player.optimalOptics * 5 : 0);
+14:   let leftAngle = (player.cameraAngle - povAngle / 2) * (Math.PI / 180);
+15:   let rightAngle = (player.cameraAngle + povAngle / 2) * (Math.PI / 180);
+16:   ctx.fillStyle = "rgba(255, 255, 0, 0.2)";
+17:   ctx.beginPath();
+18:   ctx.moveTo(centerX, centerY);
+19:   ctx.lineTo(centerX + coneLength * Math.cos(leftAngle), centerY + coneLength * Math.sin(leftAngle));
+20:   ctx.lineTo(centerX + coneLength * Math.cos(rightAngle), centerY + coneLength * Math.sin(rightAngle));
+21:   ctx.closePath();
+22:   ctx.fill();
+23:   // Altitude line: map altitudeLine [0,100] to an offset
+24:   let offsetTop = ((coneLength / 2) + player.height);
+25:   let offsetBottom = player.height / 2;
+26:   let offset = mapRange(player.altitudeLine, 0, 100, offsetTop, offsetBottom);
+27:   let rad = player.cameraAngle * Math.PI / 180;
+28:   let lineCenterX = centerX + offset * Math.cos(rad);
+29:   let lineCenterY = centerY + offset * Math.sin(rad);
+30:   let lineLength = 100;
+31:   let perpX = -Math.sin(rad);
+32:   let perpY = Math.cos(rad);
+33:   let x1 = lineCenterX - (lineLength / 2) * perpX;
+34:   let y1 = lineCenterY - (lineLength / 2) * perpY;
+35:   let x2 = lineCenterX + (lineLength / 2) * perpX;
+36:   let y2 = lineCenterY + (lineLength / 2) * perpY;
+37:   let t = 1 - (player.altitudeLine / 100);
+38:   let altitudeColor = lerpColor("#FF0000", "#0000FF", t);
+39:   ctx.strokeStyle = altitudeColor;
+40:   ctx.lineWidth = 3;
+41:   if (activeAnimal && isAnimalInsideCone(player, activeAnimal)) {
+42:     let flashSpeed = mapRange(Math.abs(player.altitudeLine - activeAnimal.altitude), 0, 100, 10, 200);
+43:     if (Math.floor(Date.now() / flashSpeed) % 2 === 0) {
+44:       ctx.beginPath();
+45:       ctx.moveTo(x1, y1);
+46:       ctx.lineTo(x2, y2);
+47:       ctx.stroke();
+48:     }
+49:   } else {
+50:     ctx.beginPath();
+51:     ctx.moveTo(x1, y1);
+52:     ctx.lineTo(x2, y2);
+53:     ctx.stroke();
+54:   }
+55: }
+56: function isAnimalInsideCone(player, animal) {
+57:   let povAngle = 30 + (player.optimalOptics ? player.optimalOptics * 5 : 0);
+58:   let leftLimit = player.cameraAngle - povAngle / 2;
+59:   let rightLimit = player.cameraAngle + povAngle / 2;
+60:   let angleToAnimal = Math.atan2(animal.y - player.absY, animal.x - player.x) * (180 / Math.PI);
+61:   if (angleToAnimal < 0) angleToAnimal += 360;
+62:   return angleToAnimal >= leftLimit && angleToAnimal <= rightLimit;
+63: }
+</file>
+
+<file path="src/rendering/Renderer.js">
+  1: // src/rendering/Renderer.js
+  2: import { getCameraOffset, mapRange, lerpColor } from '../utils/MathUtils.js';
+  3: import { player } from '../gameplay/Player.js';
+  4: import { drawAnimal } from '../gameplay/Wildlife.js';
+  5: import { drawCameraOverlay } from './Effects.js';
+  6: import { TWEAK } from '../utils/Constants.js';
+  7: const canvas = document.getElementById('gameCanvas');
+  8: const ctx = canvas.getContext('2d');
+  9: // Floating text system for in-game notifications
+ 10: let floatingTexts = [];
+ 11: /**
+ 12:  * Adds a floating text notification at the specified position
+ 13:  * @param {string} text - The text to display
+ 14:  * @param {number} x - X coordinate
+ 15:  * @param {number} y - Y coordinate
+ 16:  * @param {object} options - Optional settings (color, size, lifetime)
+ 17:  */
+ 18: export function addFloatingText(text, x, y, options = {}) {
+ 19:   const defaults = {
+ 20:     color: '#FFD700', // Gold color by default
+ 21:     size: 24,
+ 22:     lifetime: 1000,
+ 23:     offsetY: -30 // Start above the specified position
+ 24:   };
+ 25:   const settings = {...defaults, ...options};
+ 26:   floatingTexts.push(new FloatingText(text, x, y, settings));
+ 27: }
+ 28: /**
+ 29:  * FloatingText class for rendering animated text notifications
+ 30:  */
+ 31: class FloatingText {
+ 32:   /**
+ 33:    * Create a new floating text instance
+ 34:    * @param {string} text - The text to display
+ 35:    * @param {number} x - X coordinate
+ 36:    * @param {number} y - Y coordinate
+ 37:    * @param {object} options - Display options
+ 38:    */
+ 39:   constructor(text, x, y, options) {
+ 40:     this.text = text;
+ 41:     this.x = x;
+ 42:     this.initialY = y; // Store initial Y position
+ 43:     this.age = 0;
+ 44:     this.lifetime = options.lifetime || 1000; // milliseconds
+ 45:     this.visualOffsetY = options.offsetY || -30;
+ 46:     this.color = options.color || '#FFD700';
+ 47:     this.size = options.size || 24;
+ 48:     this.fontFamily = options.fontFamily || 'Arial';
+ 49:   }
+ 50:   /**
+ 51:    * Update the floating text state
+ 52:    * @param {number} deltaTime - Time elapsed since last update
+ 53:    * @returns {boolean} - Whether the text is still active
+ 54:    */
+ 55:   update(deltaTime) {
+ 56:     this.age += deltaTime;
+ 57:     this.visualOffsetY -= deltaTime * 0.25; // Slow upward float
+ 58:     return this.age < this.lifetime;
+ 59:   }
+ 60:   /**
+ 61:    * Draw the floating text on the canvas
+ 62:    * @param {CanvasRenderingContext2D} ctx - Canvas context
+ 63:    * @param {number} cameraOffset - Camera Y offset
+ 64:    */
+ 65:   draw(ctx, cameraOffset) {
+ 66:     const alpha = 1 - (this.age / this.lifetime);
+ 67:     // Draw text with outline for better visibility
+ 68:     ctx.font = `bold ${this.size}px ${this.fontFamily}`;
+ 69:     ctx.textAlign = 'center';
+ 70:     // Calculate screen position
+ 71:     const screenY = this.initialY - cameraOffset + this.visualOffsetY;
+ 72:     // Draw text outline (black)
+ 73:     ctx.strokeStyle = `rgba(0, 0, 0, ${alpha})`;
+ 74:     ctx.lineWidth = 3;
+ 75:     ctx.strokeText(this.text, this.x, screenY);
+ 76:     // Draw text fill (color from options)
+ 77:     ctx.fillStyle = `rgba(${this.hexToRgb(this.color)}, ${alpha})`;
+ 78:     ctx.fillText(this.text, this.x, screenY);
+ 79:   }
+ 80:   /**
+ 81:    * Convert hex color to RGB for alpha blending
+ 82:    * @param {string} hex - Hex color code
+ 83:    * @returns {string} - RGB values as string
+ 84:    */
+ 85:   hexToRgb(hex) {
+ 86:     // Remove # if present
+ 87:     hex = hex.replace(/^#/, '');
+ 88:     // Parse hex values
+ 89:     let r, g, b;
+ 90:     if (hex.length === 3) {
+ 91:       r = parseInt(hex.charAt(0) + hex.charAt(0), 16);
+ 92:       g = parseInt(hex.charAt(1) + hex.charAt(1), 16);
+ 93:       b = parseInt(hex.charAt(2) + hex.charAt(2), 16);
+ 94:     } else {
+ 95:       r = parseInt(hex.substring(0, 2), 16);
+ 96:       g = parseInt(hex.substring(2, 4), 16);
+ 97:       b = parseInt(hex.substring(4, 6), 16);
+ 98:     }
+ 99:     return `${r}, ${g}, ${b}`;
+100:   }
+101: }
+102: /**
+103:  * Draws the re-hit indicator when the player is in the re-hit window
+104:  * @param {CanvasRenderingContext2D} ctx - Canvas context
+105:  * @param {number} cameraOffset - Camera Y offset
+106:  */
+107: export function drawReHitIndicator(ctx, cameraOffset) {
+108:   if (!player.isJumping) return;
+109:   // Calculate jump progress
+110:   const progress = player.jumpTimer / player.jumpDuration;
+111:   // Only draw indicator during re-hit window
+112:   if (progress >= TWEAK.reHitWindowStart && progress < 1.0) {
+113:     // Draw indicator above all other elements
+114:     ctx.save();
+115:     ctx.beginPath();
+116:     // Calculate indicator size and position
+117:     const radius = (player.baseWidth * TWEAK.reHitIndicatorScale) / 2;
+118:     const indicatorY = player.absY - cameraOffset + player.height;
+119:     // Add glow effect
+120:     ctx.shadowColor = TWEAK.reHitIndicatorOutlineColor;
+121:     ctx.shadowBlur = 15;
+122:     ctx.globalCompositeOperation = 'source-over';
+123:     // Add pulse animation
+124:     const pulseScale = 1 + Math.sin(Date.now() / 100) * 0.1;
+125:     ctx.arc(player.x, indicatorY, radius * pulseScale, 0, Math.PI * 2);
+126:     // Fill and stroke
+127:     ctx.fillStyle = TWEAK.reHitIndicatorColor;
+128:     ctx.fill();
+129:     ctx.strokeStyle = TWEAK.reHitIndicatorOutlineColor;
+130:     ctx.stroke();
+131:     ctx.closePath();
+132:     ctx.restore();
+133:   }
+134: }
+135: export function drawEntities(terrain = []) {
+136:   let cameraOffset = getCameraOffset(player.absY, canvas.height, 1000);
+137:   ctx.clearRect(0, 0, canvas.width, canvas.height);
+138:   ctx.fillStyle = (window.currentState === 'DOWNHILL') ? "#ADD8E6" : "#98FB98";
+139:   ctx.fillRect(0, 0, canvas.width, canvas.height);
+140:   // Draw terrain obstacles
+141:   ctx.fillStyle = "#808080";
+142:   for (const obstacle of terrain) {
+143:     // Only draw obstacles within view range
+144:     if (obstacle.y >= cameraOffset - 50 && obstacle.y <= cameraOffset + canvas.height + 50) {
+145:       ctx.fillRect(obstacle.x, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
+146:     }
+147:   }
+148:   ctx.save();
+149:   let playerDrawY = player.absY - cameraOffset;
+150:   if (player.currentTrick) {
+151:     if (player.currentTrick === "leftHelicopter" || player.currentTrick === "rightHelicopter") {
+152:       ctx.translate(player.x, playerDrawY);
+153:       ctx.rotate(player.trickRotation * Math.PI / 180);
+154:       ctx.translate(-player.x, -playerDrawY);
+155:     } else if (player.currentTrick === "airBrake" || player.currentTrick === "parachute") {
+156:       if (player.currentTrick === "airBrake") {
+157:         playerDrawY += player.trickOffset;
+158:       } else {
+159:         playerDrawY -= player.trickOffset;
+160:       }
+161:     }
+162:   }
+163:   ctx.fillStyle = "#FF0000";
+164:   ctx.fillRect(player.x - player.width / 2, playerDrawY - player.height / 2, player.width, player.height);
+165:   if (player.currentTrick === "airBrake" || player.currentTrick === "parachute") {
+166:     ctx.fillStyle = "#FFFF00";
+167:     ctx.beginPath();
+168:     ctx.arc(player.x, playerDrawY - player.trickOffset, player.width / 3, 0, Math.PI * 2);
+169:     ctx.fill();
+170:   }
+171:   ctx.restore();
+172:   drawCameraOverlay(ctx, player, canvas, 1000);
+173:   drawAnimal(ctx);
+174:   // Draw floating texts on canvas with proper delta time
+175:   floatingTexts = floatingTexts.filter(ft => {
+176:     const result = ft.update(16.67); // ~60fps, but ideally use actual deltaTime
+177:     ft.draw(ctx, cameraOffset);
+178:     return result; // Return value from update determines if text should remain active
+179:   });
+180:   // Draw re-hit indicator if player is in re-hit window
+181:   drawReHitIndicator(ctx, cameraOffset);
+182: }
+183: export function clearCanvas() {
+184:   ctx.clearRect(0, 0, canvas.width, canvas.height);
+185: }
+</file>
+
+<file path="src/scenes/BootScene.js">
+ 1: // src/scenes/BootScene.js
+ 2: export default class BootScene {
+ 3:     constructor() {
+ 4:       console.log("BootScene: Preloading assets...");
+ 5:       this.preload();
+ 6:     }
+ 7:     preload() {
+ 8:       // Preload assets (sprites, sounds, maps, etc.)
+ 9:       console.log("Assets preloaded.");
+10:     }
+11:     update(timestamp) {
+12:       // Transition logic if needed
+13:     }
+14:     draw() {
+15:       // Optionally draw a loading screen
+16:     }
+17:   }
+</file>
+
+<file path="src/scenes/DownhillScene.js">
+  1: // src/scenes/DownhillScene.js
+  2: import { player, onPlayerJumpStart, onPlayerJumpPeak, cleanupJumpSound } from '../gameplay/Player.js';
+  3: import { updateMoneyDisplay, addFloatingText } from '../utils/UIUtils.js';
+  4: import { drawEntities } from '../rendering/Renderer.js';
+  5: import { updateAnimal, takePhoto } from '../gameplay/Wildlife.js';
+  6: import { TWEAK } from '../utils/Constants.js';
+  7: import { updateJumpSound, playTone } from '../utils/AudioUtils.js';
+  8: import { checkCollision, resolveCollision } from '../utils/PhysicsUtils.js';
+  9: export default class DownhillScene {
+ 10:   constructor() {
+ 11:     console.log("DownhillScene: Starting downhill run.");
+ 12:     // Reset player state for a new run
+ 13:     player.x = window.innerWidth / 2;
+ 14:     player.absY = 0;
+ 15:     player.velocityY = 0;
+ 16:     player.xVel = 0;
+ 17:     player.collisions = 0;
+ 18:     player.cameraAngle = 270; // Default camera angle (looking down)
+ 19:     player.altitudeLine = 50; // Default altitude line position
+ 20:     player.hasReachedJumpPeak = false; // Reset jump peak tracking
+ 21:     player.lastCollisionTime = 0; // Track last collision time for invulnerability
+ 22:     this.downhillStartTime = performance.now();
+ 23:     this.spaceWasPressed = false; // Track space key state to prevent multiple photos per press
+ 24:     // Initialize terrain obstacles
+ 25:     this.terrain = [];
+ 26:     this.generateTerrain();
+ 27:   }
+ 28:   generateTerrain() {
+ 29:     const obstacleCount = 4000;
+ 30:     const mountainWidth = window.innerWidth;
+ 31:     const mountainHeight = 50000;
+ 32:     for (let i = 0; i < obstacleCount; i++) {
+ 33:       let obstacle = {
+ 34:         x: Math.random() * mountainWidth,
+ 35:         y: (i / obstacleCount) * mountainHeight,
+ 36:         width: 20 + Math.random() * 30,
+ 37:         height: 20 + Math.random() * 30
+ 38:       };
+ 39:       this.terrain.push(obstacle);
+ 40:     }
+ 41:   }
+ 42:   update(timestamp) {
+ 43:     if (!this.lastTime) this.lastTime = timestamp;
+ 44:     let deltaTime = timestamp - this.lastTime;
+ 45:     this.lastTime = timestamp;
+ 46:     // Update downhill gameplay logic (jump, physics, collisions, tricks, etc.)
+ 47:     this.updateDownhillLogic(deltaTime);
+ 48:     // Example of how to trigger floating text for testing
+ 49:     // Uncomment to test the floating text system
+ 50:     /*
+ 51:     if (Math.random() < 0.01) { // 1% chance per frame to show a test message
+ 52:       addFloatingText(`Test: ${Math.floor(Math.random() * 100)}`, 
+ 53:                       player.x, 
+ 54:                       player.absY, 
+ 55:                       { color: '#FF9900', size: 28 });
+ 56:     }
+ 57:     */
+ 58:   }
+ 59:   updateDownhillLogic(deltaTime) {
+ 60:     // Store previous position for collision resolution
+ 61:     const prevX = player.x;
+ 62:     const prevY = player.absY;
+ 63:     // Update player physics
+ 64:     player.absY += player.velocityY * (deltaTime / 16);
+ 65:     player.velocityY += 0.1; // Gravity
+ 66:     // Check for collisions with terrain
+ 67:     const currentTime = performance.now();
+ 68:     const isInvulnerable = (currentTime - player.lastCollisionTime) < TWEAK.collisionInvulnTime;
+ 69:     if (!player.isJumping && !isInvulnerable) {
+ 70:       for (let obstacle of this.terrain) {
+ 71:         // Only check obstacles within a reasonable range
+ 72:         if (Math.abs(obstacle.y - player.absY) > 200) continue;
+ 73:         if (checkCollision(
+ 74:           player.x - player.width/2, player.absY - player.height/2,
+ 75:           player.width, player.height,
+ 76:           obstacle.x, obstacle.y,
+ 77:           obstacle.width, obstacle.height
+ 78:         )) {
+ 79:           // Apply bounce effect
+ 80:           const bounceStrength = TWEAK.getBounceImpulse(player.collisions);
+ 81:           player.velocityY = -bounceStrength;
+ 82:           player.absY = prevY - bounceStrength;
+ 83:           // Increment collision counter and apply penalty
+ 84:           player.collisions++;
+ 85:           player.money = Math.max(0, player.money - TWEAK.collisionPenalty);
+ 86:           // Play collision sound
+ 87:           playTone(200, "sawtooth", 0.1, 0.3);
+ 88:           // Show collision feedback
+ 89:           addFloatingText(`-$${TWEAK.collisionPenalty}`, player.x, player.absY, {
+ 90:             color: '#FF4444',
+ 91:             size: 24
+ 92:           });
+ 93:           // Update last collision time
+ 94:           player.lastCollisionTime = currentTime;
+ 95:           // Check if max collisions reached
+ 96:           if (player.collisions >= TWEAK.getMaxCollisions()) {
+ 97:             console.log("Max collisions reached. Ending run.");
+ 98:             // TODO: Implement proper game over handling
+ 99:             playTone(100, "sawtooth", 0.5, 0.5);
+100:             addFloatingText("Run Ended!", player.x, player.absY, {
+101:               color: '#FF0000',
+102:               size: 32
+103:             });
+104:           }
+105:           // Remove the obstacle we hit
+106:           const index = this.terrain.indexOf(obstacle);
+107:           if (index > -1) {
+108:             this.terrain.splice(index, 1);
+109:           }
+110:           break; // Only handle one collision at a time
+111:         }
+112:       }
+113:     }
+114:     // Handle key inputs
+115:     if (window.keysDown) {
+116:       // Movement controls
+117:       if (window.keysDown["a"]) { player.x -= 3; }
+118:       if (window.keysDown["d"]) { player.x += 3; }
+119:       // Camera controls for photo taking
+120:       if (window.keysDown["ArrowLeft"]) { player.cameraAngle -= 2; }
+121:       if (window.keysDown["ArrowRight"]) { player.cameraAngle += 2; }
+122:       if (window.keysDown["ArrowUp"]) { player.altitudeLine = Math.max(0, player.altitudeLine - 2); }
+123:       if (window.keysDown["ArrowDown"]) { player.altitudeLine = Math.min(100, player.altitudeLine + 2); }
+124:       // Jump mechanics
+125:       if (window.keysDown[" "]) {
+126:         // If not jumping and can jump, start a new jump
+127:         if (!player.isJumping && player.canJump && !this.spaceWasPressed) {
+128:           onPlayerJumpStart();
+129:           this.spaceWasPressed = true;
+130:         }
+131:         // Check for re-hit jump during the re-hit window
+132:         else if (player.isJumping && !player.reHitActivated) {
+133:           const progress = player.jumpTimer / player.jumpDuration;
+134:           if (progress >= TWEAK.reHitWindowStart && progress < 1.0) {
+135:             console.log("Re-hit jump activated!");
+136:             player.reHitActivated = true;  // Prevent further re-hits until key release
+137:             // Reset jump timer but keep the chain and current velocity
+138:             player.jumpTimer = 0;
+139:             player.jumpDuration *= TWEAK.reHitBonusDuration;
+140:             // Play feedback
+141:             addFloatingText("Re-Hit!", player.x, player.absY, { 
+142:               color: '#00FFFF', 
+143:               size: 28 
+144:             });
+145:             this.spaceWasPressed = true;
+146:           }
+147:         }
+148:       }
+149:     }
+150:     // Reset space key state when released
+151:     if (window.keysDown && !window.keysDown[" "]) {
+152:       this.spaceWasPressed = false;
+153:       // Allow re-hit activation again when space is released
+154:       if (player.isJumping) {
+155:         player.reHitActivated = false;
+156:       }
+157:     }
+158:     // Update jump state
+159:     if (player.isJumping) {
+160:       player.jumpTimer += deltaTime;
+161:       // Calculate jump progress (0 to 1)
+162:       const progress = player.jumpTimer / player.jumpDuration;
+163:       // Update jump sound based on progress
+164:       updateJumpSound(progress);
+165:       // Track if we've reached the peak of the jump (at 50% progress)
+166:       if (progress >= 0.5 && !player.hasReachedJumpPeak) {
+167:         player.hasReachedJumpPeak = true;
+168:         onPlayerJumpPeak();
+169:       }
+170:       // Check if jump is complete
+171:       if (player.jumpTimer >= player.jumpDuration) {
+172:         player.isJumping = false;
+173:         player.canJump = true; // Allow jumping again
+174:         player.reHitActivated = false;
+175:         player.hasReachedJumpPeak = false;
+176:         player.jumpTimer = 0;
+177:         // Clean up jump sound when jump is complete
+178:         cleanupJumpSound();
+179:       }
+180:     }
+181:     // Normalize camera angle
+182:     if (player.cameraAngle < 0) player.cameraAngle += 360;
+183:     if (player.cameraAngle >= 360) player.cameraAngle -= 360;
+184:     // Update wildlife
+185:     updateAnimal();
+186:     // Update money display
+187:     updateMoneyDisplay();
+188:   }
+189:   draw() {
+190:     // Draw terrain and player
+191:     drawEntities(this.terrain);
+192:   }
+193: }
+</file>
+
+<file path="src/scenes/HouseScene.js">
+ 1: // src/scenes/HouseScene.js
+ 2: import { updateMoneyDisplay } from '../utils/UIUtils.js';
+ 3: import { updateLoanButton } from '../mechanics/LoanSystem.js';
+ 4: export default class HouseScene {
+ 5:   constructor() {
+ 6:     console.log("HouseScene: Entering upgrade shop.");
+ 7:     this.initUI();
+ 8:   }
+ 9:   initUI() {
+10:     document.getElementById("upgrade-menu").style.display = "block";
+11:     document.getElementById("game-screen").style.display = "none";
+12:     updateMoneyDisplay();
+13:     updateLoanButton(); // Update loan button state when entering house scene
+14:   }
+15:   update(timestamp) {
+16:     // Update shop animations or interactions if needed
+17:   }
+18:   draw() {
+19:     // Shop visuals may be HTML-based; no canvas drawing required here.
+20:   }
+21: }
+</file>
+
+<file path="src/scenes/MainMenuScene.js">
+ 1: // src/scenes/MainMenuScene.js
+ 2: export default class MainMenuScene {
+ 3:     constructor() {
+ 4:       console.log("MainMenuScene: Displaying main menu.");
+ 5:       // Initialize main menu UI here if needed
+ 6:     }
+ 7:     update(timestamp) {
+ 8:       // Update any animations or interactions for the menu
+ 9:     }
+10:     draw() {
+11:       // Render main menu – likely handled by HTML/CSS overlays
+12:     }
+13:   }
+</file>
+
+<file path="src/scenes/UIScene.js">
+ 1: // src/scenes/UIScene.js
+ 2: import { updateMoneyDisplay } from '../utils/UIUtils.js';
+ 3: export default class UIScene {
+ 4:   constructor() {
+ 5:     // Setup for overlay UI if needed.
+ 6:   }
+ 7:   update(timestamp) {
+ 8:     // Update UI elements, animations, etc.
+ 9:   }
+10:   draw() {
+11:     // Update the money display (and any other overlay UI elements)
+12:     updateMoneyDisplay();
+13:   }
+14: }
+</file>
+
+<file path="src/scenes/UphillScene.js">
+ 1: // src/scenes/UphillScene.js
+ 2: import { player } from '../gameplay/Player.js';
+ 3: import { updateAnimal } from '../gameplay/Wildlife.js';
+ 4: import { drawEntities } from '../rendering/Renderer.js';
+ 5: import { changeState, GameStates } from '../game.js';
+ 6: export default class UphillScene {
+ 7:   constructor() {
+ 8:     console.log("UphillScene: Starting uphill climb.");
+ 9:     player.xVel = 0;
+10:   }
+11:   update(timestamp) {
+12:     if (!this.lastTime) this.lastTime = timestamp;
+13:     let deltaTime = timestamp - this.lastTime;
+14:     this.lastTime = timestamp;
+15:     this.updateUphillLogic(deltaTime);
+16:   }
+17:   updateUphillLogic(deltaTime) {
+18:     if (window.keysDown) {
+19:       if (window.keysDown["w"]) { player.absY -= 2; }
+20:       if (window.keysDown["s"]) { player.absY += 2; }
+21:       if (window.keysDown["a"]) { player.x -= 2; }
+22:       if (window.keysDown["d"]) { player.x += 2; }
+23:       if (window.keysDown["ArrowLeft"]) { player.cameraAngle -= 2; }
+24:       if (window.keysDown["ArrowRight"]) { player.cameraAngle += 2; }
+25:       if (window.keysDown["ArrowUp"]) { player.altitudeLine = Math.max(0, player.altitudeLine - 2); }
+26:       if (window.keysDown["ArrowDown"]) { player.altitudeLine = Math.min(100, player.altitudeLine + 2); }
+27:     }
+28:     if (player.cameraAngle < 0) player.cameraAngle += 360;
+29:     if (player.cameraAngle >= 360) player.cameraAngle -= 360;
+30:     // Collision checks and wildlife updates would be performed here.
+31:     updateAnimal();
+32:     if (player.absY <= 0) {
+33:       player.absY = 0;
+34:       changeState(GameStates.HOUSE);
+35:     }
+36:   }
+37:   draw() {
+38:     drawEntities();
+39:   }
+40: }
+</file>
+
+<file path="src/utils/AudioUtils.js">
+ 1: // src/utils/AudioUtils.js
+ 2: import { getAudioContext, unlockAudioContext } from './UIUtils.js';
+ 3: import { TWEAK } from './Constants.js';
+ 4: // Audio nodes for jump sound
+ 5: let jumpOsc = null;
+ 6: let jumpGain = null;
+ 7: /**
+ 8:  * Initialize jump sound when player starts a jump
+ 9:  * Creates an oscillator and gain node for dynamic audio feedback
+10:  */
+11: export function onPlayerJumpStart() {
+12:   // Create a new oscillator and gain node for the jump sound
+13:   unlockAudioContext();
+14:   const audioCtx = getAudioContext();
+15:   // Create and configure oscillator
+16:   jumpOsc = audioCtx.createOscillator();
+17:   jumpGain = audioCtx.createGain();
+18:   jumpOsc.type = "sine";
+19:   // Set initial frequency
+20:   jumpOsc.frequency.setValueAtTime(300, audioCtx.currentTime);
+21:   // Set an initial volume
+22:   jumpGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+23:   // Connect audio nodes
+24:   jumpOsc.connect(jumpGain);
+25:   jumpGain.connect(audioCtx.destination);
+26:   // Start the oscillator
+27:   jumpOsc.start();
+28:   console.log("Jump sound initialized");
+29: }
+30: /**
+31:  * Update jump sound frequency based on jump progress
+32:  * @param {number} progress - Jump progress from 0 to 1
+33:  */
+34: export function updateJumpSound(progress) {
+35:   if (!jumpOsc) return;
+36:   const audioCtx = getAudioContext();
+37:   // Define frequency values in Hz
+38:   const f_start = 300;
+39:   const f_peak = 800;
+40:   const f_end = 300;
+41:   let freq;
+42:   if (progress < 0.5) {
+43:     // During ascent: non-linearly increase pitch (quadratic curve)
+44:     const t = progress / 0.5; // Normalize to [0,1]
+45:     freq = f_start + (f_peak - f_start) * (t * t);
+46:   } else {
+47:     // During descent: non-linearly decrease pitch (quadratic curve)
+48:     const t = (progress - 0.5) / 0.5; // Normalize to [0,1]
+49:     freq = f_peak - (f_peak - f_end) * (t * t);
+50:   }
+51:   // Update oscillator frequency
+52:   jumpOsc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+53: }
+54: /**
+55:  * Called when the jump reaches its peak
+56:  */
+57: export function onPlayerJumpPeak() {
+58:   console.log("Reached peak of jump.");
+59:   // You can optionally add a distinct sound here if desired
+60: }
+61: /**
+62:  * Clean up jump sound resources
+63:  * Should be called when jump ends
+64:  */
+65: export function cleanupJumpSound() {
+66:   if (jumpOsc) {
+67:     jumpOsc.stop();
+68:     jumpOsc.disconnect();
+69:     jumpOsc = null;
+70:   }
+71:   if (jumpGain) {
+72:     jumpGain.disconnect();
+73:     jumpGain = null;
+74:   }
+75:   console.log("Jump sound cleaned up");
+76: }
+77: /**
+78:  * Play a simple tone with the given parameters
+79:  * @param {number} frequency - Frequency in Hz
+80:  * @param {string} type - Oscillator type (sine, square, sawtooth, triangle)
+81:  * @param {number} duration - Duration in seconds
+82:  * @param {number} volume - Volume from 0 to 1
+83:  */
+84: export function playTone(frequency, type, duration, volume) {
+85:   const audioCtx = getAudioContext();
+86:   unlockAudioContext();
+87:   const oscillator = audioCtx.createOscillator();
+88:   const gainNode = audioCtx.createGain();
+89:   oscillator.type = type || "sine";
+90:   oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+91:   gainNode.gain.setValueAtTime(volume, audioCtx.currentTime);
+92:   gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+93:   oscillator.connect(gainNode);
+94:   gainNode.connect(audioCtx.destination);
+95:   oscillator.start();
+96:   oscillator.stop(audioCtx.currentTime + duration);
+97: }
+</file>
+
+<file path="src/utils/Constants.js">
+ 1: // src/utils/Constants.js
+ 2: // Game constants and tweakable values
+ 3: export const TWEAK = {
+ 4:   // Jump mechanics
+ 5:   jumpBaseAscent: 800,         // Base jump duration in ms
+ 6:   jumpMaxHoldTime: 1000,       // Maximum time to hold jump charge
+ 7:   jumpType: "immediate",       // Jump type: "immediate" or "charge"
+ 8:   // Re-hit jump mechanics
+ 9:   reHitWindowStart: 0.85,      // When re-hit window starts (85% through jump)
+10:   reHitBonusDuration: 1.5,     // Duration multiplier for re-hit jumps
+11:   reHitIndicatorScale: 2.0,    // Scale of the re-hit indicator relative to player
+12:   reHitIndicatorOutlineColor: "#0088FF", // Blue outline for the indicator
+13:   reHitIndicatorColor: "#00FFFF",  // Cyan color for the indicator
+14:   // Jump physics
+15:   jumpHeightPerRocketSurgery: 0.2,  // Height bonus per upgrade level
+16:   jumpTimePerRocketSurgery: 0.15,   // Duration bonus per upgrade level
+17:   jumpZoomPerHeightIncrease: 0.05,  // Camera zoom per height increase
+18:   jumpCollisionMultiplier: 0.5,     // Collision impact on jumps
+19:   // Collision and bounce physics
+20:   bounceImpulse: 5,            // Base bounce strength
+21:   maxCollisions: 3,            // Maximum collisions before run ends
+22:   collisionPenalty: 50,        // Money penalty per collision
+23:   bounceDecay: 0.8,           // Decay factor for subsequent bounces
+24:   collisionInvulnTime: 500,    // Invulnerability time after collision (ms)
+25:   // Helper functions
+26:   getMaxCollisions() {
+27:     return this.maxCollisions;
+28:   },
+29:   getBounceImpulse(collisionCount) {
+30:     return this.bounceImpulse * Math.pow(this.bounceDecay, collisionCount);
+31:   }
+32: };
+</file>
+
+<file path="src/utils/MathUtils.js">
+ 1: // src/utils/MathUtils.js
+ 2: export function mapRange(value, inMin, inMax, outMin, outMax) {
+ 3:     return outMin + ((value - inMin) * (outMax - outMin)) / (inMax - inMin);
+ 4:   }
+ 5:   export function lerpColor(colorA, colorB, t) {
+ 6:     // Convert hex to RGB and interpolate linearly
+ 7:     const a = hexToRgb(colorA);
+ 8:     const b = hexToRgb(colorB);
+ 9:     const result = {
+10:       r: Math.round(a.r + (b.r - a.r) * t),
+11:       g: Math.round(a.g + (b.g - a.g) * t),
+12:       b: Math.round(a.b + (b.b - a.b) * t)
+13:     };
+14:     return `rgb(${result.r}, ${result.g}, ${result.b})`;
+15:   }
+16:   function hexToRgb(hex) {
+17:     hex = hex.replace('#', '');
+18:     if (hex.length === 3) {
+19:       hex = hex.split('').map(ch => ch + ch).join('');
+20:     }
+21:     const bigint = parseInt(hex, 16);
+22:     return {
+23:       r: (bigint >> 16) & 255,
+24:       g: (bigint >> 8) & 255,
+25:       b: bigint & 255
+26:     };
+27:   }
+28:   export function getCameraOffset(playerAbsY, canvasHeight, mountainHeight) {
+29:     // Center the player vertically on the canvas
+30:     return playerAbsY - canvasHeight / 2;
+31:   }
+</file>
+
+<file path="src/utils/PhysicsUtils.js">
+ 1: // src/utils/PhysicsUtils.js
+ 2: export function clamp(value, min, max) {
+ 3:     return Math.min(Math.max(value, min), max);
+ 4:   }
+ 5:   export function checkCollision(x1, y1, w1, h1, x2, y2, w2, h2) {
+ 6:     return !(x2 > x1 + w1 || 
+ 7:              x2 + w2 < x1 || 
+ 8:              y2 > y1 + h1 || 
+ 9:              y2 + h2 < y1);
+10:   }
+11:   export function resolveCollision(player, obstacle) {
+12:     let playerCenterX = player.x;
+13:     let playerCenterY = player.absY;
+14:     let obstacleCenterX = obstacle.x + obstacle.width / 2;
+15:     let obstacleCenterY = obstacle.y + obstacle.height / 2;
+16:     let halfWidthPlayer = player.width / 2;
+17:     let halfWidthObstacle = obstacle.width / 2;
+18:     let halfHeightPlayer = player.height / 2;
+19:     let halfHeightObstacle = obstacle.height / 2;
+20:     let dx = playerCenterX - obstacleCenterX;
+21:     let dy = playerCenterY - obstacleCenterY;
+22:     let overlapX = halfWidthPlayer + halfWidthObstacle - Math.abs(dx);
+23:     let overlapY = halfHeightPlayer + halfHeightObstacle - Math.abs(dy);
+24:     if (overlapX < 0 || overlapY < 0) return;
+25:     if (overlapX < overlapY) {
+26:       if (dx > 0) {
+27:         player.x += overlapX * 0.3;
+28:       } else {
+29:         player.x -= overlapX * 0.3;
+30:       }
+31:     } else {
+32:       if (dy > 0) {
+33:         player.absY += overlapY * 0.3;
+34:       } else {
+35:         player.absY -= overlapY * 0.3;
+36:       }
+37:     }
+38:   }
+</file>
+
+<file path="src/utils/UIUtils.js">
+ 1: // src/utils/UIUtils.js
+ 2: import { player } from '../gameplay/Player.js';
+ 3: export function updateMoneyDisplay() {
+ 4:   const moneyText = document.getElementById("moneyText");
+ 5:   if (moneyText) {
+ 6:     moneyText.textContent = `Money: $${player.money}`;
+ 7:   }
+ 8: }
+ 9: // Import the canvas-based floating text system
+10: import { addFloatingText as addCanvasFloatingText } from '../rendering/Renderer.js';
+11: /**
+12:  * Adds a floating text notification at the specified position
+13:  * This is a wrapper around the canvas-based floating text system
+14:  * @param {string} text - The text to display
+15:  * @param {number} x - X coordinate
+16:  * @param {number} y - Y coordinate
+17:  * @param {object} options - Optional settings (color, size, lifetime)
+18:  */
+19: export function addFloatingText(text, x, y, options = {}) {
+20:   addCanvasFloatingText(text, x, y, options);
+21: }
+22: export function playTone(frequency, type, duration, volume) {
+23:   const audioCtx = getAudioContext();
+24:   let oscillator = audioCtx.createOscillator();
+25:   let gainNode = audioCtx.createGain();
+26:   oscillator.type = type;
+27:   oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+28:   gainNode.gain.setValueAtTime(volume, audioCtx.currentTime);
+29:   oscillator.connect(gainNode);
+30:   gainNode.connect(audioCtx.destination);
+31:   oscillator.start();
+32:   oscillator.stop(audioCtx.currentTime + duration);
+33: }
+34: export function playTrickCompleteSound() {
+35:   playTone(600, "sine", 0.1, 0.2);
+36: }
+37: export function unlockAudioContext() {
+38:   const audioCtx = getAudioContext();
+39:   if (audioCtx.state !== 'running') {
+40:     audioCtx.resume();
+41:   }
+42: }
+43: let _audioContext = null;
+44: export function getAudioContext() {
+45:   if (!_audioContext) {
+46:     _audioContext = new (window.AudioContext || window.webkitAudioContext)();
+47:   }
+48:   return _audioContext;
+49: }
+</file>
+
+<file path="src/game.js">
+ 1: // src/game.js
+ 2: import BootScene from './scenes/BootScene.js';
+ 3: import MainMenuScene from './scenes/MainMenuScene.js';
+ 4: import HouseScene from './scenes/HouseScene.js';
+ 5: import DownhillScene from './scenes/DownhillScene.js';
+ 6: import UphillScene from './scenes/UphillScene.js';
+ 7: import UIScene from './scenes/UIScene.js';
+ 8: import { initUpgradeButtons } from './mechanics/UpgradeSystem.js';
+ 9: import { initLoanSystem } from './mechanics/LoanSystem.js';
+10: import { initPhotoSystem } from './mechanics/PhotoSystem.js';
+11: import { generateTerrain } from './gameplay/Terrain.js';
+12: import { unlockAudioContext } from './utils/UIUtils.js';
+13: // Global game state management
+14: const GameStates = {
+15:   BOOT: 'BOOT',
+16:   MAIN_MENU: 'MAIN_MENU',
+17:   HOUSE: 'HOUSE',
+18:   DOWNHILL: 'DOWNHILL',
+19:   UPHILL: 'UPHILL'
+20: };
+21: let currentScene = null;
+22: let scenes = {};
+23: export function changeState(newState) {
+24:   switch(newState) {
+25:     case GameStates.HOUSE:
+26:       currentScene = scenes.house;
+27:       document.getElementById("upgrade-menu").style.display = "block";
+28:       document.getElementById("game-screen").style.display = "none";
+29:       break;
+30:     case GameStates.DOWNHILL:
+31:       currentScene = scenes.downhill;
+32:       document.getElementById("upgrade-menu").style.display = "none";
+33:       document.getElementById("game-screen").style.display = "block";
+34:       break;
+35:     case GameStates.UPHILL:
+36:       currentScene = scenes.uphill;
+37:       break;
+38:     default:
+39:       console.warn("Unknown state:", newState);
+40:   }
+41: }
+42: function initScenes() {
+43:   scenes.boot = new BootScene();
+44:   scenes.mainMenu = new MainMenuScene();
+45:   scenes.house = new HouseScene();
+46:   scenes.downhill = new DownhillScene();
+47:   scenes.uphill = new UphillScene();
+48:   scenes.ui = new UIScene();
+49: }
+50: function gameLoop(timestamp) {
+51:   if (currentScene && currentScene.update) {
+52:     currentScene.update(timestamp);
+53:   }
+54:   if (currentScene && currentScene.draw) {
+55:     currentScene.draw();
+56:   }
+57:   if (scenes.ui && scenes.ui.draw) {
+58:     scenes.ui.draw(); // draw overlay UI
+59:   }
+60:   requestAnimationFrame(gameLoop);
+61: }
+62: function initGame() {
+63:   initScenes();
+64:   initUpgradeButtons();
+65:   initLoanSystem();
+66:   generateTerrain();
+67:   // Initialize keyboard input handling
+68:   window.keysDown = {};
+69:   document.addEventListener('keydown', (e) => {
+70:     window.keysDown[e.key] = true;
+71:   });
+72:   document.addEventListener('keyup', (e) => {
+73:     window.keysDown[e.key] = false;
+74:   });
+75:   changeState(GameStates.HOUSE);
+76:   document.getElementById("startGame").addEventListener("click", () => {
+77:     unlockAudioContext();
+78:     changeState(GameStates.DOWNHILL);
+79:   });
+80:   requestAnimationFrame(gameLoop);
+81: }
+82: window.addEventListener("load", initGame);
+83: export { GameStates };
+</file>
+
+<file path=".gitignore">
+1: repomix-output.txt
+2: repomix-output.txt.xml
+3: .repomix/bundles.json
+4: #OLD Codebase.xml
+</file>
+
+<file path="index.html">
+ 1: <!DOCTYPE html>
+ 2: <html lang="en">
+ 3: <head>
+ 4:   <meta charset="UTF-8">
+ 5:   <title>SledHEAD Game</title>
+ 6:   <link rel="stylesheet" href="styles.css">
+ 7: </head>
+ 8: <body>
+ 9:   <div id="upgrade-menu" class="menu">
+10:     <h1>Upgrade Shop</h1>
+11:     <div id="upgrades">
+12:       <!-- Upgrade buttons -->
+13:       <button id="upgradeRocketSurgery">RocketSurgery</button>
+14:       <button id="upgradeOptimalOptics">OptimalOptics</button>
+15:       <button id="upgradeSledDurability">SledDurability</button>
+16:       <button id="upgradeFancierFootwear">FancierFootwear</button>
+17:       <!-- Add additional upgrade buttons as needed -->
+18:     </div>
+19:     <div id="moneyText">Money: $0</div>
+20:     <button id="payLoan">Pay Loan ($100,000)</button>
+21:     <button id="startGame">Start Game</button>
+22:     <div id="victoryBanner" style="display:none;" class="victory-banner">VICTORY! LOAN PAID OFF!</div>
+23:   </div>
+24:   <div id="game-screen" style="display:none;">
+25:     <canvas id="gameCanvas" width="800" height="600"></canvas>
+26:     <div id="moneyTextOverlay" class="overlay"></div>
+27:   </div>
+28:   <script type="module" src="src/game.js"></script>
+29: </body>
+30: </html>
+</file>
+
+<file path="LICENSE.md">
+  1: # SledHEAD Dual License Agreement
+  2: Version 1.2 – March 2025
+  3: 
+  4: This License Agreement applies to SledHEAD (the "Game"), including its source code and assets, created by the original author Marvin Bentley II ("Licensor"). By copying, modifying, distributing, or otherwise using the Game or any of its components, you (the "Licensee") agree to the following terms:
+  5: 
+  6: ## 1. Definitions
+  7: 
+  8: * "Source Code": The software code of the Game, including all scripts, programs, and software files intended to produce the Game’s functionality.
+  9: * "Assets": All non-code content in the Game, including but not limited to artwork, images, textures, models, sprites, music, sound effects, voice, dialogue, level designs, animations, and any other audiovisual or creative works included with the Game.
+ 10: * "Mod" or "Modification": Any derivative work that is based on or uses any portion of the Game’s Source Code or Assets, including add-ons, plugins, expansions, or fan-made content that extends or alters the Game.
+ 11: * "Commercial Use": Use of the Game or its components that is intended for or directed toward commercial advantage or monetary compensation. (For clarity: selling the Game or Mods, charging money for access to the Game or Mods, or monetizing the Game’s Assets as standalone products are considered Commercial Use. However, monetization of gameplay videos/streams is addressed separately in Section 4.)
+ 12: * "You" (or "Licensee"): Any individual or legal entity exercising the rights granted by this License (for example, a player, developer, or modder who uses the Game or its content).
+ 13: * "Licensor": The original author and copyright holder of SledHEAD.
+ 14: 
+ 15: ## 2. Open Source License for Source Code
+ 16: 
+ 17: The Source Code of SledHEAD is licensed to you under the terms of the GNU Affero General Public License, version 3 (AGPLv3), or (at your option) any later version of the AGPL published by the Free Software Foundation. This means:
+ 18: 
+ 19: * You may use, study, copy, modify, and distribute the Source Code freely, provided you comply with the AGPLv3 terms. In particular, if you distribute your modified version of the Source Code or if you make it available for use over a network (e.g. running a modified game server for others to play), you must make your Source Code modifications publicly available under the same license (AGPLv3).
+ 20: * The full text of the AGPLv3 is provided along with this agreement (usually in a file named AGPL-3.0.txt or similar). By accepting this License, you agree to abide by the conditions of AGPLv3 for the Game’s Source Code.
+ 21: * No Additional Restrictions on Source Code: Except as expressly stated in this Agreement, you may not impose any further restrictions on the exercise of the rights granted or affirmed under the AGPLv3 for the Source Code. (In other words, the Source Code remains free and open under AGPLv3 terms whenever it is distributed or deployed, unless a separate Commercial License is obtained as described in Section 6.)
+ 22: 
+ 23: ## 3. Creative Commons License for Assets
+ 24: 
+ 25: All Assets of SledHEAD (non-code content) are licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0). Under this license:
+ 26: 
+ 27: * You are free to:
+ 28:   * Share – copy and redistribute the Assets in any medium or format.
+ 29:   * Adapt – remix, transform, and build upon the Assets for any non-commercial purpose.
+ 30: * Attribution – You must give appropriate credit to the original author (see Section 5), provide a link to the CC BY-NC-SA 4.0 license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the Licensor endorses you or your use.
+ 31: * NonCommercial – You may not use the Assets for commercial purposes. (Using the Assets or any derivative of them to generate revenue or for any commercial advantage is prohibited unless you have obtained a separate Commercial License as per Section 6.)
+ 32: * ShareAlike – If you remix, transform, or build upon the Assets, you must distribute your contributions under the same license (CC BY-NC-SA 4.0) or a license that is more permissive. “More permissive” means any license that grants equal or greater rights to the public than CC BY-NC-SA (for example, you may choose to release your own original derivative Assets under CC BY-SA or CC BY, which would allow commercial use or omit the ShareAlike requirement, but you cannot apply a more restrictive license or make the assets wholly proprietary).
+ 33: * The full text of the CC BY-NC-SA 4.0 license is provided with this agreement (or accessible via the Creative Commons website). By using the Game’s Assets, you agree to the terms of CC BY-NC-SA 4.0.
+ 34: * No Commercial Exploitation of Assets: For clarity, you cannot sell, license, or otherwise commercially exploit the Game’s Assets (original or modified) on their own or as part of a product, except under a separate Commercial License (Section 6). For example, you cannot charge money for a soundtrack that includes the Game’s music, or include the Game’s art in a paid product, without permission.
+ 35: 
+ 36: ## 4. Permission for Videos, Streaming, and Screenshots
+ 37: 
+ 38: The Licensor explicitly grants permission to all users to capture, use, and share audiovisual content from the Game (including gameplay videos, streams, screenshots, and similar content), even if monetized, without needing any additional license or permission, as long as such use does not misrepresent the origin of the Game. This means:
+ 39: 
+ 40: * You may stream or record gameplay on platforms like Twitch, YouTube, etc., and you may monetize these videos/streams (for example, through ads, sponsorships, or donations). This use is allowed and considered non-commercial with respect to the Game’s Assets because it is promotional/fan content by the community. The NonCommercial restriction in Section 3 is waived for this specific type of content creation.
+ 41: * You do not need to ask the Licensor for permission to create let’s play videos, reviews, or live streams of SledHEAD. This is encouraged as part of community engagement. Attribution (such as naming the Game) in the video/stream description or verbally is appreciated but not strictly required beyond what the platform norms are, since the content itself usually makes it clear it’s SledHEAD. (However, you still must not claim to be the creator of the Game.)
+ 42: * This permission for videos/streams does not grant you the right to extract the Assets and use them separately in other commercial products (Section 3’s NonCommercial rule still applies to the Assets themselves). It only covers the use of recorded or displayed in-game content as part of video/stream content. For example, using a game’s music as background of an unrelated commercial video would not be covered by this clause, but showing the game’s music as it plays during gameplay footage is fine.
+ 43: 
+ 44: ## 5. Attribution Requirement
+ 45: 
+ 46: You must give appropriate credit to the original author (Licensor) when you distribute or publicly use the Game (or any substantial portion of it, including Mods). This is a condition of the CC BY-NC-SA license for Assets and is hereby made a condition of this overall license. The attribution should be placed in a manner appropriate to the medium:
+ 47: 
+ 48: * If you distribute the Game in unmodified form, include the original credits (which should already list the author) and license information. Typically, the Game already contains an in-game credits section or documentation listing the author and contributors — retain that.
+ 49: * If you create a Mod or a fork of the Game, you must credit SledHEAD and the original author somewhere in your project. For example, in an “About” menu, “Credits” screen, README file, or documentation for your Mod, include a notice such as: “This project is based on SledHEAD, originally created by Marvin Bentley II. SledHEAD is © 2024 Marvin Bentley II and is licensed under AGPLv3 (code) and CC BY-NC-SA 4.0 (assets).” Adjust the wording as appropriate, but it should be reasonably prominent, as appropriate for the medium.
+ 50: * If you use parts of the Source Code in another project, you must keep the copyright and license notices in those source files per AGPL requirements. Additionally, an attribution in your project’s documentation or credits to the SledHEAD project is required.
+ 51: * The attribution requirement is not intended to be burdensome: it’s mainly to ensure the original creators are acknowledged. A single mention in a credits section or README is typically sufficient, as long as it's accessible to users of your product or Mod.
+ 52: 
+ 53: ## 6. Modding and Derivative Works
+ 54: 
+ 55: SledHEAD is mod-friendly and open to community contributions, under the following conditions:
+ 56: 
+ 57: * **Mods - Source Code:** If you create a Mod that includes or is based on the Game’s Source Code, the Mod’s source code must be released under the AGPLv3 (same as the Game) or an even more permissive open-source license. More permissive licenses include, for example, GNU GPLv3, MIT, Apache 2.0, etc., which do not impose additional restrictions beyond AGPL. This ensures that anyone who plays or uses your Mod has the same rights to obtain and modify the source. You cannot make a closed-source mod using the Game’s code without a separate Commercial License (see Section 7).
+ 58: * **Mods - Assets:** If your Mod includes or modifies any of the Game’s Assets, then all such Assets in your Mod must be licensed under CC BY-NC-SA 4.0 (the same license as the base game assets) or a more permissive license. “More permissive” in this context could be, for example, CC BY-SA 4.0 (which allows commercial use but still requires ShareAlike) or CC BY 4.0 (which allows commercial use and no ShareAlike). You may choose a more permissive license for your original assets if you want to allow broader use, but you must at least allow the same scope of use that CC BY-NC-SA permits. You cannot put additional restrictions on derivatives of the Game’s Assets beyond CC BY-NC-SA.
+ 59: * **No circumvention via Mods:** You may not create a Mod or derivative work that is essentially a way to evade the NonCommercial restriction on the original Assets. For example, you can’t repackage a level of SledHEAD as a “mod” and sell it, claiming the new level’s art is under a different license. Any part of a Mod derived from original Assets inherits the NonCommercial restriction.
+ 60: * **Paid Mods:** SledHEAD’s open licenses are designed such that Mods are freely shareable and open. While charging money for a Mod is strongly discouraged under this license scheme, we acknowledge it can happen. If you choose to sell or paywall a Mod, you do so at your own risk under the license terms:
+ 61:   * The Mod’s source code must still be AGPLv3 (or open-source), meaning anyone who obtains the Mod (even by purchasing it) must have access to the source and the right to redistribute it. Practically, this means once one person has bought your Mod, they have the legal right to share the code with others for free. You cannot revoke that right, so a paywalled open-source mod is of limited enforceability (the “paywall” is more of a donation or early access mechanism, not a true sale of exclusive rights).
+ 62:   * Any of the Mod’s assets that derive from SledHEAD Assets carry the NonCommercial clause. This means you technically cannot charge for those assets or any product containing them. If your Mod contains only your own original assets and you license them under a more permissive license (such as CC BY-SA or even a proprietary license you own), you have more leeway to charge for the Mod. However, by including SledHEAD’s original game content or requiring the Game to run, your Mod is still a derivative work of the Game as a whole, and thus selling it without the Licensor’s permission could violate the spirit of the NonCommercial clause.
+ 63:   * In summary: If you want to monetize a Mod, you should seek a Commercial License from the Licensor (see Section 7) to cover that, or ensure that your Mod is completely your own independent work and doesn’t include NonCommercial content. Otherwise, anyone is legally free to redistribute your Mod for non-commercial purposes (or as allowed by whatever license you chose) without paying, and the Licensor reserves the right to enforce the NonCommercial clause if needed.
+ 64: * **Mods Must Credit Original:** As noted in Section 5, Mods should credit SledHEAD and the original author. Making mods open-source and crediting the base game helps build a healthy community and is a condition of using the Game’s content.
+ 65: * **Upstream Contributions:** If you make improvements or fixes to the base Game’s Source Code (as opposed to separate mods), you are encouraged to contribute them back to the main project. You can do this by submitting patches or pull requests to the original repository. Note that by contributing, you agree that your contribution will be licensed under the same terms as this License (so it remains AGPL for code and CC BY-NC-SA for any assets you contribute, unless otherwise agreed). The Licensor may ask you to sign a contributor agreement (see Section 9) to clarify licensing of contributions.
+ 66: 
+ 67: ## 7. Commercial License Option
+ 68: 
+ 69: The Licensor offers the possibility of a separate Commercial License for parties interested in using SledHEAD in ways not permitted by the above open licenses (AGPL and CC BY-NC-SA). This could apply if, for example, you want to: distribute the game in a proprietary (closed-source) manner, use the Assets commercially, include SledHEAD in a commercial product, or otherwise not comply with AGPL/CC BY-NC-SA terms. The following terms govern the Commercial License option:
+ 70: 
+ 71: * **By Request:** You must contact the Licensor to request a Commercial License. Terms (including scope, duration, and fees) are negotiable on a case-by-case basis. For instance, the Licensor may offer a one-time purchase license, a revenue-sharing agreement, or a subscription model, depending on the nature of the use.
+ 72: * **No Guaranteed Approval:** The Licensor has sole discretion to decide whether or not to grant a Commercial License to any requesting party. Simply requesting a Commercial License does not guarantee you will receive one. The Licensor may decline for any reason or require certain conditions.
+ 73: * **Override of Open Terms:** A duly granted Commercial License will override or modify the AGPL and CC BY-NC-SA terms for the party to whom it is granted, as specified in that license agreement. For example, a Commercial License may allow you to keep your source code modifications proprietary, or to use the Assets in a commercial game, notwithstanding Sections 2 and 3. The exact permissions and exceptions will be written in that separate agreement. Unless and until you have a signed Commercial License, you are bound by the AGPL and CC BY-NC-SA terms described in this document.
+ 74: * **Closed Source Allowed with Commercial License:** Under a Commercial License, the Licensor may permit you to create a closed-source derivative or include SledHEAD code in a larger proprietary project. This is an exception to the copyleft requirement, granted only through the Commercial License.
+ 75: * **Written Agreement:** Any Commercial License will be provided in writing (which may be a separate contract or license document). It will detail the rights granted, any limitations, and the financial terms. You will likely be required to prominently credit the original author even in commercial use, unless otherwise agreed.
+ 76: 
+ 77: ## 8. Reservation of Rights and Future Relicensing
+ 78: 
+ 79: * **Ownership:** The Licensor (original author) retains all rights, title, and interest in SledHEAD and its Source Code and Assets, except for the licenses expressly granted to you under this Agreement. No trademark rights are granted (the name SledHEAD is not necessarily covered by this license—separate permissions may be needed to use the name or logos in commercial contexts).
+ 80: * **Right to Relicense:** The Licensor reserves the right to relicense or release parts or all of the Game under different terms in the future, including more permissive open-source licenses. For example, the Licensor may later decide to release certain Assets under a license like CC BY 4.0 (which would allow commercial use) or even dedicate some components to the public domain. Similarly, future versions of the Source Code might be released under a license like MIT or GPL, etc., at the Licensor’s discretion.
+ 81: * **Effect on Existing License:** Any such re-licensing by the Licensor in the future will not retroactively revoke the rights you've obtained under this Agreement. (For example, if you received the game under AGPL/CC BY-NC-SA, that specific release is still under those terms for you.) However, the Licensor may offer upgraded license terms for future versions or for specific components, which you can opt to use under those new terms.
+ 82: * **Contributions from Others:** If the project receives contributions from other developers (community contributions), the Licensor will ensure that those contributions are either made under a contributor agreement or appropriate terms such that the Licensor can include them in future releases. This is to maintain the ability to relicense if needed. (See Section 9 about contributor agreements.)
+ 83: * **No Obligation to Future Licensing:** Nothing in this clause guarantees that the Licensor will release a more permissive version, only that it’s a possibility. Users and contributors should be aware that license terms might be adjusted in future releases, but any such change will be clearly communicated and, if necessary, consent from contributors will be obtained.
+ 84: 
+ 85: ## 9. Contributor License Agreement (CLA) (for external contributors)
+ 86: 
+ 87: At present (initial release), all code and assets in SledHEAD are authored by the original Licensor. If you wish to contribute to the project (e.g., by submitting code or asset improvements), the Licensor may ask you to sign a Contributor License Agreement. A CLA typically confirms that: (a) you have the right to contribute what you send, (b) you grant the Licensor permission to use and relicense your contribution under this project’s license and potentially other licenses in the future, and (c) you understand your contribution is provided under the same open license to all users.
+ 88: 
+ 89: * **Necessity of CLA:** The CLA is intended to make future license changes or commercial licensing of the project smoother, by ensuring all contributors agree on how their contributions can be used. If you do not sign such an agreement, the Licensor might not be able to accept your contribution, especially if it’s significant, because it could complicate the ability to relicense or offer commercial terms later.
+ 90: * **Timing:** You generally won’t need to sign a CLA until you are about to make the first contribution that will be merged into the project. Simply using or modding the game doesn’t require a CLA. It’s only for when you contribute code or assets back to the official project. The Licensor may publish the CLA text and a process (e.g., an online sign-off) when the project starts accepting outside contributions.
+ 91: * **Contributor Rights:** Even after signing a CLA, you (as a contributor) still retain copyright to your contributions and you can reuse your contributed code elsewhere. The CLA just gives the Licensor a broad right to include your work in SledHEAD and relicense as needed (for instance, if in the future SledHEAD moves to a different license or a commercial dual-license model, your contribution can be included).
+ 92: * **No CLA at Initial Release:** If you are simply downloading or using the game, this section doesn’t affect you. It’s informational in case the project grows with community help. The Licensor will announce when a CLA becomes required (likely before accepting the first non-trivial external commit).
+ 93: 
+ 94: ## 10. Disclaimer of Warranty
+ 95: 
+ 96: THE GAME (INCLUDING SOURCE CODE AND ASSETS) IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND. To the fullest extent permitted by law, the Licensor disclaims all warranties, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement. You accept all risk as to the quality and performance of the Game. Should the Game prove defective, you assume the cost of all necessary servicing, repair, or correction. No oral or written information or advice provided by the Licensor shall create any warranty. (This disclaimer is in line with Section 15 of the AGPLv3 and Section 5 of CC BY-NC-SA 4.0.)
+ 97: 
+ 98: ## 11. Limitation of Liability
+ 99: 
+100: Under no circumstances and under no legal theory (including, without limitation, tort (including negligence), contract, or otherwise) shall the Licensor, or anyone who has contributed to the Game, be liable to you for any direct, indirect, incidental, consequential, special, or exemplary damages arising out of or relating to this License or the use of the Game, even if the Licensor has been advised of the possibility of such damages. In jurisdictions that do not allow the exclusion or limitation of certain damages, the Licensor’s liability shall be limited to the minimum extent permitted by law. You acknowledge that the Licensor is not liable for how you use the Game or Mods, or any outcomes of using it (for example, no liability for loss of data, loss of profits, or legal issues you might incur by violating this Agreement).
+101: 
+102: ## 12. General
+103: 
+104: * **Severability:** If any provision of this License is held to be unenforceable or invalid by a court of competent jurisdiction, that provision will be modified to the minimum extent necessary to make it enforceable (or severed if necessary), and the rest of the License will remain in effect.
+105: * **No Endorsement:** Nothing in this License gives you rights to use the name, logos, or trademarks of SledHEAD or the Licensor for promotional purposes (aside from factual attribution as required). You cannot imply that your Mod or product is endorsed by the original author without separate permission.
+106: * **License Acceptance:** By using the Game (or any of its Source Code or Assets), you indicate your acceptance of this License. If you do not agree to these terms, you do not have permission to use the Game or its contents.
+107: * **Copyright Notice:** © 2024 Marvin Bentley II. All rights reserved, except as explicitly granted by this License.
+</file>
+
+<file path="README.md">
+  1: # **SledHEAD**
+  2: **Genre:** Roguelike | Trick & Time Trial Racer | Adventure  
+  3: **Platform:** Web-based (PC, potentially mobile)  
+  4: **Target Audience:** Arcade racing fans, adventure/simulation players, streamers & content creators  
+  5: 
+  6: ---
+  7: 
+  8: ## Table of Contents
+  9: 1. [Core Concept](#core-concept)
+ 10: 2. [Procedural World & Persistence](#procedural-world--persistence)
+ 11: 3. [Gameplay Loops](#gameplay-loops)
+ 12:    - [Sledding Phase (Downhill)](#1-sledding-phase-downhill)
+ 13:    - [Climbing Phase (Uphill)](#2-climbing-phase-uphill)
+ 14:    - [Management Phase (House & Upgrades)](#3-management-phase-house--upgrades)
+ 15: 4. [Trick System (For Extra Cash & Fan Engagement)](#trick-system-for-extra-cash--fan-engagement)
+ 16: 5. [Upgrade System](#upgrade-system)
+ 17:    - [Personal Upgrades](#personal-upgrades-character-enhancements)
+ 18:    - [Mountain Upgrades](#mountain-upgrades-resort-expansion)
+ 19: 6. [Game Balance & Tweakable Variables](#game-balance--tweakable-variables)
+ 20: 7. [Mountain Themes & Progression](#mountain-themes--progression)
+ 21: 8. [Mini-Games in SledHEAD](#mini-games-in-sledhead)
+ 22: 9. [NPCs & Mountain Town Ecosystem](#npcs--mountain-town-ecosystem)
+ 23: 
+ 24: 
+ 25: ---
+ 26: 
+ 27: ## 🎯 **Core Concept**
+ 28: You are an **aspiring sledding champion & content creator** who has purchased an entire **procedurally generated mountain** to train and live-stream your sled runs. To fund your dream, you’ve opened the slopes to the public, attracting:
+ 29: 
+ 30: - **Casual Tourists** – Regular visitors who use the mountain but don’t care about you.  
+ 31: - **Fans & Followers** – Devoted viewers who cheer, hype you up, and even offer in-game boosts.  
+ 32: 
+ 33: Your goal is to master the mountain, **optimize runs for speed and tricks**, and **grow your fanbase** to attract **sponsorships, cash, and new opportunities**. The **better your performance, the more money you earn**, allowing you to invest in **personal upgrades, sled modifications, and mountain expansions**.
+ 34: 
+ 35: ---
+ 36: 
+ 37: ## 🎮 **Controls & Gameplay Mechanics**
+ 38: 
+ 39: ### **⬇️ Downhill Phase: Fast-Paced Sledding**
+ 40: In the **downhill phase**, you’re controlling your sled as it races down procedurally generated slopes, dodging obstacles, pulling off tricks, and aiming for the fastest times.
+ 41: 
+ 42: #### **Basic Movement:**
+ 43: - **Left / Right Arrow Keys (← →)** – Steer your sled left or right.  
+ 44: - **Down Arrow (↓)** – Crouch for extra speed on straightaways.  
+ 45: - **Up Arrow (↑)** – Prepare for a jump off a ramp.  
+ 46: 
+ 47: #### **Trick System:**
+ 48: - Tricks are executed using combinations of **Up, Down, Left, and Right Arrows**.
+ 49: - Landing tricks successfully grants extra money and fan engagement.
+ 50: - Be mindful of your timing - land while doing a trick, and you could crash!
+ 51: 
+ 52: #### **Hazards & Interactions:**
+ 53: - **Tourists:** Sometimes they move, sometimes they don’t—dodge carefully!
+ 54: - **Fans:** If you impress them with tricks, they’ll cheer you on and even give you boosts.
+ 55: - **Ice Patches:** Reduce control and make turns trickier.
+ 56: - **Snow Drifts & Ramps:** Use them for sick air and trick opportunities.
+ 57: - **Time Trial Activators:** If you pass through one, your downhill time is tracked—faster times mean better rewards!
+ 58: 
+ 59: ---
+ 60: 
+ 61: ### **⬆️ Uphill Phase: Climbing & Exploration**
+ 62: Once you reach the bottom, it’s time to **make your way back up**. The mountain doesn’t regenerate, so you’ll be retracing paths and discovering new shortcuts.
+ 63: 
+ 64: #### **Basic Movement & Stamina:**
+ 65: - **Left / Right Arrow Keys (← →)** – Move horizontally across the mountain.
+ 66: - **Up Arrow (↑)** – Hike uphill, consuming stamina.
+ 67: - **Down Arrow (↓)** – Rest momentarily to recover stamina.
+ 68: 
+ 69: #### **Navigation & Assistance:**
+ 70: - If you've **unlocked ski lifts or snowmobiles**, you can use them for a quicker return.
+ 71: - **Shortcut Awareness** upgrades help you find hidden paths to make the climb easier.
+ 72: - **Food Stalls & Rest Areas** restore stamina—plan your route accordingly!
+ 73: 
+ 74: #### **Wildlife Photography Mini-Game 📸**
+ 75: - While hiking, **animals appear every few seconds**.
+ 76: - Aim the camera using **Arrow Keys**, and take a shot with **Spacebar**.
+ 77: - Align your camera with the **altitude line** for a perfect photo.
+ 78: - **Moving animals give higher rewards** but are harder to capture.
+ 79: 
+ 80: ---
+ 81: 
+ 82: **Next Steps:**  
+ 83: - **If you want to make money:** Optimize your tricks and time trials.  
+ 84: - **If you want to upgrade:** Invest in stamina, sled durability, and trick enhancements.  
+ 85: - **If you want to explore:** Look for wildlife, hidden shortcuts, and fan hotspots!  
+ 86: 
+ 87: ---
+ 88: 
+ 89: ## 🌎 **Procedural World & Persistence**
+ 90: - The mountain remains consistent during a playthrough.  
+ 91: - **New terrain is only generated when starting a new game.**  
+ 92: - The current **seed is displayed at home**, and players can enter a **custom seed for a specific mountain.**  
+ 93: - **Changes per run:**
+ 94:   - Tourists & fans shift positions.  
+ 95:   - Weather may change dynamically.  
+ 96:   - Wildlife encounters vary.
+ 97: 
+ 98: ---
+ 99: 
+100: ## 🎮 **Gameplay Loops**
+101: 
+102: ### 1️⃣ **Sledding Phase (Downhill) ⬇️**
+103: 💨 **Fast-paced, high-speed, gravity-driven sledding with a trick system.**  
+104: - **Goal:** Reach the bottom as efficiently as possible while **navigating obstacles, taking shortcuts, and pulling off tricks** for extra cash.  
+105: - **Terrain:** Procedurally generated **rocks, ramps, cliffs, ski lifts, obstacles, and hidden paths**.  
+106: - **Obstacles:**
+107:   - **Tourists**: Sometimes move out of the way, sometimes don’t.
+108:   - **Fans**: Cheer you on & give you **boosts** if you impress them.
+109:   - **Moving Hazards**: Ski patrol, rogue snowmobiles, loose sleds.  
+110: - **Weather Effects:** Wind, fog, snow drifts, and ice patches change difficulty dynamically.  
+111: - **Time Trials:**  
+112:   - Activated by **hitting a time trial activator** (e.g., checkpoint, gate, or radar timer).  
+113:   - **Your time between activators determines your bonus.**  
+114:   - **Faster times = more money!**  
+115:   - Not all runs are timed; only those where you activate a trial.  
+116: 
+117: ---
+118: 
+119: ### 2️⃣ **Climbing Phase (Uphill) ⬆️**
+120: 🚶 **Top-down adventure traversal with stamina management and exploration.**  
+121: - **Goal:** Return to the top **by hiking, using ski lifts, snowmobiles, or taking shortcuts**.  
+122: - **Terrain:** The same generated world as the downhill run (no regenerating between runs).  
+123: - **Stamina System:**  
+124:   - Stamina drains when hiking.  
+125:   - Replenished by **food stands, resting points, or upgrades**.  
+126: - **Wildlife Photography Mini-Game 📸** *(Active only in Uphill Phase)*  
+127:   - **Random animals appear every 5–10 seconds (TWEAK variable).**  
+128:   - Animals either **stay still (1–20 seconds) or move (making them harder to photograph).**  
+129:   - **Use the Arrow Keys to aim the camera cone** around your character.  
+130:   - **Align the altitude line** with the animal’s altitude for a perfect shot.  
+131:   - **Photos earn money, with multipliers for:**  
+132:     - Accuracy (center of POV cone).  
+133:     - Altitude match precision.  
+134:     - Moving vs. stationary targets (moving = 3x value).  
+135: 
+136: ---
+137: 
+138: ### 3️⃣ **Management Phase (House & Upgrades) 🏠**
+139: 🏡 **Upgrade your gear, mountain, and social media presence.**  
+140: - **Spend earned money on:**
+141:   - **Personal Upgrades:** Increase sledding ability, climbing endurance, photography precision.  
+142:   - **Sled Upgrades:** Speed, handling, trick potential.  
+143:   - **Mountain Upgrades:** Add ski lifts, shops, and fans to boost income & challenge.  
+144: - **New Game Start:**  
+145:   - Mountain **ONLY regenerates when starting a completely new game.**  
+146:   - **A seed system** lets players enter a specific seed for reproducible terrain.  
+147:   - **Current seed is displayed at home.**  
+148: 
+149: ---
+150: 
+151: ## ✨ **Trick System (For Extra Cash & Fan Engagement)**
+152: Performing tricks during downhill runs boosts **viewer engagement, increasing cash rewards**.
+153: 
+154: 1. **☁️🪂 Parachute (Up, Down)**  
+155:    You hold the sled over your head like a big ol’ parachute, slowing your vertical descent so you can hang in the air longer, just like floatin’ on a cloud, eh?  
+156:    **Pixel Art Representation:**  
+157:    The rider lifts the sled high above their head, arms fully extended. The sled tilts slightly, mimicking a floating parachute. Small pixelated wind streaks or snow particles drift upward to indicate reduced descent speed.
+158: 
+159: 2. **🛑🎿 Air Brake (Up, Up)**  
+160:    Hold that sled out behind you like a makeshift air brake to suddenly slow down your lateral speed—kinda like when a kitty makes a quick stop!  
+161:    **Pixel Art Representation:**  
+162:    The rider holds the sled behind them at an angle, legs bent forward to emphasize the sudden slowdown. A few small speed lines in front of the rider suddenly cut off, highlighting the braking effect.
+163: 
+164: 3. **🔄⬅️ Sled Flip Back (Down, Left)**  
+165:    A full backward flip that sends the sled over your head in a smooth reverse rotation, perfect for showin’ off your style.  
+166:    **Pixel Art Representation:**  
+167:    The sled and rider rotate backward together in a fluid animation, leaving a subtle motion blur trail behind to emphasize speed.
+168: 
+169: 4. **🔄➡️ Sled Flip Front (Down, Right)**  
+170:    Flip forward with a quick rotation that launches you off the ramp—fast, fun, and full of flair!  
+171:    **Pixel Art Representation:**  
+172:    The sled and rider rotate forward rapidly, briefly showing a silhouetted mid-flip pose for a cool spinning effect.
+173: 
+174: 5. **🚁⬅️ Helicopter Spin Left (Left, Left)**  
+175:    Spin the sled horizontally like a mini helicopter twirlin’ left—watch that pixel art blur as it slices through the air.  
+176:    **Pixel Art Representation:**  
+177:    The sled remains under the rider while spinning rapidly to the left, with small curved motion lines surrounding it to emphasize rotation.
+178: 
+179: 6. **🚁➡️ Helicopter Spin Right (Right, Right)**  
+180:    Just like its twin but twirlin’ right—this trick’s all about that rapid, smooth spin, buddy.  
+181:    **Pixel Art Representation:**  
+182:    Identical to Helicopter Spin Left but mirrored to the right, with the same spinning blur effect and curved lines.
+183: 
+184: 7. **🦸‍♂️✨ Superman (Down, Down)**  
+185:    Channel your inner superhero by extending your arms like Superman while holding the sled with both hands—pure power and style on the slopes!  
+186:    **Pixel Art Representation:**  
+187:    The rider extends both arms forward, body stretched out like they’re flying. The sled tilts slightly backward for a dramatic effect.
+188: 
+189: 8. **🌪️➡️ Sky Dive Roll Right (Up, Right)**  
+190:    Push the sled off and roll to the right in mid-air, spreadin’ out like you’re dancin’ through the sky with a freefall vibe.  
+191:    **Pixel Art Representation:**  
+192:    The rider tumbles sideways while the sled momentarily drifts away, before they reach out to grab it again.
+193: 
+194: 9. **🌪️⬅️ Sky Dive Roll Left (Up, Left)**  
+195:    The same cool roll but to the left—it's like floatin’ and twistin’ in the air, makin’ it look effortless.  
+196:    **Pixel Art Representation:**  
+197:    Mirrored version of Sky Dive Roll Right, with the same falling motion effect and mid-air recovery animation.
+198: 
+199: 10. **👻🔥 Ghost Rider (Left, Right)**  
+200:     Push the sled away and, like a ghostly apparition, grab it back before you land—spooky and smooth all at once.  
+201:     **Pixel Art Representation:**  
+202:     The rider momentarily separates from the sled, which drifts forward with a slight transparency effect before being grabbed again.
+203: 
+204: 11. **🎿🔄 Toboggan Toss (Right, Left)**  
+205:     Let go of the sled mid-air, spin yourself a full 360° and land back on it—like tossin’ your worries away with a big, wild spin!  
+206:     **Pixel Art Representation:**  
+207:     The rider performs a spinning animation while the sled briefly floats below them, before they land back on it.
+208: 
+209: 12. **🌀➡️ Corkscrew Right (Right, Down)**  
+210:     Mix a flip and a spin into one diagonal barrel roll—twist and turn like a corkscrew rightward, leaving a trail of style behind you.  
+211:     **Pixel Art Representation:**  
+212:     The rider and sled rotate diagonally in sync, creating a swirling corkscrew motion with a slight trailing blur.
+213: 
+214: 13. **🌀⬅️ Corkscrew Left (Left, Down)**  
+215:     Mix a flip and a spin into one diagonal barrel roll—twist and turn like a corkscrew leftward, leaving a trail of style behind you.  
+216:     **Pixel Art Representation:**  
+217:     Same as Corkscrew Right, but mirrored to the left with identical motion blur effects.
+218: 
+219: 14. **✨⬆️ Falling Star (Down, Up)**  
+220:     In mid-air you let go of the sled for a moment to do a "star pose" (legs and arms spread wide) before getting back on the sled.  
+221:     **Pixel Art Representation:**  
+222:     The rider spreads their limbs wide in mid-air, with small sparkling effects around them before returning to the sled.
+223: 
+224: 15. **🌍➡️ Orbit Spin Clockwise (Right, Up)**  
+225:     Launching into the air, the rider grips the board firmly in front of them, rotating a full 360° to the right (clockwise) while suspended in mid-air like a satellite caught in orbit.  
+226:     **Pixel Art Representation:**  
+227:     The sled and rider spin together in a tight, controlled orbit-like motion, with a circular blur trailing behind.
+228: 
+229: 16. **🌍⬅️ Orbit Spin Counterwise (Left, Up)**  
+230:     With an explosive lift-off, the rider soars into the sky, clutching their board tightly while spinning a complete 360° to the left (counterclockwise) in a controlled, weightless rotation.  
+231:     **Pixel Art Representation:**  
+232:     Identical to Orbit Spin Clockwise, but mirrored leftward, keeping the same smooth circular motion and blur effect.
+233: 
+234: *💡 Later Upgrade:* **"Sledboarding"** unlocks snowboard-style **grinds, flips, and advanced tricks**.
+235: 
+236: ---
+237: 
+238: ## 🔧 **Upgrade System**
+239: 
+240: ### 🧑‍🎿 Personal Upgrades (Character Enhancements)
+241: | Upgrade                    | Effect                                             |
+242: |----------------------------|----------------------------------------------------|
+243: | 🚀 **Rocket Surgery**      | Faster acceleration & top speed.                 |
+244: | 🎮 **Optimal Optics**      | Increases camera POV for better wildlife photos.   |
+245: | 🛡️ **Sled Durability**     | +1 collision allowed before crash.               |
+246: | 🥾 **Fancier Footwear**    | Faster hiking speed, better grip.                  |
+247: | ❄️ **Grappling Anchor**    | Hook onto terrain for shortcuts.                 |
+248: | 💪 **Attend Leg Day**      | Reduces stamina cost while climbing.             |
+249: | 🏔️ **Shortcut Awareness**  | Reveals hidden shortcuts.                          |
+250: | 📣 **Crowd Hypeman**       | More fans = bigger trick bonuses.                |
+251: | 🚶‍♂️ **Crowd Weaver**      | Non-fan tourists dodge more often.               |
+252: | 🌨️ **Weather Warrior**     | Reduces negative weather effects.                |
+253: 
+254: ---
+255: 
+256: ### 🏔️ Mountain Upgrades (Resort Expansion)
+257: | Upgrade                        | Effect                                                         |
+258: |--------------------------------|----------------------------------------------------------------|
+259: | 🚡 **High-Speed Ski Lifts**    | Lets you quickly ride back up.                                 |
+260: | 🏎️ **Snowmobile Rentals**      | You can rent snowmobiles for faster ascents.                   |
+261: | 🍔 **Food Stalls**             | Generates money & restores stamina.                            |
+262: | 🏁 **Groomed Trails**          | Grants occasional speed boosts.                                |
+263: | ⛑️ **First-Aid Stations**      | Heal after crashes.                                            |
+264: | 📷 **Scenic Overlooks**        | Passive income & potential shortcuts.                          |
+265: | 📢 **Ramp-Billboards**         | Generates ad revenue & doubles as ramps.                       |
+266: | 🏨 **Resort Lodges**           | Adds new starting locations for runs.                          |
+267: | 🌙 **Night Lighting**          | Enables nighttime runs with bonus rewards.                     |
+268: | ❄️ **Weather Control**         | Modify conditions for different challenges.                    |
+269: 
+270: ---
+271: 
+272: ## ⚖️ **Game Balance & Tweakable Variables**
+273: All these are stored in the **TWEAK object** for easy adjustments:
+274: - Wildlife spawn times (min/max).
+275: - Wildlife **sit duration** (min/max).
+276: - Moving animal multiplier.
+277: - Camera **POV cone size**.
+278: - **Time trial activator frequency** & bonuses.
+279: - **Stamina drain rates**.
+280: - **Mountain regeneration rules**.
+281: - **Trick scoring multipliers**.
+282: - **Photograph accuracy bonuses**. 
+283: 
+284: **Progression Goals:**  
+285: - **Prototype:** Repay the cost of the mountain.  
+286: - **Full Game:**  
+287:   - Stage 1: Repay your house, unlocking initial "Mountain" upgrades like ski lifts.  
+288:   - Stage 2: After paying off your mountain, a much bigger debt unlocks a new mountain (with fresh environments like Lava Mountain, Space Mountain, and Underwater Mountain).  
+289:   - Note: You'll start off with zero mountain upgrades but keep your personal upgrades.  
+290:   - Unique upgrades are required to access each new mountain, with limited availability—though more snowy peaks are always around to explore!
+291: 
+292: ---
+293: 
+294: ## 🏔️ **Mountain Themes & Progression**
+295: 
+296: ### Lava Mountain 🌋
+297: - **Description:** Sizzling volcanic slopes with flowing lava rivers, steaming geysers, and rocky outcrops. Watch out for molten streams, lava bombs, and volcanic tremors.  
+298: - **Mechanics:**  
+299:   - **Heat Meter:** Overheat means game over unless you hit cool-off zones.  
+300:   - **Ash Clouds:** Temporarily block visibility.
+301: - **Power-Up:** **Heat Shielding Sled Coating**  
+302:   *Required upgrade to unlock Lava Mountain. Provides heat protection and slightly reduces friction on other levels.*
+303: 
+304: ---
+305: 
+306: ### Space Mountain 🌌
+307: - **Description:** Sled in low gravity on lunar or Martian slopes with huge craters, steep cliffs, and meteor showers.  
+308: - **Mechanics:**  
+309:   - **Low Gravity:** Higher jumps, longer airtime, easier flips 'n tricks.  
+310:   - **Meteor Showers:** Random meteor strikes introduce obstacles.
+311: - **Power-Up:** **Gravity Stabilizer Sled Upgrade**  
+312:   *Required to unlock Space Mountain. Stabilizes sled control in fluctuating gravity.*
+313: 
+314: ---
+315: 
+316: ### Underwater Mountain 🌊
+317: - **Description:** Submerged slopes with slow-motion physics. Seaweed, coral formations, and hidden underwater currents abound.  
+318: - **Mechanics:**  
+319:   - **Air Meter (Stamina):** Acts like oxygen; replenished by air bubbles or surface spots.
+320: - **Power-Up:** **Aqua-Lung Mittens**  
+321:   *Required to enter Underwater Mountain. Constantly replenishes stamina underwater and reduces stamina drain on other mountains.*
+322: 
+323: ---
+324: 
+325: ### Garbage Dump Glacier 🗑️❄️
+326: - **Description:** Icy runs through a frozen landfill filled with discarded items, oil slicks, and seagull attacks.  
+327: - **Mechanics:**  
+328:   - **Sticky Garbage Areas:** Slow down your sled unless special upgrades are used.
+329: - **Power-Up:** **Slick Wax Spray**  
+330:   *Required to unlock Garbage Dump Glacier. Prevents sticky terrain and provides a speed boost on all levels.*
+331: 
+332: ---
+333: 
+334: ### Micro Mountain 🐜🌱
+335: - **Description:** A microscopic adventure down blades of grass, dodging oversized ants, and navigating dew drops.  
+336: - **Mechanics:**  
+337:   - **Tiny Obstacles:** Garden insects and pollen clusters create dynamic hazards.
+338: - **Power-Up:** **Antigrav Wax**  
+339:   *Required for Micro Mountain. Dramatically reduces friction and improves glide efficiency across all terrains.*
+340: 
+341: ---
+342: 
+343: ### Candy Cane Canyon 🍭
+344: - **Description:** Sweet, candy-themed slopes with chocolate rivers, caramel waterfalls, and peppermint jumps.  
+345: - **Mechanics:**  
+346:   - **Sticky Sweets & Sugar Rush Zones:** Affect speed and maneuverability.
+347: - **Power-Up:** **Sweet-Tooth Coating**  
+348:   *Required for Candy Cane Canyon. Prevents sticking and mitigates slowdown effects on other terrains.*
+349: 
+350: ---
+351: 
+352: ### Crystal Cave Cavern 🔮
+353: - **Description:** Glittering caverns with stalactites, delicate crystal formations, and echoing acoustics.  
+354: - **Mechanics:**  
+355:   - **Fragile Obstacles:** Crystals break on impact, temporarily obscuring vision.
+356: - **Power-Up:** **Crystal Clear Goggles**  
+357:   *Required for Crystal Cave Cavern. Enhances visibility and reduces the impact of obstructions.*
+358: 
+359: ---
+360: 
+361: ### Haunted Graveyard Hill 👻
+362: - **Description:** Spooky slopes with gravestones, eerie trees, and wandering ghosts.  
+363: - **Mechanics:**  
+364:   - **Ghost Encounters & Phantom Fans:** Can hinder or help your progress with unexpected effects.
+365: - **Power-Up:** **Spirit Lantern**  
+366:   *Required to access Haunted Graveyard Hill. Illuminates hidden pathways and improves overall visibility.*
+367: 
+368: ---
+369: 
+370: ### Sky Jellyfish Mountain ☁️🪼
+371: - **Description:** Ethereal, bouncy slopes with luminous sky jellyfish and shifting cloud platforms.  
+372: - **Mechanics:**  
+373:   - **Bounce Physics & Air Gusts:** Create unpredictable trajectories.
+374: - **Power-Up:** **Stabilizer Sled Rails**  
+375:   *Required for Sky Jellyfish Mountain. Improves landing stability and reduces bounce unpredictability.*
+376: 
+377: ---
+378: 
+379: ### Mechanical Mountain (Steampunk Slopes) ⚙️🎩
+380: - **Description:** Steampunk-inspired terrain with gears, conveyor belts, and mechanical contraptions.  
+381: - **Mechanics:**  
+382:   - **Timed Obstacles & Gear Grinds:** Require precise timing and offer big cash bonuses.
+383: - **Power-Up:** **Clockwork Treads**  
+384:   *Required to unlock Mechanical Mountain. Provides traction on moving surfaces and enhances handling.*
+385: 
+386: ---
+387: 
+388: ### Pyramid Peak 🐫🏜️
+389: - **Description:** Ancient Egyptian slopes with sandy ruins, sandstorms, falling boulders, and scarab swarms.  
+390: - **Mechanics:**  
+391:   - **Sandstorms & Hidden Pitfalls:** Obscure vision and reveal secret ramps.
+392: - **Power-Up:** **Sandrunner Skis**  
+393:   *Required for Pyramid Peak. Enables smooth gliding over sandy terrain and enhances performance on loose surfaces.*
+394: 
+395: ---
+396: 
+397: ### Digital Mountain (Cyber Slopes) 💻🔮
+398: - **Description:** Neon-lit digital slopes filled with glitches, data streams, and pop-up malware ads.  
+399: - **Mechanics:**  
+400:   - **Glitch Zones & Malware Hazards:** Cause unpredictable teleportation and control issues.
+401: - **Power-Up:** **Data Shielding**  
+402:   *Required to access Digital Mountain. Protects against digital hazards and improves overall stability.*
+403: 
+404: ---
+405: 
+406: ## 🎮 **Mini-Games in SledHEAD**
+407: 
+408: ### 1. **Animal Photography** 📸🐾
+409: - **Objective:**  
+410:   Capture high-quality photos of rare and elusive wildlife while climbing uphill.
+411: - **Mechanics:**  
+412:   - **Camera Controls:** Zoom, motion tracking, shifting **POV cone**, and matching the **altitude line** with the target.  
+413:   - **Wildlife Behavior:** Animals spawn randomly (every 5–10 sec) and may stay still (1–20 sec) or move unpredictably (moving targets grant 3x more money).  
+414:   - **Scoring Bonuses:**  
+415:     - **Altitude Match Multiplier**  
+416:     - **POV Centering Bonus**  
+417:     - **Speed Capture Bonus**  
+418: - **Upgrades:**  
+419:   - **Optimal Optics:** Increases the camera’s POV cone.  
+420:   - **Steady Hands:** Reduces camera sway.  
+421:   - **Animal Baiting:** Increases rare animal appearance.
+422: - **Special Events:**  
+423:   - **Rare Animal Sightings** and **Storm Photography**.
+424: - **Risk/Challenge:**  
+425:   - **Repeat Photo Penalty** and aggressive animal disruptions.
+426: 
+427: ---
+428: 
+429: ### 2. **Fishing** 🎣🐟  
+430: - **Objective:**  
+431:   Catch fish using various techniques and bait types.
+432: - **Mechanics:**  
+433:   - Dynamic water simulation with varied fish behaviors.  
+434:   - Choose your bait, casting angle, and reel technique (e.g., slow pull, rapid jerk, deep drag).  
+435:   - Legendary fish yield major rewards.
+436: - **Upgrades:**  
+437:   - Stronger fishing lines, advanced lures, and sonar detection.
+438: - **Special Events:**  
+439:   - Fishing tournaments and rare migration patterns.
+440: - **Risk/Challenge:**  
+441:   - Line snapping and predator interference.
+442: 
+443: ---
+444: 
+445: ### 3. **Lockpicking in Abandoned Buildings** 🔐🏚️  
+446: - **Objective:**  
+447:   Unlock doors, safes, and hidden compartments.
+448: - **Mechanics:**  
+449:   - Use tools like **rakes, hooks, and tension wrenches**.  
+450:   - Navigate traps such as alarms and rusted internals.
+451: - **Upgrades:**  
+452:   - High-quality picks, electronic bypass tools, and vibration sensors.
+453: - **Special Events:**  
+454:   - Timed heists and races with rival scavengers.
+455: - **Risk/Challenge:**  
+456:   - Unstable buildings and hazards that may alert authorities.
+457: 
+458: ---
+459: 
+460: ### 4. **Treasure Hunting** 🏴‍☠️🔍  
+461: - **Objective:**  
+462:   Find buried treasure using maps, clues, and metal detectors.
+463: - **Mechanics:**  
+464:   - Decode old maps, identify landmarks, and use metal detectors for precision.  
+465:   - Digging requires stamina management and upgraded tools.
+466: - **Upgrades:**  
+467:   - Advanced metal detectors, excavation tools, and digging drones.
+468: - **Special Events:**  
+469:   - NPC treasure races and secret cache discoveries.
+470: - **Risk/Challenge:**  
+471:   - Booby traps, hostile environments, and law enforcement risks.
+472: 
+473: ---
+474: 
+475: ### 5. **Kite Flying** 🪁🌬️  
+476: - **Objective:**  
+477:   Control a kite during uphill climbs, then reap aerial bonuses during sled runs.
+478: - **Mechanics:**  
+479:   - **Uphill:** Switch to a Guitar Hero-style directional arrow input to keep the kite stable.  
+480:   - **Downhill:** Kites extend air time and grant special bonuses.
+481: - **Upgrades:**  
+482:   - **Glide Boost, Speed Stream, and Aero Control.**
+483: - **Special Events:**  
+484:   - **Storm Riding** with higher boosts but riskier winds.
+485: - **Risk/Challenge:**  
+486:   - Strong gusts may destabilize your kite.
+487: 
+488: ---
+489: 
+490: ### 6. **Prospecting (Pan & Pickaxe Mining)** ⛏️💎  
+491: - **Objective:**  
+492:   Search for valuable minerals, gems, and gold.
+493: - **Mechanics:**  
+494:   - Explore rivers, caves, and rock formations.  
+495:   - **Panning:** Swirl water to separate gold.  
+496:   - **Pickaxe Mining:** Break rocks for hidden gems.
+497: - **Upgrades:**  
+498:   - High-tech panning kits, seismic scanners, precision drills.
+499: - **Special Events:**  
+500:   - Gold rush hotspots, rare mineral finds, and cave-ins.
+501: - **Risk/Challenge:**  
+502:   - Unstable ground and rival prospectors.
+503: 
+504: ---
+505: 
+506: ### 7. **Cryptid Fossil Digging** 🦴🔍  
+507: - **Objective:**  
+508:   Unearth and assemble fossils of **Champ**, the legendary cryptid of Lake Champlain.
+509: - **Mechanics:**  
+510:   - Use brushes, chisels, and excavation tools to reveal fossils.  
+511:   - Transport fossils to the museum at the base of the first mountain.
+512: - **Upgrades:**  
+513:   - Precision excavation kits, automated digging arms, and fossil resin stabilizers.
+514: - **Special Events:**  
+515:   - Competing paleontologists and hidden dig sites.
+516: - **Risk/Challenge:**  
+517:   - Fragile fossils, extreme weather, cave-ins, and unexpected cryptid sightings.
+518: 
+519: ---
+520: 
+521: ### 8. **Sled Tricking** 🛷✨  
+522: - **Objective:**  
+523:   Chain together aerial sled tricks to earn cash and boost fan engagement.
+524: - **Mechanics:**  
+525:   - Utilize a trick system featuring helicopter spins, flips, air brakes, corkscrews, and ghost rider moves.  
+526:   - Chain tricks for higher multipliers.
+527: - **Upgrades:**  
+528:   - Trick-enhancing sled mods, jump-boosting gear, and aerial control boosters.
+529: - **Special Events:**  
+530:   - Trick challenges and fan-requested stunt competitions.
+531: - **Risk/Challenge:**  
+532:   - Mistimed tricks can cause crashes and loss of earnings.
+533: 
+534: ---
+535: 
+536: ### 9. **Time Trial Racing** 🏁🛷  
+537: - **Objective:**  
+538:   Trigger time trial races by hitting gates while sledding for money rewards.
+539: - **Mechanics:**  
+540:   - Crossing a time trial gate starts a timer.  
+541:   - The faster and further you go, the more money you earn.
+542: - **Why It Fits:**  
+543:   - Seamlessly integrates as a high-speed challenge within the sledding phase.
+544: 
+545: ---
+546: 
+547: ### 10. **RC Motor Sled** ❄️🏎️  
+548: - **Objective:**  
+549:   Control a high-speed RC snowmobile for scouting, trick-based racing, and retrieving stamina-boosting supplies.
+550: - **Mechanics:**  
+551:   - Maneuver nimble RC sleds across frozen tundra.  
+552:   - Nitro boosts and mid-air tricks enhance performance.  
+553:   - Customization options include different sled bodies, engines, and handling upgrades.
+554: - **Special Events:**  
+555:   - Avalanche races, night rides, and hazard runs.
+556: - **Risk/Challenge:**  
+557:   - Limited battery life, high winds, and signal loss in deep snow.
+558: 
+559: ## 🏔️ **NPCs & Mountain Town Ecosystem**
+560: SledHEAD’s world is filled with **unique characters** who contribute to your journey as a **trick-riding, fan-growing, upgrade-building, sled-stunting** legend. Some run the town, some enhance your sledding skills, and others add depth to the **roguelike adventure**.
+561: 
+562: ---
+563: 
+564: ### 🏡 **Core Resort & Business Owners (Essential Infrastructure)**
+565: These **support your base mountain**—they run the town, drive your economy, and keep the game loop running.
+566: 
+567: #### 🏂 **The Sled Tech (Sled Repairs & Mods)**
+568: - **Purpose:** Repairs damage, sells sled mods.
+569: - **Upgrades Unlocked:** **Custom wax, shock absorbers, reinforced sleds.**
+570: - **Best Quote:** “What’d ya do, run into a moose? I can fix it… for a price.”
+571: 
+572: #### 🍔 **The Food Vendor (Buffs & Endurance Recovery)**
+573: - **Purpose:** Sells food that restores stamina and gives **temporary buffs** for sledding.
+574: - **Best Quote:** “Hot cocoa makes you go faster, I swear. Try it.”
+575: 
+576: #### 🎥 **The Stream Manager (Audience Growth & Sponsorships)**
+577: - **Purpose:** Manages your in-game audience; unlocks **sponsorship deals**.
+578: - **Best Quote:** “If you don’t clip the trick, did you even land it?”
+579: 
+580: #### 🏁 **The Race Commissioner (Tournaments & Time Trials)**
+581: - **Purpose:** Hosts **time trials, speedrun events, and competitive circuits**.
+582: - **Best Quote:** “Half a second off the record? C’mon, I thought you were good.”
+583: 
+584: #### 🚠 **The Lift Operator (Ski Lift & Shortcut Unlocks)**
+585: - **Purpose:** Lets you **unlock ski lifts** for quicker uphill trips.
+586: - **Upgrades Unlocked:** **Gondola expansions, VIP lift passes.**
+587: - **Best Quote:** “Sure, you could walk… or you could bribe me.”
+588: 
+589: ---
+590: 
+591: ### 💨 **Trick & Racing-Oriented NPCs (For Stunts, Style, & Money)**
+592: These folks help you **push your limits**, pull off **sick tricks**, and **maximize profits**.
+593: 
+594: #### 🎿 **The Trick Trainer (Advanced Trick Lessons)**
+595: - **Purpose:** Unlocks **trick combos & advanced air control.**
+596: - **Best Quote:** “No guts, no glory. You wanna spin faster? Listen up.”
+597: 
+598: #### 📸 **The Hype Photographer (Proof-Based Challenges & Bonus Money)**
+599: - **Purpose:** **Trick verification & photography mini-games**.
+600: - **Upgrades Unlocked:** **Slow-mo replays, sponsorship boosts for sick shots.**
+601: - **Best Quote:** “A trick’s only worth money if people see it.”
+602: 
+603: #### 💰 **The Black Market Gear Dealer (Risky Upgrades & Illegal Mods)**
+604: - **Purpose:** Sells **risky sled tech** (illegal nitro boosts, magnetized rails for grinds).
+605: - **Upgrades Unlocked:** **Unstable overclocked sled parts**.
+606: - **Best Quote:** “No refunds. Don’t ask what’s in it.”
+607: 
+608: #### 🤡 **The Stunt Organizer (Jackass-Style Events & Side Hustles)**
+609: - **Purpose:** Hosts **insane trick challenges** with **huge risk & reward**.
+610: - **Best Quote:** “Land a quadruple flip, and I’ll give you something real nice.”
+611: 
+612: ---
+613: 
+614: ### 🌎 **Worldbuilding NPCs (Exploration, Hidden Routes, & Fan Engagement)**
+615: These folks **expand the world** and **give reasons to explore**.
+616: 
+617: #### ⛷️ **The Retired Pro (Hidden Sledding Routes & Legend Quests)**
+618: - **Purpose:** Tells **lore, hidden trails, and backstory of previous champions.**
+619: - **Upgrades Unlocked:** **Secret mountain shortcuts & sled blueprints.**
+620: - **Best Quote:** “Before you, there was someone else. And he disappeared.”
+621: 
+622: #### 🦊 **The Wildlife Researcher (Animal Photography & Rare Fan Unlocks)**
+623: - **Purpose:** Ties into **wildlife photography mini-games**.
+624: - **Upgrades Unlocked:** **Animal-based sled skins & rare sponsor deals.**
+625: - **Best Quote:** “Snow leopards? They’re watching you, too.”
+626: 
+627: #### 📡 **The Event Broadcaster (Commentary & Competitive Meta)**
+628: - **Purpose:** Gives **updates on leaderboards, rival NPCs, and changing conditions**.
+629: - **Upgrades Unlocked:** **"Breaking News" reports on your achievements.**
+630: - **Best Quote:** “The fans are watching, buddy. Make it count.”
+631: 
+632: ---
+633: 
+634: ### 🛤️ **The Travel-Ready NPCs (Appear Across Multiple Mountains)**
+635: They **don’t just stay in one place**—you’ll run into them as you unlock new peaks.
+636: 
+637: #### 🎭 **The Rival (Dynamic Trick & Time Trial Duels)**
+638: - **Purpose:** Appears on any unlocked mountain to **challenge your records**.
+639: - **Best Quote:** “Your best time? That’s cute.”
+640: 
+641: #### 🛠️ **The Tinkerer (Experimental Sled Mods)**
+642: - **Purpose:** Sells **unstable, high-risk sled modifications**.
+643: - **Upgrades Unlocked:** **Prototype sled tech.**
+644: - **Best Quote:** “This is 50% science and 50% dumb luck.”
+645: 
+646: #### 🎩 **The Mysterious Merchant (Random Legendary Gear)**
+647: - **Purpose:** Appears randomly, selling **rare sleds & gear**.
+648: - **Best Quote:** “You don’t know what you need… until you see it.”
+649: 
+650: ---
+651: 
+652: ### 🎭 **The Wild Cards (Weird & Legendary NPCs)**
+653: These folks are **just strange**, but they add **flavor, mystery, and unpredictability**.
+654: 
+655: #### 👻 **The Ghost of the Mountain (Phantom Races & Haunted Challenges)**
+656: - **Purpose:** Unlocks **ghost time trials & haunted trick courses**.
+657: - **Best Quote:** “You ride my path, you race my shadow.”
+658: 
+659: #### 🧙‍♂️ **The Winter Shaman (Weather Manipulation & Magic Sleds)**
+660: - **Purpose:** **Controls mountain weather** for harder/easier runs.
+661: - **Best Quote:** “Blizzards make legends.”
+662: 
+663: #### 🐻 **The Bear Whisperer (Bear Sled Racing Mini-Game)**
+664: - **Purpose:** Lets you **race against trained bears** for money.
+665: - **Best Quote:** “You sled. They sled. Only one wins.”
+666: 
+667: #### 🥶 **The Ice Sculptor (Sled Cosmetics & Customization)**
+668: - **Purpose:** Crafts **one-of-a-kind sled designs**.
+669: - **Best Quote:** “Your ride should be a masterpiece.”
+670: 
+671: #### 🔮 **The Time Traveler (Future & Past Sled Tech)**
+672: - **Purpose:** Unlocks **anachronistic sled models** (steampunk, cyberpunk, caveman logs).
+673: - **Best Quote:** “The future’s fast. The past is brutal.”
+674: 
+675: ---
+676: 
+677: ## **🏔️ Final Thoughts**
+678: This crew **perfectly balances**:
+679: ✅ **Core game economy & upgrades**  
+680: ✅ **High-speed trick-focused gameplay**  
+681: ✅ **Exploration & hidden content**  
+682: ✅ **Hilarious but valuable side NPCs**  
+683: 
+684: These **NPCs make the town feel alive, push competitive play, and add world depth**. Get ready to **build, race, trick, and explore** with this **cast of unforgettable characters**.
+</file>
+
+<file path="styles.css">
+ 1: /* styles.css */
+ 2: body {
+ 3:     margin: 0;
+ 4:     padding: 0;
+ 5:     font-family: Arial, sans-serif;
+ 6:     background: #333;
+ 7:     color: #fff;
+ 8:   }
+ 9:   .menu {
+10:     text-align: center;
+11:     padding: 20px;
+12:   }
+13:   #game-screen {
+14:     position: relative;
+15:     margin: 0 auto;
+16:     width: 800px;
+17:     height: 600px;
+18:     background: #000;
+19:   }
+20:   #gameCanvas {
+21:     width: 100%;
+22:     height: 100%;
+23:     display: block;
+24:   }
+25:   .overlay {
+26:     position: absolute;
+27:     top: 10px;
+28:     left: 10px;
+29:     font-size: 24px;
+30:   }
+31:   .floating-text {
+32:     position: absolute;
+33:     font-size: 20px;
+34:     color: #FFD700;
+35:     animation: floatUp 1s ease-out forwards;
+36:   }
+37:   @keyframes floatUp {
+38:     0% {
+39:       opacity: 1;
+40:       transform: translateY(0);
+41:     }
+42:     100% {
+43:       opacity: 0;
+44:       transform: translateY(-50px);
+45:     }
+46:   }
+47:   .victory-banner {
+48:     background-color: #4CAF50;
+49:     color: white;
+50:     font-size: 24px;
+51:     font-weight: bold;
+52:     padding: 15px;
+53:     margin: 20px auto;
+54:     border-radius: 8px;
+55:     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+56:     animation: pulse 2s infinite;
+57:   }
+58:   @keyframes pulse {
+59:     0% {
+60:       transform: scale(1);
+61:       background-color: #4CAF50;
+62:     }
+63:     50% {
+64:       transform: scale(1.05);
+65:       background-color: #45a049;
+66:     }
+67:     100% {
+68:       transform: scale(1);
+69:       background-color: #4CAF50;
+70:     }
+71:   }
+72:   #payLoan {
+73:     background-color: #2196F3;
+74:     color: white;
+75:     padding: 10px 15px;
+76:     margin: 10px 0;
+77:     border: none;
+78:     border-radius: 4px;
+79:     cursor: pointer;
+80:     font-size: 16px;
+81:     transition: background-color 0.3s;
+82:   }
+83:   #payLoan:hover {
+84:     background-color: #0b7dda;
+85:   }
+86:   #payLoan:disabled {
+87:     background-color: #4CAF50;
+88:     cursor: default;
+89:   }
+</file>
+
+<file path="todo.txt">
+1: Need a goal... Need mechanic to repay mountain in prototype
+2: 
+3: Add basic tricks for prototype... 4 tricks, controlled by what direction you press (up, down, left, right arrow), you get left or right helicopter, air brake, or parachute.
+4: 
+5: Prevent seed from changing except on new game, so it's YOUR mountain.
+</file>
+
+</files>

@@ -2,8 +2,12 @@
 export let terrain = [];
 
 export function generateTerrain() {
+  const timestamp = new Date().toISOString();
   terrain = [];
   let numObstacles = 20;
+  
+  console.log(`[${timestamp}] 🏔️ TERRAIN: Generating new terrain with ${numObstacles} obstacles`);
+  
   for (let i = 0; i < numObstacles; i++) {
     terrain.push({
       x: Math.random() * window.innerWidth,
@@ -12,6 +16,8 @@ export function generateTerrain() {
       height: 30
     });
   }
+  
+  console.log(`[${timestamp}] ✅ TERRAIN: Generation complete, ${terrain.length} obstacles placed`);
 }
 
 import { checkCollision, resolveCollision } from '../utils/PhysicsUtils.js';

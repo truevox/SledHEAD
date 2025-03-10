@@ -1,7 +1,8 @@
 // src/scenes/MainMenuScene.js
 export default class MainMenuScene {
     constructor() {
-      console.log("MainMenuScene: Displaying main menu.");
+      const timestamp = new Date().toISOString();
+      console.log(`[${timestamp}] 🎮 SCENE: MainMenuScene initialized, displaying main menu`);
       // Initialize main menu UI here if needed
     }
   

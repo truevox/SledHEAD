@@ -90,26 +90,45 @@ export let playerUpgrades = {
       ? playerUpgrades[upgradeKey]
       : mountainUpgrades[upgradeKey];
     let maxLevel = upgradeMaxLevel[upgradeKey];
+    
     if (maxLevel === 0 || currentLevel >= maxLevel) {
       console.log("Upgrade", upgradeKey, "is locked or already maxed.");
       return;
     }
+    
     const cost = getUpgradeCost(upgradeKey, currentLevel);
-    import('../gameplay/Player.js').then(module => {
-      let player = module.player;
+    
+    Promise.all([
+      import('../gameplay/Player.js'),
+      import('../utils/UIUtils.js')
+    ]).then(([playerModule, uiModule]) => {
+      let player = playerModule.player;
+      
       if (player.money < cost) {
-        console.log("Not enough money to purchase", upgradeKey, ". Cost:", cost, "Money:", player.money);
+        const timestamp = new Date().toISOString();
+        console.log(`[${timestamp}] ⚠️ UPGRADE FAILED: Insufficient funds for ${upgradeKey}, Cost=$${cost}, Available money=$${player.money}`);
+        // Play error sound and show feedback
+        uiModule.playTone(200, "square", 0.1, 0.2);
+        uiModule.addFloatingText("Not enough money!", window.innerWidth / 2, window.innerHeight / 2, {
+          color: '#FF4444',
+          size: 24
+        });
         return;
       }
+      
+      // Process the purchase
       player.money -= cost;
       if (playerUpgrades.hasOwnProperty(upgradeKey)) {
         playerUpgrades[upgradeKey]++;
       } else {
         mountainUpgrades[upgradeKey]++;
       }
+      
+      // Update UI
       let newLevel = playerUpgrades.hasOwnProperty(upgradeKey)
         ? playerUpgrades[upgradeKey]
         : mountainUpgrades[upgradeKey];
+      
       const btnId = `upgrade${upgradeKey.charAt(0).toUpperCase() + upgradeKey.slice(1)}`;
       let button = document.getElementById(btnId);
       if (button) {
@@ -118,10 +137,22 @@ export let playerUpgrades = {
           button.disabled = true;
         }
       }
-      console.log("Purchased upgrade", upgradeKey, "New level:", newLevel, "Remaining money:", player.money);
-      import('../utils/UIUtils.js').then(({ updateMoneyDisplay }) => {
-        updateMoneyDisplay();
-      });
+      
+      // Visual and audio feedback
+      const timestamp = new Date().toISOString();
+      const isMaxed = newLevel >= maxLevel;
+      console.log(`[${timestamp}] 🔺 UPGRADE PURCHASED: ${upgradeKey} to Level ${newLevel}/${maxLevel}, Cost=$${cost}, Remaining money=$${player.money}${isMaxed ? ' (MAX LEVEL REACHED)' : ''}`);
+      uiModule.updateMoneyDisplay();
+      uiModule.playTone(600, "sine", 0.1, 0.3);
+      uiModule.addFloatingText(
+        `Upgraded ${upgradeKey} to Lv ${newLevel}!`,
+        window.innerWidth / 2,
+        window.innerHeight / 2,
+        {
+          color: '#00FF00',
+          size: 24
+        }
+      );
     });
   }
   
