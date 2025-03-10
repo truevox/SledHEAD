@@ -142,7 +142,8 @@ class FloatingText {
     const alpha = fadeInAlpha * fadeOutAlpha;
     
     // Apply scale and position transformations
-    const screenY = this.initialY - cameraOffset + this.visualOffsetY;
+    // Include jumpOffsetY when calculating screen position for floating text
+    const screenY = (this.initialY + player.jumpOffsetY) - cameraOffset + this.visualOffsetY;
     const drawX = this.x + this.horizontalOffset;
     
     ctx.translate(drawX, screenY);
@@ -215,7 +216,7 @@ export function drawReHitIndicator(ctx, cameraOffset) {
     
     // Calculate indicator size and position
     const radius = (player.baseWidth * TWEAK.reHitIndicatorScale) / 2;
-    const indicatorY = player.absY - cameraOffset + player.height;
+    const indicatorY = (player.absY + player.jumpOffsetY) - cameraOffset + player.height;
     
     // Add glow effect
     ctx.shadowColor = TWEAK.reHitIndicatorOutlineColor;
@@ -253,7 +254,7 @@ let cameraOffset = camera.getOffset();
   }
 
   ctx.save();
-  let playerDrawY = player.absY - cameraOffset;
+  let playerDrawY = (player.absY + player.jumpOffsetY) - cameraOffset;
   if (player.currentTrick) {
     if (player.currentTrick === "leftHelicopter" || player.currentTrick === "rightHelicopter") {
       ctx.translate(player.x, playerDrawY);

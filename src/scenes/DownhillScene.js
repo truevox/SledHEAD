@@ -71,9 +71,28 @@ export default class DownhillScene {
     const prevX = player.x;
     const prevY = player.absY;
     
-    // Update player physics
-    player.absY += player.velocityY * (deltaTime / 16);
-    player.velocityY += 0.1; // Gravity
+    const JUMP_GRAVITY = 0.5;  // Stronger gravity for jumps
+    const DESCENT_GRAVITY = 0.1; // Normal descent gravity
+    
+    // Update player physics - separate jump motion from descent
+    if (player.isJumping) {
+      // Update jump height using jump velocity
+      player.jumpOffsetY += player.jumpVelocity * (deltaTime / 16);
+      player.jumpVelocity += JUMP_GRAVITY; // Apply gravity to jump motion
+      
+      // If we've landed (jumpOffsetY has come back down)
+      if (player.jumpOffsetY > 0) {
+        player.jumpOffsetY = 0;
+        player.jumpVelocity = 0;
+        player.isJumping = false;
+        player.canJump = true;
+        cleanupJumpSound();
+      }
+    } else {
+      // Normal descent
+      player.absY += player.velocityY * (deltaTime / 16);
+      player.velocityY += DESCENT_GRAVITY;
+    }
     
     // Check for collisions with terrain
     const currentTime = performance.now();
@@ -84,6 +103,7 @@ export default class DownhillScene {
         // Only check obstacles within a reasonable range
         if (Math.abs(obstacle.y - player.absY) > 200) continue;
         
+        // For collision checks, use absY without jumpOffset since that's the real position
         if (checkCollision(
           player.x - player.width/2, player.absY - player.height/2,
           player.width, player.height,

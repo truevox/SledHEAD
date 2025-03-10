@@ -4,9 +4,11 @@ import { TWEAK } from '../utils/Constants.js';
 export const player = {
     x: window.innerWidth / 2,
     absY: 0,
+    jumpOffsetY: 0, // New variable for visual jump height
     width: 20,
     height: 20,
     velocityY: 0,
+    jumpVelocity: 0, // New variable to separate jump motion from descent
     xVel: 0,
     collisions: 0,
     bestTime: Infinity,
@@ -42,10 +44,10 @@ export const player = {
     jumpPeakY: 0,
     jumpOsc: null,
     jumpGain: null
-  };
+};
   
-  export function onPlayerJumpStart(isReHit = false) {
-    const timestamp = new Date().toISOString();
+export function onPlayerJumpStart(isReHit = false) {
+    const logTime = new Date().toISOString();
     player.isJumping = true;
     player.canJump = false;
     player.reHitActivated = isReHit;
@@ -57,9 +59,9 @@ export const player = {
       player.jumpHeightFactor = 1; // Maintain current height factor for smoother chaining
       
       // Keep the current velocity for smoother transition
-      player.velocityY = Math.min(player.velocityY, -8); // Cap upward velocity
+      player.jumpVelocity = Math.min(player.jumpVelocity, -8); // Cap upward velocity
       
-      console.log(`[${timestamp}] 🔄 RE-HIT JUMP: Extended duration=${player.jumpDuration.toFixed(2)}ms, Y-position=${player.absY.toFixed(1)}, Velocity=${player.velocityY.toFixed(2)}`);
+      console.log(`[${logTime}] 🔄 RE-HIT JUMP: Extended duration=${player.jumpDuration.toFixed(2)}ms, Y-position=${player.absY.toFixed(1)}, Velocity=${player.jumpVelocity.toFixed(2)}`);
     } else {
       // Normal jump initialization
       player.jumpDuration = TWEAK.jumpBaseAscent;
@@ -67,9 +69,10 @@ export const player = {
       player.jumpStartTime = performance.now();
       player.jumpStartY = player.absY;
       player.jumpPeakY = player.absY;
-      player.velocityY = -10; // Initial upward velocity
+      player.jumpVelocity = -10; // Initial upward velocity
+      player.jumpOffsetY = 0; // Reset jump offset
       
-      console.log(`[${timestamp}] 🦘 JUMP START: Duration=${player.jumpDuration.toFixed(2)}ms, Y-position=${player.jumpStartY.toFixed(1)}, Initial velocity=${player.velocityY.toFixed(2)}`);
+      console.log(`[${logTime}] 🦘 JUMP START: Duration=${player.jumpDuration.toFixed(2)}ms, Y-position=${player.jumpStartY.toFixed(1)}, Initial velocity=${player.jumpVelocity.toFixed(2)}`);
     }
     
     // Initialize jump sound with different parameters for re-hit
@@ -80,42 +83,47 @@ export const player = {
       }
       initJumpSound();
     });
-  }
+}
   
-  export function onPlayerJumpPeak() {
-    const timestamp = new Date().toISOString();
-    const peakHeight = player.jumpPeakY - player.jumpStartY;
+export function onPlayerJumpPeak() {
+    const logTime = new Date().toISOString();
+    const peakHeight = player.jumpOffsetY;
     const timeToPeak = (performance.now() - player.jumpStartTime) / 1000;
     
-    console.log(`[${timestamp}] 🏔️ JUMP PEAK: Height=${peakHeight.toFixed(1)}, Time to peak=${timeToPeak.toFixed(2)}s, Y-position=${player.jumpPeakY.toFixed(1)}`);
+    console.log(`[${logTime}] 🏔️ JUMP PEAK: Height=${peakHeight.toFixed(1)}, Time to peak=${timeToPeak.toFixed(2)}s, Y-position=${player.absY.toFixed(1)}`);
     
     // Trigger jump peak sound effect
     import('../utils/AudioUtils.js').then(({ onPlayerJumpPeak: triggerJumpPeakSound }) => {
       triggerJumpPeakSound();
     });
-  }
+}
   
-  export function cleanupJumpSound() {
+export function cleanupJumpSound() {
     // Use the AudioUtils version of cleanupJumpSound
     import('../utils/AudioUtils.js').then(({ cleanupJumpSound: cleanupAudio }) => {
       cleanupAudio();
     });
-  }
+}
   
-  export function onPlayerLand() {
-    const timestamp = new Date().toISOString();
-    const jumpTime = (performance.now() - player.jumpStartTime) / 1000;
-    const jumpHeight = player.jumpPeakY - player.jumpStartY;
-    const totalDistance = player.absY - player.jumpStartY;
-    const averageSpeed = Math.abs(totalDistance / jumpTime);
-    
-    // Reset re-hit state
-    player.reHitActivated = false;
-    player.isJumping = false;
-    player.canJump = true;
-    player.jumpTimer = 0;
-    
-    console.log(`[${timestamp}] 🏁 JUMP COMPLETE: Duration=${jumpTime.toFixed(2)}s, Peak height=${jumpHeight.toFixed(1)}, Distance=${totalDistance.toFixed(1)}, Avg speed=${averageSpeed.toFixed(2)}/s`);
-    cleanupJumpSound();
-  }
-  
+export function onPlayerLand() {
+  const logTime = new Date().toISOString();
+  const jumpTime = (performance.now() - player.jumpStartTime) / 1000;
+  const jumpHeight = Math.abs(player.jumpOffsetY);
+  const totalDistance = player.absY - player.jumpStartY;
+  const averageSpeed = Math.abs(totalDistance / jumpTime);
+
+  // Reset jump state
+  player.isJumping = false;
+  player.canJump = true;
+  player.reHitActivated = false;
+  player.jumpTimer = 0;
+  player.jumpOffsetY = 0;
+  player.jumpVelocity = 0;
+  player.jumpStartY = 0;
+  player.jumpPeakY = 0;
+  player.hasReachedJumpPeak = false;
+
+  console.log(`[${logTime}] 🏁 JUMP COMPLETE: Duration=${jumpTime.toFixed(2)}s, Peak height=${jumpHeight.toFixed(1)}, Distance=${totalDistance.toFixed(1)}, Avg speed=${averageSpeed.toFixed(2)}/s`);
+
+  cleanupJumpSound();
+}
