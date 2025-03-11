@@ -1,0 +1,15 @@
+js/entities.js: Collision handling, entity drawing, animal spawning/behavior, and camera overlay logic.
+js/game.js: Core game loop, state management, physics, player input, trick execution, photo system, and loan repayment logic.
+js/player.js: Player object definition, including position, movement, jump/trick states, and camera settings.
+js/upgrades.js: Defines player/mountain upgrades, cost calculations, and UI update logic.
+js/utils.js: Global config (TWEAK) for game mechanics, spawn rates, physics, and scoring.
+js/world.js: Terrain generation, obstacle placement, and difficulty scaling.
+.gitignore: Excludes development artifacts from version control.
+1.0_README.md: Documentation for the finished version of the game.
+index.html: Main webpage structure, linking JS and CSS files.
+LICENSE.md: Project license information.
+README.md: Current development documentation, detailing gameplay, mechanics, and controls.
+ROADMAP.md: Future development plans and feature goals.
+styles.css: Visual styles for game elements.
+todo.txt: Development task list.
+!READ_FIRST-FILE_SUMMARY.txt: Token-efficient summary of all files for LLM reference.
