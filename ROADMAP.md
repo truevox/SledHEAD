@@ -80,6 +80,67 @@ This document outlines the detailed path from the current implementation to the 
 
 ---
 
+## 🌄 Light/Dark Gradient Altitude System 
+- Introduce a dynamic visual gradient where snow and terrain visually shift from lighter to darker tones with altitude. 🚀
+- The gradient will provide a natural visual guide for players to intuitively gauge altitude and plan their climbs and descents. 🎯
+
+---
+
+## 🎮 Mini-Games & Side Activities
+- **Wildlife Photography** (precise timing, altitude alignment)
+- **Fishing** (bait selection, fishing tournaments)
+- **Lockpicking in Abandoned Buildings** (precision mechanics, risks/traps)
+- **Treasure Hunting** (map decoding, stamina digging)
+- **Kite Flying** (arrow-key stability minigame, aerial bonuses)
+- **Prospecting (Mining)** (panning & mining mechanics, rare minerals & gems)
+- **Cryptid Fossil Digging** (fossil collection, assembly, transport)
+- **Sled Tricking** (combo chaining, aerial tricks)
+- **Time Trial Racing** (checkpoint-triggered races, bonus cash)
+- **RC Motor Sled** (remote-controlled scouting, tricks, resource fetching)
+- **Beekeeping** 🐝 (bee keeping, power-up wax & honey, bee search, selective-breeding)
+
+---
+
+## 🌆 NPCs & Mountain Ecosystem
+### Core Infrastructure NPCs:
+- **Sled Tech** (sled repairs, aesthetics & customizations)
+- **Food Vendor** (stamina buffs)
+- **Lift Operator Jay** (kite flying)
+- **The Hotel Hostess** (accommodation & income based on popularity)
+- **Convenience Store Owner**
+- **Resort Manager Montana Snow** (mountain upgrades)
+
+
+### Trick & Racing-Oriented NPCs:
+- **Hype Photographer Darlene** (photo verification, bonus earnings)
+- **Stunt Organizer Whistler** (extreme challenge events)
+- **Race Commissioner Cannon** (competitions, events)
+- **Retired Pro Burton** (advanced trick & sledboarding unlocks)
+
+### World-Building & Exploration NPCs:
+- **Wildlife Researcher** (rare animal spawns, photographic missions, fishing)
+- **Sled Patrol Captain** (rescue missions)
+
+### Traveling & Recurring NPCs:
+- **Rival** (dynamic trick/time trial duels)
+- **Mysterious Merchant** (random rare gear vendor, high-risk tech)
+- **Tinkerer** (rc motor sled, lock picking)
+
+### Legendary NPCs:
+- **Winter Shaman Bromley** (weather control)
+- **Bear Whisperer Carrie** (animal racing minigame)
+- **Beekeeper Pete** (bee keeping supplies and advice)
+- **Time Traveler** (cryptid fossil digging)
+
+---
+
+## 🎮 Enhanced Controls & UI Improvements
+- Fully customizable control remapping
+- Comprehensive tutorial and onboarding systems
+- Improved HUD clarity (stamina, trick scoring, wildlife photography)
+
+---
+
 ## 🏔️ Mountain Themes & Unique Mechanics
 - **Lava Mountain** (heat mechanics, lava hazards)
 - **Space Mountain** (low gravity sledding, meteor showers)
@@ -93,62 +154,6 @@ This document outlines the detailed path from the current implementation to the 
 - **Mechanical Mountain** (timed mechanical hazards, precise navigation)
 - **Pyramid Peak** (sandstorm visibility, hidden obstacles)
 - **Digital Mountain** (glitch hazards, malware pop-ups)
-
----
-
-## 🎮 Mini-Games & Side Activities
-- **Wildlife Photography** (precise timing, altitude alignment)
-- **Fishing** (bait selection, fishing tournaments)
-- **Lockpicking in Abandoned Buildings** (precision mechanics, risks/traps)
-- **Treasure Hunting** (map decoding, stamina digging)
-- **Kite Flying** (arrow-key stability minigame, aerial bonuses)
-- **Prospecting (Mining)** (panning & mining mechanics, rare minerals)
-- **Cryptid Fossil Digging** (fossil collection, assembly, transport)
-- **Sled Tricking** (combo chaining, aerial tricks)
-- **Time Trial Racing** (checkpoint-triggered races, bonus cash)
-- **RC Motor Sled** (remote-controlled scouting, tricks, resource fetching)
-
----
-
-## 🌆 NPCs & Mountain Ecosystem
-### Core Infrastructure NPCs:
-- **Sled Tech** (sled upgrades & repairs)
-- **Food Vendor** (stamina buffs)
-- **Stream Manager** (audience growth, sponsorships)
-- **Race Commissioner** (competitions, events)
-- **Lift Operator** (ski lifts, bribe-able shortcuts)
-- **The Hotel Hostess** (acommodation & income based on popularity)
-
-
-### Trick & Racing-Oriented NPCs:
-- **Trick Trainer** (advanced trick unlocks)
-- **Hype Photographer** (photo verification, bonus earnings)
-- **Black Market Gear Dealer** (high-risk upgrades)
-- **Stunt Organizer** (extreme challenge events)
-
-### World-Building & Exploration NPCs:
-- **Retired Pro** (hidden route clues, lore)
-- **Wildlife Researcher** (rare animal spawns, photographic missions)
-- **Event Broadcaster** (leaderboard updates, narrative exposition)
-
-### Traveling & Recurring NPCs:
-- **Rival** (dynamic trick/time trial duels)
-- **Tinkerer** (experimental mods, high-risk tech)
-- **Mysterious Merchant** (random rare gear vendor)
-
-### Legendary & Unique NPCs:
-- **Ghost of the Mountain** (phantom races, trick challenges)
-- **Winter Shaman** (weather control)
-- **Bear Whisperer** (animal racing minigame)
-- **Ice Sculptor** (sled aesthetics & customizations)
-- **Time Traveler** (unique sled styles from various eras)
-
----
-
-## 🎮 Enhanced Controls & UI Improvements
-- Fully customizable control remapping
-- Comprehensive tutorial and onboarding systems
-- Improved HUD clarity (stamina, trick scoring, wildlife photography)
 
 ---
 
@@ -166,11 +171,12 @@ This document outlines the detailed path from the current implementation to the 
 - Basic personal and mountain upgrades functionality
 
 ### Mid-Term:
-- Add mountain biomes and unique thematic mechanics
+- Integrate the light/dark gradient altitude system to enhance visual depth and player navigation
 - Introduce NPCs and interactive infrastructure
 - Initial mini-games integration
 
 ### Long-Term:
+- Add mountain biomes and unique thematic mechanics
 - Fully expand trick system
 - Complete mini-games and endgame challenges
 - Polish UI/UX and refine progression systems
