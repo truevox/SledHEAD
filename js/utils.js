@@ -7,13 +7,15 @@ var TWEAK = {
     minSpawnTime: 5000, // Minimum delay between spawns (5 sec)
     maxSpawnTime: 10000, // Maximum delay between spawns (10 sec)
     minIdleTime: 1000, // Minimum time an animal sits still (1 sec)
-    maxIdleTime: 20000, // Maximum time an animal sits still (20 sec)
+    maxIdleTime: 10000, // Maximum time an animal sits still (20 sec)
     minMoveSpeed: 5, // Slowest movement speed for animals
     maxMoveSpeed: 11.2, // Fastest movement speed for animals
     fleeAngle: 45, // This may be obsolete - confirm before removing
     photoCooldown: 1000, // Must wait 1 second between photos
     repeatPhotoPenalty: 0.5, // 50% less money if the same animal is photographed again
-
+    minAnimalSpawnDistance: 100,
+    maxAnimalSpawnDistance: 500,
+    bearSpawnProbability: 0.3, // 30% chance of a bear
 
     // Jumping stuff
     jumpType: "immediate",               // "immediate" or "charge" - DO NOT REMOVE

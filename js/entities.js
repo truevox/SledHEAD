@@ -124,8 +124,8 @@ function isAnimalInsideCone(animal) {
 /* ANIMAL SPAWNING AND BEHAVIOR  */
 /* ============================= */
 
-let activeAnimal = null;
-let lastPhotoTime = 0;
+//let activeAnimal = null;
+//let lastPhotoTime = 0;
 
 function spawnAnimal() {
   if (activeAnimal) return; // Only one animal at a time
