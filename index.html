@@ -1,215 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SledHEAD</title>
-  <!-- Global UI styles -->
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SledHEAD - Trick & Time Trial Racer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        #game-container {
+            position: relative;
+        }
+        canvas {
+            display: block;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
+            -webkit-font-smoothing: none;
+            -moz-osx-font-smoothing: none;
+            -font-smoothing: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
 </head>
 <body>
-  <!-- Victory Banner (hidden by default) -->
-  <div id="victoryBanner" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: gold; padding: 20px; border-radius: 10px; text-align: center; font-size: 24px; font-weight: bold; z-index: 1000;">
-    🎉 VICTORY! 🎉<br>
-    You've paid off your loan!
-  </div>
-
-  <!-- Title (Global UI) -->
-  <h1>SledHEAD</h1>
-  
-  <!-- Money Display (Global UI, upper right corner) -->
-  <div id="moneyDisplay">
-    <p id="moneyText">Money: $200</p>
-  </div>
-
-  <!-- Game Screen (Canvas for gameplay; hidden during house phase) -->
-  <div id="game-screen" style="display: none;">
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
-  </div>
-
-  <!-- House/Upgrade Menu -->
-  <div id="upgrade-menu">
-    <!-- Game Control Buttons -->
-    <div class="game-controls">
-      <button id="startGame">Start Sled Run</button>
-      <button id="payLoan">Pay Loan ($100,000)</button>
-    </div>
+    <div id="game-container"></div>
     
-    <div class="upgrade-menu-columns">
-      <!-- Left Column: Personal Upgrades -->
-      <div class="upgrade-column">
-        <h2>Personal Upgrades</h2>
-        <div class="upgrade-entry">
-          <button id="upgradeRocketSurgery">Rocket Surgery (Lv 0/10 – Cost: $110)</button>
-          <p class="upgrade-desc">
-            Speed down the mountain with red paint, sled wax, and more!<br>
-            Boosts top speed &amp; acceleration for faster downhill runs.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeOptimalOptics">Optimal Optics (Lv 0/10 – Cost: $110)</button>
-          <p class="upgrade-desc">
-            Go from phone to GoPro/drone for better footage!<br>
-            Frees focus &amp; boosts fan engagement for easier weaving.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeSledDurability">Sled Durability (Lv 0/10 – Cost: $110)</button>
-          <p class="upgrade-desc">
-            Reinforce your sled to withstand bigger impacts.<br>
-            +1 collision allowed before a crash occurs.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeFancierFootwear">Fancier Footwear (Lv 0/10 – Cost: $110)</button>
-          <p class="upgrade-desc">
-            Hike faster &amp; slip less on icy terrain.<br>
-            Less time climbing, more time sledding.
-          </p>
-        </div>
-        <!-- The remaining personal upgrades are locked for now -->
-        <div class="upgrade-entry">
-          <button id="upgradeGrapplingAnchor">Grappling Anchor (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Hook onto terrain to swing into tricky spots.<br>
-            Longer range &amp; stronger anchor with each upgrade.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeAttendLegDay">Attend Leg Day (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Reduce stamina cost for climbing back up.<br>
-            Run out of stamina, and the day is done.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeShortcutAwareness">Shortcut Awareness (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Reveal hidden shortcuts &amp; groomed trails.<br>
-            Optimize your route to beat best times.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeCrowdHypeman">Crowd Hypeman (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Perform tricks near fans for speed &amp; cash boosts.<br>
-            Chain multiple fans for even bigger bonuses!
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeCrowdWeaver">Crowd Weaver (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Non-fan crowds move aside more often.<br>
-            Fans already dodge, so this reduces obstacles further.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeWeatherWarrior">Weather Warrior (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Storms &amp; blizzards barely slow you down.<br>
-            Keep performance steady in harsh weather.
-          </p>
-        </div>
-      </div>
-      <!-- Right Column: Mountain Upgrades -->
-      <div class="upgrade-column">
-        <h2>Mountain Upgrades</h2>
-        <div class="upgrade-entry">
-          <button id="upgradeSkiLifts">High-Speed Ski Lift Expansion (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Add lifts for more visitors &amp; bigger crowds.<br>
-            Ride lifts up the mountain faster yourself.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeSnowmobileRentals">Snowmobile Rentals (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Rent out snowmobiles for income &amp; new obstacles.<br>
-            You can also rent one to speed up your ascent.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeEateries">Eateries &amp; Snack Bars (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Install stands for visitors &amp; extra cash flow.<br>
-            Eating there restores your stamina.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeGroomedTrails">Groomed Trails (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Smooth paths attract crowds (and hazards).<br>
-            Sometimes grants speed boosts downhill.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeFirstAidStations">Safety &amp; First-Aid Stations (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            More safety = more popularity &amp; money.<br>
-            Use them to heal &amp; reduce collision penalties.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeScenicOverlooks">Scenic Overlook Platforms (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Build scenic spots to lure tourists &amp; sponsors.<br>
-            If not crowded, can be used as shortcuts.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeAdvertisingRamps">Advertising Ramp-Billboards (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Boost sponsor revenue with flashy ads.<br>
-            Doubles as ramps for epic tricks.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeResortLodges">Resort Amenities &amp; Lodges (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Add luxury lodges for high-end guests.<br>
-            You can start runs from these remote spots.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeNightLighting">Night Lighting Upgrades (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Enable night sledding for 24/7 fun.<br>
-            Unlock special night-only runs &amp; bigger rewards.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeWeatherControl">Weather Control Systems (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Moderate snow &amp; ice conditions at will.<br>
-            Reduce hazards or ramp up challenge for more rewards.
-          </p>
-        </div>
-      </div>
-    </div>
-    <p id="bestTimeText">Best Time: N/A</p>
-  </div>
-
-  <!-- Load JS files in proper order -->
-  <script src="js/utils.js"></script>
-  <script src="js/upgrades.js"></script>
-  <script src="js/world.js"></script>
-  <script src="js/player.js"></script>
-  <script src="js/entities.js"></script>
-  <script src="js/game.js"></script>
+    <!-- Load Phaser -->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    
+    <!-- Game scripts -->
+    <script src="js/constants.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/objects/Player.js"></script>
+    <script src="js/objects/Animal.js"></script>
+    <script src="js/objects/Obstacle.js"></script>
+    <script src="js/scenes/BootScene.js"></script>
+    <script src="js/scenes/PreloadScene.js"></script>
+    <script src="js/scenes/MenuScene.js"></script>
+    <script src="js/scenes/GameScene.js"></script>
+    <script src="js/scenes/UphillScene.js"></script>
+    <script src="js/scenes/DownhillScene.js"></script>
+    <script src="js/scenes/HouseScene.js"></script>
+    <script src="js/scenes/UIScene.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
-
-<script>
-  document.getElementById("startGame").addEventListener("click", () => {
-    unlockAudioContext();
-    playStartGameSound();
-    changeState(GameState.DOWNHILL);
-  });
-
-  document.getElementById("payLoan").addEventListener("click", () => {
-    payLoan();
-  });
-
-  // Initialize loan button state
-  updateLoanButton();
-</script>
