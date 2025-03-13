@@ -1,4 +1,71 @@
 /* render.js - Rendering Logic */
+
+// Floating Text System
+class FloatingText {
+  constructor(text, x, y) {
+    this.text = text;
+    this.x = x;
+    this.initialY = y; // Relative to the player
+    this.age = 0;
+    this.lifetime = 1000; // Duration in ms
+    this.visualOffsetY = -30; // Start offset
+  }
+
+  update(deltaTime) {
+    this.age += deltaTime;
+    this.visualOffsetY -= deltaTime * 0.25; // Slow upward float
+    return this.age < this.lifetime;
+  }
+
+  draw(ctx, cameraY) {
+    const alpha = 1 - (this.age / this.lifetime);
+    ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
+    ctx.font = "bold 24px Arial";
+    ctx.textAlign = "center";
+    const screenY = player.absY - cameraY + this.visualOffsetY;
+    ctx.fillText(this.text, this.x, screenY);
+  }
+}
+
+function addFloatingText(text, x, y) {
+  floatingTexts.push(new FloatingText(text, x, y - 30));
+}
+
+// Live Money Update Functions
+function updateLiveMoney() {
+  let distanceTraveled = Math.max(1, player.absY);
+  let moneyEarned = Math.floor(distanceTraveled / 100);
+  moneyEarned = Math.max(1, moneyEarned);
+  let moneyText = document.getElementById("moneyText");
+  if (moneyText) {
+    moneyText.textContent = `Money: $${player.money} (+$${moneyEarned})`;
+  }
+  // Optionally, add logic for milestone sounds or effects here.
+}
+
+function showMoneyGain(amount, source = "") {
+  let moneyText = document.getElementById("moneyText");
+  if (moneyText) {
+    if (source) {
+      moneyText.textContent = `Money: $${player.money} (+$${amount} ${source})`;
+    } else {
+      moneyText.textContent = `Money: $${player.money} (+$${amount})`;
+    }
+    moneyText.classList.add("money-increase");
+    setTimeout(() => {
+      moneyText.classList.remove("money-increase");
+    }, 100);
+  }
+}
+
+// General money display update
+function updateMoneyDisplay() {
+  let moneyText = document.getElementById("moneyText");
+  if (moneyText) {
+    moneyText.textContent = `Money: $${player.money}`;
+  }
+}
+
 function drawEntities() {
     let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -114,4 +181,3 @@ function drawEntities() {
     ctx.restore();
     drawReHitIndicator();
   }
-  

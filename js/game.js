@@ -54,6 +54,11 @@ document.getElementById("startGame").addEventListener("click", () => {
   changeState(GameState.DOWNHILL);
 });
 
+document.getElementById("payLoan").addEventListener("click", () => {
+  console.log("Paying loan...");
+  payLoan();
+});
+
 // Upgrade button event listeners initialization
 Object.keys(playerUpgrades).forEach(upg => {
   initUpgradeButton(upg, playerUpgrades[upg]);
@@ -73,5 +78,7 @@ Object.keys(mountainUpgrades).forEach(upg => {
 });
 
 generateTerrain();
+// Initialize loan button state
+updateLoanButton();
 changeState(GameState.HOUSE);
 requestAnimationFrame(gameLoop);
