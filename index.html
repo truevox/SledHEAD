@@ -13,7 +13,7 @@
     🎉 VICTORY! 🎉<br>
     You've paid off your loan!
   </div>
-
+  
   <!-- Title (Global UI) -->
   <h1>SledHEAD</h1>
   
@@ -21,12 +21,12 @@
   <div id="moneyDisplay">
     <p id="moneyText">Money: $200</p>
   </div>
-
+  
   <!-- Game Screen (Canvas for gameplay; hidden during house phase) -->
   <div id="game-screen" style="display: none;">
     <canvas id="gameCanvas" width="800" height="600"></canvas>
   </div>
-
+  
   <!-- House/Upgrade Menu -->
   <div id="upgrade-menu">
     <!-- Game Control Buttons -->
@@ -34,7 +34,7 @@
       <button id="startGame">Start Sled Run</button>
       <button id="payLoan">Pay Loan ($100,000)</button>
     </div>
-    
+    <!-- Upgrade Menu Columns -->
     <div class="upgrade-menu-columns">
       <!-- Left Column: Personal Upgrades -->
       <div class="upgrade-column">
@@ -195,21 +195,20 @@
   <script src="js/world.js"></script>
   <script src="js/player.js"></script>
   <script src="js/entities.js"></script>
+  <script src="js/mechanics.js"></script>
+  <script src="js/render.js"></script>
   <script src="js/game.js"></script>
 </body>
 </html>
-
 <script>
   document.getElementById("startGame").addEventListener("click", () => {
     unlockAudioContext();
     playStartGameSound();
     changeState(GameState.DOWNHILL);
   });
-
   document.getElementById("payLoan").addEventListener("click", () => {
     payLoan();
   });
-
   // Initialize loan button state
   updateLoanButton();
 </script>
