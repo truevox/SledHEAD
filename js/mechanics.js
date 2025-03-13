@@ -298,88 +298,11 @@ function updateMechanics(deltaTime) {
           resolveCollision(player, obstacle);
         }
       });
+      // Call animal update from wildlifephotos.js
       updateAnimal();
       if (player.absY <= 0) {
         player.absY = 0;
         changeState(GameState.HOUSE);
-      }
-    }
-  }
-  
-  // ------------------- Photo (Critter) Minigame Logic -------------------
-  
-  // Handles taking a photo of an animal when conditions are met.
-  function takePhoto() {
-    let now = Date.now();
-    if (now - lastPhotoTime < TWEAK.photoCooldown) return; // Enforce cooldown
-    if (!activeAnimal || !isAnimalInsideCone(activeAnimal)) return;
-    lastPhotoTime = now;
-    
-    let baseValue = TWEAK.basePhotoValue;
-    // Altitude Bonus: exponential falloff within 50 units.
-    let diffAlt = Math.abs(player.altitudeLine - activeAnimal.altitude);
-    let altitudeMatchBonus;
-    if (diffAlt > 50) {
-      altitudeMatchBonus = 1;
-    } else {
-      altitudeMatchBonus = 1 + (TWEAK.altitudeMatchMultiplier - 1) * Math.exp(-diffAlt / 15);
-    }
-    
-    // Center Bonus: based on the angle difference between camera direction and animal.
-    let animalAngle = Math.atan2(activeAnimal.y - player.absY, activeAnimal.x - player.x) * (180 / Math.PI);
-    if (animalAngle < 0) animalAngle += 360;
-    let diffAngle = Math.abs(animalAngle - player.cameraAngle);
-    if (diffAngle > 180) diffAngle = 360 - diffAngle;
-    let coneAngle = TWEAK.basePOVAngle + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsPOVIncrease);
-    let sweetSpotPercentage = 0.10 + (playerUpgrades.optimalOptics * 0.01);
-    let sweetSpotAngle = coneAngle * sweetSpotPercentage;
-    let centerBonus;
-    if (diffAngle <= sweetSpotAngle) {
-      centerBonus = TWEAK.centerPOVMultiplier;
-    } else if (diffAngle < coneAngle / 2) {
-      let factor = (diffAngle - sweetSpotAngle) / (coneAngle / 2 - sweetSpotAngle);
-      centerBonus = 1 + (TWEAK.centerPOVMultiplier - 1) * Math.exp(-factor * 3);
-    } else {
-      centerBonus = 1;
-    }
-    
-    // Movement Bonus and Animal Type Multiplier:
-    let movementBonus = activeAnimal.state !== "sitting" ? TWEAK.movingAnimalMultiplier : 1;
-    let animalTypeMultiplier = activeAnimal.type === "bear" ? TWEAK.bearMultiplier : TWEAK.birdMultiplier;
-    let repeatPenalty = activeAnimal.hasBeenPhotographed ? TWEAK.repeatPhotoPenalty : 1;
-    
-    let totalMoney = Math.floor(baseValue * altitudeMatchBonus * centerBonus * movementBonus * animalTypeMultiplier * repeatPenalty);
-    player.money += totalMoney;
-    showMoneyGain(totalMoney, `(📸 ${activeAnimal.type})`);
-    addFloatingText(`+$${totalMoney} 📸`, player.x, player.absY);
-    console.log(`Captured ${activeAnimal.type}! Calculation details: Base=$${baseValue}, AltitudeBonus=${altitudeMatchBonus.toFixed(2)}, CenterBonus=${centerBonus.toFixed(2)}, MovementBonus=${movementBonus.toFixed(2)}, AnimalTypeMultiplier=${animalTypeMultiplier}, RepeatPenalty=${repeatPenalty}, Total=$${totalMoney}.`);
-    activeAnimal.hasBeenPhotographed = true;
-  }
-  
-  // ------------------- Animal (Critter) Update Logic -------------------
-  
-  // Updates the state of the active animal (critter)
-  function updateAnimal() {
-    if (!activeAnimal) return;
-    if (activeAnimal.state === "fleeing") {
-      if (activeAnimal.fleeingLogOnce !== true) {
-        console.log(`Animal fleeing - Type: ${activeAnimal.type}, Angle: ${activeAnimal.fleeAngleActual.toFixed(2)}°`);
-        activeAnimal.fleeingLogOnce = true;
-      }
-      let rad = activeAnimal.fleeAngleActual * Math.PI / 180;
-      activeAnimal.x += Math.cos(rad) * activeAnimal.speed * 0.5;
-      activeAnimal.y += Math.sin(rad) * activeAnimal.speed * 0.5;
-      if (
-        activeAnimal.x < -100 ||
-        activeAnimal.x > window.innerWidth + 100 ||
-        activeAnimal.y > player.absY + 1000
-      ) {
-        console.log(`Animal moved off screen - removed`);
-        activeAnimal = null;
-        setTimeout(
-          spawnAnimal,
-          Math.random() * (TWEAK.maxSpawnTime - TWEAK.minIdleTime) + TWEAK.minIdleTime
-        );
       }
     }
   }
