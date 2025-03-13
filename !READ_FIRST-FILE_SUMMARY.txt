@@ -1,43 +1,24 @@
-# Updated File Summary
-
 ## JavaScript Files:
 
-- **js/entities.js**: Handles collision detection, entity rendering, animal spawning, and behavior mechanics, including detailed camera overlay and visual indicators for player altitude and camera angle.
-
-- **js/game.js**: Manages the main game loop, state transitions (HOUSE, DOWNHILL, UPHILL), player input handling, trick and jump mechanics, photo system for critter photography, loan repayment logic, and overall gameplay state management.
-
-- **js/input.js**: Manages keyboard input, tracking key states for controlling player actions.
-
-- **js/mechanics.js**: Contains gameplay logic, including physics calculations, jump and trick mechanics, loan repayment, animal interactions, collision handling, and money management systems.
-
-- **js/player.js**: Defines player attributes such as position, dimensions, velocity, camera angles, jump/trick states, collision count, money, and various state flags used throughout gameplay mechanics.
-
-- **js/render.js**: Manages the game's visual rendering, including drawing entities, floating text notifications, UI updates, camera overlay visualization, and money updates.
-
-- **js/upgrades.js**: Defines upgrade mechanics for the player and mountain, calculates upgrade costs, manages UI elements related to upgrades, and handles purchasing logic.
-
-- **js/utils.js**: Provides global configuration (`TWEAK`) for game parameters including physics, scoring, jump mechanics, animal behavior, and collision settings.
-
-- **js/world.js**: Responsible for procedural terrain generation, obstacle placement, and dynamic difficulty adjustments.
+- **js/entities.js**: Manages collision detection, camera overlay rendering, and animal spawning/behavior mechanics, including drawing animal entities and handling animal fleeing behavior.
+- **js/game.js**: Controls the core game loop and state transitions, including initializing gameplay, managing UI elements, and handling game start and loan payment logic.
+- **js/input.js**: Handles global keyboard input tracking, including setting up event listeners for keydown and keyup events, and provides helper functions for checking key states.
+- **js/mechanics.js**: Manages core gameplay mechanics such as loan repayment, jump and trick systems, collision detection, and movement handling for downhill and uphill phases.
+- **js/player.js**: Defines the player object with all state variables, including position, velocity, camera angles, trick tracking, and jump state properties.
+- **js/render.js**: Contains the rendering logic for drawing the player, terrain, floating texts, camera overlays, and animals. Manages visual effects like trick animations and the Re-Hit indicator.
+- **js/upgrades.js**: Manages player and mountain upgrades, including upgrade costs, UI display logic, and purchase mechanics.
+- **js/utils.js**: Provides utility functions and configurations, including game tweak parameters, audio functions, collision detection, mathematical helpers, and color interpolation utilities.
+- **js/wildlifephotos.js**: Contains logic for the wildlife photography mini-game, including animal spawning, photo scoring, and managing animal behaviors like fleeing.
+- **js/world.js**: Manages the generation of terrain and the awarding of money based on the player's distance traveled.
 
 ## Project Files:
 
-- **index.html**: Main HTML structure linking JavaScript and CSS files, defining game UI elements.
-
-- **styles.css**: CSS styling for game UI and graphical elements.
-
-- **1.0_README.md**: Documentation for the finalized version of the game.
-
-- **README.md**: Development documentation detailing current gameplay, mechanics, and controls.
-
-- **ROADMAP.md**: Future development goals and feature plans.
-
-- **todo.txt**: Active development task list.
-
-- **LICENSE.md**: Licensing information for the project.
-
-- **.gitignore**: Specifies files and folders excluded from version control.
-
-This summary reflects all recent updates and consolidates information clearly for ease of reference. 😊🔥🍽️
-
-!READ_FIRST-FILE_SUMMARY.txt: Token-efficient summary of all files for LLM reference.
+- **index.html**: Main HTML file linking JavaScript and CSS files, defines the game UI structure.
+- **styles.css**: Contains the game's styling, including layout and visual styles for UI elements.
+- **1.0_README.md**: Likely an initial readme or changelog document for version 1.0.
+- **README.md**: Primary documentation file for the project, describing setup and usage instructions.
+- **ROADMAP.md**: Outlines planned features and future development directions.
+- **LICENSE.md**: Contains the licensing terms for the project.
+- **.gitignore**: Specifies which files and directories should be ignored by version control.
+- **todo.txt**: Simple text file listing tasks and development priorities.
+- **!READ_FIRST-FILE_SUMMARY.txt**: Possibly an initial overview or summary of the project.
