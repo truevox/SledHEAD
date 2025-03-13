@@ -48,6 +48,13 @@ function updateMechanics(deltaTime) {
       let friction = TWEAK.baseFriction - (playerUpgrades.optimalOptics * TWEAK.optimalOpticsFrictionFactorPerLevel);
       if (friction < 0.8) friction = 0.8;
       
+      // Horizontal movement handling
+      if (keysDown["a"]) { player.xVel -= horizontalAccel; }
+      if (keysDown["d"]) { player.xVel += horizontalAccel; }
+      player.xVel *= friction;
+      player.xVel = clamp(player.xVel, -maxXVel, maxXVel);
+      player.x += player.xVel;
+      
       // --- Jump Input Handling ---
       // Immediate Mode:
       if (TWEAK.jumpType === "immediate") {
