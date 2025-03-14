@@ -104,7 +104,7 @@ function updateAnimal() {
 
   } else if (activeAnimal.state === "sitting") {
     // Animals have a small chance to start fleeing randomly
-    if (Math.random() < 0.005) { // 0.5% chance per frame to spontaneously flee
+    if (Math.random() < 0.0001) { // 0.01% chance per frame to spontaneously flee
       console.log(`Animal (${activeAnimal.type}) spontaneously changing state from sitting to fleeing`);
       activeAnimal.state = "fleeing";
       activeAnimal.fleeingLogOnce = false;
