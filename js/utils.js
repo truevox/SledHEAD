@@ -6,16 +6,21 @@ var TWEAK = {
     // Animal spawning and movement
     minSpawnTime: 5000, // Minimum delay between spawns (5 sec)
     maxSpawnTime: 10000, // Maximum delay between spawns (10 sec)
-    minIdleTime: 1000, // Minimum time an animal sits still (1 sec)
-    maxIdleTime: 10000, // Maximum time an animal sits still (20 sec)
+    minIdleTime: 3000, // Minimum time an animal sits still (1 sec)
+    maxIdleTime: 8000, // Maximum time an animal sits still (20 sec)
     minMoveSpeed: 5, // Slowest movement speed for animals
     maxMoveSpeed: 11.2, // Fastest movement speed for animals
     fleeAngle: 45, // This may be obsolete - confirm before removing
     photoCooldown: 1000, // Must wait 1 second between photos
     repeatPhotoPenalty: 0.5, // 50% less money if the same animal is photographed again
-    minAnimalSpawnDistance: 100,
+    minAnimalSpawnDistance: 400,
     maxAnimalSpawnDistance: 500,
     bearSpawnProbability: 0.3, // 30% chance of a bear
+    bearSpeed: 6, // Bears move a bit slower
+    birdSpeed: 9, // Birds move faster
+    bearDetectionRadius: 150, // Bears detect player from farther away
+    birdDetectionRadius: 50, // Birds have smaller detection radius
+    maxAnimalPhotoDistance: 600, // Maximum distance for taking photos
 
     // Jumping stuff
     jumpType: "immediate",               // "immediate" or "charge" - DO NOT REMOVE
@@ -51,7 +56,7 @@ var TWEAK = {
     basePhotoValue: 50, // Base money earned from a photo
     altitudeMatchMultiplier: 2,
     centerPOVMultiplier: 1.5,
-    movingAnimalMultiplier: 3,
+    fleeingAnimalMultiplier: 3,
 
     // Animal multipliers
     bearMultiplier: 1.5,
@@ -295,4 +300,3 @@ function hexToRgb(hex) {
     let b = Math.round(c1.b + (c2.b - c1.b) * t);
     return rgbToHex(r, g, b);
   }
-  
