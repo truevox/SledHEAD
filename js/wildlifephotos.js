@@ -84,19 +84,24 @@ function updateAnimal() {
     
     // Removed logging block that referenced xMove and yMove
     
-    // Check if animal has moved off screen...
-    if (
-      activeAnimal.x < -100 ||
-      activeAnimal.x > window.innerWidth + 100 ||
-      activeAnimal.y > player.absY + 1000
-    ) {
-      console.log(`Animal moved off screen - removed`);
-      activeAnimal = null;
-      setTimeout(
-        spawnAnimal,
-        Math.random() * (TWEAK.maxSpawnTime - TWEAK.minSpawnTime) + TWEAK.minSpawnTime
-      );
+    // Check if animal is more than 1000 units away from the player.
+    let dx = activeAnimal.x - player.x;
+    let dy = activeAnimal.y - player.absY;
+    let distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance > 1000 && !activeAnimal.despawnScheduled) {
+      activeAnimal.despawnScheduled = true;
+      console.log(`Animal is more than 1000 away. Scheduling despawn in 500ms.`);
+      
+      setTimeout(() => {
+        if (activeAnimal) {
+          console.log(`Animal despawned after 500ms out of range`);
+          activeAnimal = null;
+          spawnAnimal();
+        }
+      }, 5000);
     }
+
   } else if (activeAnimal.state === "sitting") {
     // Animals have a small chance to start fleeing randomly
     if (Math.random() < 0.005) { // 0.5% chance per frame to spontaneously flee
