@@ -3,6 +3,7 @@
 // Global variables for photo/animal system
 var activeAnimal = null;
 var lastPhotoTime = 0;
+var animalStateCheckInterval = null; // New interval for checking animal states
 
 // ------------------- Photo (Critter) Minigame Logic -------------------
 
@@ -42,7 +43,7 @@ function takePhoto() {
   }
   
   // Movement Bonus and Animal Type Multiplier:
-  let movementBonus = activeAnimal.state !== "sitting" ? TWEAK.movingAnimalMultiplier : 1;
+  let movementBonus = activeAnimal.state !== "sitting" ? TWEAK.fleeingAnimalMultiplier : 1;
   let animalTypeMultiplier = activeAnimal.type === "bear" ? TWEAK.bearMultiplier : TWEAK.birdMultiplier;
   let repeatPenalty = activeAnimal.hasBeenPhotographed ? TWEAK.repeatPhotoPenalty : 1;
   
@@ -51,6 +52,14 @@ function takePhoto() {
   showMoneyGain(totalMoney, `(📸 ${activeAnimal.type})`);
   addFloatingText(`+$${totalMoney} 📸`, player.x, player.absY);
   console.log(`Captured ${activeAnimal.type}! Calculation details: Base=$${baseValue}, AltitudeBonus=${altitudeMatchBonus.toFixed(2)}, CenterBonus=${centerBonus.toFixed(2)}, MovementBonus=${movementBonus.toFixed(2)}, AnimalTypeMultiplier=${animalTypeMultiplier}, RepeatPenalty=${repeatPenalty}, Total=$${totalMoney}.`);
+  
+  // After taking a photo, animal should always flee
+  if (activeAnimal.state === "sitting") {
+    console.log(`Animal (${activeAnimal.type}) startled by camera - changing state from sitting to fleeing`);
+    activeAnimal.state = "fleeing";
+    activeAnimal.fleeingLogOnce = false; // Reset so we get the fleeing log message
+  }
+  
   activeAnimal.hasBeenPhotographed = true;
 }
 
@@ -59,26 +68,68 @@ function takePhoto() {
 // Updates the state of the active animal (critter)
 function updateAnimal() {
   if (!activeAnimal) return;
+  
+  // Check proximity to player - may cause animal to flee
+  checkPlayerProximity();
+  
   if (activeAnimal.state === "fleeing") {
     if (activeAnimal.fleeingLogOnce !== true) {
-      console.log(`Animal fleeing - Type: ${activeAnimal.type}, Angle: ${activeAnimal.fleeAngleActual.toFixed(2)}°`);
+      console.log(`Animal fleeing - Type: ${activeAnimal.type}, Angle: ${activeAnimal.fleeAngleActual.toFixed(2)}°, Speed: ${activeAnimal.speed}`);
       activeAnimal.fleeingLogOnce = true;
     }
+    
     let rad = activeAnimal.fleeAngleActual * Math.PI / 180;
-    activeAnimal.x += Math.cos(rad) * activeAnimal.speed * 0.5;
-    activeAnimal.y += Math.sin(rad) * activeAnimal.speed * 0.5;
+    let xMove = Math.cos(rad) * activeAnimal.speed * 0.5;
+    let yMove = Math.sin(rad) * activeAnimal.speed * 0.5;
+    
+    activeAnimal.x += xMove;
+    activeAnimal.y += yMove;
+    
+    // Log movement occasionally to avoid spamming
+    if (Math.random() < 0.05) {
+      console.log(`Animal moving: dx=${xMove.toFixed(1)}, dy=${yMove.toFixed(1)}, new pos=(${activeAnimal.x.toFixed(1)}, ${activeAnimal.y.toFixed(1)})`);
+    }
+    
+    // Check if animal has moved off screen
     if (
       activeAnimal.x < -100 ||
       activeAnimal.x > window.innerWidth + 100 ||
       activeAnimal.y > player.absY + 1000
     ) {
-      console.log(`Animal moved off screen - removed`);
+      console.log(`Animal moved off screen - removed. Position: (${activeAnimal.x.toFixed(1)}, ${activeAnimal.y.toFixed(1)})`);
       activeAnimal = null;
       setTimeout(
         spawnAnimal,
         Math.random() * (TWEAK.maxSpawnTime - TWEAK.minIdleTime) + TWEAK.minIdleTime
       );
     }
+  } else if (activeAnimal.state === "sitting") {
+    // Animals have a small chance to start fleeing randomly
+    if (Math.random() < 0.005) { // 0.5% chance per frame to spontaneously flee
+      console.log(`Animal (${activeAnimal.type}) spontaneously changing state from sitting to fleeing`);
+      activeAnimal.state = "fleeing";
+      activeAnimal.fleeingLogOnce = false;
+    }
+  }
+}
+
+// Check if the player is too close to the animal, causing it to flee
+function checkPlayerProximity() {
+  if (!activeAnimal || activeAnimal.state === "fleeing") return;
+  
+  let dx = activeAnimal.x - player.x;
+  let dy = activeAnimal.y - player.absY;
+  let distanceSquared = dx * dx + dy * dy;
+  
+  if (distanceSquared < activeAnimal.detectionRadius * activeAnimal.detectionRadius) {
+    console.log(`Player too close to animal (${Math.sqrt(distanceSquared).toFixed(1)} < ${activeAnimal.detectionRadius}) - animal fleeing`);
+    activeAnimal.state = "fleeing";
+    activeAnimal.fleeingLogOnce = false;
+    
+    // Recalculate flee angle directly away from player
+    activeAnimal.fleeAngleActual = Math.atan2(dy, dx) * (180 / Math.PI);
+    // Add slight randomness to the flee direction
+    activeAnimal.fleeAngleActual += (Math.random() - 0.5) * 30; // ±15 degrees of randomness
   }
 }
 
@@ -105,14 +156,23 @@ function spawnAnimal() {
     flightPattern = patterns[Math.floor(Math.random() * patterns.length)];
   }
   
-  // Initial state - sitting or moving
-  let initialState = Math.random() < 0.7 ? "sitting" : "moving";
+  // Initial state - sitting or fleeing
+  let initialState = Math.random() < 0.8 ? "sitting" : "fleeing";
   
   // Flee angle calculation
   let idealFleeAngle = Math.atan2(spawnY - player.absY, spawnX - player.x) * (180 / Math.PI);
   // Add some randomness to the flee angle
   let fleeAngleVariation = (Math.random() - 0.5) * 90; // ±45 degrees
   let fleeAngleActual = idealFleeAngle + fleeAngleVariation;
+  
+  // Calculate detection radius and speed based on animal type
+  let detectionRadius = type === "bear" ? 
+    (TWEAK.bearDetectionRadius || 250) : 
+    (TWEAK.birdDetectionRadius || 150);
+    
+  let speed = type === "bear" ? 
+    (TWEAK.bearSpeed || 8) : 
+    (TWEAK.birdSpeed || 12);
   
   activeAnimal = {
     type,
@@ -122,14 +182,38 @@ function spawnAnimal() {
     height: type === "bear" ? 60 : 20,
     state: initialState,
     pattern: flightPattern,
-    speed: type === "bear" ? TWEAK.bearSpeed : TWEAK.birdSpeed,
+    speed: speed,
     altitude: altitude,
     hasBeenPhotographed: false,
-    detectionRadius: type === "bear" ? TWEAK.bearDetectionRadius : TWEAK.birdDetectionRadius,
-    fleeAngleActual
+    detectionRadius: detectionRadius,
+    fleeAngleActual,
+    lastStateChange: Date.now(),
+    stateChangeCount: 0
   };
   
-  console.log(`Spawned ${type} at (${spawnX.toFixed(1)}, ${spawnY.toFixed(1)}), altitude: ${altitude}, state: ${initialState}, pattern: ${flightPattern || "N/A"}`);
+  console.log(`Spawned ${type} at (${spawnX.toFixed(1)}, ${spawnY.toFixed(1)}), altitude: ${altitude}, state: ${initialState}, pattern: ${flightPattern || "N/A"}, speed: ${speed}, detectionRadius: ${detectionRadius}`);
+  
+  // Start state check interval if not already started
+  if (!animalStateCheckInterval) {
+    animalStateCheckInterval = setInterval(logAnimalState, 3000); // Log every 3 seconds
+  }
+}
+
+// Log the current animal state for debugging
+function logAnimalState() {
+  if (!activeAnimal) {
+    console.log("No active animal right now");
+    clearInterval(animalStateCheckInterval);
+    animalStateCheckInterval = null;
+    return;
+  }
+  
+  let playerDist = Math.sqrt(
+    Math.pow(activeAnimal.x - player.x, 2) + 
+    Math.pow(activeAnimal.y - player.absY, 2)
+  );
+  
+  console.log(`Animal status: ${activeAnimal.type}, state: ${activeAnimal.state}, position: (${activeAnimal.x.toFixed(1)}, ${activeAnimal.y.toFixed(1)}), distance to player: ${playerDist.toFixed(1)}`);
 }
 
 // Check if the animal is inside the camera cone
@@ -228,5 +312,18 @@ function drawAnimal() {
       Math.PI * 2
     );
     ctx.fill();
+    
+    // Draw a small arrow showing the flee direction
+    let arrowLength = activeAnimal.width * 1.5;
+    let fleeRadians = activeAnimal.fleeAngleActual * Math.PI / 180;
+    let arrowEndX = activeAnimal.x + Math.cos(fleeRadians) * arrowLength;
+    let arrowEndY = animalScreenY + Math.sin(fleeRadians) * arrowLength;
+    
+    ctx.strokeStyle = "rgba(255, 0, 0, 0.7)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(activeAnimal.x, animalScreenY);
+    ctx.lineTo(arrowEndX, arrowEndY);
+    ctx.stroke();
   }
 }
