@@ -74,33 +74,27 @@ function updateAnimal() {
   
   if (activeAnimal.state === "fleeing") {
     if (activeAnimal.fleeingLogOnce !== true) {
-      console.log(`Animal fleeing - Type: ${activeAnimal.type}, Angle: ${activeAnimal.fleeAngleActual.toFixed(2)}°, Speed: ${activeAnimal.speed}`);
+      console.log(`🦁 Animal fleeing - Type: ${activeAnimal.type}, Angle: ${activeAnimal.fleeAngleActual.toFixed(2)}°, Speed: ${activeAnimal.speed}`);
       activeAnimal.fleeingLogOnce = true;
     }
     
     let rad = activeAnimal.fleeAngleActual * Math.PI / 180;
-    let xMove = Math.cos(rad) * activeAnimal.speed * 0.5;
-    let yMove = Math.sin(rad) * activeAnimal.speed * 0.5;
+    activeAnimal.x += Math.cos(rad) * activeAnimal.speed * 0.5;
+    activeAnimal.y += Math.sin(rad) * activeAnimal.speed * 0.5;
     
-    activeAnimal.x += xMove;
-    activeAnimal.y += yMove;
+    // Removed logging block that referenced xMove and yMove
     
-    // Log movement occasionally to avoid spamming
-    if (Math.random() < 0.05) {
-      console.log(`Animal moving: dx=${xMove.toFixed(1)}, dy=${yMove.toFixed(1)}, new pos=(${activeAnimal.x.toFixed(1)}, ${activeAnimal.y.toFixed(1)})`);
-    }
-    
-    // Check if animal has moved off screen
+    // Check if animal has moved off screen...
     if (
       activeAnimal.x < -100 ||
       activeAnimal.x > window.innerWidth + 100 ||
       activeAnimal.y > player.absY + 1000
     ) {
-      console.log(`Animal moved off screen - removed. Position: (${activeAnimal.x.toFixed(1)}, ${activeAnimal.y.toFixed(1)})`);
+      console.log(`Animal moved off screen - removed`);
       activeAnimal = null;
       setTimeout(
         spawnAnimal,
-        Math.random() * (TWEAK.maxSpawnTime - TWEAK.minIdleTime) + TWEAK.minIdleTime
+        Math.random() * (TWEAK.maxSpawnTime - TWEAK.minSpawnTime) + TWEAK.minSpawnTime
       );
     }
   } else if (activeAnimal.state === "sitting") {
@@ -142,7 +136,7 @@ function spawnAnimal() {
   
   // Determine spawn position
   let spawnDistance = TWEAK.minAnimalSpawnDistance + Math.random() * (TWEAK.maxAnimalSpawnDistance - TWEAK.minAnimalSpawnDistance);
-  let spawnAngle = Math.random() * 360;
+  let spawnAngle = 270;
   let spawnX = player.x + spawnDistance * Math.cos(spawnAngle * Math.PI / 180);
   let spawnY = player.absY + spawnDistance * Math.sin(spawnAngle * Math.PI / 180);
   
@@ -187,6 +181,7 @@ function spawnAnimal() {
     hasBeenPhotographed: false,
     detectionRadius: detectionRadius,
     fleeAngleActual,
+    fleeingLogOnce: false,
     lastStateChange: Date.now(),
     stateChangeCount: 0
   };
