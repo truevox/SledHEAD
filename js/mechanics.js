@@ -322,6 +322,9 @@ function updateMechanics(deltaTime) {
     jumpOsc.connect(jumpGain);
     jumpGain.connect(audioCtx.destination);
     jumpOsc.start();
+    
+    // Drain stamina on jump initiation
+    stamina.drainJump();
   }
   
   function onPlayerJumpPeak() {
@@ -347,6 +350,7 @@ function updateMechanics(deltaTime) {
     const totalDistance = player.absY - player.jumpStartY;
     console.log(`Jump complete! Time: ${jumpTime.toFixed(2)}s, Peak Height: ${jumpHeight.toFixed(1)}, Distance: ${totalDistance.toFixed(1)}`);
     cleanupJumpSound();
+    stamina.resetJumpTrigger();
   }
   
   function startTrick(trickName) {
