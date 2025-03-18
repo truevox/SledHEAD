@@ -139,11 +139,16 @@ function spawnAnimal() {
   const isBear = Math.random() < TWEAK.bearSpawnProbability;
   const type = isBear ? "bear" : "bird";
   
+  /* // Removed - left in for reference for a commit.
+  // let spawnDistance = TWEAK.minAnimalSpawnDistance + Math.random() * (TWEAK.maxAnimalSpawnDistance - TWEAK.minAnimalSpawnDistance);
+  // let spawnAngle = 270;
+  */
+
   // Determine spawn position
-  let spawnDistance = TWEAK.minAnimalSpawnDistance + Math.random() * (TWEAK.maxAnimalSpawnDistance - TWEAK.minAnimalSpawnDistance);
-  let spawnAngle = 270;
-  let spawnX = player.x + spawnDistance * Math.cos(spawnAngle * Math.PI / 180);
-  let spawnY = player.absY + spawnDistance * Math.sin(spawnAngle * Math.PI / 180);
+  // Spawn just outside the viewport horizontally
+  let spawnX = (window.innerWidth * 0.1) + (Math.random() * window.innerWidth * 0.9);
+  let spawnY = player.absY - (window.innerHeight / 2);
+
   
   // Altitude is a number between 0-100 representing the altitude line
   let altitude = Math.floor(Math.random() * 100);
