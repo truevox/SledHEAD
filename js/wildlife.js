@@ -1,70 +1,13 @@
-/* wildlifephotos.js - Wildlife Photo Minigame */
+/* wildlife.js - Wildlife Simulation */
+// This file is responsible for handling the wildlife simulation,
+// including the animals' behavior, interactions with the
+// environment, and spawning.
 
-// Global variables for photo/animal system
+// Global variables for animal system
 var activeAnimal = null;
-var lastPhotoTime = 0;
-var animalStateCheckInterval = null; // New interval for checking animal states
-
-// ------------------- Photo (Critter) Minigame Logic -------------------
-
-// Handles taking a photo of an animal when conditions are met.
-function takePhoto() {
-  let now = Date.now();
-  if (now - lastPhotoTime < TWEAK.photoCooldown) return; // Enforce cooldown
-  if (!activeAnimal || !isAnimalInsideCone(activeAnimal)) return;
-  lastPhotoTime = now;
-  
-  let baseValue = TWEAK.basePhotoValue;
-  // Altitude Bonus: exponential falloff within 50 units.
-  let diffAlt = Math.abs(player.altitudeLine - activeAnimal.altitude);
-  let altitudeMatchBonus;
-  if (diffAlt > 50) {
-    altitudeMatchBonus = 1;
-  } else {
-    altitudeMatchBonus = 1 + (TWEAK.altitudeMatchMultiplier - 1) * Math.exp(-diffAlt / 15);
-  }
-  
-  // Center Bonus: based on the angle difference between camera direction and animal.
-  let animalAngle = Math.atan2(activeAnimal.y - player.absY, activeAnimal.x - player.x) * (180 / Math.PI);
-  if (animalAngle < 0) animalAngle += 360;
-  let diffAngle = Math.abs(animalAngle - player.cameraAngle);
-  if (diffAngle > 180) diffAngle = 360 - diffAngle;
-  let coneAngle = TWEAK.basePOVAngle + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsPOVIncrease);
-  let sweetSpotPercentage = 0.10 + (playerUpgrades.optimalOptics * 0.01);
-  let sweetSpotAngle = coneAngle * sweetSpotPercentage;
-  let centerBonus;
-  if (diffAngle <= sweetSpotAngle) {
-    centerBonus = TWEAK.centerPOVMultiplier;
-  } else if (diffAngle < coneAngle / 2) {
-    let factor = (diffAngle - sweetSpotAngle) / (coneAngle / 2 - sweetSpotAngle);
-    centerBonus = 1 + (TWEAK.centerPOVMultiplier - 1) * Math.exp(-factor * 3);
-  } else {
-    centerBonus = 1;
-  }
-  
-  // Movement Bonus and Animal Type Multiplier:
-  let movementBonus = activeAnimal.state !== "sitting" ? TWEAK.fleeingAnimalMultiplier : 1;
-  let animalTypeMultiplier = activeAnimal.type === "bear" ? TWEAK.bearMultiplier : TWEAK.birdMultiplier;
-  let repeatPenalty = activeAnimal.hasBeenPhotographed ? TWEAK.repeatPhotoPenalty : 1;
-  
-  let totalMoney = Math.floor(baseValue * altitudeMatchBonus * centerBonus * movementBonus * animalTypeMultiplier * repeatPenalty);
-  player.money += totalMoney;
-  showMoneyGain(totalMoney, `(📸 ${activeAnimal.type})`);
-  addFloatingText(`+$${totalMoney} 📸`, player.x, player.absY);
-  console.log(`Captured ${activeAnimal.type}! Calculation details: Base=$${baseValue}, AltitudeBonus=${altitudeMatchBonus.toFixed(2)}, CenterBonus=${centerBonus.toFixed(2)}, MovementBonus=${movementBonus.toFixed(2)}, AnimalTypeMultiplier=${animalTypeMultiplier}, RepeatPenalty=${repeatPenalty}, Total=$${totalMoney}.`);
-  
-  // After taking a photo, animal should always flee
-  if (activeAnimal.state === "sitting") {
-    console.log(`Animal (${activeAnimal.type}) startled by camera - changing state from sitting to fleeing`);
-    activeAnimal.state = "fleeing";
-    activeAnimal.fleeingLogOnce = false; // Reset so we get the fleeing log message
-  }
-  
-  activeAnimal.hasBeenPhotographed = true;
-}
+var animalStateCheckInterval = null; // Interval for checking animal states
 
 // ------------------- Animal (Critter) Update Logic -------------------
-
 // Updates the state of the active animal (critter)
 function updateAnimal() {
   if (!activeAnimal) return;
@@ -82,13 +25,10 @@ function updateAnimal() {
     activeAnimal.x += Math.cos(rad) * activeAnimal.speed * 0.5;
     activeAnimal.y += Math.sin(rad) * activeAnimal.speed * 0.5;
     
-    // Removed logging block that referenced xMove and yMove
-    
     // Check if animal is more than 1000 units away from the player.
     let dx = activeAnimal.x - player.x;
     let dy = activeAnimal.y - player.absY;
     let distance = Math.sqrt(dx * dx + dy * dy);
-
     if (distance > 1000 && !activeAnimal.despawnScheduled) {
       activeAnimal.despawnScheduled = true;
       console.log(`Animal is more than 1000 away. Scheduling despawn in 500ms.`);
@@ -101,7 +41,6 @@ function updateAnimal() {
         }
       }, 5000);
     }
-
   } else if (activeAnimal.state === "sitting") {
     // Animals have a small chance to start fleeing randomly
     if (Math.random() < 0.0001) { // 0.01% chance per frame to spontaneously flee
@@ -138,27 +77,16 @@ function spawnAnimal() {
   
   const isBear = Math.random() < TWEAK.bearSpawnProbability;
   const type = isBear ? "bear" : "bird";
-
   // Determine spawn position
   // Spawn just outside the viewport horizontally
   let spawnX = (window.innerWidth * 0.1) + (Math.random() * window.innerWidth * 0.9);
   let spawnY = player.absY - (window.innerHeight / 2);
-
-  // Revise:
   // Altitude is a number between 0-100 representing the altitude line
   let altitude = Math.floor(Math.random() * 100);
   
   // Initial state - sitting or fleeing
   let initialState = "sitting";
   
-  /* Leaving in for one commit for reference
-  // Flee angle calculation
-  let idealFleeAngle = Math.atan2(spawnY - player.absY, spawnX - player.x) * (180 / Math.PI);
-  // Add some randomness to the flee angle
-  let fleeAngleVariation = (Math.random() - 0.5) * 90; // ±45 degrees
-  let fleeAngleActual = idealFleeAngle + fleeAngleVariation;
-  */
-
   // Flee angle calculation using MAINEntities.js logic
   let baseAngle;
   if (spawnX > window.innerWidth / 2) {
@@ -170,7 +98,6 @@ function spawnAnimal() {
   }
   let angleOffset = Math.random() * TWEAK.fleeAngle;
   let fleeAngleActual = baseAngle + (Math.random() < 0.5 ? -angleOffset : angleOffset);
-
   
   // Calculate detection radius and speed based on animal type
   let detectionRadius = type === "bear" ? 
@@ -221,25 +148,6 @@ function logAnimalState() {
   );
   
   console.log(`Animal status: ${activeAnimal.type}, state: ${activeAnimal.state}, position: (${activeAnimal.x.toFixed(1)}, ${activeAnimal.y.toFixed(1)}), distance to player: ${playerDist.toFixed(1)}`);
-}
-
-// Check if the animal is inside the camera cone
-function isAnimalInsideCone(animal) {
-  // Distance check
-  let dx = animal.x - player.x;
-  let dy = animal.y - player.absY;
-  let distanceSquared = dx * dx + dy * dy;
-  let maxDistance = TWEAK.maxAnimalPhotoDistance;
-  if (distanceSquared > maxDistance * maxDistance) return false;
-  
-  // Angle check
-  let animalAngle = Math.atan2(dy, dx) * (180 / Math.PI);
-  if (animalAngle < 0) animalAngle += 360;
-  let diffAngle = Math.abs(animalAngle - player.cameraAngle);
-  if (diffAngle > 180) diffAngle = 360 - diffAngle;
-  let coneAngle = TWEAK.basePOVAngle + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsPOVIncrease);
-  
-  return diffAngle <= coneAngle / 2;
 }
 
 // Draw the animal on the screen
