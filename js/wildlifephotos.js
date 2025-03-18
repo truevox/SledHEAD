@@ -144,16 +144,9 @@ function spawnAnimal() {
   let spawnX = (window.innerWidth * 0.1) + (Math.random() * window.innerWidth * 0.9);
   let spawnY = player.absY - (window.innerHeight / 2);
 
-  
+  // Revise:
   // Altitude is a number between 0-100 representing the altitude line
   let altitude = Math.floor(Math.random() * 100);
-  
-  // Flight pattern for birds (not used for bears)
-  let flightPattern = null;
-  if (type === "bird") {
-    let patterns = ["circle", "zigzag", "spiral"];
-    flightPattern = patterns[Math.floor(Math.random() * patterns.length)];
-  }
   
   // Initial state - sitting or fleeing
   let initialState = "sitting";
@@ -195,7 +188,6 @@ function spawnAnimal() {
     width: type === "bear" ? 40 : 20,
     height: type === "bear" ? 60 : 20,
     state: initialState,
-    pattern: flightPattern,
     speed: speed,
     altitude: altitude,
     hasBeenPhotographed: false,
@@ -206,7 +198,7 @@ function spawnAnimal() {
     stateChangeCount: 0
   };
   
-  console.log(`Spawned ${type} at (${spawnX.toFixed(1)}, ${spawnY.toFixed(1)}), altitude: ${altitude}, state: ${initialState}, pattern: ${flightPattern || "N/A"}, speed: ${speed}, detectionRadius: ${detectionRadius}`);
+  console.log(`Spawned ${type} at (${spawnX.toFixed(1)}, ${spawnY.toFixed(1)}), altitude: ${altitude}, state: ${initialState}, speed: ${speed}, detectionRadius: ${detectionRadius}`);
   
   // Start state check interval if not already started
   if (!animalStateCheckInterval) {
