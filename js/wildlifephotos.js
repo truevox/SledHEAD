@@ -138,11 +138,6 @@ function spawnAnimal() {
   
   const isBear = Math.random() < TWEAK.bearSpawnProbability;
   const type = isBear ? "bear" : "bird";
-  
-  /* // Removed - left in for reference for a commit.
-  // let spawnDistance = TWEAK.minAnimalSpawnDistance + Math.random() * (TWEAK.maxAnimalSpawnDistance - TWEAK.minAnimalSpawnDistance);
-  // let spawnAngle = 270;
-  */
 
   // Determine spawn position
   // Spawn just outside the viewport horizontally
@@ -161,18 +156,33 @@ function spawnAnimal() {
   }
   
   // Initial state - sitting or fleeing
-  let initialState = Math.random() < 0.8 ? "sitting" : "fleeing";
+  let initialState = "sitting";
   
+  /* Leaving in for one commit for reference
   // Flee angle calculation
   let idealFleeAngle = Math.atan2(spawnY - player.absY, spawnX - player.x) * (180 / Math.PI);
   // Add some randomness to the flee angle
   let fleeAngleVariation = (Math.random() - 0.5) * 90; // ±45 degrees
   let fleeAngleActual = idealFleeAngle + fleeAngleVariation;
+  */
+
+  // Flee angle calculation using MAINEntities.js logic
+  let baseAngle;
+  if (spawnX > window.innerWidth / 2) {
+    // Animal spawns on the right side, so it should flee leftwards.
+    baseAngle = Math.random() * (170 - 135) + 135;
+  } else {
+    // Animal spawns on the left side, so it should flee rightwards.
+    baseAngle = Math.random() * (55 - 20) + 20;
+  }
+  let angleOffset = Math.random() * TWEAK.fleeAngle;
+  let fleeAngleActual = baseAngle + (Math.random() < 0.5 ? -angleOffset : angleOffset);
+
   
   // Calculate detection radius and speed based on animal type
   let detectionRadius = type === "bear" ? 
-    (TWEAK.bearDetectionRadius || 250) : 
-    (TWEAK.birdDetectionRadius || 150);
+    (TWEAK.bearDetectionRadius || 50) : 
+    (TWEAK.birdDetectionRadius || 50);
     
   let speed = type === "bear" ? 
     (TWEAK.bearSpeed || 8) : 
