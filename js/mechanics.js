@@ -223,6 +223,17 @@ function updateMechanics(deltaTime) {
       player.velocityY += player.isJumping ? TWEAK.baseGravity : gravity;
       player.absY += player.velocityY;
       updateLiveMoney();
+
+      // Check for transition to UPHILL mode near bottom
+      if (player.absY >= mountainHeight - (player.height * 4)) {
+        player.absY = mountainHeight - (player.height * 4);
+        player.velocityY = 0;
+        console.log("Reached transition point. Switching to uphill mode.");
+        changeState(GameState.UPHILL);
+        return;
+      }
+
+      // Check for actual bottom
       if (player.absY >= mountainHeight) {
         player.absY = mountainHeight;
         console.log("Reached bottom. Returning to house.");
