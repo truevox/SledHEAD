@@ -133,6 +133,12 @@ function spawnAnimal() {
   }
 }
 
+// Function to despawn all animals when entering house
+function despawnAllAnimals() {
+    activeAnimal = null;
+    console.log('All animals despawned');
+}
+
 // Log the current animal state for debugging
 function logAnimalState() {
   if (!activeAnimal) {

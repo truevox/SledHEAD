@@ -63,6 +63,9 @@ var TWEAK = {
     bearMultiplier: 1.5,
     birdMultiplier: 1,
     
+    // House entry costs
+    houseEntryLoanDeduction: 0.005, // 0.5% loan deduction when entering house
+
     // Underlying base values
     _sledMass: 1.0,
     _baseGravity: 0.1,

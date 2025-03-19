@@ -6,6 +6,8 @@ var jumpOsc = null;
 var jumpGain = null;
 var loanAmount = 100000;
 var floatingTexts = [];  // Global floating texts array
+var isFirstHouseEntry = true;  // Track first house entry
+var houseReEntery = 0;  // Track house re-entry count
 
 // Core game loop: call mechanics update and then rendering
 function gameLoop(timestamp) {
@@ -25,12 +27,36 @@ function gameLoop(timestamp) {
 }
 
 function changeState(newState) {
+  const prevState = currentState;
   currentState = newState;
+  
   if (currentState === GameState.HOUSE) {
     document.getElementById("upgrade-menu").style.display = "block";
     document.getElementById("game-screen").style.display = "none";
     const bestTimeText = document.getElementById("bestTimeText");
     bestTimeText.textContent = player.bestTime === Infinity ? "Best Time: N/A" : `Best Time: ${player.bestTime.toFixed(2)}s`;
+    
+    // Handle house entry costs after first visit
+    if (!isFirstHouseEntry && (prevState === GameState.DOWNHILL || prevState === GameState.UPHILL)) {
+      // Despawn any animals
+      if (typeof despawnAllAnimals === 'function') {
+        despawnAllAnimals();
+      }
+      
+      // Deduct loan percentage from player's money
+      if (loanAmount > 0) {
+        const deduction = Math.ceil(loanAmount * TWEAK.houseEntryLoanDeduction);
+        player.money = Math.max(0, player.money - deduction);
+        houseReEntery++;
+        console.log(`House entry fee: -$${deduction} (${TWEAK.houseEntryLoanDeduction * 100}% of $${loanAmount} loan)`);
+        console.log('House re-entry count:', houseReEntery);
+      }
+    }
+    
+    if (isFirstHouseEntry) {
+      isFirstHouseEntry = false;
+    }
+    
     updateMoneyDisplay();
   } else if (currentState === GameState.DOWNHILL) {
     document.getElementById("upgrade-menu").style.display = "none";
