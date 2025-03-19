@@ -1,3 +1,10 @@
-Swap from down-to-up to up-to-down.
+Feat: Swap from down-to-up to up-to-down.
 
-Find some NPC to cover prospecting, treasure hunting, and rescue missions
+Docs: Find some NPC to cover prospecting, treasure hunting, and rescue missions
+
+Refactor: Refactor mechanics.js & utils.js
+
+Refactor: Switch tricks from press to hold (so you choose if you do a 180 or a 1080)
+(more advanced tricks can still be some sort of combo press)
+
+Feat: Nerf jumping, buff ramps, attend leg day affects jump height

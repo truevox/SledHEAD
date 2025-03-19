@@ -48,12 +48,14 @@ function updateMechanics(deltaTime) {
       let friction = TWEAK.baseFriction - (playerUpgrades.optimalOptics * TWEAK.optimalOpticsFrictionFactorPerLevel);
       if (friction < 0.8) friction = 0.8;
       
-      // Horizontal movement handling
+      // Horizontal movement handling with bounds checking
       if (keysDown["a"]) { player.xVel -= horizontalAccel; }
       if (keysDown["d"]) { player.xVel += horizontalAccel; }
       player.xVel *= friction;
       player.xVel = clamp(player.xVel, -maxXVel, maxXVel);
-      player.x += player.xVel;
+      let newX = player.x + player.xVel;
+      // Prevent going off screen horizontally
+      player.x = clamp(newX, player.width/2, canvas.width - player.width/2);
       
       // --- Jump Input Handling ---
       // Immediate Mode:
@@ -134,53 +136,11 @@ function updateMechanics(deltaTime) {
           }
           jumpOsc.frequency.setValueAtTime(freq, audioCtx.currentTime);
         }
-        // Trick initiation:
-        if (!player.currentTrick && player.isJumping) {
-          if (keysDown["ArrowLeft"]) startTrick("leftHelicopter");
-          else if (keysDown["ArrowRight"]) startTrick("rightHelicopter");
-          else if (keysDown["ArrowUp"]) startTrick("airBrake");
-          else if (keysDown["ArrowDown"]) startTrick("parachute");
-        }
-        // Trick handling:
-        if (player.currentTrick) {
-          player.trickTimer += deltaTime;
-          let trickProgress = player.trickTimer / (TWEAK._trickBaseDuration * TWEAK._trickTimeMultiplier + TWEAK._trickTimeAdder);
-          switch (player.currentTrick) {
-            case "leftHelicopter":
-              player.trickRotation -= TWEAK._trickRotationSpeed * (deltaTime / 1000);
-              break;
-            case "rightHelicopter":
-              player.trickRotation += TWEAK._trickRotationSpeed * (deltaTime / 1000);
-              break;
-            case "airBrake":
-            case "parachute":
-              player.trickOffset = TWEAK._trickOffsetDistance * Math.sin(Math.PI * trickProgress);
-              break;
-          }
-          if (trickProgress >= 1) {
-            let trickMoney = TWEAK._trickMoneyBase;
-            let chainBonus = 1;
-            if (player.lastTrick && player.lastTrick !== player.currentTrick) {
-              player.trickChainCount++;
-              chainBonus = Math.pow(TWEAK._trickChainMultiplier, player.trickChainCount);
-              trickMoney *= chainBonus;
-            } else {
-              player.trickChainCount = 0;
-            }
-            trickMoney *= player.currentTrickValueMultiplier;
-            let finalMoney = Math.floor(trickMoney);
-            player.money += finalMoney;
-            showMoneyGain(finalMoney, `(${player.currentTrick})`);
-            addFloatingText(`+$${finalMoney} ${player.currentTrick}`, player.x, player.absY);
-            console.log(`Completed ${player.currentTrick}! +$${finalMoney}`);
-            player.lastTrick = player.currentTrick;
-            player.currentTrick = null;
-            player.trickTimer = 0;
-            player.trickRotation = 0;
-            player.trickOffset = 0;
-            playTrickCompleteSound();
-          }
-        }
+        
+        // Check for trick inputs and process any active tricks
+        checkTrickInputs();
+        processTrick(deltaTime);
+        
         if (!player.hasReachedJumpPeak && progress >= 0.5) {
           player.hasReachedJumpPeak = true;
           onPlayerJumpPeak();
@@ -190,12 +150,7 @@ function updateMechanics(deltaTime) {
           player.isJumping = false;
           player.jumpTimer = 0;
           player.hasReachedJumpPeak = false;
-          player.currentTrick = null;
-          player.trickTimer = 0;
-          player.trickRotation = 0;
-          player.trickOffset = 0;
-          player.lastTrick = null;
-          player.trickChainCount = 0;
+          resetTrickState();
           player.width = player.baseWidth;
           player.height = player.baseHeight;
           onPlayerLand();
@@ -268,18 +223,37 @@ function updateMechanics(deltaTime) {
       player.velocityY += player.isJumping ? TWEAK.baseGravity : gravity;
       player.absY += player.velocityY;
       updateLiveMoney();
+
+      // Check for transition to UPHILL mode near bottom
+      if (player.absY >= mountainHeight - (player.height * 4)) {
+        player.absY = mountainHeight - (player.height * 4);
+        player.velocityY = 0;
+        console.log("Reached transition point. Switching to uphill mode.");
+        changeState(GameState.UPHILL);
+        return;
+      }
+
+      // Check for actual bottom
       if (player.absY >= mountainHeight) {
         player.absY = mountainHeight;
-        console.log("Reached bottom.");
+        console.log("Reached bottom. Returning to house.");
         awardMoney();
-        changeState(GameState.UPHILL);
+        changeState(GameState.HOUSE);
       }
     } else if (currentState === GameState.UPHILL) {
       let upSpeed = TWEAK.baseUpSpeed + (playerUpgrades.fancierFootwear * TWEAK.fancierFootwearUpSpeedPerLevel);
       if (keysDown["w"]) { player.absY -= upSpeed; }
       if (keysDown["s"]) { player.absY += upSpeed; }
-      if (keysDown["a"]) { player.x -= upSpeed; }
-      if (keysDown["d"]) { player.x += upSpeed; }
+      
+      // Add bounds checking for horizontal movement in UPHILL mode
+      let newXUphill = player.x;
+      if (keysDown["a"]) { newXUphill -= upSpeed; }
+      if (keysDown["d"]) { newXUphill += upSpeed; }
+      player.x = clamp(newXUphill, player.width/2, canvas.width - player.width/2);
+
+      // Prevent going beyond mountain bounds vertically
+      player.absY = clamp(player.absY, 0, mountainHeight);
+
       if (keysDown["ArrowLeft"]) { player.cameraAngle -= 2; }
       if (keysDown["ArrowRight"]) { player.cameraAngle += 2; }
       if (keysDown["ArrowUp"]) { player.altitudeLine = Math.max(0, player.altitudeLine - 2); }
@@ -300,8 +274,11 @@ function updateMechanics(deltaTime) {
       });
       // Call animal update from wildlifephotos.js
       updateAnimal();
-      if (player.absY <= 0) {
-        player.absY = 0;
+      
+      // Return to house if player reaches bottom of mountain
+      if (player.absY >= mountainHeight) {
+        player.absY = mountainHeight;
+        console.log("Reached bottom. Returning to house.");
         changeState(GameState.HOUSE);
       }
     }
@@ -322,6 +299,9 @@ function updateMechanics(deltaTime) {
     jumpOsc.connect(jumpGain);
     jumpGain.connect(audioCtx.destination);
     jumpOsc.start();
+    
+    // Drain stamina on jump initiation
+    stamina.drainJump();
   }
   
   function onPlayerJumpPeak() {
@@ -347,22 +327,5 @@ function updateMechanics(deltaTime) {
     const totalDistance = player.absY - player.jumpStartY;
     console.log(`Jump complete! Time: ${jumpTime.toFixed(2)}s, Peak Height: ${jumpHeight.toFixed(1)}, Distance: ${totalDistance.toFixed(1)}`);
     cleanupJumpSound();
-  }
-  
-  function startTrick(trickName) {
-    if (player.currentTrick) return;
-    player.currentTrick = trickName;
-    player.trickTimer = 0;
-    player.trickRotation = 0;
-    player.trickOffset = 0;
-    let now = Date.now();
-    let cooldownEnd = player.trickCooldowns[trickName] || 0;
-    let timeLeft = Math.max(0, cooldownEnd - now);
-    player.currentTrickValueMultiplier = timeLeft > 0 ? Math.max(0.1, 1 - (timeLeft / TWEAK._trickCooldown)) : 1;
-    player.trickCooldowns[trickName] = now + TWEAK._trickCooldown;
-    console.log(`Starting ${trickName} (Value: ${(player.currentTrickValueMultiplier * 100).toFixed(0)}%)`);
-  }
-  
-  function playTrickCompleteSound() {
-    playTone(600, "sine", 0.1, 0.2);
+    stamina.resetJumpTrigger();
   }

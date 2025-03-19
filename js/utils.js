@@ -17,7 +17,7 @@ var spacePressed = false;
 
 window.addEventListener("keydown", function (e) {
     // Prevent default behavior for arrow keys and space to ensure they are captured correctly
-    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", " "].includes(e.key)) {
+    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", " ", "Tab"].includes(e.key)) {
         e.preventDefault();
     }
     keysDown[e.key] = true;
@@ -28,14 +28,17 @@ window.addEventListener("keydown", function (e) {
     }
     // Take a photo when space is pressed (only uphill)
     if (e.key === " " && currentState === GameState.UPHILL) {
-    takePhoto();
+        takePhoto();
     }
     // Press "E" to manually spawn an animal (only while in UPHILL mode) // DEBUG
     if (e.key.toLowerCase() === 'e' && currentState === GameState.UPHILL) {
         spawnAnimal();
     }
-
-
+    // NEW: Handle Tab key to toggle between UPHILL and DOWNHILL
+    if (e.key === "Tab" && currentState !== GameState.HOUSE) {
+        const newState = currentState === GameState.UPHILL ? GameState.DOWNHILL : GameState.UPHILL;
+        changeState(newState);
+    }
 });
 
 window.addEventListener("keyup", function (e) {
@@ -143,7 +146,7 @@ function hexToRgb(hex) {
     let bigint = parseInt(hex, 16);
     let r = (bigint >> 16) & 255;
     let g = (bigint >> 8) & 255;
-    let b = bigint & 255;
+    let b = (bigint & 255) & 255;
     return { r, g, b };
   }
   

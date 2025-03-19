@@ -3,6 +3,8 @@
 **Platform:** Web-based (PC)  
 **Target Audience:** Arcade racing fans, adventure/simulation players, streamers & content creators  
 
+> 🎮 **[Game Controls Guide](CONTROLS.md)** - Detailed explanation of all game controls and mechanics
+
 ---
 
 ## Table of Contents  
@@ -98,4 +100,4 @@ Key variables that control game mechanics and can be adjusted include:
 ---
 
 ## ✅ **Win Condition**  
-- Pay off the initial loan to trigger the victory state.  
+- Pay off the initial loan to trigger the victory state.
