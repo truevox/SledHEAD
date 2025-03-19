@@ -7,7 +7,7 @@ var jumpGain = null;
 var loanAmount = 100000;
 var floatingTexts = [];  // Global floating texts array
 var isFirstHouseEntry = true;  // Track first house entry
-var houseReEntery = 0;  // Track house re-entry count
+var houseReEntry = 0;  // Track house re-entry count
 
 // Core game loop: call mechanics update and then rendering
 function gameLoop(timestamp) {
@@ -47,9 +47,9 @@ function changeState(newState) {
       if (loanAmount > 0) {
         const deduction = Math.ceil(loanAmount * TWEAK.houseEntryLoanDeduction);
         player.money = Math.max(0, player.money - deduction);
-        houseReEntery++;
+        houseReEntry++;
         console.log(`House entry fee: -$${deduction} (${TWEAK.houseEntryLoanDeduction * 100}% of $${loanAmount} loan)`);
-        console.log('House re-entry count:', houseReEntery);
+        console.log('House re-entry count:', houseReEntry);
       }
     }
     
