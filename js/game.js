@@ -61,16 +61,32 @@ function changeState(newState) {
   } else if (currentState === GameState.DOWNHILL) {
     document.getElementById("upgrade-menu").style.display = "none";
     document.getElementById("game-screen").style.display = "block";
-    earlyFinish = false;
-    player.collisions = 0;
-    player.x = canvas.width / 2;
-    player.absY = 0;
-    player.velocityY = 0;
-    player.xVel = 0;
-    downhillStartTime = performance.now();
+
+    // Only reset these values if coming from HOUSE state
+    if (prevState === GameState.HOUSE) {
+      earlyFinish = false;
+      player.collisions = 0;
+      player.x = canvas.width / 2;
+      player.absY = 0;
+      player.velocityY = 0;
+      player.xVel = 0;
+      downhillStartTime = performance.now();
+    } else if (prevState === GameState.UPHILL) {
+      // When switching from UPHILL to DOWNHILL, maintain position but reset velocities
+      player.velocityY = 0;
+      player.xVel = 0;
+      downhillStartTime = performance.now();
+    }
   } else if (currentState === GameState.UPHILL) {
+    document.getElementById("upgrade-menu").style.display = "none";
+    document.getElementById("game-screen").style.display = "block";
+    
+    // Reset specific uphill-mode properties
     player.xVel = 0;
+    // Keep the current position when toggling from DOWNHILL
   }
+
+  console.log(`Game state changed: ${prevState} -> ${currentState}`);
 }
 
 document.getElementById("startGame").addEventListener("click", () => {
