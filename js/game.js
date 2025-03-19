@@ -67,7 +67,8 @@ function changeState(newState) {
       earlyFinish = false;
       player.collisions = 0;
       player.x = canvas.width / 2;
-      player.absY = 0;
+      // Spawn 3 player heights from bottom
+      player.absY = mountainHeight - (player.height * 3);
       player.velocityY = 0;
       player.xVel = 0;
       downhillStartTime = performance.now();

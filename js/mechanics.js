@@ -48,12 +48,14 @@ function updateMechanics(deltaTime) {
       let friction = TWEAK.baseFriction - (playerUpgrades.optimalOptics * TWEAK.optimalOpticsFrictionFactorPerLevel);
       if (friction < 0.8) friction = 0.8;
       
-      // Horizontal movement handling
+      // Horizontal movement handling with bounds checking
       if (keysDown["a"]) { player.xVel -= horizontalAccel; }
       if (keysDown["d"]) { player.xVel += horizontalAccel; }
       player.xVel *= friction;
       player.xVel = clamp(player.xVel, -maxXVel, maxXVel);
-      player.x += player.xVel;
+      let newX = player.x + player.xVel;
+      // Prevent going off screen horizontally
+      player.x = clamp(newX, player.width/2, canvas.width - player.width/2);
       
       // --- Jump Input Handling ---
       // Immediate Mode:
@@ -223,16 +225,24 @@ function updateMechanics(deltaTime) {
       updateLiveMoney();
       if (player.absY >= mountainHeight) {
         player.absY = mountainHeight;
-        console.log("Reached bottom.");
+        console.log("Reached bottom. Returning to house.");
         awardMoney();
-        changeState(GameState.UPHILL);
+        changeState(GameState.HOUSE);
       }
     } else if (currentState === GameState.UPHILL) {
       let upSpeed = TWEAK.baseUpSpeed + (playerUpgrades.fancierFootwear * TWEAK.fancierFootwearUpSpeedPerLevel);
       if (keysDown["w"]) { player.absY -= upSpeed; }
       if (keysDown["s"]) { player.absY += upSpeed; }
-      if (keysDown["a"]) { player.x -= upSpeed; }
-      if (keysDown["d"]) { player.x += upSpeed; }
+      
+      // Add bounds checking for horizontal movement in UPHILL mode
+      let newXUphill = player.x;
+      if (keysDown["a"]) { newXUphill -= upSpeed; }
+      if (keysDown["d"]) { newXUphill += upSpeed; }
+      player.x = clamp(newXUphill, player.width/2, canvas.width - player.width/2);
+
+      // Prevent going beyond mountain bounds vertically
+      player.absY = clamp(player.absY, 0, mountainHeight);
+
       if (keysDown["ArrowLeft"]) { player.cameraAngle -= 2; }
       if (keysDown["ArrowRight"]) { player.cameraAngle += 2; }
       if (keysDown["ArrowUp"]) { player.altitudeLine = Math.max(0, player.altitudeLine - 2); }
@@ -253,8 +263,11 @@ function updateMechanics(deltaTime) {
       });
       // Call animal update from wildlifephotos.js
       updateAnimal();
-      if (player.absY <= 0) {
-        player.absY = 0;
+      
+      // Return to house if player reaches bottom of mountain
+      if (player.absY >= mountainHeight) {
+        player.absY = mountainHeight;
+        console.log("Reached bottom. Returning to house.");
         changeState(GameState.HOUSE);
       }
     }
