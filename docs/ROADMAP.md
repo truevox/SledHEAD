@@ -601,12 +601,12 @@ These are **mythic figures**, unlocking **wild game mechanics, hidden areas, and
 - **Best Quote:** *"The mountain speaks… and I listen."*
 
 #### 🐻 **Bear Whisperer Carrie**
-- **Purpose:** Unlocks **bear-riding & minigame races.**
-- **Example Unlocks:** **Bear mounts, sled-bear relay events.**
-- **Best Quote:** *"Bears don’t bite if you know how to ask nicely."*
+- **Purpose:** Unlocks **bear-racing.**
+- **Example Unlocks:** **Bear races, such as Time Trials and Elimination.**
+- **Best Quote:** *"Bears don’t bite... if you know how to ask nicely."*
 
 #### 🐝 **Beekeeper Pete**
-- **Purpose:** Teaches **beekeeping & honey crafting challenges.**
+- **Purpose:** Sells **beekeeping upgrades**.
 - **Example Unlocks:** **Speed honey, frost-resistant sled wax.**
 - **Best Quote:** *"Snow bees? Oh yeah, they’re real… and fast."*
 
