@@ -12,14 +12,56 @@ You are an **aspiring sledding champion** who has purchased an entire **procedur
 
 Your goal is to master the mountain, **optimize runs for speed and tricks**, and **grow your fanbase**. The **better your performance, the more money you earn**, allowing you to invest in **personal upgrades, and mountain expansions**.
 
-## 🎯 Core Directional Change: Up-Then-Down Gameplay Loop
+## 🎯 **Gameplay Loop Overview**
 - Players start at the mountain's base, managing stamina as they climb upward.
 - Strategic decision-making to sled down for rewards before stamina depletion.
 - Higher altitudes host rare wildlife, higher rewards, and greater risks.
 
 ---
 
+## 🌄 **Segmented Cylinder Wrapping (Layered Mountain Structure)**  
+**Handling Horizontal Wrapping at Different Elevations**
+
+To create the effect of a **finite mountain with wraparound sides**, SledHEAD uses a **layered cylindrical system** instead of a continuous cone. The mountain is divided into **stacked segments**, each with its own **fixed circumference** that gets **smaller as you go higher**. This allows for a **consistent wraparound mechanic** while keeping movement predictable.
+
+### 🏔️ **How It Works:**
+- Each **layer** is a separate horizontal zone, like a **floating ring** around the mountain.  
+- If a player **crosses the left or right boundary** of a layer, they seamlessly wrap around to the other side.  
+- **Lower layers are wider**, giving more horizontal space.  
+- **Upper layers are narrower**, meaning wraparound happens sooner.  
+
+### ⬆️⬇️ **Moving Between Layers**
+When transitioning **between vertical segments**:
+1. If the player **moves downward** past the bottom boundary of a layer:
+   - They **teleport to the top boundary** of the layer below.  
+   - Their **horizontal position scales** based on the new circumference to maintain a proportional location.  
+   
+   ```pseudocode
+   scale_factor = new_layer.circumference / old_layer.circumference
+   x_new = x_old * scale_factor
+
+2. If the player **moves upward** past the top boundary of a layer:
+   - They **appear at the bottom** of the next layer up with **their horizontal position **scaled.
+
+### 🏁 **Gameplay Implications**
+   - Predictable & Manageable: Keeps wraparound and movement feeling natural while allowing for different gameplay per layer.
+
+### **Layer-Specific Challenges**:
+   - Broader paths at lower levels = more open sledding.
+   - Tighter paths at higher levels = more technical, precision-based gameplay.
+   - Performance-Friendly: Each layer is an isolated map segment, simplifying collision checks and procedural generation.
+
+---
+
+## 🌄 **Light/Dark Gradient Altitude System**
+
+- Introduce a dynamic visual gradient where snow and terrain visually shift, with the snow at higher altitudes lighter due to being cleaner, and the snow downhill from you appears darker (due to the dirt and debres that flows down hill). 🚀
+- The gradient will provide a dynamic natural visual guide for players to intuitively gauge altitude and plan their climbs and descents. 🎯
+
+---
+
 ## 🌎 **Procedural World & Persistence**
+
 - The mountain remains consistent during a playthrough.  
 - **New terrain is only generated when starting a new game.**  
 - The current **seed is displayed at home**, and players can enter a **custom seed for a specific mountain.**  
@@ -80,6 +122,60 @@ Your goal is to master the mountain, **optimize runs for speed and tricks**, and
   - Mountain **ONLY regenerates when starting a completely new game.**  
   - **A seed system** lets players enter a specific seed for reproducible terrain.  
   - **Current seed is displayed at home.** 
+
+---
+
+## 🏡 **Tutorial Level: Childhood Memories on Grandpa’s Hill**  
+**Learning the Basics in a Cozy, Story-Driven Introduction**
+
+Before tackling the **massive procedural mountains** of SledHEAD, players start with a heartwarming **tutorial level**, set in a **quiet rural winter landscape**. This **flashback sequence** lets players experience sledding as a **young child**, learning the fundamental mechanics under the guidance of their **grandfather**.
+
+### 📜 **Narrative Setup**
+The game opens on a **small, snow-covered hill** just outside a **cozy cabin**, where the protagonist—**a child version of themselves**—is spending time with their **grandfather** on a crisp winter afternoon. Grandpa is **wrapped up in a warm coat, standing at the base of the hill after sledding down himself**, watching proudly as the player **takes their maiden toboggan run, learning to sled**. The sky glows with the **soft oranges and purples of a winter sunset**, setting a nostalgic and peaceful mood.
+
+Before long, Grandpa gives a gentle laugh:  
+> **"Ahh, y'know, I used to be the best sledder on this hill... but these ol' legs don’t have the stamina they used to! You go on, get a few more runs in—I’ll watch and cheer ya on from here! And remember - the snow's always whiter above you, and dirtier below!"**  
+
+With that, the tutorial **fully hands control to the player**, reinforcing the **stamina system** and setting up a meaningful reason to **manage energy wisely**.
+
+---
+
+## 🎮 **Tutorial Mechanics Introduced**
+The tutorial unfolds organically through **simple, playful challenges**, without heavy UI elements. Players **learn by doing**, with Grandpa offering **gentle, supportive guidance**.
+
+### **⬆️ Walking Uphill (Basic Movement & Stamina)**
+- Players move **uphill by walking**, learning that **whiter snow = uphill, darker snow = downhill**.  
+- Moving uphill **drains stamina** gradually.  
+- Grandpa occasionally calls out:
+  > **"You’re strong, kid! But ya gotta pace yourself—harder climbs mean ya gotta rest up after!"**
+
+### **🛷 Sledding Downhill (Turning & Speed Control)**
+- Players start **at the top of the small hill** and practice their **first sled run**.  
+- **Turning left/right** is introduced, along with simple speed adjustments.  
+- Grandpa **cheers when the player makes a smooth turn**:
+  > **"Look at that! You’re a natural! Sleddin’s all about balance—lean just right and the hill will do the rest!"**
+
+### **🔄 Climbing & Repeating Runs**
+- After a few runs, Grandpa suggests:
+  > **"Why don’t ya take a few more runs? See if ya can get all the way to the bottom without wipin’ out!"**  
+- The player is **free to keep practicing**, reinforcing that **sledding is about trial and improvement**.  
+- The game subtly **introduces self-motivated play**, rewarding experimentation.
+
+### **🏁 Tutorial Completion**
+- Once the player **feels confident**, a final sled run **transitions seamlessly into the present day**, cutting to the **modern protagonist** standing atop their massive new mountain.
+- **Grandpa’s words echo**, setting the tone for the adventure ahead:
+  > **"One day, you’ll take on bigger mountains than this… but no matter how high you go, never forget the joy of the ride."**  
+- The camera pulls back, revealing the **full mountain**, and gameplay transitions into the **core SledHEAD experience**.
+
+---
+
+## ✨ **Why This Works**
+- **Emotionally Engaging** – Connects the player to their childhood roots and motivation.  
+- **Smooth Learning Curve** – Teaches fundamental mechanics **without forced tutorials**.  
+- **Worldbuilding & Nostalgia** – Grandpa’s wisdom adds charm and meaning to the stamina system.  
+- **Seamless Transition to Main Game** – Keeps momentum going without feeling like a "tutorial level."  
+
+This opening ensures that **players feel connected to their journey**—from childhood sledding to **becoming a sledding legend**. 🎿🔥  
 
 ---
 
@@ -206,12 +302,6 @@ Performing tricks during downhill runs boosts **viewer engagement, increasing ca
 | 🏨 **Resort Lodges**           | Adds new starting locations for runs.                          |
 | 🌙 **Night Lighting**          | Enables nighttime runs with bonus rewards.                     |
 | ❄️ **Weather Control**         | Modify conditions for different challenges.                    |
-
----
-
-## 🌄 Light/Dark Gradient Altitude System 
-- Introduce a dynamic visual gradient where snow and terrain visually shift from lighter to darker tones with altitude. 🚀
-- The gradient will provide a natural visual guide for players to intuitively gauge altitude and plan their climbs and descents. 🎯
 
 ---
 
@@ -643,6 +733,66 @@ These are **mythic figures**, unlocking **wild game mechanics, hidden areas, and
   - **Glitch Zones & Malware Hazards:** Cause unpredictable teleportation and control issues.
 - **Power-Up:** **Data Shielding**  
   *Required to access Digital Mountain. Protects against digital hazards and improves overall stability.*
+
+---
+
+🔄 Infinite Upgrades with Soft Caps
+===================================
+
+**Expanding Progression Without Breaking Balance**
+
+Currently, upgrades in **SledHEAD** have **hard caps**, limiting how many times they can be purchased. While this provides structure, it **restricts long-term progression** and prevents **emergent playstyles** from evolving over multiple runs. To keep **each run fresh and engaging**, we're shifting to an **infinite upgrade system** with **diminishing returns** beyond a **soft cap** for
+**Personal Upgrades**. **Mountain Upgrades** will
+need to be rebought for each new mountain purchased, and
+may or may not be infinite as appropriate to the upgrade.
+
+🎯 Proposed Solution
+--------------------
+
+-   **All upgrades become infinitely upgradable.**
+-   Each upgrade **retains its effectiveness early on** but **scales down gradually** beyond a set level.
+-   **Soft caps vary** depending on the upgrade type:
+    -   **Speed upgrades** could start diminishing at **Level 10**.
+    -   **Trick bonuses** could scale freely until **Level 20** before slowing down.
+-   **Mathematical balancing** ensures that upgrades remain **meaningful** but **don't become overpowered**.
+
+📊 Scaling Formula: Exponential & Logarithmic Decay
+---------------------------------------------------
+
+Instead of **linear scaling** (e.g., "+1 Speed per level"), we use **diminishing returns** to keep upgrades valuable without breaking balance.
+
+### ✏ Formula Example:
+
+newValue = baseValue + (scalingFactor * sqrt(level))
+
+-   **Early levels feel impactful**, allowing noticeable improvements.
+-   **Later levels slow down naturally**, preventing infinite stacking from making players overpowered.
+-   Works across **various upgrade types**, from **speed boosts to trick multipliers**.
+
+🔎 **Alternative Approach: Logarithmic Scaling**\
+For upgrades that should scale *aggressively early on* but taper off smoothly:
+
+newValue = baseValue * (1 + (scalingFactor * log(level + 1)))
+
+-   Great for upgrades like **boost charge rates or sled handling**, where a **big early impact** makes sense but **total mastery should be gradual**.
+
+✅ Benefits of Infinite Upgrades with Soft Caps
+----------------------------------------------
+
+✔ **Keeps long-term progression engaging** -- No artificial "max level" bottleneck.\
+✔ **Encourages specialized strategies** -- Players can **focus on speed, tricks, or economy-based builds**.\
+✔ **Prevents upgrade obsolescence** -- Players **always have something meaningful to invest in**.\
+✔ **Maintains challenge balance** -- Runs become **progressively stronger**, but not infinitely easy.
+
+📌 Tasks & Implementation Plan
+------------------------------
+
+-   [ ]  **Remove hard upgrade caps** for all current upgrades.
+-   [ ]  **Implement soft cap mechanics** using **square root or logarithmic scaling**.
+-   [ ]  **Fine-tune soft cap levels** for different upgrade categories (e.g., Speed vs. Trick Boosts).
+-   [ ]  **Balance test progression** to ensure **long-term upgrades stay meaningful but not overpowered**.
+
+This system ensures **players always have room to grow**, while keeping **SledHEAD's challenge intact**. 🚀🔥
 
 ---
 
