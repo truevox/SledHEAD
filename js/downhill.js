@@ -192,6 +192,15 @@ function updateDownhill(deltaTime) {
     player.absY = mountainHeight - (player.height * 4);
     player.velocityY = 0;
     console.log("Reached transition point. Switching to uphill mode.");
+    
+    // Fix for jumping transition - handle jump state before changing modes
+    if (player.isJumping) {
+      // Smoothly reset jump zoom and finalize landing
+      lerpJumpZoomToZero(() => {
+        onPlayerLand(); // handles trick cleanup, sound, etc.
+      });
+    }
+    
     changeState(GameState.UPHILL);
     return;
   }
@@ -203,4 +212,32 @@ function updateDownhill(deltaTime) {
     awardMoney();
     changeState(GameState.HOUSE);
   }
+}
+
+// Helper function for smooth jump transition
+function lerpJumpZoomToZero(callback) {
+  const startZoom = player.jumpZoomBonus;
+  const duration = 250; // ms
+  const startTime = performance.now();
+
+  function animate(time) {
+    const elapsed = time - startTime;
+    const t = Math.min(1, elapsed / duration);
+    player.jumpZoomBonus = startZoom * (1 - t);
+
+    if (t < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      player.jumpZoomBonus = 0;
+      player.isJumping = false;
+      player.jumpTimer = 0;
+      player.hasReachedJumpPeak = false;
+      resetTrickState();
+      player.width = player.baseWidth;
+      player.height = player.baseHeight;
+      if (callback) callback();
+    }
+  }
+
+  requestAnimationFrame(animate);
 }
