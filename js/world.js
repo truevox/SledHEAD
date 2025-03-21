@@ -1,21 +1,49 @@
 /* world.js */
 const mountainHeight = 200000; // Mountain is now 100x bigger!
 let terrain = [];
-const obstacleCount = 4000;
+const obstacleCount = 3000; // Reduced rock count to make room for trees
+const treeClusterCount = 200; // Number of tree clusters to generate
 let earlyFinish = false;
+
 function generateTerrain() {
   terrain = [];
+  
+  // Generate rock obstacles
   for (let i = 0; i < obstacleCount; i++) {
     let obstacle = {
       x: Math.random() * (canvas.width - 70) + 10,
       y: Math.random() * mountainHeight,
       width: 30 + Math.random() * 40,
-      height: 10 + Math.random() * 20
+      height: 10 + Math.random() * 20,
+      type: 'rock' // Explicitly mark as rock
     };
     terrain.push(obstacle);
   }
+  
+  // Generate tree clusters
+  const terrainBounds = { 
+    xMin: 0, 
+    xMax: canvas.width, 
+    yMin: 0, 
+    yMax: mountainHeight 
+  };
+  
+  // Assume player size reference (can be adjusted based on actual player dimensions)
+  const playerSize = 30; // Estimate based on what's visible in the game
+  
+  const treeObstacles = generateTreeClumps({ 
+    count: treeClusterCount, 
+    terrainBounds, 
+    playerSize 
+  });
+  
+  // Add trees to terrain array
+  terrain.push(...treeObstacles);
+  
+  // Sort all obstacles by Y position for rendering order
   terrain.sort((a, b) => a.y - b.y);
 }
+
 function awardMoney() {
     let distanceTraveled = Math.max(1, player.absY); // Ensure at least 1 unit
     let moneyEarned = Math.floor(distanceTraveled / 100); // Every 100 distance = $1
@@ -26,4 +54,4 @@ function awardMoney() {
     player.money += moneyEarned;
     updateMoneyDisplay();
   }
-  
+

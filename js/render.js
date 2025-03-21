@@ -71,12 +71,26 @@ function drawEntities() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = currentState === GameState.DOWNHILL ? "#ADD8E6" : "#98FB98";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  // Draw terrain obstacles
   terrain.forEach(obstacle => {
     if (obstacle.y >= cameraOffset - 50 && obstacle.y <= cameraOffset + canvas.height + 50) {
-      ctx.fillStyle = "#808080";
-      ctx.fillRect(obstacle.x, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
+      if (obstacle.type === 'tree') {
+        // Draw tree using the custom tree drawing function
+        drawTree(ctx, {
+          x: obstacle.x,
+          y: obstacle.y - cameraOffset,
+          width: obstacle.width,
+          height: obstacle.height
+        });
+      } else {
+        // Default drawing for rocks/other obstacles
+        ctx.fillStyle = "#808080";
+        ctx.fillRect(obstacle.x, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
+      }
     }
   });
+  
   let playerDrawY = player.absY - cameraOffset;
   ctx.save();
   if (player.currentTrick) {
