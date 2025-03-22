@@ -70,8 +70,14 @@ function clamp(val, min, max) {
     return Math.max(min, Math.min(max, val));
 }
 function getCameraOffset(playerAbsY, canvasHeight, mountainHeight) {
+    // Calculate offset based on current canvas height
     let offset = playerAbsY - canvasHeight / 2;
     return clamp(offset, 0, mountainHeight - canvasHeight);
+}
+
+// Add helper for checking if coordinates are within canvas bounds
+function isInCanvas(x, y) {
+    return x >= 0 && x <= canvas.width && y >= 0 && y <= canvas.height;
 }
 
 /* Ensure Web Audio API is unlocked */

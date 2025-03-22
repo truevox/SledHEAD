@@ -14,6 +14,9 @@ function gameLoop(timestamp) {
   let deltaTime = timestamp - lastTime;
   lastTime = timestamp;
   
+  // Clear the entire canvas each frame
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
   // Update gameplay mechanics (from mechanics.js)
   updateMechanics(deltaTime);
   
@@ -125,3 +128,48 @@ generateTerrain();
 updateLoanButton();
 changeState(GameState.HOUSE);
 requestAnimationFrame(gameLoop);
+
+// Canvas resize handling
+function resizeGameCanvas() {
+  const ratio = window.devicePixelRatio || 1;
+  
+  // Update canvas dimensions
+  canvas.width = window.innerWidth * ratio;
+  canvas.height = window.innerHeight * ratio;
+  
+  // Update canvas CSS size
+  canvas.style.width = `${window.innerWidth}px`;
+  canvas.style.height = `${window.innerHeight}px`;
+  
+  // Scale the context to account for the device pixel ratio
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  
+  // Adjust game variables that depend on canvas size
+  if (player) {
+    // Keep player centered horizontally after resize
+    player.x = Math.min(player.x, canvas.width - player.width);
+    player.x = Math.max(player.x, player.width);
+  }
+  
+  console.log(`Canvas resized: ${canvas.width}x${canvas.height} (pixel ratio: ${ratio})`);
+}
+
+// Initial setup
+function initGame() {
+  // ...existing code...
+  
+  // Set up resize handler
+  window.addEventListener('resize', () => {
+    // Debounce resize events
+    clearTimeout(window.resizeTimeout);
+    window.resizeTimeout = setTimeout(resizeGameCanvas, 250);
+  });
+  
+  // Initial canvas setup
+  resizeGameCanvas();
+  
+  // ...existing code...
+}
+
+// Initialize the game when the page loads
+window.addEventListener('load', initGame);
