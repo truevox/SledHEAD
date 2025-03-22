@@ -1,3 +1,6 @@
+// Global counter for stamina depletion re-entries
+let reentryCount = 0;
+
 // In stamina.js
 class Stamina {
     constructor() {
@@ -34,6 +37,30 @@ class Stamina {
       this.jumpTriggered = false;
       console.log("Jump trigger reset");
     }
+
+    handleStaminaDepletion() {
+        console.log("Stamina depleted - returning to house");
+        
+        // Move player to house
+        changeState(GameState.HOUSE);
+        
+        // Refill stamina
+        this.currentStamina = this.maxStamina;
+        console.log("Stamina refilled to maximum");
+        
+        // Despawn all animals
+        despawnAllAnimals();
+        console.log("All animals despawned");
+        
+        // Calculate and charge re-entry fee
+        const fee = 100 * (reentryCount + 1);
+        player.money = Math.max(0, player.money - fee);
+        console.log(`Charged re-entry fee: $${fee}`);
+        
+        // Increment re-entry counter
+        reentryCount++;
+        console.log(`Re-entry count increased to: ${reentryCount}`);
+    }
   
     update() {
       // Only show stamina bar if the player is NOT at home
@@ -60,6 +87,11 @@ class Stamina {
       if (player.isSliding) {
         this.currentStamina -= this.staminaDrainSledding;
         console.log("Sledding: draining stamina by", this.staminaDrainSledding, " Current stamina:", this.currentStamina);
+      }
+  
+      // Check for stamina depletion
+      if (this.currentStamina <= 0 && currentState !== GameState.HOUSE) {
+        this.handleStaminaDepletion();
       }
   
       // Clamp stamina value between 0 and max
@@ -97,4 +129,3 @@ class Stamina {
     requestAnimationFrame(updateStamina);
   }
   updateStamina();
-  
