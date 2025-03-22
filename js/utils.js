@@ -177,84 +177,12 @@ function hexToRgb(hex) {
 
 // Function to show sled damage notice
 function showSledDamageNotice() {
-  // Create or get the notification element
-  let notification = document.getElementById('sledDamageNotice');
-  if (!notification) {
-    notification = document.createElement('div');
-    notification.id = 'sledDamageNotice';
-    notification.style.position = 'fixed';
-    notification.style.top = '50%';
-    notification.style.left = '50%';
-    notification.style.transform = 'translate(-50%, -50%)';
-    notification.style.backgroundColor = 'rgba(255, 0, 0, 0.8)';
-    notification.style.color = 'white';
-    notification.style.padding = '20px';
-    notification.style.borderRadius = '10px';
-    notification.style.fontWeight = 'bold';
-    notification.style.fontSize = '24px';
-    notification.style.textAlign = 'center';
-    notification.style.zIndex = '1000';
-    notification.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.7)';
-    document.body.appendChild(notification);
-  }
-  
-  // Set content and make visible
-  notification.textContent = 'Sled Damaged! Please Repair';
-  notification.style.display = 'block';
-  
-  // Play an error sound
-  playTone(200, "square", 0.3, 0.4);
-  
-  // Fade out after 1 second
-  setTimeout(() => {
-    notification.style.transition = 'opacity 0.5s';
-    notification.style.opacity = '0';
-    setTimeout(() => {
-      notification.style.display = 'none';
-      notification.style.opacity = '1';
-      notification.style.transition = '';
-    }, 500);
-  }, 1000);
+  // Use the error notification from notify.js
+  showErrorNotification('Sled Damaged! Please Repair');
 }
 
 // Function to show sled repaired notice
 function showSledRepairedNotice() {
-  // Create or get the notification element
-  let notification = document.getElementById('sledRepairedNotice');
-  if (!notification) {
-    notification = document.createElement('div');
-    notification.id = 'sledRepairedNotice';
-    notification.style.position = 'fixed';
-    notification.style.top = '50%';
-    notification.style.left = '50%';
-    notification.style.transform = 'translate(-50%, -50%)';
-    notification.style.backgroundColor = 'rgba(0, 128, 0, 0.8)';
-    notification.style.color = 'white';
-    notification.style.padding = '20px';
-    notification.style.borderRadius = '10px';
-    notification.style.fontWeight = 'bold';
-    notification.style.fontSize = '24px';
-    notification.style.textAlign = 'center';
-    notification.style.zIndex = '1000';
-    notification.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.7)';
-    document.body.appendChild(notification);
-  }
-  
-  // Set content and make visible
-  notification.textContent = 'Sled Repaired!';
-  notification.style.display = 'block';
-  
-  // Play a positive sound
-  playTone(600, "sine", 0.3, 0.4);
-  
-  // Fade out after 1 second
-  setTimeout(() => {
-    notification.style.transition = 'opacity 0.5s';
-    notification.style.opacity = '0';
-    setTimeout(() => {
-      notification.style.display = 'none';
-      notification.style.opacity = '1';
-      notification.style.transition = '';
-    }, 500);
-  }, 1000);
+  // Use the success notification from notify.js
+  showSuccessNotification('Sled Repaired!');
 }
