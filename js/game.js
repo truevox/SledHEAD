@@ -70,7 +70,8 @@ function completeStateChange(newState, prevState) {
       // Deduct loan percentage from player's money
       if (loanAmount > 0) {
         const deduction = Math.ceil(loanAmount * TWEAK.houseEntryLoanDeduction);
-        player.money = Math.max(0, player.money - deduction);
+        loanAmount += deduction
+        updateLoanButton()
         houseReEntry++;
         console.log(`House entry fee: -$${deduction} (${TWEAK.houseEntryLoanDeduction * 100}% of $${loanAmount} loan)`);
         console.log('House re-entry count:', houseReEntry);
