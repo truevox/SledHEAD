@@ -9,6 +9,7 @@ let player = {
   collisions: 0,
   bestTime: Infinity,
   money: TWEAK.starterCash,
+  sledDamaged: 0,  // Track if sled is damaged: 0 = not damaged, >0 = damaged
   // Camera aim properties
   cameraAngle: 270,  // Camera rotation in degrees
   altitudeLine: 50,  // Starts at 50% of the view range

@@ -61,6 +61,14 @@ function completeStateChange(newState, prevState) {
     const bestTimeText = document.getElementById("bestTimeText");
     bestTimeText.textContent = player.bestTime === Infinity ? "Best Time: N/A" : `Best Time: ${player.bestTime.toFixed(2)}s`;
     
+    // Check and repair the sled if it's damaged
+    if (player.sledDamaged > 0) {
+      player.sledDamaged = 0;
+      console.log("Sled has been repaired at the house!");
+      // Show repair notification to the player
+      showSledRepairedNotice();
+    }
+    
     // Handle house entry costs after first visit
     if (!isFirstHouseEntry && (prevState === GameState.DOWNHILL || prevState === GameState.UPHILL)) {
       // Despawn any animals

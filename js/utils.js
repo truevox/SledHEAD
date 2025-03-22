@@ -34,8 +34,15 @@ window.addEventListener("keydown", function (e) {
     if (e.key.toLowerCase() === 'e' && currentState === GameState.UPHILL) {
         spawnAnimal();
     }
-    // NEW: Handle Tab key to toggle between UPHILL and DOWNHILL
+    // Handle Tab key to toggle between UPHILL and DOWNHILL
     if (e.key === "Tab" && currentState !== GameState.HOUSE) {
+        // If we're in UPHILL mode and trying to go DOWNHILL, check if sled is damaged
+        if (currentState === GameState.UPHILL && player.sledDamaged === 1) {
+            console.log("Cannot switch to DOWNHILL mode - Sled is damaged and needs repair");
+            // Display notification on screen
+            showSledDamageNotice();
+            return;
+        }
         const newState = currentState === GameState.UPHILL ? GameState.DOWNHILL : GameState.UPHILL;
         changeState(newState);
     }
@@ -167,3 +174,87 @@ function hexToRgb(hex) {
     let b = Math.round(c1.b + (c2.b - c1.b) * t);
     return rgbToHex(r, g, b);
   }
+
+// Function to show sled damage notice
+function showSledDamageNotice() {
+  // Create or get the notification element
+  let notification = document.getElementById('sledDamageNotice');
+  if (!notification) {
+    notification = document.createElement('div');
+    notification.id = 'sledDamageNotice';
+    notification.style.position = 'fixed';
+    notification.style.top = '50%';
+    notification.style.left = '50%';
+    notification.style.transform = 'translate(-50%, -50%)';
+    notification.style.backgroundColor = 'rgba(255, 0, 0, 0.8)';
+    notification.style.color = 'white';
+    notification.style.padding = '20px';
+    notification.style.borderRadius = '10px';
+    notification.style.fontWeight = 'bold';
+    notification.style.fontSize = '24px';
+    notification.style.textAlign = 'center';
+    notification.style.zIndex = '1000';
+    notification.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.7)';
+    document.body.appendChild(notification);
+  }
+  
+  // Set content and make visible
+  notification.textContent = 'Sled Damaged! Please Repair';
+  notification.style.display = 'block';
+  
+  // Play an error sound
+  playTone(200, "square", 0.3, 0.4);
+  
+  // Fade out after 1 second
+  setTimeout(() => {
+    notification.style.transition = 'opacity 0.5s';
+    notification.style.opacity = '0';
+    setTimeout(() => {
+      notification.style.display = 'none';
+      notification.style.opacity = '1';
+      notification.style.transition = '';
+    }, 500);
+  }, 1000);
+}
+
+// Function to show sled repaired notice
+function showSledRepairedNotice() {
+  // Create or get the notification element
+  let notification = document.getElementById('sledRepairedNotice');
+  if (!notification) {
+    notification = document.createElement('div');
+    notification.id = 'sledRepairedNotice';
+    notification.style.position = 'fixed';
+    notification.style.top = '50%';
+    notification.style.left = '50%';
+    notification.style.transform = 'translate(-50%, -50%)';
+    notification.style.backgroundColor = 'rgba(0, 128, 0, 0.8)';
+    notification.style.color = 'white';
+    notification.style.padding = '20px';
+    notification.style.borderRadius = '10px';
+    notification.style.fontWeight = 'bold';
+    notification.style.fontSize = '24px';
+    notification.style.textAlign = 'center';
+    notification.style.zIndex = '1000';
+    notification.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.7)';
+    document.body.appendChild(notification);
+  }
+  
+  // Set content and make visible
+  notification.textContent = 'Sled Repaired!';
+  notification.style.display = 'block';
+  
+  // Play a positive sound
+  playTone(600, "sine", 0.3, 0.4);
+  
+  // Fade out after 1 second
+  setTimeout(() => {
+    notification.style.transition = 'opacity 0.5s';
+    notification.style.opacity = '0';
+    setTimeout(() => {
+      notification.style.display = 'none';
+      notification.style.opacity = '1';
+      notification.style.transition = '';
+    }, 500);
+  }, 1000);
+}

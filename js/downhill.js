@@ -133,6 +133,8 @@ function updateDownhill(deltaTime) {
           terrain.splice(i, 1);
           if (player.collisions >= TWEAK.getMaxCollisions()) {
             console.log("Max collisions reached.");
+            player.sledDamaged = 1; // Mark sled as damaged
+            console.log("Sled marked as damaged! You'll need to repair it before going downhill again.");
             playCrashSound();
             changeState(GameState.UPHILL);
             return;
@@ -172,6 +174,8 @@ function updateDownhill(deltaTime) {
         terrain.splice(i, 1);
         if (player.collisions >= TWEAK.getMaxCollisions()) {
           console.log("Max collisions reached. Ending run.");
+          player.sledDamaged = 1; // Mark sled as damaged
+          console.log("Sled marked as damaged! You'll need to repair it before going downhill again.");
           awardMoney();
           playCrashSound();
           changeState(GameState.UPHILL);
