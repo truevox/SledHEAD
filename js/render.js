@@ -33,9 +33,17 @@ function addFloatingText(text, x, y) {
 
 // Live Money Update Functions
 function updateLiveMoney() {
-  let distanceTraveled = Math.max(1, player.absY);
-  let moneyEarned = Math.floor(distanceTraveled / 100);
-  moneyEarned = Math.max(1, moneyEarned);
+  // Calculate real distance traveled based on starting and ending Y positions
+  // Note: In this game's coordinate system, higher Y values mean lower on the mountain
+  // So the distance traveled downhill is player.absY - playerStartAbsY
+  let distanceTraveled = Math.max(1, player.absY - playerStartAbsY);
+  
+  // Ensure at least 1 unit
+  distanceTraveled = Math.max(1, distanceTraveled);
+  
+  let moneyEarned = Math.floor(distanceTraveled / 100); // Every 100 distance = $1
+  moneyEarned = Math.max(1, moneyEarned); // Guarantee at least $1
+  
   let moneyText = document.getElementById("moneyText");
   if (moneyText) {
     moneyText.textContent = `Money: $${player.money} (+$${moneyEarned})`;

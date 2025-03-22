@@ -46,7 +46,9 @@ function generateTerrain() {
 
 function awardMoney() {
     // Calculate real distance traveled based on starting and ending Y positions
-    let distanceTraveled = Math.max(1, playerStartAbsY - player.absY);
+    // Note: In this game's coordinate system, higher Y values mean lower on the mountain
+    // So the distance traveled downhill is player.absY - playerStartAbsY
+    let distanceTraveled = Math.max(1, player.absY - playerStartAbsY);
     
     // Ensure at least 1 unit
     distanceTraveled = Math.max(1, distanceTraveled);
