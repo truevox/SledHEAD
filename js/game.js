@@ -8,6 +8,7 @@ var loanAmount = 100000;
 var floatingTexts = [];  // Global floating texts array
 var isFirstHouseEntry = true;  // Track first house entry
 var houseReEntry = 0;  // Track house re-entry count
+var playerStartAbsY = 0;  // Track starting Y position for distance calculation
 
 // Core game loop: call mechanics update and then rendering
 function gameLoop(timestamp) {
@@ -97,11 +98,17 @@ function completeStateChange(newState, prevState) {
       player.velocityY = 0;
       player.xVel = 0;
       downhillStartTime = performance.now();
+      // Record starting Y position for distance calculation
+      playerStartAbsY = player.absY;
+      console.log(`DOWNHILL starting position: ${playerStartAbsY}`);
     } else if (prevState === GameState.UPHILL) {
       // When switching from UPHILL to DOWNHILL, maintain position but reset velocities
       player.velocityY = 0;
       player.xVel = 0;
       downhillStartTime = performance.now();
+      // Record starting Y position for distance calculation
+      playerStartAbsY = player.absY;
+      console.log(`DOWNHILL starting position: ${playerStartAbsY}`);
     }
   } else if (currentState === GameState.UPHILL) {
     document.getElementById("upgrade-menu").style.display = "none";

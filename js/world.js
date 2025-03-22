@@ -45,12 +45,16 @@ function generateTerrain() {
 }
 
 function awardMoney() {
-    let distanceTraveled = Math.max(1, player.absY); // Ensure at least 1 unit
-    let moneyEarned = Math.floor(distanceTraveled / 100); // Every 100 distance = $1
+    // Calculate real distance traveled based on starting and ending Y positions
+    let distanceTraveled = Math.max(1, playerStartAbsY - player.absY);
     
+    // Ensure at least 1 unit
+    distanceTraveled = Math.max(1, distanceTraveled);
+    
+    let moneyEarned = Math.floor(distanceTraveled / 100); // Every 100 distance = $1
     moneyEarned = Math.max(1, moneyEarned); // Guarantee at least $1
   
-    console.log(`Awarding money: $${moneyEarned} (Distance traveled: ${distanceTraveled})`);
+    console.log(`Awarding money: $${moneyEarned} (Distance traveled: ${distanceTraveled}, from Y=${playerStartAbsY} to Y=${player.absY})`);
     player.money += moneyEarned;
     updateMoneyDisplay();
   }
