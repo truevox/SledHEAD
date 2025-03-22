@@ -4,6 +4,8 @@ let terrain = [];
 const obstacleCount = 1500; // Reduced rock count to make room for trees
 const treeClusterCount = 3000; // Number of tree clusters to generate
 let earlyFinish = false;
+const heightMultiplierBase = 1; // Base value for height multiplier - can be adjusted later
+const distanceMultiplierBase = 1; // Base value for distance multiplier - can be adjusted later
 
 function generateTerrain() {
   terrain = [];
@@ -53,11 +55,24 @@ function awardMoney() {
     // Ensure at least 1 unit
     distanceTraveled = Math.max(1, distanceTraveled);
     
-    let moneyEarned = Math.floor(distanceTraveled / 100); // Every 100 distance = $1
+    // Calculate the height multiplier based on starting position
+    // Higher up the mountain (lower playerStartAbsY value) gives better multiplier
+    // This will make a run from the top worth 3x more than from the bottom
+    const startHeightRatio = 1 - (playerStartAbsY / mountainHeight); // 0 at bottom, 1 at top
+    const startHeightMultiplier = 1 + (startHeightRatio * 2 * heightMultiplierBase); // Range: 1-3x
+    
+    // Calculate the distance multiplier based on how much of the mountain was traversed
+    // This makes longer runs more valuable (e.g., a full mountain run worth 3x more than 10 runs of 10% each)
+    const distanceRatio = distanceTraveled / mountainHeight; // What fraction of the mountain was traversed
+    const distanceMultiplier = 1 + (Math.min(1, distanceRatio * 10) * 2 * distanceMultiplierBase); // Range: 1-3x
+    // The formula ensures a full mountain run (10% of mountain = 1.2x, 20% = 1.4x, ... 100% = 3x)
+    
+    // Apply both multipliers to the money calculation
+    let moneyEarned = Math.floor((distanceTraveled / 100) * startHeightMultiplier * distanceMultiplier);
     moneyEarned = Math.max(0, moneyEarned); // Guarantee no negative values
   
-    console.log(`Awarding money: $${moneyEarned} (Distance traveled: ${distanceTraveled}, from Y=${playerStartAbsY} to Y=${player.absY})`);
+    console.log(`Awarding money: $${moneyEarned} (Distance: ${distanceTraveled}, Height multiplier: ${startHeightMultiplier.toFixed(2)}, Distance multiplier: ${distanceMultiplier.toFixed(2)})`);
     player.money += moneyEarned;
     updateMoneyDisplay();
-  }
+}
 
