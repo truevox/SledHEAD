@@ -6,6 +6,7 @@ const treeClusterCount = 3000; // Number of tree clusters to generate
 let earlyFinish = false;
 const heightMultiplierBase = 1; // Base value for height multiplier - can be adjusted later
 const distanceMultiplierBase = 1; // Base value for distance multiplier - can be adjusted later
+const speedMultiplierBase = 1; // Base value for speed multiplier - can be adjusted later
 
 function generateTerrain() {
   terrain = [];
@@ -67,11 +68,31 @@ function awardMoney() {
     const distanceMultiplier = 1 + (Math.min(1, distanceRatio * 10) * 2 * distanceMultiplierBase); // Range: 1-3x
     // The formula ensures a full mountain run (10% of mountain = 1.2x, 20% = 1.4x, ... 100% = 3x)
     
-    // Apply both multipliers to the money calculation
-    let moneyEarned = Math.floor((distanceTraveled / 100) * startHeightMultiplier * distanceMultiplier);
+    // Calculate speed multiplier based on the time taken to complete the run
+    let speedMultiplier = 1;
+    if (downhillStartTime !== null) {
+        const runDuration = (performance.now() - downhillStartTime) / 1000; // Convert to seconds
+        
+        // Calculate expected time based on distance
+        // Assuming an "average" speed would be covering the entire mountain in the below number of seconds
+        const expectedTime = (distanceTraveled / mountainHeight) * 500;
+        
+        // Calculate speed ratio: lower than 1 means faster than expected
+        // We want lower times to give higher multipliers
+        const speedRatio = Math.max(0.1, Math.min(2, runDuration / Math.max(1, expectedTime)));
+        
+        // Invert the ratio: 1/speedRatio, so faster runs (lower speedRatio) get higher multipliers
+        // Adjust the curve to get 1x for average speed, up to 3x for twice as fast
+        speedMultiplier = 1 + (Math.max(0, (1 - speedRatio)) * 3 * speedMultiplierBase); // Range: 1-3x
+        
+        console.log(`Run duration: ${runDuration.toFixed(2)}s, Expected: ${expectedTime.toFixed(2)}s, Speed ratio: ${speedRatio.toFixed(2)}, Multiplier: ${speedMultiplier.toFixed(2)}x`);
+    }
+    
+    // Apply all multipliers to the money calculation
+    let moneyEarned = Math.floor((distanceTraveled / 100) * startHeightMultiplier * distanceMultiplier * speedMultiplier);
     moneyEarned = Math.max(0, moneyEarned); // Guarantee no negative values
   
-    console.log(`Awarding money: $${moneyEarned} (Distance: ${distanceTraveled}, Height multiplier: ${startHeightMultiplier.toFixed(2)}, Distance multiplier: ${distanceMultiplier.toFixed(2)})`);
+    console.log(`Awarding money: $${moneyEarned} (Distance: ${distanceTraveled}, Height multiplier: ${startHeightMultiplier.toFixed(2)}, Distance multiplier: ${distanceMultiplier.toFixed(2)}, Speed multiplier: ${speedMultiplier.toFixed(2)})`);
     player.money += moneyEarned;
     updateMoneyDisplay();
 }
