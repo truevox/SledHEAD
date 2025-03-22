@@ -54,7 +54,7 @@ function awardMoney() {
     distanceTraveled = Math.max(1, distanceTraveled);
     
     let moneyEarned = Math.floor(distanceTraveled / 100); // Every 100 distance = $1
-    moneyEarned = Math.max(1, moneyEarned); // Guarantee at least $1
+    moneyEarned = Math.max(0, moneyEarned); // Guarantee no negative values
   
     console.log(`Awarding money: $${moneyEarned} (Distance traveled: ${distanceTraveled}, from Y=${playerStartAbsY} to Y=${player.absY})`);
     player.money += moneyEarned;

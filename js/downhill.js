@@ -133,7 +133,6 @@ function updateDownhill(deltaTime) {
           terrain.splice(i, 1);
           if (player.collisions >= TWEAK.getMaxCollisions()) {
             console.log("Max collisions reached.");
-            awardMoney();
             playCrashSound();
             changeState(GameState.UPHILL);
             return;

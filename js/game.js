@@ -114,6 +114,11 @@ function completeStateChange(newState, prevState) {
     document.getElementById("upgrade-menu").style.display = "none";
     document.getElementById("game-screen").style.display = "block";
     
+    // Award money when changing from DOWNHILL to UPHILL
+    if (prevState === GameState.DOWNHILL) {
+      awardMoney();
+    }
+    
     // Reset specific uphill-mode properties
     player.xVel = 0;
     // Keep the current position when toggling from DOWNHILL
