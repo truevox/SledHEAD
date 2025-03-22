@@ -8,6 +8,7 @@ class Stamina {
       this.staminaDrainSledding = 0.01;  // Drains very slowly when sledding
       this.isVisible = false;
       this.jumpTriggered = false;        // Initialize jump flag
+      this.lastUpdate = Date.now();      // Track last update time
       
       this.canvas = document.createElement("canvas");
       this.ctx = this.canvas.getContext("2d");
@@ -36,12 +37,19 @@ class Stamina {
     }
   
     update() {
+      // Throttle updates to prevent spam
+      const now = Date.now();
+      if (now - this.lastUpdate < 100) return; // Only update every 100ms
+      this.lastUpdate = now;
+
       // Only show stamina bar if the player is NOT at home
       this.isVisible = (currentState !== GameState.HOUSE);
       if (!this.isVisible) {
-        this.currentStamina = this.maxStamina; // Reset stamina when at home
-        this.canvas.style.display = "none";
-        console.log("At home - resetting stamina");
+        if (this.currentStamina !== this.maxStamina) {
+          this.currentStamina = this.maxStamina; // Reset stamina when at home
+          this.canvas.style.display = "none";
+          console.log("At home - resetting stamina");
+        }
         return;
       }
       this.canvas.style.display = "block";
@@ -94,7 +102,5 @@ class Stamina {
   // Hook into the game's update loop
   function updateStamina() {
     stamina.update();
-    requestAnimationFrame(updateStamina);
   }
   updateStamina();
-  

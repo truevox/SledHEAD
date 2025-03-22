@@ -2,13 +2,16 @@
 /* Styles for the gameplay phase (canvas-based) */
 #game-screen {
   position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
   z-index: 1; /* Above canvas but below UI */
 }
 #gameCanvas {
   display: block;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   padding: 0;
@@ -136,4 +139,13 @@ h1 {
 .money-increase {
   transform: scale(1.2);
   color: #FFFFFF; /* Flash white when money increases */
+}
+
+/* Ensure the body has no margins to prevent scrolling */
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
 }

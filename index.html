@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>SledHEAD</title>
   <!-- Global UI styles -->
   <link rel="stylesheet" href="styles.css">
@@ -10,7 +10,7 @@
 <body>
   <!-- Cursor Position Display -->
   <div id="cursor-position" style="position: fixed; top: 10px; left: 10px; background: rgba(0,0,0,0.7); color: white; padding: 5px; border-radius: 3px; font-family: monospace; z-index: 1000;">
-    Abs: (0, 0) | View: (0, 0)
+    Mouse: (0, 0) | Player: (0, 0)
   </div>
 
   <!-- Victory Banner (hidden by default) -->
@@ -30,7 +30,7 @@
   
   <!-- Game Screen (Canvas for gameplay; hidden during house phase) -->
   <div id="game-screen" style="display: none;">
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <canvas id="gameCanvas"></canvas>
   </div>
   
   <!-- House/Upgrade Menu -->

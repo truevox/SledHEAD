@@ -69,7 +69,9 @@ function changeState(newState) {
     if (prevState === GameState.HOUSE) {
       earlyFinish = false;
       player.collisions = 0;
-      player.x = canvas.width / 2;
+      // Ensure player spawns in center with proper padding
+      const horizontalPadding = player.width;
+      player.x = clamp(canvas.width / 2, horizontalPadding, canvas.width - horizontalPadding);
       // Spawn 3 player heights from bottom
       player.absY = mountainHeight - (player.height * 3);
       player.velocityY = 0;
