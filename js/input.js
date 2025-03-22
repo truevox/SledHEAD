@@ -33,8 +33,8 @@ window.addEventListener("mousemove", function(e) {
 // Update the cursor position display
 function updateCursorPositionDisplay() {
   const cursorPositionElement = document.getElementById("cursor-position");
-  if (cursorPositionElement) {
-    cursorPositionElement.textContent = `Abs-xy: (${cursorPosition.absoluteX}, ${cursorPosition.absoluteY}) | View: (${cursorPosition.viewportX}, ${cursorPosition.viewportY})`;
+  if (cursorPositionElement && player) {
+    cursorPositionElement.textContent = `Mouse: (${cursorPosition.viewportX}, ${cursorPosition.viewportY}) | Player: (${Math.round(player.x)}, ${Math.round(player.absY)})`;
   }
 }
 

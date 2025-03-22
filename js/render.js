@@ -198,4 +198,13 @@ function render() {
   floatingTexts.forEach(text => text.draw(ctx, player.absY - canvas.height / 2));
   ctx.restore();
   drawReHitIndicator();
+  
+  // Update coordinate display
+  const cursorPositionElement = document.getElementById("cursor-position");
+  if (cursorPositionElement) {
+    const mouseX = cursorPosition ? cursorPosition.viewportX : 0;
+    const mouseY = cursorPosition ? cursorPosition.viewportY : 0;
+    const playerScreenY = player.absY - getCameraOffset(player.absY, canvas.height, mountainHeight);
+    cursorPositionElement.textContent = `Mouse: (${mouseX}, ${mouseY}) | Player: (${Math.round(player.x)}, ${Math.round(playerScreenY)})`;
+  }
 }
