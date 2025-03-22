@@ -17,8 +17,8 @@ class Stamina {
       this.canvas.width = 200;
       this.canvas.height = 20;
       this.canvas.style.position = "fixed";
-      this.canvas.style.top = "10px";
-      this.canvas.style.left = "10px";
+      this.canvas.style.top = "40px";
+      this.canvas.style.left = "40px";
       this.canvas.style.zIndex = "1000";
       document.body.appendChild(this.canvas);
     }

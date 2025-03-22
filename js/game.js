@@ -28,6 +28,30 @@ function gameLoop(timestamp) {
 
 function changeState(newState) {
   const prevState = currentState;
+
+  // Handle mid-jump state transitions
+  if (player.isJumping && newState !== GameState.HOUSE) {
+    if (player.currentTrick) {
+      // Treat as crash if in a trick
+      resetTrickState();
+      playCrashSound();
+      console.log("State change interrupted trick - counted as crash");
+    }
+    
+    // Lerp to ground over 250ms before completing state change
+    lerpPlayerToGround(250, () => {
+      player.isJumping = false;
+      onPlayerLand();
+      completeStateChange(newState, prevState);
+    });
+    return;
+  }
+
+  completeStateChange(newState, prevState);
+}
+
+// Helper function to complete the state change
+function completeStateChange(newState, prevState) {
   currentState = newState;
   
   if (currentState === GameState.HOUSE) {
