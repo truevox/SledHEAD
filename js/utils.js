@@ -34,8 +34,15 @@ window.addEventListener("keydown", function (e) {
     if (e.key.toLowerCase() === 'e' && currentState === GameState.UPHILL) {
         spawnAnimal();
     }
-    // NEW: Handle Tab key to toggle between UPHILL and DOWNHILL
+    // Handle Tab key to toggle between UPHILL and DOWNHILL
     if (e.key === "Tab" && currentState !== GameState.HOUSE) {
+        // If we're in UPHILL mode and trying to go DOWNHILL, check if sled is damaged
+        if (currentState === GameState.UPHILL && player.sledDamaged === 1) {
+            console.log("Cannot switch to DOWNHILL mode - Sled is damaged and needs repair");
+            // Display notification on screen
+            showSledDamageNotice();
+            return;
+        }
         const newState = currentState === GameState.UPHILL ? GameState.DOWNHILL : GameState.UPHILL;
         changeState(newState);
     }
@@ -167,3 +174,15 @@ function hexToRgb(hex) {
     let b = Math.round(c1.b + (c2.b - c1.b) * t);
     return rgbToHex(r, g, b);
   }
+
+// Function to show sled damage notice
+function showSledDamageNotice() {
+  // Use the error notification from notify.js
+  showErrorNotification('Sled Damaged! Please Repair');
+}
+
+// Function to show sled repaired notice
+function showSledRepairedNotice() {
+  // Use the success notification from notify.js
+  showSuccessNotification('Sled Repaired!');
+}

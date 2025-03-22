@@ -33,9 +33,17 @@ function addFloatingText(text, x, y) {
 
 // Live Money Update Functions
 function updateLiveMoney() {
-  let distanceTraveled = Math.max(1, player.absY);
-  let moneyEarned = Math.floor(distanceTraveled / 100);
-  moneyEarned = Math.max(1, moneyEarned);
+  // Calculate real distance traveled based on starting and ending Y positions
+  // Note: In this game's coordinate system, higher Y values mean lower on the mountain
+  // So the distance traveled downhill is player.absY - playerStartAbsY
+  let distanceTraveled = Math.max(1, player.absY - playerStartAbsY);
+  
+  // Ensure at least 1 unit
+  distanceTraveled = Math.max(1, distanceTraveled);
+  
+  let moneyEarned = Math.floor(distanceTraveled / 100); // Every 100 distance = $1
+  moneyEarned = Math.max(1, moneyEarned); // Guarantee at least $1
+  
   let moneyText = document.getElementById("moneyText");
   if (moneyText) {
     moneyText.textContent = `Money: $${player.money} (+$${moneyEarned})`;
@@ -71,12 +79,26 @@ function drawEntities() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = currentState === GameState.DOWNHILL ? "#ADD8E6" : "#98FB98";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  // Draw terrain obstacles
   terrain.forEach(obstacle => {
     if (obstacle.y >= cameraOffset - 50 && obstacle.y <= cameraOffset + canvas.height + 50) {
-      ctx.fillStyle = "#808080";
-      ctx.fillRect(obstacle.x, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
+      if (obstacle.type === 'tree') {
+        // Draw tree using the custom tree drawing function
+        drawTree(ctx, {
+          x: obstacle.x,
+          y: obstacle.y - cameraOffset,
+          width: obstacle.width,
+          height: obstacle.height
+        });
+      } else {
+        // Default drawing for rocks/other obstacles
+        ctx.fillStyle = "#808080";
+        ctx.fillRect(obstacle.x, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
+      }
     }
   });
+  
   let playerDrawY = player.absY - cameraOffset;
   ctx.save();
   if (player.currentTrick) {

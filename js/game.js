@@ -8,6 +8,7 @@ var loanAmount = 100000;
 var floatingTexts = [];  // Global floating texts array
 var isFirstHouseEntry = true;  // Track first house entry
 var houseReEntry = 0;  // Track house re-entry count
+var playerStartAbsY = 0;  // Track starting Y position for distance calculation
 
 // Core game loop: call mechanics update and then rendering
 function gameLoop(timestamp) {
@@ -28,6 +29,30 @@ function gameLoop(timestamp) {
 
 function changeState(newState) {
   const prevState = currentState;
+
+  // Handle mid-jump state transitions
+  if (player.isJumping && newState !== GameState.HOUSE) {
+    if (player.currentTrick) {
+      // Treat as crash if in a trick
+      resetTrickState();
+      playCrashSound();
+      console.log("State change interrupted trick - counted as crash");
+    }
+    
+    // Lerp to ground over 250ms before completing state change
+    lerpPlayerToGround(250, () => {
+      player.isJumping = false;
+      onPlayerLand();
+      completeStateChange(newState, prevState);
+    });
+    return;
+  }
+
+  completeStateChange(newState, prevState);
+}
+
+// Helper function to complete the state change
+function completeStateChange(newState, prevState) {
   currentState = newState;
   
   if (currentState === GameState.HOUSE) {
@@ -35,6 +60,14 @@ function changeState(newState) {
     document.getElementById("game-screen").style.display = "none";
     const bestTimeText = document.getElementById("bestTimeText");
     bestTimeText.textContent = player.bestTime === Infinity ? "Best Time: N/A" : `Best Time: ${player.bestTime.toFixed(2)}s`;
+    
+    // Check and repair the sled if it's damaged
+    if (player.sledDamaged > 0) {
+      player.sledDamaged = 0;
+      console.log("Sled has been repaired at the house!");
+      // Show repair notification to the player
+      showSledRepairedNotice();
+    }
     
     // Handle house entry costs after first visit
     if (!isFirstHouseEntry && (prevState === GameState.DOWNHILL || prevState === GameState.UPHILL)) {
@@ -46,7 +79,8 @@ function changeState(newState) {
       // Deduct loan percentage from player's money
       if (loanAmount > 0) {
         const deduction = Math.ceil(loanAmount * TWEAK.houseEntryLoanDeduction);
-        player.money = Math.max(0, player.money - deduction);
+        loanAmount += deduction
+        updateLoanButton()
         houseReEntry++;
         console.log(`House entry fee: -$${deduction} (${TWEAK.houseEntryLoanDeduction * 100}% of $${loanAmount} loan)`);
         console.log('House re-entry count:', houseReEntry);
@@ -72,15 +106,26 @@ function changeState(newState) {
       player.velocityY = 0;
       player.xVel = 0;
       downhillStartTime = performance.now();
+      // Record starting Y position for distance calculation
+      playerStartAbsY = player.absY;
+      console.log(`DOWNHILL starting position: ${playerStartAbsY}`);
     } else if (prevState === GameState.UPHILL) {
       // When switching from UPHILL to DOWNHILL, maintain position but reset velocities
       player.velocityY = 0;
       player.xVel = 0;
       downhillStartTime = performance.now();
+      // Record starting Y position for distance calculation
+      playerStartAbsY = player.absY;
+      console.log(`DOWNHILL starting position: ${playerStartAbsY}`);
     }
   } else if (currentState === GameState.UPHILL) {
     document.getElementById("upgrade-menu").style.display = "none";
     document.getElementById("game-screen").style.display = "block";
+    
+    // Award money when changing from DOWNHILL to UPHILL
+    if (prevState === GameState.DOWNHILL) {
+      awardMoney();
+    }
     
     // Reset specific uphill-mode properties
     player.xVel = 0;

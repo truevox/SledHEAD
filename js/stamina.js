@@ -1,3 +1,6 @@
+// Global counter for stamina depletion re-entries
+let reentryCount = 0;
+
 // In stamina.js
 class Stamina {
     constructor() {
@@ -8,14 +11,16 @@ class Stamina {
       this.staminaDrainSledding = 0.01;  // Drains very slowly when sledding
       this.isVisible = false;
       this.jumpTriggered = false;        // Initialize jump flag
+      this.previousState = null;         // Track previous game state
+      this.lastLogTime = 0;              // Timestamp for throttling log messages
       
       this.canvas = document.createElement("canvas");
       this.ctx = this.canvas.getContext("2d");
       this.canvas.width = 200;
       this.canvas.height = 20;
       this.canvas.style.position = "fixed";
-      this.canvas.style.top = "10px";
-      this.canvas.style.left = "10px";
+      this.canvas.style.top = "40px";
+      this.canvas.style.left = "40px";
       this.canvas.style.zIndex = "1000";
       document.body.appendChild(this.canvas);
     }
@@ -25,23 +30,62 @@ class Stamina {
       if (!this.jumpTriggered) {
         this.currentStamina -= this.staminaDrainJumping;
         this.jumpTriggered = true;
-        console.log("Jump drain: stamina reduced by", this.staminaDrainJumping, "New stamina:", this.currentStamina);
+        this.throttledLog("Jump drain: stamina reduced by " + this.staminaDrainJumping + " New stamina: " + this.currentStamina);
       }
     }
   
     // Reset jump flag (to be called on landing)
     resetJumpTrigger() {
       this.jumpTriggered = false;
-      console.log("Jump trigger reset");
+      this.throttledLog("Jump trigger reset");
+    }
+
+    // Throttled logging function to limit messages to once per second
+    throttledLog(message) {
+      const currentTime = Date.now();
+      if (currentTime - this.lastLogTime >= 1000) { // Only log once per second
+        console.log(message);
+        this.lastLogTime = currentTime;
+      }
+    }
+
+    handleStaminaDepletion() {
+        this.throttledLog("Stamina depleted - returning to house");
+        
+        // Move player to house
+        changeState(GameState.HOUSE);
+        
+        // Refill stamina
+        this.currentStamina = this.maxStamina;
+        this.throttledLog("Stamina refilled to maximum");
+        
+        // Despawn all animals
+        despawnAllAnimals();
+        this.throttledLog("All animals despawned");
+        
+        // Calculate and charge re-entry fee
+        const fee = 100 * (reentryCount + 1);
+        player.money = Math.max(0, player.money - fee);
+        this.throttledLog(`Charged re-entry fee: $${fee}`);
+        
+        // Increment re-entry counter
+        reentryCount++;
+        this.throttledLog(`Re-entry count increased to: ${reentryCount}`);
     }
   
     update() {
+      // Check for entering house state (state transition)
+      const enteringHouse = this.previousState !== GameState.HOUSE && currentState === GameState.HOUSE;
+      
       // Only show stamina bar if the player is NOT at home
       this.isVisible = (currentState !== GameState.HOUSE);
       if (!this.isVisible) {
-        this.currentStamina = this.maxStamina; // Reset stamina when at home
+        if (enteringHouse) {
+          this.currentStamina = this.maxStamina; // Reset stamina only when entering the house
+          this.throttledLog("At home - resetting stamina");
+        }
         this.canvas.style.display = "none";
-        console.log("At home - resetting stamina");
+        this.previousState = currentState; // Update previous state
         return;
       }
       this.canvas.style.display = "block";
@@ -50,7 +94,7 @@ class Stamina {
       if (currentState === GameState.UPHILL) {
         if (keysDown["w"] || keysDown["a"] || keysDown["s"] || keysDown["d"]) {
           this.currentStamina -= this.staminaDrainWalking;
-          console.log("UPHILL movement: draining stamina by", this.staminaDrainWalking, " Current stamina:", this.currentStamina);
+          this.throttledLog("UPHILL movement: draining stamina by " + this.staminaDrainWalking + " Current stamina: " + this.currentStamina);
         }
       }
   
@@ -59,7 +103,12 @@ class Stamina {
       // Drain stamina very slowly when sledding
       if (player.isSliding) {
         this.currentStamina -= this.staminaDrainSledding;
-        console.log("Sledding: draining stamina by", this.staminaDrainSledding, " Current stamina:", this.currentStamina);
+        this.throttledLog("Sledding: draining stamina by " + this.staminaDrainSledding + " Current stamina: " + this.currentStamina);
+      }
+  
+      // Check for stamina depletion
+      if (this.currentStamina <= 0 && currentState !== GameState.HOUSE) {
+        this.handleStaminaDepletion();
       }
   
       // Clamp stamina value between 0 and max
@@ -67,6 +116,9 @@ class Stamina {
   
       // Render the stamina bar
       this.render();
+      
+      // Update previous state
+      this.previousState = currentState;
     }
   
     render() {
@@ -97,4 +149,3 @@ class Stamina {
     requestAnimationFrame(updateStamina);
   }
   updateStamina();
-  
