@@ -1,151 +1,127 @@
+import { GameState } from './utils.js';
+import { keysDown } from './input.js';
+import { currentState, changeState } from './game.js';
+
 // Global counter for stamina depletion re-entries
 let reentryCount = 0;
 
+// Create a new canvas for the stamina bar
+const staminaCanvas = document.createElement('canvas');
+staminaCanvas.width = 200;
+staminaCanvas.height = 20;
+staminaCanvas.style.position = 'fixed';
+staminaCanvas.style.bottom = '20px';
+staminaCanvas.style.left = '20px';
+staminaCanvas.style.display = 'none';
+staminaCanvas.id = 'staminaCanvas';
+document.body.appendChild(staminaCanvas);
+
 // In stamina.js
 class Stamina {
-    constructor() {
-      this.maxStamina = 100;
-      this.currentStamina = this.maxStamina;
-      this.staminaDrainWalking = 0.1;  // Drains steadily when walking uphill
-      this.staminaDrainJumping = 2.0;    // Drains once on jump launch
-      this.staminaDrainSledding = 0.01;  // Drains very slowly when sledding
-      this.isVisible = false;
-      this.jumpTriggered = false;        // Initialize jump flag
-      this.previousState = null;         // Track previous game state
-      this.lastLogTime = 0;              // Timestamp for throttling log messages
-      
-      this.canvas = document.createElement("canvas");
-      this.ctx = this.canvas.getContext("2d");
-      this.canvas.width = 200;
-      this.canvas.height = 20;
-      this.canvas.style.position = "fixed";
-      this.canvas.style.top = "40px";
-      this.canvas.style.left = "40px";
-      this.canvas.style.zIndex = "1000";
-      document.body.appendChild(this.canvas);
-    }
+  constructor(options = {}) {
+    this.maxStamina = options.maxStamina || 100;
+    this.currentStamina = options.currentStamina || this.maxStamina;
+    this.regenRate = options.regenRate || 1; // Stamina per second
+    this.drainRate = options.drainRate || 5; // Stamina per second
+    this.recoveryMultiplier = options.recoveryMultiplier || 0.5; // Recovery speed multiplier when resting
+    this.canvas = staminaCanvas;
+    this.ctx = this.canvas.getContext('2d');
+    this.isActive = false;
+    this.render();
+  }
   
-    // New method to drain stamina on jump initiation
-    drainJump() {
-      if (!this.jumpTriggered) {
-        this.currentStamina -= this.staminaDrainJumping;
-        this.jumpTriggered = true;
-        this.throttledLog("Jump drain: stamina reduced by " + this.staminaDrainJumping + " New stamina: " + this.currentStamina);
-      }
-    }
-  
-    // Reset jump flag (to be called on landing)
-    resetJumpTrigger() {
-      this.jumpTriggered = false;
-      this.throttledLog("Jump trigger reset");
-    }
-
-    // Throttled logging function to limit messages to once per second
-    throttledLog(message) {
-      const currentTime = Date.now();
-      if (currentTime - this.lastLogTime >= 1000) { // Only log once per second
-        console.log(message);
-        this.lastLogTime = currentTime;
-      }
-    }
-
-    handleStaminaDepletion() {
-        this.throttledLog("Stamina depleted - returning to house");
-        
-        // Move player to house
-        changeState(GameState.HOUSE);
-        
-        // Refill stamina
-        this.currentStamina = this.maxStamina;
-        this.throttledLog("Stamina refilled to maximum");
-        
-        // Despawn all animals
-        despawnAllAnimals();
-        this.throttledLog("All animals despawned");
-        
-        // Calculate and charge re-entry fee
-        const fee = 100 * (reentryCount + 1);
-        player.money = Math.max(0, player.money - fee);
-        this.throttledLog(`Charged re-entry fee: $${fee}`);
-        
-        // Increment re-entry counter
-        reentryCount++;
-        this.throttledLog(`Re-entry count increased to: ${reentryCount}`);
-    }
-  
-    update() {
-      // Check for entering house state (state transition)
-      const enteringHouse = this.previousState !== GameState.HOUSE && currentState === GameState.HOUSE;
-      
-      // Only show stamina bar if the player is NOT at home
-      this.isVisible = (currentState !== GameState.HOUSE);
-      if (!this.isVisible) {
-        if (enteringHouse) {
-          this.currentStamina = this.maxStamina; // Reset stamina only when entering the house
-          this.throttledLog("At home - resetting stamina");
-        }
-        this.canvas.style.display = "none";
-        this.previousState = currentState; // Update previous state
-        return;
-      }
-      this.canvas.style.display = "block";
-  
+  update(deltaTime, state) {
+    const rateInMs = deltaTime / 1000; // Convert to seconds
+    
+    if (state === GameState.UPHILL) {
       // Drain stamina when moving uphill
-      if (currentState === GameState.UPHILL) {
-        if (keysDown["w"] || keysDown["a"] || keysDown["s"] || keysDown["d"]) {
-          this.currentStamina -= this.staminaDrainWalking;
-          this.throttledLog("UPHILL movement: draining stamina by " + this.staminaDrainWalking + " Current stamina: " + this.currentStamina);
-        }
+      if (isMoving()) {
+        this.currentStamina = Math.max(0, this.currentStamina - this.drainRate * rateInMs);
+      } else {
+        // Regenerate some stamina when standing still
+        this.currentStamina = Math.min(this.maxStamina, this.currentStamina + this.regenRate * this.recoveryMultiplier * rateInMs);
       }
-  
-      // (No jump drain logic here now—it's moved to mechanics.js)
-  
-      // Drain stamina very slowly when sledding
-      if (player.isSliding) {
-        this.currentStamina -= this.staminaDrainSledding;
-        this.throttledLog("Sledding: draining stamina by " + this.staminaDrainSledding + " Current stamina: " + this.currentStamina);
-      }
-  
-      // Check for stamina depletion
-      if (this.currentStamina <= 0 && currentState !== GameState.HOUSE) {
-        this.handleStaminaDepletion();
-      }
-  
-      // Clamp stamina value between 0 and max
-      this.currentStamina = Math.max(0, Math.min(this.currentStamina, this.maxStamina));
-  
-      // Render the stamina bar
-      this.render();
       
-      // Update previous state
-      this.previousState = currentState;
+      if (!this.isActive) {
+        this.show();
+      }
+    } else if (state === GameState.DOWNHILL) {
+      // Recover stamina when sledding downhill
+      this.currentStamina = Math.min(this.maxStamina, this.currentStamina + this.regenRate * rateInMs);
+      
+      if (!this.isActive) {
+        this.show();
+      }
+    } else {
+      // In house: recover fully and hide the bar
+      this.currentStamina = this.maxStamina;
+      this.hide();
     }
-  
-    render() {
-      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  
-      // Determine stamina bar color based on stamina percentage
-      let staminaRatio = this.currentStamina / this.maxStamina;
-      let color = "#00FF00"; // Green (full stamina)
-      if (staminaRatio < 0.5) color = "#FFA500"; // Orange (moderate stamina)
-      if (staminaRatio < 0.2) color = "#FF0000"; // Red (critical stamina)
-  
-      // Draw the bar background
-      this.ctx.fillStyle = "#333";
-      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-  
-      // Draw the stamina portion
-      this.ctx.fillStyle = color;
-      this.ctx.fillRect(0, 0, this.canvas.width * staminaRatio, this.canvas.height);
-    }
+    
+    this.render();
+    return this.currentStamina > 0; // Return true if player still has stamina
   }
   
-  // Initialize stamina system
-  const stamina = new Stamina();
-  
-  // Hook into the game's update loop
-  function updateStamina() {
-    stamina.update();
-    requestAnimationFrame(updateStamina);
+  show() {
+    this.canvas.style.display = 'block';
+    this.isActive = true;
   }
-  updateStamina();
+  
+  hide() {
+    this.canvas.style.display = 'none';
+    this.isActive = false;
+  }
+  
+  drainJump() {
+    const jumpStaminaCost = 20; // Cost 20 stamina to jump
+    this.currentStamina = Math.max(0, this.currentStamina - jumpStaminaCost);
+    this.render();
+  }
+  
+  resetJumpTrigger() {
+    // Any cleanup or reset logic needed after landing
+    this.render();
+  }
+  
+  render() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    
+    // Determine stamina bar color based on stamina percentage
+    let staminaRatio = this.currentStamina / this.maxStamina;
+    let color = "#00FF00"; // Green (full stamina)
+    if (staminaRatio < 0.5) color = "#FFA500"; // Orange (moderate stamina)
+    if (staminaRatio < 0.2) color = "#FF0000"; // Red (critical stamina)
+    
+    // Draw the bar background
+    this.ctx.fillStyle = "#333";
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    
+    // Draw the stamina portion
+    this.ctx.fillStyle = color;
+    this.ctx.fillRect(0, 0, this.canvas.width * staminaRatio, this.canvas.height);
+  }
+}
+
+// Helper function to check if the player is moving - import from input.js
+function isMoving() {
+  return keysDown["w"] || keysDown["a"] || keysDown["s"] || keysDown["d"];
+}
+
+// Create the stamina instance
+const playerStamina = new Stamina({
+  maxStamina: 100,
+  regenRate: 10, // Regenerate 10 stamina per second when sledding
+  drainRate: 15  // Drain 15 stamina per second when hiking
+});
+
+// Update function to be called in the game loop
+function updateStamina(deltaTime) {
+  const hasStamina = playerStamina.update(deltaTime, currentState);
+  if (!hasStamina && currentState === GameState.UPHILL) {
+    // Player ran out of stamina uphill - force them to head downhill
+    changeState(GameState.DOWNHILL);
+  }
+}
+
+// Export the stamina system
+export { playerStamina, updateStamina };

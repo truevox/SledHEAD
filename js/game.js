@@ -1,4 +1,19 @@
 /* game.js - Core Loop & State Management */
+import { GameState } from './utils.js';
+import { initializeCanvas } from './resolution.js';
+import { keysDown } from './input.js';
+import { player, initializePlayer } from './player.js';
+import { playerUpgrades, mountainUpgrades, initUpgradeButton, purchaseUpgrade } from './upgrades.js';
+import { updateMoneyDisplay, showSledRepairedNotice, render, setStartPosition } from './render.js';
+import { playCrashSound, unlockAudioContext, playStartGameSound, capitalizeFirstLetter } from './utils.js';
+import { payLoan, updateLoanButton } from './loan.js';
+import { generateTerrain, mountainHeight } from './world.js';
+import { resetTrickState, onPlayerLand, lerpPlayerToGround } from './tricks.js';
+import { updateMechanics, awardMoney, setCurrentState, setDownhillStartTime, setPlayerStartAbsY } from './mechanics.js';
+import { despawnAllAnimals, setWildlifeState } from './wildlife.js';
+import { TWEAK } from './settings.js';
+import { initAudio } from './downhill.js';
+
 var downhillStartTime = null;
 var lastTime = 0;
 var currentState = GameState.HOUSE;
@@ -9,20 +24,54 @@ var floatingTexts = [];  // Global floating texts array
 var isFirstHouseEntry = true;  // Track first house entry
 var houseReEntry = 0;  // Track house re-entry count
 var playerStartAbsY = 0;  // Track starting Y position for distance calculation
+var earlyFinish = false;
+
+// Declare canvas and ctx at module level
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+// Initialize game state
+function initializeGame() {
+  // Initialize canvas with proper scaling
+  initializeCanvas(canvas, ctx);
+  
+  // Initialize player after canvas is ready
+  initializePlayer();
+  
+  // Generate initial terrain
+  generateTerrain();
+  
+  // Initialize loan button state
+  updateLoanButton();
+  
+  // Start in house
+  changeState(GameState.HOUSE);
+  
+  // Start game loop
+  requestAnimationFrame(gameLoop);
+}
 
 // Core game loop: call mechanics update and then rendering
 function gameLoop(timestamp) {
   let deltaTime = timestamp - lastTime;
   lastTime = timestamp;
   
-  // Update gameplay mechanics (from mechanics.js)
+  // Update mechanics state
+  setCurrentState(currentState);
+  if (downhillStartTime) setDownhillStartTime(downhillStartTime);
+  if (playerStartAbsY) setPlayerStartAbsY(playerStartAbsY);
+  
+  // Update wildlife state
+  setWildlifeState(currentState);
+  
+  // Update gameplay mechanics
   updateMechanics(deltaTime);
   
   // Update floating texts
   floatingTexts = floatingTexts.filter(text => text.update(deltaTime));
   
-  // Render everything (from render.js)
-  render();
+  // Render everything with current parameters
+  render(floatingTexts, currentState);
   
   requestAnimationFrame(gameLoop);
 }
@@ -95,7 +144,10 @@ function completeStateChange(newState, prevState) {
   } else if (currentState === GameState.DOWNHILL) {
     document.getElementById("upgrade-menu").style.display = "none";
     document.getElementById("game-screen").style.display = "block";
-
+    
+    // Initialize audio for downhill mode
+    initAudio();
+    
     // Only reset these values if coming from HOUSE state
     if (prevState === GameState.HOUSE) {
       earlyFinish = false;
@@ -108,6 +160,7 @@ function completeStateChange(newState, prevState) {
       downhillStartTime = performance.now();
       // Record starting Y position for distance calculation
       playerStartAbsY = player.absY;
+      setStartPosition(player.absY);
       console.log(`DOWNHILL starting position: ${playerStartAbsY}`);
     } else if (prevState === GameState.UPHILL) {
       // When switching from UPHILL to DOWNHILL, maintain position but reset velocities
@@ -116,6 +169,7 @@ function completeStateChange(newState, prevState) {
       downhillStartTime = performance.now();
       // Record starting Y position for distance calculation
       playerStartAbsY = player.absY;
+      setStartPosition(player.absY);
       console.log(`DOWNHILL starting position: ${playerStartAbsY}`);
     }
   } else if (currentState === GameState.UPHILL) {
@@ -165,8 +219,23 @@ Object.keys(mountainUpgrades).forEach(upg => {
   });
 });
 
-generateTerrain();
-// Initialize loan button state
-updateLoanButton();
-changeState(GameState.HOUSE);
-requestAnimationFrame(gameLoop);
+// Move initialization calls into the function
+document.addEventListener('DOMContentLoaded', () => {
+  // Wait for canvas element to be available
+  if (canvas && ctx) {
+    initializeGame();
+  } else {
+    console.error('Canvas or context not available');
+  }
+});
+
+// Export necessary variables and functions
+export { 
+  changeState, 
+  canvas, 
+  ctx, 
+  currentState, 
+  lastTime,
+  gameLoop,
+  floatingTexts
+};

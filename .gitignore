@@ -4,3 +4,7 @@ repomix-output.txt.xml
 OLD Codebase.xml
 repomix-output.txt.md
 complete-condensed-codebase-for-reference.md
+js/*.diff
+*.diff
+/*.md
+!/README.md

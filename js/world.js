@@ -1,4 +1,9 @@
 /* world.js */
+import { player } from './player.js';
+import { generateTreeClumps } from './trees.js';
+import { canvas } from './render.js';
+import { updateMoneyDisplay } from './render.js';
+
 const mountainHeight = 200000; // Mountain is now 100x bigger!
 let terrain = [];
 const obstacleCount = 1500; // Reduced rock count to make room for trees
@@ -7,6 +12,18 @@ let earlyFinish = false;
 const heightMultiplierBase = 1; // Base value for height multiplier - can be adjusted later
 const distanceMultiplierBase = 1; // Base value for distance multiplier - can be adjusted later
 const speedMultiplierBase = 1; // Base value for speed multiplier - can be adjusted later
+
+// Variables for tracking player starting position and downhill time
+let playerStartAbsY = 0;
+let downhillStartTime = null;
+
+function setPlayerStartPosition(y) {
+    playerStartAbsY = y;
+}
+
+function setDownhillTime(time) {
+    downhillStartTime = time;
+}
 
 function generateTerrain() {
   terrain = [];
@@ -96,4 +113,15 @@ function awardMoney() {
     player.money += moneyEarned;
     updateMoneyDisplay();
 }
+
+// Export world-related variables and functions
+export { 
+    mountainHeight, 
+    terrain, 
+    generateTerrain,
+    setPlayerStartPosition,
+    setDownhillTime,
+    earlyFinish,
+    awardMoney
+};
 

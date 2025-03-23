@@ -1,3 +1,6 @@
+// Import resolution utilities
+import { getResolution } from './resolution.js';
+
 /* entities.js - Pruned version to avoid overlap with wildlifephotos.js */
 
 // Resolves collisions between the player and obstacles.
@@ -32,14 +35,17 @@ function resolveCollision(player, obstacle) {
 
 // Draws the camera overlay with the POV cone and a steady altitude line.
 function drawCameraOverlay() {
+  const resolution = getResolution();
+  const scale = resolution.scale;
+  
   // Only display the overlay when in UPHILL mode.
   if (currentState !== GameState.UPHILL) return;
 
   let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
   let centerX = player.x;
   let centerY = player.absY - cameraOffset;
-  let coneLength = 300; // Length of the camera cone
-
+  let coneLength = 300 * scale; // Scale cone length
+  
   // Draw the camera POV Cone.
   let povAngle = TWEAK.basePOVAngle + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsPOVIncrease);
   let leftAngle = (player.cameraAngle - povAngle / 2) * (Math.PI / 180);
@@ -53,19 +59,15 @@ function drawCameraOverlay() {
   ctx.closePath();
   ctx.fill();
 
-  // Draw the altitude line.
-  // Map altitudeLine [0,100] to an offset along the camera's central axis:
-  // 0 aligns with the player sprite’s bottom, 100 with its top.
-  let offsetTop = ((coneLength / 2) + player.height);
-  let offsetBottom = player.height / 2;
+  // Draw the altitude line with proper scaling
+  let offsetTop = ((coneLength / 2) + player.height * scale);
+  let offsetBottom = player.height * scale / 2;
   let offset = mapRange(player.altitudeLine, 0, 100, offsetTop, offsetBottom);
 
   let rad = player.cameraAngle * Math.PI / 180;
   let lineCenterX = centerX + offset * Math.cos(rad);
   let lineCenterY = centerY + offset * Math.sin(rad);
-
-  // Draw altitude line perpendicular to camera direction.
-  let lineLength = 100;
+  let lineLength = 100 * scale;
   let perpX = -Math.sin(rad);
   let perpY = Math.cos(rad);
   let x1 = lineCenterX - (lineLength / 2) * perpX;
@@ -77,13 +79,26 @@ function drawCameraOverlay() {
   let t = 1 - (player.altitudeLine / 100);
   let altitudeColor = lerpColor("#FF0000", "#0000FF", t);
   ctx.strokeStyle = altitudeColor;
-  ctx.lineWidth = 3;
+  ctx.lineWidth = 3 * scale;
 
-  // Draw the altitude line without any flashing.
-  ctx.beginPath();
-  ctx.moveTo(x1, y1);
-  ctx.lineTo(x2, y2);
-  ctx.stroke();
+/*
+  // Check here if I have problems |||
+  // Draw the altitude line without any flashing if no animal is in view
+  if (activeAnimal && isAnimalInsideCone(activeAnimal)) {
+    let flashSpeed = mapRange(Math.abs(player.altitudeLine - activeAnimal.altitude), 0, 100, 
+        TWEAK.altitudeFlashMaxSpeed, TWEAK.altitudeFlashMinSpeed);
+    if (Math.floor(Date.now() / flashSpeed) % 2 === 0) {
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+    }
+  } else {
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+  } */
 }
 
 // Draws the game entities such as the background, terrain, player, and sled.

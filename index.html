@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SledHEAD</title>
-  <!-- Global UI styles -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -14,7 +13,6 @@
   </div>
 
   <!-- Victory Banner (hidden by default) -->
-
   <div id="victoryBanner" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: gold; padding: 20px; border-radius: 10px; text-align: center; font-size: 24px; font-weight: bold; z-index: 1000;">
     🎉 VICTORY! 🎉<br>
     You've paid off your loan!
@@ -195,39 +193,51 @@
     <p id="bestTimeText">Best Time: N/A</p>
   </div>
 
-  <!-- Load JS files in proper order -->
-  <script src="js/settings.js"></script>
-  <script src="js/notify.js"></script>
-  <script src="js/utils.js"></script>
-  <script src="js/input.js"></script>
-  <script src="js/upgrades.js"></script>
-  <script src="js/world.js"></script>
-  <script src="js/player.js"></script>
-  <script src="js/entities.js"></script>
-  <script src="js/wildlife.js"></script>
-  <script src="js/trees.js"></script>
-  <script src="js/camera.js"></script>
-  <script src="js/tricks.js"></script>
-  <script src="js/jumpsled.js"></script>
-  <script src="js/downhill.js"></script>
-  <script src="js/uphill.js"></script>
-  <script src="js/loan.js"></script>
-  <script src="js/mechanics.js"></script>
-  <script src="js/render.js"></script>
-  <script src="js/game.js"></script>
-  <script src="js/stamina.js"></script>
-
-  <script>
-  document.getElementById("startGame").addEventListener("click", () => {
-    unlockAudioContext();
-    playStartGameSound();
-    changeState(GameState.DOWNHILL);
-  });
-  document.getElementById("payLoan").addEventListener("click", () => {
-    payLoan();
-  });
-  // Initialize loan button state
-  updateLoanButton();
-</script>
+  <!-- Load JS files in proper order with module support -->
+  <script src="js/settings.js" type="module"></script>
+  <script src="js/resolution.js" type="module"></script>
+  <script src="js/notify.js" type="module"></script>
+  <script src="js/utils.js" type="module"></script>
+  <script src="js/input.js" type="module"></script>
+  <script src="js/upgrades.js" type="module"></script>
+  <script src="js/world.js" type="module"></script>
+  <script src="js/player.js" type="module"></script>
+  <script src="js/entities.js" type="module"></script>
+  <script src="js/wildlife.js" type="module"></script>
+  <script src="js/trees.js" type="module"></script>
+  <script src="js/camera.js" type="module"></script>
+  <script src="js/tricks.js" type="module"></script>
+  <script src="js/jumpsled.js" type="module"></script>
+  <script src="js/downhill.js" type="module"></script>
+  <script src="js/uphill.js" type="module"></script>
+  <script src="js/loan.js" type="module"></script>
+  <script src="js/mechanics.js" type="module"></script>
+  <script src="js/render.js" type="module"></script>
+  <script src="js/game.js" type="module"></script>
+  <script src="js/stamina.js" type="module"></script>
+  
+  <!-- Initialize game via module script -->
+  <script type="module">
+    import { unlockAudioContext, playStartGameSound } from './js/utils.js';
+    import { changeState } from './js/game.js';
+    import { GameState } from './js/utils.js';
+    import { payLoan, updateLoanButton } from './js/loan.js';
+    
+    // Set up event listeners when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById("startGame").addEventListener("click", () => {
+        unlockAudioContext();
+        playStartGameSound();
+        changeState(GameState.DOWNHILL);
+      });
+      
+      document.getElementById("payLoan").addEventListener("click", () => {
+        payLoan();
+      });
+      
+      // Initialize loan button state
+      updateLoanButton();
+    });
+  </script>
 </body>
 </html>

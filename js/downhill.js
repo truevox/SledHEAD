@@ -1,5 +1,34 @@
 /* downhill.js - Downhill Mechanics & Physics */
 
+import { player } from './player.js';
+import { keysDown } from './input.js';
+import { TWEAK } from './settings.js';
+import { GameState, clamp, checkCollision, playCrashSound, playRockHitSound, playTone } from './utils.js';
+import { checkTrickInputs, processTrick, resetTrickState } from './tricks.js';
+import { terrain, mountainHeight } from './world.js';
+import { playerUpgrades } from './upgrades.js';
+import { canvas, updateLiveMoney, setStartPosition } from './render.js';
+import { changeState } from './game.js';
+import { onPlayerJumpStart, onPlayerJumpPeak, onPlayerLand } from './jumpsled.js';
+import { awardMoney } from './world.js';
+
+// Audio variables
+let jumpOsc = null;
+let audioCtx = null;
+
+// Initialize audio context if needed
+function initAudio() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        jumpOsc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        jumpOsc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        jumpOsc.start();
+    }
+}
+
 // Update all downhill-specific physics and mechanics
 function updateDownhill(deltaTime) {
   let rocketFactor = 1 + (playerUpgrades.rocketSurgery * TWEAK.rocketSurgeryFactorPerLevel);
@@ -88,7 +117,7 @@ function updateDownhill(deltaTime) {
         return;
       }
     }
-    if (player.isJumping && jumpOsc) {
+    if (player.isJumping && jumpOsc && audioCtx) {  // Added audioCtx check
       let f_start = 300, f_peak = 800, f_end = 300, freq;
       if (progress < 0.5) {
         let t = progress / 0.5;
@@ -244,3 +273,62 @@ function lerpJumpZoomToZero(callback) {
 
   requestAnimationFrame(animate);
 }
+/*
+// Check for collisions with obstacles
+function checkObstacleCollisions() {
+  for (let obstacle of terrain) {
+    // Skip if player is too far away to possibly collide
+    if (Math.abs(obstacle.y - player.absY) > player.height) continue;
+    
+    if (checkCollision(
+      player.x - player.width / 2,
+      player.absY - player.height / 2,
+      player.width,
+      player.height,
+      obstacle.x,
+      obstacle.y,
+      obstacle.width,
+      obstacle.height
+    )) {
+      // Handle collision
+      handleObstacleCollision(obstacle);
+      break; // Only handle one collision per frame for simplicity
+    }
+  }
+}
+
+// Handle collision with an obstacle
+function handleObstacleCollision(obstacle) {
+  // Increment collision counter
+  player.collisions++;
+  
+  // Apply bounce effect based on the obstacle
+  let bounceForce = TWEAK.bounceImpulse;
+  
+  player.velocityY = -bounceForce; // Reverse Y velocity with some damping
+  
+  // Handle trick interruption
+  if (player.currentTrick) {
+    // Reset trick state if collision
+    player.currentTrick = null;
+    player.trickRotation = 0;
+    player.trickOffset = 0;
+  }
+  
+  // Play hit sound
+  playRockHitSound();
+  
+  console.log("Hit obstacle! Collisions:", player.collisions);
+  
+  // Check if player has crashed (too many collisions)
+  let maxCollisions = TWEAK._baseCollisionsAllowed + playerUpgrades.sledDurability;
+  
+  if (player.collisions >= maxCollisions) {
+    console.log("Too many collisions, sled damaged!");
+    playCrashSound();
+    player.sledDamaged = 1;
+  }
+}
+*/
+// Export functions for use in the game
+export { updateDownhill, initAudio };
