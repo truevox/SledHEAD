@@ -22,6 +22,8 @@ import { showStackedNotification } from './notify.js';
 import { playerUpgrades } from './upgrades.js';
 import { terrain, mountainHeight } from './world.js';
 
+let floatingTexts = [];
+
 // Get canvas elements (avoiding circular references)
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
