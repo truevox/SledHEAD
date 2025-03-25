@@ -16,11 +16,21 @@ function initAudio() {
 }
 
 function onPlayerJumpStart() {
+  // Initialize audio context before using it
+  initAudio();
+  
   player.jumpStartTime = performance.now();
   player.jumpStartY = player.absY;
   player.jumpPeakY = player.absY;
   console.log("Jump initiated at Y:", player.jumpStartY.toFixed(1));
   unlockAudioContext();
+  
+  // Add safety check to prevent crashes if audio context initialization failed
+  if (!audioCtx) {
+    console.warn("Audio context failed to initialize, skipping jump sound.");
+    return;
+  }
+  
   jumpOsc = audioCtx.createOscillator();
   jumpGain = audioCtx.createGain();
   jumpOsc.type = "sine";
