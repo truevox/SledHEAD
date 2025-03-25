@@ -6,7 +6,7 @@ import { TWEAK } from './settings.js';
 import { clamp, checkCollision, playCrashSound, playRockHitSound, playTone } from './utils.js';
 import { GameState } from './gamestate.js';
 import { checkTrickInputs, processTrick, resetTrickState } from './tricks.js';
-import { terrain, mountainHeight } from './world.js';
+import { terrain, mountainHeight, checkHouseTransition } from './world.js';
 import { playerUpgrades } from './upgrades.js';
 import { canvas, updateLiveMoney, setStartPosition } from './render.js';
 import { changeState } from './game.js';
@@ -238,13 +238,8 @@ function updateDownhill(deltaTime) {
     return;
   }
 
-  // Check for actual bottom
-  if (player.absY >= mountainHeight) {
-    player.absY = mountainHeight;
-    console.log("Reached bottom. Returning to house.");
-    awardMoney();
-    changeState(GameState.HOUSE);
-  }
+  // Check for actual bottom using the world.js function
+  checkHouseTransition();
 }
 
 // Helper function for smooth jump transition

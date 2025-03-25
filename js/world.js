@@ -3,6 +3,8 @@ import { player } from './player.js';
 import { generateTreeClumps } from './trees.js';
 import { canvas } from './render.js';
 import { updateMoneyDisplay } from './render.js';
+import { GameState } from './gamestate.js';
+import { changeState } from './game.js';
 import {
     setPlayerStartAbsY,
     setDownhillStartTime,
@@ -57,11 +59,24 @@ function awardMoney() {
     updateMoneyDisplay();
 }
 
+// Check if player has reached the house/bottom of the mountain
+function checkHouseTransition() {
+  if (player.absY >= mountainHeight - (player.height * 5)) {
+    player.absY = mountainHeight - (player.height * 5);
+    console.log("Reached bottom. Returning to house.");
+    awardMoney();
+    changeState(GameState.HOUSE);
+    return true;
+  }
+  return false;
+}
+
 export {
     mountainHeight,
     terrain,
     generateTerrain,
     setDownhillStartTime,
     earlyFinish,
-    awardMoney
+    awardMoney,
+    checkHouseTransition
 };

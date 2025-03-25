@@ -5,7 +5,7 @@ import { TWEAK } from './settings.js';
 import { spawnAnimal, updateAnimal } from './wildlife.js';
 import { playerUpgrades } from './upgrades.js';
 import { canvas } from './render.js';
-import { terrain } from './world.js';  // Import terrain
+import { terrain, checkHouseTransition } from './world.js';  // Import terrain and checkHouseTransition
 import { resolveCollision } from './entities.js';  // Import collision resolver
 import { checkCollision } from './utils.js';  // Import collision detection
 import { getResolution } from './resolution.js';  // Import resolution
@@ -125,6 +125,9 @@ function updateUphill(deltaTime) {
   
   // Update existing animal (if any)
   updateAnimal();
+  
+  // Check if player has reached the house/bottom of the mountain
+  checkHouseTransition();
 }
 
 export { updateUphill };
