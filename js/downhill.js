@@ -221,8 +221,8 @@ function updateDownhill(deltaTime) {
   updateLiveMoney();
 
   // Check for transition to UPHILL mode near bottom
-  if (player.absY >= mountainHeight - (player.height * 4)) {
-    player.absY = mountainHeight - (player.height * 4);
+  if (player.absY >= mountainHeight - (player.height * 10)) {
+    player.absY = mountainHeight - (player.height * 10);
     player.velocityY = 0;
     console.log("Reached transition point. Switching to uphill mode.");
     

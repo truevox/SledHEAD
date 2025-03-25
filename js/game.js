@@ -154,8 +154,8 @@ function completeStateChange(newState, prevState) {
       earlyFinish = false;
       player.collisions = 0;
       player.x = canvas.width / 2;
-      // Spawn 3 player heights from bottom
-      player.absY = mountainHeight - (player.height * 3);
+      // Spawn x player heights from bottom
+      player.absY = mountainHeight - (player.height * 10);
       player.velocityY = 0;
       player.xVel = 0;
       downhillStartTime = performance.now();
