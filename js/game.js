@@ -1,5 +1,5 @@
 /* game.js - Core Loop & State Management */
-import { GameState } from './utils.js';
+import { GameState } from './gamestate.js';
 import { initializeCanvas } from './resolution.js';
 import { keysDown } from './input.js';
 import { player, initializePlayer } from './player.js';

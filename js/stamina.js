@@ -1,4 +1,4 @@
-import { GameState } from './utils.js';
+import { GameState } from './gamestate.js';
 import { keysDown } from './input.js';
 import { currentState, changeState } from './game.js';
 

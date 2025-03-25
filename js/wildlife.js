@@ -6,7 +6,7 @@
 import { getResolution } from './resolution.js';
 import { player } from './player.js';
 import { canvas, ctx } from './render.js';
-import { GameState } from './utils.js';
+import { GameState } from './gamestate.js';
 import { getCameraOffset, lerpColor } from './utils.js';
 import { TWEAK } from './settings.js';
 import { mountainHeight } from './world.js';

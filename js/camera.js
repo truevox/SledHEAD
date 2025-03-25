@@ -2,12 +2,19 @@
 // This file is responsible for handling the photography
 // mechanics.
 
+import { TWEAK } from './settings.js';
+import { player } from './player.js';
+import { activeAnimal } from './wildlife.js';
+import { playerUpgrades } from './upgrades.js';
+import { showMoneyGain, addFloatingText } from './render.js';
+
+// ...existing code...
 // Global variables for photo system
 var lastPhotoTime = 0;
 
 // ------------------- Photo (Critter) Minigame Logic -------------------
 // Handles taking a photo of an animal when conditions are met.
-function takePhoto() {
+export function takePhoto() {
   let now = Date.now();
   if (now - lastPhotoTime < TWEAK.photoCooldown) return; // Enforce cooldown
   if (!activeAnimal || !isAnimalInsideCone(activeAnimal)) return;

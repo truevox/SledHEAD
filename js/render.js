@@ -13,7 +13,7 @@ Possibly separate general player rendering (hitbox/body) vs trick effects
 // Import resolution utilities
 import { getResolution } from './resolution.js';
 import { player } from './player.js';
-import { GameState } from './utils.js';
+import { GameState } from './gamestate.js';
 import { getCameraOffset, mapRange, lerpColor } from './utils.js';
 import { drawTree } from './trees.js';
 import { drawAnimal, isAnimalInsideCone, activeAnimal } from './wildlife.js';

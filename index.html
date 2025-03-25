@@ -195,6 +195,7 @@
 
   <!-- Load JS files in proper order with module support -->
   <script src="js/settings.js" type="module"></script>
+  <script src="js/gamestate.js" type="module"></script>
   <script src="js/resolution.js" type="module"></script>
   <script src="js/notify.js" type="module"></script>
   <script src="js/utils.js" type="module"></script>
@@ -220,7 +221,7 @@
   <script type="module">
     import { unlockAudioContext, playStartGameSound } from './js/utils.js';
     import { changeState } from './js/game.js';
-    import { GameState } from './js/utils.js';
+    import { GameState } from './js/gamestate.js';
     import { payLoan, updateLoanButton } from './js/loan.js';
     
     // Set up event listeners when DOM is loaded

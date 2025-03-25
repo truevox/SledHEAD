@@ -1,6 +1,6 @@
 /* mechanics.js - Gameplay Mechanics & Interactions */
 import { player } from './player.js';
-import { GameState } from './utils.js';
+import { GameState } from './gamestate.js';
 import { updateDownhill } from './downhill.js';
 import { updateUphill } from './uphill.js';
 import { mountainHeight } from './world.js';

@@ -88,3 +88,20 @@ export function showCenteredNotification(message, colorRGBA = [255, 255, 0, 0.8]
 export function showNotification(message, colorRGBA = [255, 255, 0, 0.8], duration = 1500) {
 	showCenteredNotification(message, colorRGBA, duration);
 }
+
+// Add convenience functions for error and success notifications
+export function showErrorNotification(message, duration = 3000) {
+	showStackedNotification(message, 'error', duration);
+}
+
+export function showSuccessNotification(message, duration = 3000) {
+	showStackedNotification(message, 'success', duration);
+}
+
+export function showWarningNotification(message, duration = 3000) {
+	showStackedNotification(message, 'warning', duration);
+}
+
+export function showInfoNotification(message, duration = 3000) {
+	showStackedNotification(message, 'info', duration);
+}

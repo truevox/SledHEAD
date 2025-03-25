@@ -3,7 +3,8 @@
 import { player } from './player.js';
 import { keysDown } from './input.js';
 import { TWEAK } from './settings.js';
-import { GameState, clamp, checkCollision, playCrashSound, playRockHitSound, playTone } from './utils.js';
+import { clamp, checkCollision, playCrashSound, playRockHitSound, playTone } from './utils.js';
+import { GameState } from './gamestate.js';
 import { checkTrickInputs, processTrick, resetTrickState } from './tricks.js';
 import { terrain, mountainHeight } from './world.js';
 import { playerUpgrades } from './upgrades.js';

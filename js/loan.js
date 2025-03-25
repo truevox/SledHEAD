@@ -18,15 +18,15 @@ function updateLoanButton() {
             }, 5000);
         } else {
             payLoanBtn.textContent = `Pay Loan ($${loanAmount.toLocaleString()})`;
-            payLoanBtn.disabled = player.money < 1000;
+            // payLoanBtn.disabled = player.money < 0; // Disbaled but left in in case I change my mind
         }
     }
 }
 
 // Function to pay down the loan
 function payLoan() {
-    if (player.money >= 1000 && loanAmount > 0) {
-        const paymentAmount = Math.min(1000, player.money, loanAmount);
+    if (player.money > 0 && loanAmount > 0) {
+        const paymentAmount = Math.min(player.money, loanAmount);
         loanAmount -= paymentAmount;
         player.money -= paymentAmount;
         console.log(`Paid $${paymentAmount} toward loan. Remaining: $${loanAmount}`);

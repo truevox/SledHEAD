@@ -1,11 +1,13 @@
 /* utils.js */
 // Global Configuration & Shared Globals moved to settings.js
 
-export const GameState = {
-    HOUSE: 'house',
-    DOWNHILL: 'downhill',
-    UPHILL: 'uphill'
-};
+// Import currentState and functions from game.js
+import { currentState, changeState } from './game.js';
+import { takePhoto } from './camera.js';
+import { spawnAnimal } from './wildlife.js';
+import { showErrorNotification, showSuccessNotification } from './notify.js';
+import { player } from './player.js';
+import { GameState } from './gamestate.js';
 
 /*
 // Get the canvas element and its context.
@@ -61,8 +63,6 @@ window.addEventListener("keyup", function (e) {
         changeState(GameState.DOWNHILL);
     }
 });
-
-
 
 /* Utility functions */
 export function formatUpgradeName(name) {
