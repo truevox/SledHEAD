@@ -1,5 +1,31 @@
 /* render.js - Rendering Logic */
 
+/*
+❓ Is the new drawing logic modular enough?
+Not quite yet.
+Right now, the drawing code is still inline and monolithic. For long-term cleanliness, you may wanna:
+
+Extract the trick rendering into its own helper function (e.g., drawTrickVisuals(ctx, player))
+
+Possibly separate general player rendering (hitbox/body) vs trick effects
+*/
+
+// Import resolution utilities
+import { getResolution } from './resolution.js';
+import { player } from './player.js';
+import { GameState } from './utils.js';
+import { getCameraOffset, mapRange, lerpColor } from './utils.js';
+import { drawTree } from './trees.js';
+import { drawAnimal, isAnimalInsideCone, activeAnimal } from './wildlife.js';
+import { TWEAK } from './settings.js';
+import { showStackedNotification } from './notify.js';
+import { playerUpgrades } from './upgrades.js';
+import { terrain, mountainHeight } from './world.js';
+
+// Get canvas elements (avoiding circular references)
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
 // Floating Text System
 class FloatingText {
   constructor(text, x, y) {
@@ -18,10 +44,14 @@ class FloatingText {
   }
 
   draw(ctx, cameraY) {
+    const resolution = getResolution();
+    const scale = resolution.scale * (window.devicePixelRatio || 1);
     const alpha = 1 - (this.age / this.lifetime);
+    
     ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
-    ctx.font = "bold 24px Arial";
+    ctx.font = `bold ${24 * scale}px Arial`;
     ctx.textAlign = "center";
+    
     const screenY = player.absY - cameraY + this.visualOffsetY;
     ctx.fillText(this.text, this.x, screenY);
   }
@@ -31,12 +61,12 @@ function addFloatingText(text, x, y) {
   floatingTexts.push(new FloatingText(text, x, y - 30));
 }
 
+let startPositionY = 0;
+
 // Live Money Update Functions
 function updateLiveMoney() {
   // Calculate real distance traveled based on starting and ending Y positions
-  // Note: In this game's coordinate system, higher Y values mean lower on the mountain
-  // So the distance traveled downhill is player.absY - playerStartAbsY
-  let distanceTraveled = Math.max(1, player.absY - playerStartAbsY);
+  let distanceTraveled = Math.max(1, player.absY - startPositionY);
   
   // Ensure at least 1 unit
   distanceTraveled = Math.max(1, distanceTraveled);
@@ -48,7 +78,11 @@ function updateLiveMoney() {
   if (moneyText) {
     moneyText.textContent = `Money: $${player.money} (+$${moneyEarned})`;
   }
-  // Optionally, add logic for milestone sounds or effects here.
+}
+
+// Function to set the start position for money calculation
+function setStartPosition(y) {
+  startPositionY = y;
 }
 
 function showMoneyGain(amount, source = "") {
@@ -74,7 +108,7 @@ function updateMoneyDisplay() {
   }
 }
 
-function drawEntities() {
+function drawEntities(currentState) {
   let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = currentState === GameState.DOWNHILL ? "#ADD8E6" : "#98FB98";
@@ -121,13 +155,13 @@ function drawEntities() {
   ctx.restore();
   
   // Draw camera overlay (from wildlifephotos.js)
-  drawCameraOverlay();
+  drawCameraOverlay(currentState);
   
   // Draw any animals (from wildlifephotos.js)
   drawAnimal();
 }
 
-function drawCameraOverlay() {
+function drawCameraOverlay(currentState) {
   if (currentState !== GameState.UPHILL) return;
   let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
   let centerX = player.x;
@@ -199,11 +233,40 @@ function drawReHitIndicator() {
   }
 }
 
-// The main render function called in gameLoop
-function render() {
-  drawEntities();
-  ctx.save();
-  floatingTexts.forEach(text => text.draw(ctx, player.absY - canvas.height / 2));
-  ctx.restore();
-  drawReHitIndicator();
+// Function to show sled repaired notice
+function showSledRepairedNotice() {
+    showStackedNotification('Sled Repaired!', 'success');
 }
+
+// The main render function called in gameLoop
+function render(floatingTexts, currentState) {
+    const resolution = getResolution();
+    
+    // Clear the entire canvas with the current scale
+    ctx.clearRect(0, 0, resolution.width * resolution.scale, resolution.height * resolution.scale);
+    
+    // Draw all game entities
+    drawEntities(currentState);
+    
+    // Save context state before drawing floating texts
+    ctx.save();
+    floatingTexts.forEach(text => text.draw(ctx, player.absY - canvas.height / 2));
+    ctx.restore();
+    
+    // Draw any overlay indicators
+    drawReHitIndicator();
+}
+
+// Export necessary functions
+export { 
+    render, 
+    FloatingText, 
+    addFloatingText, 
+    showMoneyGain, 
+    updateMoneyDisplay, 
+    showSledRepairedNotice,
+    updateLiveMoney,
+    setStartPosition,
+    canvas,
+    ctx
+};

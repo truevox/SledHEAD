@@ -1,5 +1,19 @@
 // jumpsled.js
 // This file contains all jump-related functions for SledHEAD
+import { player } from './player.js';
+import { playerStamina } from './stamina.js';
+import { unlockAudioContext } from './utils.js';
+
+let jumpOsc = null;
+let jumpGain = null;
+let audioCtx = null;
+
+// Initialize audio context if needed
+function initAudio() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+}
 
 function onPlayerJumpStart() {
   player.jumpStartTime = performance.now();
@@ -16,7 +30,7 @@ function onPlayerJumpStart() {
   jumpOsc.start();
   
   // Drain stamina on jump initiation
-  stamina.drainJump();
+  playerStamina.drainJump();
 }
 
 function onPlayerJumpPeak() {
@@ -42,5 +56,13 @@ function onPlayerLand() {
   const totalDistance = player.absY - player.jumpStartY;
   console.log(`Jump complete! Time: ${jumpTime.toFixed(2)}s, Peak Height: ${jumpHeight.toFixed(1)}, Distance: ${totalDistance.toFixed(1)}`);
   cleanupJumpSound();
-  stamina.resetJumpTrigger();
+  playerStamina.resetJumpTrigger();
 }
+
+// Export the jump-related functions
+export {
+    onPlayerJumpStart,
+    onPlayerJumpPeak,
+    onPlayerLand,
+    initAudio
+};

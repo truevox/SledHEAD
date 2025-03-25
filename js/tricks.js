@@ -1,4 +1,9 @@
 /* tricks.js - Trick System & Logic */
+import { player } from './player.js';
+import { keysDown } from './input.js';
+import { TWEAK } from './settings.js';
+import { playTone } from './utils.js';
+import { addFloatingText, showMoneyGain } from './render.js';
 
 // Function to start a trick
 function startTrick(trickName) {
@@ -95,3 +100,48 @@ function resetTrickState() {
 function playTrickCompleteSound() {
   playTone(600, "sine", 0.1, 0.2);
 }
+
+// Function to smoothly lerp player back to the ground position
+function lerpPlayerToGround(duration, callback) {
+  const startHeight = player.jumpZoomBonus;
+  const startY = player.absY;
+  const startTime = performance.now();
+
+  function animate(time) {
+    const elapsed = time - startTime;
+    const progress = Math.min(1, elapsed / duration);
+    
+    // Use easeOutQuad or similar easing function
+    const easedProgress = 1 - (1 - progress) * (1 - progress);
+    
+    player.jumpZoomBonus = startHeight * (1 - easedProgress);
+    
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      // Animation complete
+      player.jumpZoomBonus = 0;
+      if (callback) callback();
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+// Callback for when player lands from a jump
+function onPlayerLand() {
+  // Add any custom landing logic here
+  console.log("Player landed from jump");
+}
+
+// Export the trick-related functions
+export {
+  startTrick,
+  checkTrickInputs,
+  processTrick,
+  completeTrick,
+  resetTrickState,
+  playTrickCompleteSound,
+  lerpPlayerToGround,
+  onPlayerLand
+};

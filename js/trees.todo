@@ -1,0 +1,191 @@
+/* trees.js - Tree Generation, Biomes & Rendering */
+import { getResolution } from './resolution.js';
+
+const treeTypes = {
+  oak: { fallingEffect: 'leaves', color: '#228B22' },
+  pine: { fallingEffect: 'needles', color: '#006400' },
+  naked: { fallingEffect: 'none', color: null },
+  'snow-covered': { fallingEffect: 'snow', color: '#E0FFFF' }
+};
+
+const biomeModifier = {
+  default: ['oak', 'pine'],
+  temperate: ['oak', 'pine'],
+  tundra: ['snow-covered', 'naked'],
+  arctic: ['snow-covered'],
+  tropical: ['oak', 'pine'], // Placeholder; add palms etc. later
+  desert: ['naked'],
+  swamp: ['oak', 'naked']
+};
+
+const defaultBiome = 'temperate';
+
+const activeParticles = [];
+
+function generateTreeClumps({ count, terrainBounds, playerSize, biome = defaultBiome }) {
+  const trees = [];
+  const clumpRadius = playerSize * 5;
+  const types = biomeModifier[biome] || biomeModifier.default;
+
+  for (let i = 0; i < count; i++) {
+    const clumpX = Math.random() * (terrainBounds.xMax - terrainBounds.xMin) + terrainBounds.xMin;
+    const clumpY = Math.random() * (terrainBounds.yMax - terrainBounds.yMin) + terrainBounds.yMin;
+    const treesInClump = Math.floor(Math.random() * 5) + 3;
+
+    for (let j = 0; j < treesInClump; j++) {
+      const angle = Math.random() * Math.PI * 2;
+      const distance = Math.random() * clumpRadius;
+
+      const treeX = clumpX + Math.cos(angle) * distance;
+      const treeY = clumpY + Math.sin(angle) * distance;
+
+      if (treeX >= terrainBounds.xMin && treeX <= terrainBounds.xMax &&
+          treeY >= terrainBounds.yMin && treeY <= terrainBounds.yMax) {
+
+        const width = 35 + Math.random() * 25;
+        const height = 70 + Math.random() * 50;
+        const selectedType = types[Math.floor(Math.random() * types.length)];
+
+        trees.push({
+          x: treeX,
+          y: treeY,
+          width,
+          height,
+          type: 'tree',
+          variation: {
+            type: selectedType,
+            colorShift: Math.random() * 0.3 - 0.15,
+            trunkHeightRatio: 0.4 + Math.random() * 0.3
+          }
+        });
+      }
+    }
+  }
+
+  return trees;
+}
+
+function drawTree(ctx, tree, time = Date.now()) {
+  const resolution = getResolution();
+  const scale = resolution.scale;
+
+  const width = tree.width * scale;
+  const height = tree.height * scale;
+  const x = tree.x - width / 2;
+  const y = tree.y - height / 2;
+
+  const sway = Math.sin(time / 300 + tree.x) * 3;
+  ctx.save();
+  ctx.translate(sway, 0);
+
+  const trunkColor = '#8B4513';
+  const trunkWidth = width * 0.2;
+  const trunkHeight = height * (tree.variation?.trunkHeightRatio || 0.6);
+  ctx.fillStyle = trunkColor;
+  ctx.fillRect(x + (width - trunkWidth) / 2, y + height - trunkHeight, trunkWidth, trunkHeight);
+
+  const type = tree.variation?.type;
+  const def = treeTypes[type] || treeTypes.oak;
+  if (type === 'naked') {
+    ctx.restore();
+    return;
+  }
+
+  let foliageColor = def.color;
+  if (tree.variation?.colorShift) {
+    foliageColor = adjustColor(foliageColor, tree.variation.colorShift);
+  }
+
+  ctx.fillStyle = foliageColor;
+
+  if (type === 'pine' || type === 'snow-covered') {
+    const foliageHeight = height * 0.8;
+    const foliageBase = y + height - trunkHeight;
+    for (let i = 0; i < 3; i++) {
+      const layerY = foliageBase - (foliageHeight * (i / 3));
+      const layerWidth = width * (1 - i * 0.2);
+      ctx.beginPath();
+      ctx.moveTo(x + (width - layerWidth) / 2, layerY);
+      ctx.lineTo(x + (width + layerWidth) / 2, layerY);
+      ctx.lineTo(x + width / 2, layerY - foliageHeight / 3);
+      ctx.closePath();
+      ctx.fill();
+    }
+  } else {
+    const centerX = x + width / 2;
+    const foliageY = y + height - trunkHeight - height * 0.05;
+    const foliageRadius = width * 0.6;
+    ctx.beginPath();
+    ctx.arc(centerX, foliageY, foliageRadius, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  ctx.restore();
+}
+
+function spawnTreeInteractionEffect(tree) {
+  const type = tree.variation?.type;
+  const effect = treeTypes[type]?.fallingEffect;
+  if (!effect || effect === 'none') return;
+
+  for (let i = 0; i < 8; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 0.5 + Math.random();
+    activeParticles.push({
+      x: tree.x,
+      y: tree.y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      alpha: 1,
+      lifetime: 1000,
+      age: 0,
+      color: effect === 'snow' ? '#E0FFFF' : '#32CD32'
+    });
+  }
+}
+
+function updateAndDrawTreeParticles(ctx, deltaTime) {
+  const resolution = getResolution();
+  const scale = resolution.scale;
+
+  for (let i = activeParticles.length - 1; i >= 0; i--) {
+    const p = activeParticles[i];
+    p.age += deltaTime;
+    p.x += p.vx * scale * (deltaTime / 16.67);
+    p.y += p.vy * scale * (deltaTime / 16.67);
+    p.alpha = 1 - (p.age / p.lifetime);
+
+    if (p.age >= p.lifetime) {
+      activeParticles.splice(i, 1);
+      continue;
+    }
+
+    ctx.save();
+    ctx.globalAlpha = p.alpha;
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 3 * scale, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+function adjustColor(hexColor, shiftAmount) {
+  const r = parseInt(hexColor.substr(1, 2), 16);
+  const g = parseInt(hexColor.substr(3, 2), 16);
+  const b = parseInt(hexColor.substr(5, 2), 16);
+  const shiftedG = Math.min(255, Math.max(0, g + Math.floor(g * shiftAmount)));
+  return '#' + r.toString(16).padStart(2, '0') +
+               shiftedG.toString(16).padStart(2, '0') +
+               b.toString(16).padStart(2, '0');
+}
+
+export {
+  generateTreeClumps,
+  drawTree,
+  spawnTreeInteractionEffect,
+  updateAndDrawTreeParticles,
+  treeTypes,
+  biomeModifier,
+  defaultBiome
+};

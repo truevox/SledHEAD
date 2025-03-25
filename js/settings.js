@@ -141,3 +141,6 @@ TWEAK.getMaxCollisions = function() {
     return TWEAK.baseCollisionsAllowed + (typeof playerUpgrades !== "undefined" && playerUpgrades.sledDurability ? playerUpgrades.sledDurability : 0);
 };
 
+// Export the TWEAK object
+export { TWEAK };
+

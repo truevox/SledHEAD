@@ -3,9 +3,24 @@
 // including the animals' behavior, interactions with the
 // environment, and spawning.
 
+import { getResolution } from './resolution.js';
+import { player } from './player.js';
+import { canvas, ctx } from './render.js';
+import { GameState } from './utils.js';
+import { getCameraOffset, lerpColor } from './utils.js';
+import { TWEAK } from './settings.js';
+import { mountainHeight } from './world.js';
+import { playerUpgrades } from './upgrades.js';
+
 // Global variables for animal system
 var activeAnimal = null;
 var animalStateCheckInterval = null; // Interval for checking animal states
+var currentState = GameState.HOUSE; // Default state
+
+// Function to set current state from outside
+function setWildlifeState(state) {
+    currentState = state;
+}
 
 // ------------------- Animal (Critter) Update Logic -------------------
 // Updates the state of the active animal (critter)
@@ -17,25 +32,27 @@ function updateAnimal() {
   
   if (activeAnimal.state === "fleeing") {
     if (activeAnimal.fleeingLogOnce !== true) {
-      console.log(`🦁 Animal fleeing - Type: ${activeAnimal.type}, Angle: ${activeAnimal.fleeAngleActual.toFixed(2)}°, Speed: ${activeAnimal.speed}`);
+      console.log(`🦁 Animal fleeing - Type: ${activeAnimal.type}, Angle: ${activeAnimal.fleeAngleActual.toFixed(2)}°, Speed: ${activeAnimal.fleeSpeed.toFixed(2)}`);
       activeAnimal.fleeingLogOnce = true;
     }
     
+    // Use the actual flee angle and randomized flee speed
     let rad = activeAnimal.fleeAngleActual * Math.PI / 180;
-    activeAnimal.x += Math.cos(rad) * activeAnimal.speed * 0.5;
-    activeAnimal.y += Math.sin(rad) * activeAnimal.speed * 0.5;
+    activeAnimal.x += Math.cos(rad) * activeAnimal.fleeSpeed;
+    activeAnimal.y += Math.sin(rad) * activeAnimal.fleeSpeed;
     
-    // Check if animal is more than 1000 units away from the player.
+    // Check if animal is more than 1000 units away from the player
     let dx = activeAnimal.x - player.x;
     let dy = activeAnimal.y - player.absY;
     let distance = Math.sqrt(dx * dx + dy * dy);
+    
     if (distance > 1000 && !activeAnimal.despawnScheduled) {
       activeAnimal.despawnScheduled = true;
-      console.log(`Animal is more than 1000 away. Scheduling despawn in 500ms.`);
+      console.log(`Animal is more than 1000 away. Scheduling despawn in 5000ms.`);
       
       setTimeout(() => {
         if (activeAnimal) {
-          console.log(`Animal despawned after 500ms out of range`);
+          console.log(`Animal despawned after 5000ms out of range`);
           activeAnimal = null;
           spawnAnimal();
         }
@@ -47,8 +64,25 @@ function updateAnimal() {
       console.log(`Animal (${activeAnimal.type}) spontaneously changing state from sitting to fleeing`);
       activeAnimal.state = "fleeing";
       activeAnimal.fleeingLogOnce = false;
+      
+      // Set randomized flee speed when animal starts fleeing
+      setRandomizedFleeSpeed();
     }
   }
+}
+
+// Set a randomized flee speed for the active animal
+function setRandomizedFleeSpeed() {
+  if (!activeAnimal) return;
+  
+  // Base speed from animal type
+  let baseSpeed = activeAnimal.type === "bear" ? TWEAK.bearSpeed || 8 : TWEAK.birdSpeed || 12;
+  
+  // Add randomization factor (±30% variation)
+  let randomFactor = 0.7 + (Math.random() * 0.6); // 0.7 to 1.3 multiplier
+  activeAnimal.fleeSpeed = baseSpeed * randomFactor;
+  
+  console.log(`Set randomized flee speed for ${activeAnimal.type}: ${activeAnimal.fleeSpeed.toFixed(2)} (base: ${baseSpeed})`);
 }
 
 // Check if the player is too close to the animal, causing it to flee
@@ -68,6 +102,9 @@ function checkPlayerProximity() {
     activeAnimal.fleeAngleActual = Math.atan2(dy, dx) * (180 / Math.PI);
     // Add slight randomness to the flee direction
     activeAnimal.fleeAngleActual += (Math.random() - 0.5) * 30; // ±15 degrees of randomness
+    
+    // Set randomized flee speed when animal starts fleeing
+    setRandomizedFleeSpeed();
   }
 }
 
@@ -77,17 +114,19 @@ function spawnAnimal() {
   
   const isBear = Math.random() < TWEAK.bearSpawnProbability;
   const type = isBear ? "bear" : "bird";
+  
   // Determine spawn position
   // Spawn just outside the viewport horizontally
   let spawnX = (window.innerWidth * 0.1) + (Math.random() * window.innerWidth * 0.9);
   let spawnY = player.absY - (window.innerHeight / 2);
+  
   // Altitude is a number between 0-100 representing the altitude line
   let altitude = Math.floor(Math.random() * 100);
   
   // Initial state - sitting or fleeing
   let initialState = "sitting";
   
-  // Flee angle calculation using MAINEntities.js logic
+  // Flee angle calculation using original logic
   let baseAngle;
   if (spawnX > window.innerWidth / 2) {
     // Animal spawns on the right side, so it should flee leftwards.
@@ -116,6 +155,7 @@ function spawnAnimal() {
     height: type === "bear" ? 60 : 20,
     state: initialState,
     speed: speed,
+    fleeSpeed: speed, // Initial flee speed, will be randomized when fleeing
     altitude: altitude,
     hasBeenPhotographed: false,
     detectionRadius: detectionRadius,
@@ -137,6 +177,10 @@ function spawnAnimal() {
 function despawnAllAnimals() {
     activeAnimal = null;
     console.log('All animals despawned');
+    if (animalStateCheckInterval) {
+        clearInterval(animalStateCheckInterval);
+        animalStateCheckInterval = null;
+    }
 }
 
 // Log the current animal state for debugging
@@ -248,3 +292,59 @@ function drawAnimal() {
     ctx.stroke();
   }
 }
+
+// Function to check if an animal is inside the camera POV cone
+function isAnimalInsideCone(animal) {
+  if (!animal) return false;
+  
+  // Calculate animal position relative to player
+  let dx = animal.x - player.x;
+  let dy = animal.y - player.absY;
+  
+  // Convert to polar coordinates
+  let distance = Math.sqrt(dx * dx + dy * dy);
+  let angleRad = Math.atan2(dy, dx);
+  let angleDeg = angleRad * (180 / Math.PI);
+  
+  // Normalize angle to be between 0-360
+  angleDeg = (angleDeg + 360) % 360;
+  
+  // Get current camera angle
+  let cameraAngle = player.cameraAngle;
+  
+  // Calculate the field of view
+  let povAngle = TWEAK.basePOVAngle + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsPOVIncrease);
+  
+  // Calculate the cone boundaries
+  let leftBoundary = cameraAngle - povAngle / 2;
+  let rightBoundary = cameraAngle + povAngle / 2;
+  
+  // Normalize boundaries
+  leftBoundary = (leftBoundary + 360) % 360;
+  rightBoundary = (rightBoundary + 360) % 360;
+  
+  // Check if animal is within the POV cone
+  let isInCone;
+  if (leftBoundary > rightBoundary) {
+    // Cone spans across 0 degrees
+    isInCone = (angleDeg >= leftBoundary || angleDeg <= rightBoundary);
+  } else {
+    isInCone = (angleDeg >= leftBoundary && angleDeg <= rightBoundary);
+  }
+  
+  // Check if animal is within max photo distance
+  let isInRange = distance <= TWEAK.maxAnimalPhotoDistance;
+  
+  return isInCone && isInRange;
+}
+
+// Export the necessary functions and variables
+export { 
+    activeAnimal, 
+    updateAnimal, 
+    spawnAnimal, 
+    despawnAllAnimals, 
+    drawAnimal, 
+    isAnimalInsideCone, 
+    setWildlifeState 
+};

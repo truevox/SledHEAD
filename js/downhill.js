@@ -273,7 +273,7 @@ function lerpJumpZoomToZero(callback) {
 
   requestAnimationFrame(animate);
 }
-/*
+/*7hhvb
 // Check for collisions with obstacles
 function checkObstacleCollisions() {
   for (let obstacle of terrain) {

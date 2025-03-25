@@ -9,9 +9,10 @@ import { playCrashSound, unlockAudioContext, playStartGameSound, capitalizeFirst
 import { payLoan, updateLoanButton } from './loan.js';
 import { generateTerrain, mountainHeight } from './world.js';
 import { resetTrickState, onPlayerLand, lerpPlayerToGround } from './tricks.js';
-import { updateMechanics, awardMoney, setCurrentState, setDownhillStartTime, setPlayerStartAbsY } from './mechanics.js';
+import { updateMechanics, setCurrentState, setDownhillStartTime, setPlayerStartAbsY } from './mechanics.js';
 import { despawnAllAnimals, setWildlifeState } from './wildlife.js';
 import { TWEAK } from './settings.js';
+import { awardMoney } from './world.js';
 import { initAudio } from './downhill.js';
 
 var downhillStartTime = null;
@@ -36,7 +37,7 @@ function initializeGame() {
   initializeCanvas(canvas, ctx);
   
   // Initialize player after canvas is ready
-  initializePlayer();
+  initializePlayer(canvas.width);
   
   // Generate initial terrain
   generateTerrain();

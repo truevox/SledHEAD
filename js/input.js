@@ -1,5 +1,7 @@
 /* input.js - Keyboard Input Handling */
 
+import { normalizeCoords } from './resolution.js';
+
 // Global keyboard input tracking
 var keysDown = {};
 
@@ -7,8 +9,8 @@ var keysDown = {};
 var cursorPosition = {
   absoluteX: 0,
   absoluteY: 0,
-  viewportX: 0,
-  viewportY: 0,
+  normalizedX: 0,
+  normalizedY: 0,
   lastUpdateTime: 0
 };
 
@@ -23,18 +25,23 @@ window.addEventListener("keyup", function(e) {
 
 // Set up event listener for mouse movement
 window.addEventListener("mousemove", function(e) {
-  // Store both absolute and viewport coordinates
+  const canvas = document.getElementById('gameCanvas');
+  // Store absolute coordinates
   cursorPosition.absoluteX = e.pageX;
   cursorPosition.absoluteY = e.pageY;
-  cursorPosition.viewportX = e.clientX;
-  cursorPosition.viewportY = e.clientY;
+  
+  // Get normalized coordinates using resolution.js utility
+  const [normX, normY] = normalizeCoords(e.clientX, e.clientY, canvas);
+  cursorPosition.normalizedX = normX;
+  cursorPosition.normalizedY = normY;
+  cursorPosition.lastUpdateTime = Date.now();
 });
 
 // Update the cursor position display
 function updateCursorPositionDisplay() {
   const cursorPositionElement = document.getElementById("cursor-position");
   if (cursorPositionElement) {
-    cursorPositionElement.textContent = `Abs-xy: (${cursorPosition.absoluteX}, ${cursorPosition.absoluteY}) | View: (${cursorPosition.viewportX}, ${cursorPosition.viewportY})`;
+    cursorPositionElement.textContent = `Abs: (${Math.round(cursorPosition.absoluteX)}, ${Math.round(cursorPosition.absoluteY)}) | Norm: (${Math.round(cursorPosition.normalizedX)}, ${Math.round(cursorPosition.normalizedY)})`;
   }
 }
 
@@ -45,3 +52,6 @@ setInterval(updateCursorPositionDisplay, 1000);
 function isKeyDown(key) {
   return keysDown[key] === true;
 }
+
+// Export key tracking variables and functions
+export { keysDown, isKeyDown, cursorPosition };

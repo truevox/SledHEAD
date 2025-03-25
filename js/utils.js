@@ -1,15 +1,17 @@
 /* utils.js */
 // Global Configuration & Shared Globals moved to settings.js
 
-var GameState = {
+export const GameState = {
     HOUSE: 'house',
     DOWNHILL: 'downhill',
     UPHILL: 'uphill'
 };
 
+/*
 // Get the canvas element and its context.
 var canvas = document.getElementById('gameCanvas');
 var ctx = canvas.getContext('2d');
+*/
 
 /* NEW: Global keysDown object and event listeners */
 var keysDown = {};
@@ -63,35 +65,39 @@ window.addEventListener("keyup", function (e) {
 
 
 /* Utility functions */
-function formatUpgradeName(name) {
+export function formatUpgradeName(name) {
     let formattedName = name.replace(/([A-Z])/g, ' $1').trim();
     return formattedName.charAt(0).toUpperCase() + formattedName.slice(1);
 }
-function capitalizeFirstLetter(string) {
+
+export function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
-function checkCollision(ax, ay, aw, ah, bx, by, bw, bh) {
+
+export function checkCollision(ax, ay, aw, ah, bx, by, bw, bh) {
     return ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by;
 }
-function clamp(val, min, max) {
+
+export function clamp(val, min, max) {
     return Math.max(min, Math.min(max, val));
 }
-function getCameraOffset(playerAbsY, canvasHeight, mountainHeight) {
+
+export function getCameraOffset(playerAbsY, canvasHeight, mountainHeight) {
     let offset = playerAbsY - canvasHeight / 2;
     return clamp(offset, 0, mountainHeight - canvasHeight);
 }
 
-/* Ensure Web Audio API is unlocked */
+/* Audio Utility Functions */
 let audioCtx;
-function unlockAudioContext() {
+
+export function unlockAudioContext() {
     if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     }
 }
 
-/* Audio Utility Functions */
-function playTone(frequency = 440, type = "sine", duration = 0.5, volume = 0.3) {
-    unlockAudioContext(); // Ensure audio context is unlocked
+export function playTone(frequency = 440, type = "sine", duration = 0.5, volume = 0.3) {
+    unlockAudioContext();
     const oscillator = audioCtx.createOscillator();
     const gainNode = audioCtx.createGain();
 
@@ -109,11 +115,11 @@ function playTone(frequency = 440, type = "sine", duration = 0.5, volume = 0.3) 
 }
 
 /* Sound Effects */
-function playStartGameSound() {
-    playTone(440, "triangle", 0.5); // Classic smooth start sound
+export function playStartGameSound() {
+    playTone(440, "triangle", 0.5);
 }
 
-function playCrashSound() {
+export function playCrashSound() {
     unlockAudioContext();
     const oscillator = audioCtx.createOscillator();
     const gainNode = audioCtx.createGain();
@@ -132,57 +138,55 @@ function playCrashSound() {
     oscillator.stop(audioCtx.currentTime + 0.5);
 }
 
-function playRockHitSound() {
-    playTone(200, "square", 0.2); // Quick low-pitched bang
+export function playRockHitSound() {
+    playTone(200, "square", 0.2);
 }
 
-function playMoneyGainSound() {
-    playTone(1000, "sine", 0.15, 0.2); // Small beep
+export function playMoneyGainSound() {
+    playTone(1000, "sine", 0.15, 0.2);
 }
 
-function mapRange(value, inMin, inMax, outMin, outMax) {
+export function mapRange(value, inMin, inMax, outMin, outMax) {
     return outMin + ((value - inMin) * (outMax - outMin)) / (inMax - inMin);
 }
 
-// Helper function: Convert hex color string to an RGB object.
-function hexToRgb(hex) {
+// Helper function: Convert hex color string to an RGB object
+export function hexToRgb(hex) {
     hex = hex.replace(/^#/, '');
     if (hex.length === 3) {
-      hex = hex.split('').map(c => c + c).join('');
+        hex = hex.split('').map(c => c + c).join('');
     }
     let bigint = parseInt(hex, 16);
     let r = (bigint >> 16) & 255;
     let g = (bigint >> 8) & 255;
     let b = (bigint & 255) & 255;
     return { r, g, b };
-  }
+}
   
-  // Helper function: Convert an RGB object to a hex color string.
-  function rgbToHex(r, g, b) {
+// Helper function: Convert an RGB object to a hex color string
+export function rgbToHex(r, g, b) {
     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b)
-      .toString(16)
-      .slice(1)
-      .toUpperCase();
-  }
+        .toString(16)
+        .slice(1)
+        .toUpperCase();
+}
   
-  // Helper function: Linearly interpolate between two hex colors.
-  function lerpColor(color1, color2, t) {
+// Helper function: Linearly interpolate between two hex colors
+export function lerpColor(color1, color2, t) {
     let c1 = hexToRgb(color1);
     let c2 = hexToRgb(color2);
     let r = Math.round(c1.r + (c2.r - c1.r) * t);
     let g = Math.round(c1.g + (c2.g - c1.g) * t);
     let b = Math.round(c1.b + (c2.b - c1.b) * t);
     return rgbToHex(r, g, b);
-  }
+}
 
 // Function to show sled damage notice
-function showSledDamageNotice() {
-  // Use the error notification from notify.js
-  showErrorNotification('Sled Damaged! Please Repair');
+export function showSledDamageNotice() {
+    showErrorNotification('Sled Damaged! Please Repair');
 }
 
 // Function to show sled repaired notice
-function showSledRepairedNotice() {
-  // Use the success notification from notify.js
-  showSuccessNotification('Sled Repaired!');
+export function showSledRepairedNotice() {
+    showSuccessNotification('Sled Repaired!');
 }
