@@ -7,6 +7,7 @@ import { addFloatingText, showMoneyGain } from './render.js';
 
 // Function to start a trick
 function startTrick(trickName) {
+  if (!player.trickCooldowns) player.trickCooldowns = {};
   if (player.currentTrick) return;
   player.currentTrick = trickName;
   player.trickTimer = 0;
