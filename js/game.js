@@ -47,6 +47,7 @@ function initializeGame() {
   updateLoanButton();
   
   // Set up stamina system with game state references
+  console.log('Setting game references for stamina system, initial state:', currentState);
   setGameReferences(currentState, changeState);
   
   // Start in house
@@ -111,6 +112,10 @@ function changeState(newState) {
 // Helper function to complete the state change
 function completeStateChange(newState, prevState) {
   currentState = newState;
+  console.log(`Game state changed: ${prevState} -> ${currentState}`);
+  
+  // Update stamina system immediately with the new state
+  setGameReferences(currentState, changeState);
   
   if (currentState === GameState.HOUSE) {
     document.getElementById("upgrade-menu").style.display = "block";
@@ -156,6 +161,9 @@ function completeStateChange(newState, prevState) {
     // Initialize audio for downhill mode
     initAudio();
     
+    // Force stamina display update for DOWNHILL mode
+    updateStamina(0);
+    
     // Only reset these values if coming from HOUSE state
     if (prevState === GameState.HOUSE) {
       earlyFinish = false;
@@ -183,6 +191,9 @@ function completeStateChange(newState, prevState) {
   } else if (currentState === GameState.UPHILL) {
     document.getElementById("upgrade-menu").style.display = "none";
     document.getElementById("game-screen").style.display = "block";
+    
+    // Force stamina display update for UPHILL mode
+    updateStamina(0);
     
     // Award money when changing from DOWNHILL to UPHILL
     if (prevState === GameState.DOWNHILL) {

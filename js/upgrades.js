@@ -1,7 +1,7 @@
 /* upgrades.js */
 import { player } from './player.js';
 import { formatUpgradeName, capitalizeFirstLetter } from './utils.js';
-import { playerStamina } from './stamina.js';
+import { playerStamina, initializeStamina } from './stamina.js';
 
 let playerUpgrades = {
     rocketSurgery: 0,
@@ -107,10 +107,13 @@ function purchaseUpgrade(upgradeType, upgradeKey) {
     
     // Apply specific upgrade effects
     if (upgradeKey === 'attendLegDay') {
-        // Apply stamina upgrades immediately
-        playerStamina.applyUpgrades();
+        // Apply stamina upgrades immediately with the playerUpgrades reference
+        initializeStamina(playerUpgrades);
     }
 }
+
+// Initialize stamina system with upgrades
+initializeStamina(playerUpgrades);
 
 // Export the upgrades and upgrade functions
 export {

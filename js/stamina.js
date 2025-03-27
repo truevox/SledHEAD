@@ -1,20 +1,22 @@
 import { GameState } from './gamestate.js';
 import { keysDown } from './input.js';
-import { playerUpgrades } from './upgrades.js';
 
 // Global counter for stamina depletion re-entries
 let reentryCount = 0;
 
-// Create a new canvas for the stamina bar
+// Create a new canvas for the stamina bar - with improved visibility styles
 const staminaCanvas = document.createElement('canvas');
 staminaCanvas.width = 200;
 staminaCanvas.height = 20;
 staminaCanvas.style.position = 'fixed';
 staminaCanvas.style.bottom = '20px';
 staminaCanvas.style.left = '20px';
+staminaCanvas.style.zIndex = '1000'; // Ensure it's above other elements
 staminaCanvas.style.display = 'none';
+staminaCanvas.style.border = '2px solid white'; // Add border for better visibility
 staminaCanvas.id = 'staminaCanvas';
 document.body.appendChild(staminaCanvas);
+console.log('Stamina canvas created with ID:', staminaCanvas.id);
 
 // Store reference to game state and state change function
 let gameStateRef = null;
@@ -24,6 +26,7 @@ let changeStateFunc = null;
 function setGameReferences(currentState, changeState) {
   gameStateRef = currentState;
   changeStateFunc = changeState;
+  console.log('Game references set, current state:', currentState);
 }
 
 // In stamina.js
@@ -43,10 +46,14 @@ class Stamina {
     this.jumpCost = options.jumpCost || 20;
     this.baseJumpCost = this.jumpCost; // Store base value for upgrades
     this.render();
-    this.applyUpgrades(); // Apply any existing upgrades on creation
+    // Don't call applyUpgrades here; it will be called after upgrades.js initialization
+    console.log('Stamina instance created with max:', this.maxStamina);
   }
   
-  applyUpgrades() {
+  applyUpgrades(playerUpgrades) {
+    // Use the passed playerUpgrades parameter instead of global access
+    if (!playerUpgrades) return;
+    
     // Get the current level of the Attend Leg Day upgrade
     const legDayLevel = playerUpgrades.attendLegDay || 0;
     
@@ -78,6 +85,12 @@ class Stamina {
     }
   }
   
+  // Helper function to determine if stamina should regenerate
+  shouldRegenStamina(state) {
+    // Only regenerate stamina in HOUSE or DOWNHILL states
+    return state === GameState.HOUSE || state === GameState.DOWNHILL;
+  }
+  
   update(deltaTime, state) {
     const rateInMs = deltaTime / 1000; // Convert to seconds
     
@@ -86,24 +99,30 @@ class Stamina {
       if (isMoving()) {
         this.currentStamina = Math.max(0, this.currentStamina - this.drainRate * rateInMs);
       } else {
-        // Regenerate some stamina when standing still
-        this.currentStamina = Math.min(this.maxStamina, this.currentStamina + this.regenRate * this.recoveryMultiplier * rateInMs);
+        // No longer regenerate stamina when standing still in UPHILL state
+        // This fixes the bug where stamina would regenerate while standing still
       }
       
       if (!this.isActive) {
+        console.log('Showing stamina bar in UPHILL state');
         this.show();
       }
-    } else if (state === GameState.DOWNHILL) {
-      // Recover stamina when sledding downhill
+    } else if (this.shouldRegenStamina(state)) {
+      // Recover stamina when in DOWNHILL or HOUSE state
       this.currentStamina = Math.min(this.maxStamina, this.currentStamina + this.regenRate * rateInMs);
       
-      if (!this.isActive) {
+      if (state === GameState.HOUSE) {
+        // In HOUSE state, hide the bar and fully restore stamina
+        this.currentStamina = this.maxStamina;
+        if (this.isActive) {
+          console.log('Hiding stamina bar in HOUSE state');
+          this.hide();
+        }
+      } else if (!this.isActive) {
+        // In DOWNHILL state, show the stamina bar
+        console.log('Showing stamina bar in DOWNHILL state');
         this.show();
       }
-    } else {
-      // In house: recover fully and hide the bar
-      this.currentStamina = this.maxStamina;
-      this.hide();
     }
     
     this.render();
@@ -113,11 +132,16 @@ class Stamina {
   show() {
     this.canvas.style.display = 'block';
     this.isActive = true;
+    console.log('Stamina bar shown. Element now visible:', this.canvas.style.display === 'block');
+    
+    // Force the stamina bar to be in the right place and visible
+    document.body.appendChild(this.canvas);
   }
   
   hide() {
     this.canvas.style.display = 'none';
     this.isActive = false;
+    console.log('Stamina bar hidden');
   }
   
   drainJump() {
@@ -162,17 +186,33 @@ const playerStamina = new Stamina({
   jumpCost: 20    // Cost 20 stamina to jump
 });
 
+// Function to initialize stamina with upgrades
+function initializeStamina(playerUpgrades) {
+  playerStamina.applyUpgrades(playerUpgrades);
+}
+
 // Update function to be called in the game loop
 function updateStamina(deltaTime) {
-  if (!gameStateRef) return; // Skip if game references not set
+  if (!gameStateRef) {
+    console.warn('Skipping stamina update, game references not set');
+    return;
+  }
   
   const hasStamina = playerStamina.update(deltaTime, gameStateRef);
   
   if (!hasStamina && gameStateRef === GameState.UPHILL && changeStateFunc) {
+    console.log('Out of stamina! Forcing DOWNHILL state');
     // Player ran out of stamina uphill - force them to head downhill
     changeStateFunc(GameState.DOWNHILL);
   }
 }
 
+// Make sure the stamina bar is correctly positioned after everything loads
+window.addEventListener('DOMContentLoaded', () => {
+  console.log('DOM loaded, ensuring stamina bar is correctly positioned');
+  // Force re-append to ensure it's in the DOM and properly positioned
+  document.body.appendChild(staminaCanvas);
+});
+
 // Export the stamina system
-export { playerStamina, updateStamina, setGameReferences };
+export { playerStamina, updateStamina, setGameReferences, initializeStamina };
