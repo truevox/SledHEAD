@@ -1,6 +1,7 @@
 /* upgrades.js */
 import { player } from './player.js';
 import { formatUpgradeName, capitalizeFirstLetter } from './utils.js';
+import { playerStamina } from './stamina.js';
 
 let playerUpgrades = {
     rocketSurgery: 0,
@@ -34,7 +35,7 @@ const upgradeMaxLevel = {
     sledDurability: 10,
     fancierFootwear: 10,
     grapplingAnchor: 0,
-    attendLegDay: 0,
+    attendLegDay: 10,  // Enable Attend Leg Day upgrade with max level 10
     shortcutAwareness: 0,
     crowdHypeman: 0,
     crowdWeaver: 0,
@@ -103,6 +104,12 @@ function purchaseUpgrade(upgradeType, upgradeKey) {
     }
     updateMoneyDisplay();
     console.log("Purchased upgrade", upgradeKey, "New level:", newLevel, "Remaining money:", player.money);
+    
+    // Apply specific upgrade effects
+    if (upgradeKey === 'attendLegDay') {
+        // Apply stamina upgrades immediately
+        playerStamina.applyUpgrades();
+    }
 }
 
 // Export the upgrades and upgrade functions

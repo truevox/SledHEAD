@@ -1,6 +1,6 @@
 import { GameState } from './gamestate.js';
 import { keysDown } from './input.js';
-import { currentState, changeState } from './game.js';
+import { playerUpgrades } from './upgrades.js';
 
 // Global counter for stamina depletion re-entries
 let reentryCount = 0;
@@ -16,18 +16,66 @@ staminaCanvas.style.display = 'none';
 staminaCanvas.id = 'staminaCanvas';
 document.body.appendChild(staminaCanvas);
 
+// Store reference to game state and state change function
+let gameStateRef = null;
+let changeStateFunc = null;
+
+// Function to set references from game.js
+function setGameReferences(currentState, changeState) {
+  gameStateRef = currentState;
+  changeStateFunc = changeState;
+}
+
 // In stamina.js
 class Stamina {
   constructor(options = {}) {
     this.maxStamina = options.maxStamina || 100;
+    this.baseMaxStamina = this.maxStamina; // Store base value for upgrades
     this.currentStamina = options.currentStamina || this.maxStamina;
     this.regenRate = options.regenRate || 1; // Stamina per second
+    this.baseRegenRate = this.regenRate; // Store base value for upgrades
     this.drainRate = options.drainRate || 5; // Stamina per second
+    this.baseDrainRate = this.drainRate; // Store base value for upgrades
     this.recoveryMultiplier = options.recoveryMultiplier || 0.5; // Recovery speed multiplier when resting
     this.canvas = staminaCanvas;
     this.ctx = this.canvas.getContext('2d');
     this.isActive = false;
+    this.jumpCost = options.jumpCost || 20;
+    this.baseJumpCost = this.jumpCost; // Store base value for upgrades
     this.render();
+    this.applyUpgrades(); // Apply any existing upgrades on creation
+  }
+  
+  applyUpgrades() {
+    // Get the current level of the Attend Leg Day upgrade
+    const legDayLevel = playerUpgrades.attendLegDay || 0;
+    
+    if (legDayLevel > 0) {
+      // Improve stamina parameters based on upgrade level
+      // Each level of Leg Day:
+      // - Increases max stamina by 10% of base
+      // - Decreases drain rate by 5% of base
+      // - Increases regen rate by 8% of base
+      // - Decreases jump cost by 5% of base
+      
+      const maxStaminaBonus = 1 + (legDayLevel * 0.1); // +10% per level
+      const drainRateBonus = 1 - (legDayLevel * 0.05); // -5% per level
+      const regenRateBonus = 1 + (legDayLevel * 0.08); // +8% per level
+      const jumpCostBonus = 1 - (legDayLevel * 0.05); // -5% per level
+      
+      this.maxStamina = Math.floor(this.baseMaxStamina * maxStaminaBonus);
+      this.drainRate = this.baseDrainRate * drainRateBonus;
+      this.regenRate = this.baseRegenRate * regenRateBonus;
+      this.jumpCost = Math.max(5, Math.floor(this.baseJumpCost * jumpCostBonus)); // Minimum jump cost of 5
+      
+      // Log the new stamina values
+      console.log(`Applied Leg Day level ${legDayLevel}:`, {
+        maxStamina: this.maxStamina,
+        drainRate: this.drainRate.toFixed(2),
+        regenRate: this.regenRate.toFixed(2),
+        jumpCost: this.jumpCost
+      });
+    }
   }
   
   update(deltaTime, state) {
@@ -73,8 +121,7 @@ class Stamina {
   }
   
   drainJump() {
-    const jumpStaminaCost = 20; // Cost 20 stamina to jump
-    this.currentStamina = Math.max(0, this.currentStamina - jumpStaminaCost);
+    this.currentStamina = Math.max(0, this.currentStamina - this.jumpCost);
     this.render();
   }
   
@@ -111,17 +158,21 @@ function isMoving() {
 const playerStamina = new Stamina({
   maxStamina: 100,
   regenRate: 10, // Regenerate 10 stamina per second when sledding
-  drainRate: 15  // Drain 15 stamina per second when hiking
+  drainRate: 15,  // Drain 15 stamina per second when hiking
+  jumpCost: 20    // Cost 20 stamina to jump
 });
 
 // Update function to be called in the game loop
 function updateStamina(deltaTime) {
-  const hasStamina = playerStamina.update(deltaTime, currentState);
-  if (!hasStamina && currentState === GameState.UPHILL) {
+  if (!gameStateRef) return; // Skip if game references not set
+  
+  const hasStamina = playerStamina.update(deltaTime, gameStateRef);
+  
+  if (!hasStamina && gameStateRef === GameState.UPHILL && changeStateFunc) {
     // Player ran out of stamina uphill - force them to head downhill
-    changeState(GameState.DOWNHILL);
+    changeStateFunc(GameState.DOWNHILL);
   }
 }
 
 // Export the stamina system
-export { playerStamina, updateStamina };
+export { playerStamina, updateStamina, setGameReferences };

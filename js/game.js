@@ -14,6 +14,7 @@ import { despawnAllAnimals, setWildlifeState } from './wildlife.js';
 import { TWEAK } from './settings.js';
 import { awardMoney } from './world.js';
 import { initAudio } from './downhill.js';
+import { updateStamina, setGameReferences } from './stamina.js';
 
 var downhillStartTime = null;
 var lastTime = 0;
@@ -45,6 +46,9 @@ function initializeGame() {
   // Initialize loan button state
   updateLoanButton();
   
+  // Set up stamina system with game state references
+  setGameReferences(currentState, changeState);
+  
   // Start in house
   changeState(GameState.HOUSE);
   
@@ -64,6 +68,9 @@ function gameLoop(timestamp) {
   
   // Update wildlife state
   setWildlifeState(currentState);
+  
+  // Update stamina system
+  updateStamina(deltaTime);
   
   // Update gameplay mechanics
   updateMechanics(deltaTime);
