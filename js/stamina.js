@@ -108,9 +108,6 @@ class Stamina {
         this.show();
       }
     } else if (this.shouldRegenStamina(state)) {
-      // Recover stamina when in DOWNHILL or HOUSE state
-      this.currentStamina = Math.min(this.maxStamina, this.currentStamina + this.regenRate * rateInMs);
-      
       if (state === GameState.HOUSE) {
         // In HOUSE state, hide the bar and fully restore stamina
         this.currentStamina = this.maxStamina;
@@ -118,10 +115,14 @@ class Stamina {
           console.log('Hiding stamina bar in HOUSE state');
           this.hide();
         }
-      } else if (!this.isActive) {
-        // In DOWNHILL state, show the stamina bar
-        console.log('Showing stamina bar in DOWNHILL state');
-        this.show();
+      } else if (state === GameState.DOWNHILL) {
+        // In DOWNHILL state, drain a little stamina instead of regenerating
+        const downhillDrainRate = 2; // Stamina per second lost in downhill mode
+        this.currentStamina = Math.max(0, this.currentStamina - downhillDrainRate * rateInMs);
+        if (!this.isActive) {
+          console.log('Showing stamina bar in DOWNHILL state (draining)');
+          this.show();
+        }
       }
     }
     
