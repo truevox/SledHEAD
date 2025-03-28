@@ -48,7 +48,7 @@ function initializeGame() {
   
   // Set up stamina system with game state references
   console.log('Setting game references for stamina system, initial state:', currentState);
-  setGameReferences(currentState, changeState);
+  setGameReferences(currentState, changeState, player, houseReEntry, updateMoneyDisplay);
   
   // Start in house
   changeState(GameState.HOUSE);
@@ -115,7 +115,7 @@ function completeStateChange(newState, prevState) {
   console.log(`Game state changed: ${prevState} -> ${currentState}`);
   
   // Update stamina system immediately with the new state
-  setGameReferences(currentState, changeState);
+  setGameReferences(currentState, changeState, player, houseReEntry, updateMoneyDisplay);
   
   if (currentState === GameState.HOUSE) {
     document.getElementById("upgrade-menu").style.display = "block";

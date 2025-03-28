@@ -21,11 +21,18 @@ console.log('Stamina canvas created with ID:', staminaCanvas.id);
 // Store reference to game state and state change function
 let gameStateRef = null;
 let changeStateFunc = null;
+// Add references for player and house re-entry
+let playerRef = null;
+let houseReEntryRef = null;
+let updateMoneyDisplayFunc = null;
 
 // Function to set references from game.js
-function setGameReferences(currentState, changeState) {
+function setGameReferences(currentState, changeState, player, reEntryRef, updateMoneyDisplay) {
   gameStateRef = currentState;
   changeStateFunc = changeState;
+  playerRef = player;
+  houseReEntryRef = reEntryRef;
+  updateMoneyDisplayFunc = updateMoneyDisplay;
   console.log('Game references set, current state:', currentState);
 }
 
@@ -201,10 +208,31 @@ function updateStamina(deltaTime) {
   
   const hasStamina = playerStamina.update(deltaTime, gameStateRef);
   
-  if (!hasStamina && gameStateRef === GameState.UPHILL && changeStateFunc) {
-    console.log('Out of stamina! Forcing DOWNHILL state');
-    // Player ran out of stamina uphill - force them to head downhill
-    changeStateFunc(GameState.DOWNHILL);
+  if (!hasStamina && changeStateFunc) {
+    if (gameStateRef === GameState.UPHILL || gameStateRef === GameState.DOWNHILL) {
+      console.log(`Out of stamina in ${gameStateRef} state! Sending player home`);
+      
+      // Apply a stamina penalty - $50 times the number of house re-entries
+      if (playerRef !== null && houseReEntryRef !== null) {
+        // Ensure houseReEntry is at least 1 (first penalty is $50)
+        const reEntryCount = Math.max(1, houseReEntryRef);
+        const staminaPenalty = 50 * reEntryCount;
+        
+        console.log(`Before penalty: $${playerRef.money}, applying penalty: -$${staminaPenalty}`);
+        playerRef.money = Math.max(0, playerRef.money - staminaPenalty);
+        console.log(`After penalty: $${playerRef.money}`);
+        
+        // Update the money display if the function exists
+        if (updateMoneyDisplayFunc) {
+          updateMoneyDisplayFunc();
+        }
+      } else {
+        console.warn('Could not apply stamina penalty - playerRef or houseReEntryRef not set');
+      }
+      
+      // Player ran out of stamina - send them home
+      changeStateFunc(GameState.HOUSE);
+    }
   }
 }
 
