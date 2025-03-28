@@ -7,39 +7,39 @@ var GameState = {
     UPHILL: 'uphill'
 };
 
-// Get the canvas element and its context.
-var canvas = document.getElementById('gameCanvas');
-var ctx = canvas.getContext('2d');
+// Instead of getting the canvas element (which no longer exists),
+// we define a dummy canvas object for width/height references.
+var canvas = { width: 800, height: 600 };
+// We'll set ctx in game.js once the Phaser Canvas Texture is created.
+var ctx = null;
 
 /* NEW: Global keysDown object and event listeners */
 var keysDown = {};
 var spacePressed = false;
 
 window.addEventListener("keydown", function (e) {
-    // Prevent default behavior for arrow keys and space to ensure they are captured correctly
+    // Prevent default behavior for arrow keys, space, and tab to ensure correct capture
     if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", " ", "Tab"].includes(e.key)) {
         e.preventDefault();
     }
     keysDown[e.key] = true;
 
-    // Track when space is pressed in the house state
+    // Track space in HOUSE state
     if (e.key === " " && currentState === GameState.HOUSE) {
         spacePressed = true;
     }
-    // Take a photo when space is pressed (only uphill)
+    // Take a photo in UPHILL state when space is pressed
     if (e.key === " " && currentState === GameState.UPHILL) {
         takePhoto();
     }
-    // Press "E" to manually spawn an animal (only while in UPHILL mode) // DEBUG
+    // Press "E" to manually spawn an animal in UPHILL mode (DEBUG)
     if (e.key.toLowerCase() === 'e' && currentState === GameState.UPHILL) {
         spawnAnimal();
     }
     // Handle Tab key to toggle between UPHILL and DOWNHILL
     if (e.key === "Tab" && currentState !== GameState.HOUSE) {
-        // If we're in UPHILL mode and trying to go DOWNHILL, check if sled is damaged
         if (currentState === GameState.UPHILL && player.sledDamaged === 1) {
             console.log("Cannot switch to DOWNHILL mode - Sled is damaged and needs repair");
-            // Display notification on screen
             showSledDamageNotice();
             return;
         }
@@ -59,8 +59,6 @@ window.addEventListener("keyup", function (e) {
         changeState(GameState.DOWNHILL);
     }
 });
-
-
 
 /* Utility functions */
 function formatUpgradeName(name) {
@@ -110,7 +108,7 @@ function playTone(frequency = 440, type = "sine", duration = 0.5, volume = 0.3) 
 
 /* Sound Effects */
 function playStartGameSound() {
-    playTone(440, "triangle", 0.5); // Classic smooth start sound
+    playTone(440, "triangle", 0.5);
 }
 
 function playCrashSound() {
@@ -133,18 +131,18 @@ function playCrashSound() {
 }
 
 function playRockHitSound() {
-    playTone(200, "square", 0.2); // Quick low-pitched bang
+    playTone(200, "square", 0.2);
 }
 
 function playMoneyGainSound() {
-    playTone(1000, "sine", 0.15, 0.2); // Small beep
+    playTone(1000, "sine", 0.15, 0.2);
 }
 
 function mapRange(value, inMin, inMax, outMin, outMax) {
     return outMin + ((value - inMin) * (outMax - outMin)) / (inMax - inMin);
 }
 
-// Helper function: Convert hex color string to an RGB object.
+// Helper functions for color conversion and interpolation
 function hexToRgb(hex) {
     hex = hex.replace(/^#/, '');
     if (hex.length === 3) {
@@ -155,34 +153,29 @@ function hexToRgb(hex) {
     let g = (bigint >> 8) & 255;
     let b = (bigint & 255) & 255;
     return { r, g, b };
-  }
+}
   
-  // Helper function: Convert an RGB object to a hex color string.
-  function rgbToHex(r, g, b) {
+function rgbToHex(r, g, b) {
     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b)
       .toString(16)
       .slice(1)
       .toUpperCase();
-  }
+}
   
-  // Helper function: Linearly interpolate between two hex colors.
-  function lerpColor(color1, color2, t) {
+function lerpColor(color1, color2, t) {
     let c1 = hexToRgb(color1);
     let c2 = hexToRgb(color2);
     let r = Math.round(c1.r + (c2.r - c1.r) * t);
     let g = Math.round(c1.g + (c2.g - c1.g) * t);
     let b = Math.round(c1.b + (c2.b - c1.b) * t);
     return rgbToHex(r, g, b);
-  }
+}
 
-// Function to show sled damage notice
+// Notification helpers
 function showSledDamageNotice() {
-  // Use the error notification from notify.js
   showErrorNotification('Sled Damaged! Please Repair');
 }
 
-// Function to show sled repaired notice
 function showSledRepairedNotice() {
-  // Use the success notification from notify.js
   showSuccessNotification('Sled Repaired!');
 }
