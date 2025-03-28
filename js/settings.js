@@ -132,7 +132,10 @@ var TWEAK = {
     
     // New dynamic bounceImpulse getter/setter
     get bounceImpulse() { return this._bounceImpulse * this.tweakNob; },
-    set bounceImpulse(val) { this._bounceImpulse = val; }
+    set bounceImpulse(val) { this._bounceImpulse = val; },
+
+    // Debug settings
+    showCollisionBoxes: true  // Set to true to show collision boxes for debugging
 };
   
 // New: function to compute max collisions

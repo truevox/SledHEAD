@@ -1,22 +1,30 @@
 /* uphill.js - Uphill Mechanics & Photo Hunting */
-import { player } from './player.js';
-import { keysDown } from './input.js';
-import { TWEAK } from './settings.js';
-import { spawnAnimal, updateAnimal } from './wildlife.js';
-import { playerUpgrades } from './upgrades.js';
-import { canvas } from './render.js';
-import { terrain, checkHouseTransition } from './world.js';  // Import terrain and checkHouseTransition
-import { resolveCollision } from './entities.js';  // Import collision resolver
-import { checkCollision } from './utils.js';  // Import collision detection
-import { getResolution } from './resolution.js';  // Import resolution
+import { getResolution } from './resolution.js';
+import { checkCollision } from './collision.js';
+import { resolveCollision } from './entities.js';
+import { showErrorNotification } from './notifications.js';
+import { updateStamina, playerStamina } from './stamina.js';  // Add this import
+import { spawnAnimal, updateAnimal } from './wildlifephotos.js';
+import { GameState, player, canvas, keysDown, TWEAK, playerUpgrades, terrain, mountainHeight, changeGameState } from './game.js';
 
-// Update function for uphill mode
+// Function that updates the game state during the uphill phase.
 function updateUphill(deltaTime) {
-  // Get the current resolution scale
   const resolution = getResolution();
   const scale = resolution.scale;
   
-  // Update movement based on keyboard input
+  // Update player stamina
+  updateStamina(deltaTime);
+  
+  // Apply stamina constraints to player movement
+  if (!playerStamina.isActive) {
+    // Rest or show notification to player
+    if (Math.random() < 0.01) { // Occasional reminder
+      showErrorNotification("Need to rest! Stamina depleted.", 1000);
+    }
+    return;
+  }
+  
+  // Move player based on keyboard input with proper application of upgrades
   let speed = TWEAK.baseUpSpeed + (playerUpgrades.fancierFootwear * TWEAK.fancierFootwearUpSpeedPerLevel);
   
   if (keysDown["w"]) {
@@ -49,8 +57,8 @@ function updateUphill(deltaTime) {
       // Check collision with each zone
       let collision = false;
       for (const zone of obstacle.collisionZones) {
-        const zoneX = obstacle.x + zone.offsetX;
-        const zoneY = obstacle.y + zone.offsetY;
+        const zoneX = obstacle.x + zone.offsetX * scale;
+        const zoneY = obstacle.y + zone.offsetY * scale;
         
         if (zone.type === 'rect') {
           // Rectangular zone collision
@@ -105,6 +113,7 @@ function updateUphill(deltaTime) {
   if (keysDown["ArrowLeft"]) {
     player.cameraAngle = (player.cameraAngle - 2 + 360) % 360;
   }
+  
   if (keysDown["ArrowRight"]) {
     player.cameraAngle = (player.cameraAngle + 2) % 360;
   }
@@ -113,6 +122,7 @@ function updateUphill(deltaTime) {
   if (keysDown["ArrowUp"]) {
     player.altitudeLine = Math.max(0, player.altitudeLine - 1);
   }
+  
   if (keysDown["ArrowDown"]) {
     player.altitudeLine = Math.min(100, player.altitudeLine + 1);
   }

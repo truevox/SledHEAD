@@ -111,32 +111,105 @@ function updateMoneyDisplay() {
 }
 
 function drawEntities(currentState) {
+  const resolution = getResolution();
+  const scale = resolution.scale;
   let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Clear the entire canvas with the current scale
+  ctx.clearRect(0, 0, canvas.width * scale, canvas.height * scale);
+
+  // Draw background
   ctx.fillStyle = currentState === GameState.DOWNHILL ? "#ADD8E6" : "#98FB98";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  
+
   // Draw terrain obstacles
   terrain.forEach(obstacle => {
+    // Only render obstacles near the visible area
     if (obstacle.y >= cameraOffset - 50 && obstacle.y <= cameraOffset + canvas.height + 50) {
       if (obstacle.type === 'tree') {
-        // Draw tree using the custom tree drawing function
+        // Use the tree drawing function for trees
         drawTree(ctx, {
-          x: obstacle.x,
-          y: obstacle.y - cameraOffset,
-          width: obstacle.width,
-          height: obstacle.height
+          ...obstacle, 
+          y: obstacle.y - cameraOffset
         });
+        
+        // Draw tree collision box for debugging
+        if (TWEAK.showCollisionBoxes) {
+          // Draw overall collision box
+          ctx.strokeStyle = 'red';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([5, 5]);
+          ctx.strokeRect(
+            obstacle.x, 
+            obstacle.y - cameraOffset, 
+            obstacle.width * scale, 
+            obstacle.height * scale
+          );
+          
+          // Draw collision zones
+          if (obstacle.collisionZones) {
+            ctx.strokeStyle = 'orange';
+            obstacle.collisionZones.forEach(zone => {
+              if (zone.type === 'rect') {
+                const zoneX = obstacle.x + zone.offsetX * scale;
+                const zoneY = obstacle.y - cameraOffset + zone.offsetY * scale;
+                const zoneWidth = zone.width * scale;
+                const zoneHeight = zone.height * scale;
+                
+                ctx.strokeRect(
+                  zoneX - zoneWidth / 2, 
+                  zoneY - zoneHeight / 2, 
+                  zoneWidth, 
+                  zoneHeight
+                );
+              } else if (zone.type === 'circle') {
+                const zoneX = obstacle.x + zone.offsetX * scale;
+                const zoneY = obstacle.y - cameraOffset + zone.offsetY * scale;
+                const zoneRadius = zone.radius * scale;
+                
+                ctx.beginPath();
+                ctx.arc(zoneX, zoneY, zoneRadius, 0, Math.PI * 2);
+                ctx.stroke();
+              }
+            });
+          }
+          ctx.setLineDash([]);
+        }
       } else {
         // Default drawing for rocks/other obstacles
         ctx.fillStyle = "#808080";
         ctx.fillRect(obstacle.x, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
+        
+        // Draw obstacle collision box for debugging
+        if (TWEAK.showCollisionBoxes) {
+          ctx.strokeStyle = 'red';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([5, 5]);
+          ctx.strokeRect(obstacle.x, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
+          ctx.setLineDash([]);
+        }
       }
     }
   });
-  
+
   let playerDrawY = player.absY - cameraOffset;
   ctx.save();
+  
+  // Draw player collision box for debugging
+  if (TWEAK.showCollisionBoxes) {
+    ctx.strokeStyle = 'blue';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 5]);
+    ctx.strokeRect(
+      player.x - player.width * scale / 2, 
+      playerDrawY - player.height * scale / 2, 
+      player.width * scale, 
+      player.height * scale
+    );
+    ctx.setLineDash([]);
+  }
+  
+  // Apply trick-specific transformations
   if (player.currentTrick) {
     if (player.currentTrick === "leftHelicopter" || player.currentTrick === "rightHelicopter") {
       ctx.translate(player.x, playerDrawY);
@@ -146,14 +219,32 @@ function drawEntities(currentState) {
       playerDrawY += player.currentTrick === "airBrake" ? player.trickOffset : -player.trickOffset;
     }
   }
+  
+  // Draw the player with scaling
+  const playerScaledWidth = player.width * scale;
+  const playerScaledHeight = player.height * scale;
+  
   ctx.fillStyle = "#FF0000";
-  ctx.fillRect(player.x - player.width / 2, playerDrawY - player.height / 2, player.width, player.height);
+  ctx.fillRect(
+    player.x - playerScaledWidth / 2, 
+    playerDrawY - playerScaledHeight / 2, 
+    playerScaledWidth, 
+    playerScaledHeight
+  );
+  
   if (player.currentTrick === "airBrake" || player.currentTrick === "parachute") {
     ctx.fillStyle = "#FFFF00";
     ctx.beginPath();
-    ctx.arc(player.x, playerDrawY - player.trickOffset, player.width / 3, 0, Math.PI * 2);
+    ctx.arc(
+      player.x, 
+      playerDrawY - player.trickOffset, 
+      playerScaledWidth / 3, 
+      0, 
+      Math.PI * 2
+    );
     ctx.fill();
   }
+  
   ctx.restore();
   
   // Draw camera overlay (from wildlifephotos.js)

@@ -191,11 +191,32 @@ function updateDownhill(deltaTime) {
   if (!player.isJumping) {
     for (let i = 0; i < terrain.length; i++) {
       let obstacle = terrain[i];
+      let obstacleX = obstacle.x;
+      let obstacleWidth = obstacle.width;
+      let obstacleY = obstacle.y;
+      let obstacleHeight = obstacle.height;
+      
+      // For trees, use only the trunk width and height for collision
+      if (obstacle.type === 'tree') {
+        // Make trunk even narrower - just 20% of the tree width (horizontally)
+        const trunkWidth = obstacle.width * 0.2;
+        const trunkX = obstacle.x + (obstacle.width - trunkWidth) / 2;
+        
+        // Trunk is the bottom 40% of the tree height (vertically)
+        const trunkHeight = obstacle.height * 0.4;
+        const trunkY = obstacle.y + (obstacle.height - trunkHeight);
+        
+        obstacleX = trunkX;
+        obstacleWidth = trunkWidth;
+        obstacleY = trunkY;
+        obstacleHeight = trunkHeight;
+      }
+      
       if (checkCollision(
           player.x - player.width / 2, player.absY - player.height / 2,
           player.width, player.height,
-          obstacle.x, obstacle.y,
-          obstacle.width, obstacle.height
+          obstacleX, obstacleY,
+          obstacleWidth, obstacleHeight
       )) {
         console.log("Collision on downhill.");
         player.velocityY = -TWEAK.bounceImpulse;
@@ -269,22 +290,43 @@ function lerpJumpZoomToZero(callback) {
 
   requestAnimationFrame(animate);
 }
-/*7hhvb
+
 // Check for collisions with obstacles
 function checkObstacleCollisions() {
   for (let obstacle of terrain) {
     // Skip if player is too far away to possibly collide
     if (Math.abs(obstacle.y - player.absY) > player.height) continue;
     
+    let obstacleX = obstacle.x;
+    let obstacleWidth = obstacle.width;
+    let obstacleY = obstacle.y;
+    let obstacleHeight = obstacle.height;
+    
+    // For trees, use only the trunk width and height for collision
+    if (obstacle.type === 'tree') {
+      // Make trunk even narrower - just 20% of the tree width (horizontally)
+      const trunkWidth = obstacle.width * 0.2;
+      const trunkX = obstacle.x + (obstacle.width - trunkWidth) / 2;
+      
+      // Trunk is the bottom 40% of the tree height (vertically)
+      const trunkHeight = obstacle.height * 0.4;
+      const trunkY = obstacle.y + (obstacle.height - trunkHeight);
+      
+      obstacleX = trunkX;
+      obstacleWidth = trunkWidth;
+      obstacleY = trunkY;
+      obstacleHeight = trunkHeight;
+    }
+    
     if (checkCollision(
       player.x - player.width / 2,
       player.absY - player.height / 2,
       player.width,
       player.height,
-      obstacle.x,
-      obstacle.y,
-      obstacle.width,
-      obstacle.height
+      obstacleX,
+      obstacleY,
+      obstacleWidth,
+      obstacleHeight
     )) {
       // Handle collision
       handleObstacleCollision(obstacle);
@@ -325,6 +367,6 @@ function handleObstacleCollision(obstacle) {
     player.sledDamaged = 1;
   }
 }
-*/
+
 // Export functions for use in the game
 export { updateDownhill, initAudio };

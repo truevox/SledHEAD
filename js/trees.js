@@ -117,132 +117,108 @@ function drawTree(ctx, tree) {
   const treeY = tree.y;
   const treeWidth = tree.visualWidth || tree.width;
   const treeHeight = tree.visualHeight || tree.height;
-  const variation = tree.variation || { type: 'pine', lushness: 0.7, colorShift: 0 };
   
-  // Choose base colors based on tree type
-  let trunkColor, foliageColor;
+  // Get tree variation if available, or use defaults
+  const variation = tree.variation || {
+    type: 'pine', // Default to pine if no variation
+    trunkColor: '#8B4513',
+    foliageColor: '#006400',
+    colorShift: 0
+  };
   
+  // Apply scaling to all dimensions
+  const scaledWidth = treeWidth * scale;
+  const scaledHeight = treeHeight * scale;
+  
+  // Draw according to tree type
   if (variation.type === 'pine') {
-    trunkColor = '#8B4513';
-    foliageColor = '#006400';
-  } else {
-    trunkColor = '#A0522D';
-    foliageColor = '#228B22';
-  }
-  
-  // Apply color shift variation if provided
-  if (variation.colorShift) {
-    const shiftAmount = variation.colorShift;
-    foliageColor = adjustColor(foliageColor, shiftAmount);
-  }
-  
-  // Draw tree trunk
-  ctx.fillStyle = trunkColor;
-  const trunkWidth = treeWidth * 0.2;
-  const trunkHeight = treeHeight * 0.6;
-  ctx.fillRect(
-    treeX - trunkWidth / 2,
-    treeY + treeHeight / 2 - trunkHeight,
-    trunkWidth,
-    trunkHeight
-  );
-  
-  // Draw tree foliage (pine or oak)
-  ctx.fillStyle = foliageColor;
-  
-  if (variation.type === 'pine') {
-    // Pine tree - triangular foliage
-    const foliageHeight = treeHeight * 0.8;
-    const foliageBase = treeY + treeHeight / 2 - trunkHeight;
+    // Draw pine tree trunk
+    const trunkWidth = scaledWidth * 0.2;
+    const trunkHeight = scaledHeight * 0.6;
     
-    // Draw 3 triangular layers for pine
-    for (let i = 0; i < 3; i++) {
-      const layerY = foliageBase - (foliageHeight * (i / 3));
-      const layerWidth = treeWidth * (1 - i * 0.2);
+    ctx.fillStyle = variation.trunkColor;
+    ctx.fillRect(
+      treeX + (scaledWidth - trunkWidth) / 2, 
+      treeY + scaledHeight - trunkHeight, 
+      trunkWidth, 
+      trunkHeight
+    );
+    
+    // Draw pine tree triangular foliage
+    const foliageColor = adjustColor(variation.foliageColor, variation.colorShift);
+    ctx.fillStyle = foliageColor;
+    
+    // Multiple layers of triangles for pine needles
+    const layers = 3;
+    const layerHeight = scaledHeight * 0.7 / layers;
+    
+    for (let i = 0; i < layers; i++) {
+      const layerWidth = scaledWidth * (1 - i * 0.2);
+      const layerY = treeY + scaledHeight - trunkHeight - (i * layerHeight);
       
       ctx.beginPath();
-      ctx.moveTo(treeX - layerWidth / 2, layerY);
-      ctx.lineTo(treeX + layerWidth / 2, layerY);
-      ctx.lineTo(treeX, layerY - foliageHeight / 3);
+      ctx.moveTo(treeX + (scaledWidth - layerWidth) / 2, layerY);
+      ctx.lineTo(treeX + (scaledWidth + layerWidth) / 2, layerY);
+      ctx.lineTo(treeX + scaledWidth / 2, layerY - layerHeight);
       ctx.closePath();
       ctx.fill();
     }
   } else {
-    // Oak tree - rounded foliage
-    const foliageY = treeY + treeHeight / 2 - trunkHeight - treeHeight * 0.05;
-    const foliageRadius = treeWidth * 0.6;
+    // Draw oak tree trunk
+    const trunkWidth = scaledWidth * 0.2;
+    const trunkHeight = scaledHeight * 0.4;
     
-    // Draw main foliage circle
+    ctx.fillStyle = variation.trunkColor;
+    ctx.fillRect(
+      treeX + (scaledWidth - trunkWidth) / 2, 
+      treeY + scaledHeight - trunkHeight, 
+      trunkWidth, 
+      trunkHeight
+    );
+    
+    // Draw oak tree circular foliage
+    const foliageColor = adjustColor(variation.foliageColor, variation.colorShift);
+    ctx.fillStyle = foliageColor;
+    
+    const foliageRadius = scaledWidth * 0.6;
+    const foliageY = treeY + scaledHeight - trunkHeight - foliageRadius * 0.8;
+    
     ctx.beginPath();
-    ctx.arc(treeX, foliageY, foliageRadius, 0, Math.PI * 2);
+    ctx.arc(treeX + scaledWidth / 2, foliageY, foliageRadius, 0, Math.PI * 2);
     ctx.fill();
-    
-    // Add some smaller circles around for more natural look
-    if (variation.lushness > 0.6) {
-      const smallCircleCount = Math.floor(variation.lushness * 5);
-      
-      for (let i = 0; i < smallCircleCount; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const distance = foliageRadius * 0.6;
-        
-        ctx.beginPath();
-        ctx.arc(
-          treeX + Math.cos(angle) * distance,
-          foliageY + Math.sin(angle) * distance,
-          foliageRadius * 0.5,
-          0,
-          Math.PI * 2
-        );
-        ctx.fill();
-      }
-    }
   }
-  
-  // Uncomment for debugging collision zones
-  /*
-  if (tree.collisionZones) {
-    // Draw collision zones for debugging
-    ctx.strokeStyle = 'red';
-    ctx.lineWidth = 1;
-    
-    tree.collisionZones.forEach(zone => {
-      if (zone.type === 'rect') {
-        ctx.strokeRect(
-          treeX + zone.offsetX - zone.width / 2,
-          treeY + zone.offsetY - zone.height / 2,
-          zone.width,
-          zone.height
-        );
-      } else if (zone.type === 'circle') {
-        ctx.beginPath();
-        ctx.arc(
-          treeX + zone.offsetX,
-          treeY + zone.offsetY,
-          zone.radius,
-          0,
-          Math.PI * 2
-        );
-        ctx.stroke();
-      }
-    });
-  }
-  */
 }
 
 // Helper function to adjust hex color by a shift amount
 function adjustColor(hexColor, shiftAmount) {
-  // Convert hex to RGB
-  const r = parseInt(hexColor.substr(1, 2), 16);
-  const g = parseInt(hexColor.substr(3, 2), 16);
-  const b = parseInt(hexColor.substr(5, 2), 16);
+  // Default color if hexColor is undefined
+  if (!hexColor) {
+    hexColor = '#006400'; // Default to dark green
+  }
   
-  // Apply shift to green component (for foliage)
-  const shiftedG = Math.min(255, Math.max(0, g + Math.floor(g * shiftAmount)));
+  // Ensure hexColor is a valid hex color starting with #
+  if (!hexColor.startsWith('#') || hexColor.length !== 7) {
+    console.warn('Invalid hex color format:', hexColor);
+    hexColor = '#006400'; // Default to dark green
+  }
   
-  // Convert back to hex
-  return '#' + r.toString(16).padStart(2, '0') +
-               shiftedG.toString(16).padStart(2, '0') +
-               b.toString(16).padStart(2, '0');
+  try {
+    // Convert hex to RGB
+    const r = parseInt(hexColor.substr(1, 2), 16);
+    const g = parseInt(hexColor.substr(3, 2), 16);
+    const b = parseInt(hexColor.substr(5, 2), 16);
+    
+    // Apply shift to green component (for foliage)
+    const shiftedG = Math.min(255, Math.max(0, g + Math.floor(g * shiftAmount)));
+    
+    // Convert back to hex
+    return '#' + r.toString(16).padStart(2, '0') +
+                shiftedG.toString(16).padStart(2, '0') +
+                b.toString(16).padStart(2, '0');
+  } catch (error) {
+    console.error('Error adjusting color:', error);
+    return '#006400'; // Return default color on error
+  }
 }
 
 // Export tree-related functions

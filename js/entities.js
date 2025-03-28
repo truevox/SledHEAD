@@ -4,37 +4,37 @@ import { getResolution } from './resolution.js';
 /* entities.js - Pruned version to avoid overlap with wildlifephotos.js */
 
 // Resolves collisions between the player and obstacles.
-function resolveCollision(player, obstacle, scale = 1) {
+function resolveCollision(player, obstacle) {
   // If obstacle has collision zones, handle each zone separately
   if (obstacle.collisionZones) {
     const resolution = getResolution();
-    const zoneScale = scale || resolution.scale;
+    const scale = resolution.scale;
     
     for (const zone of obstacle.collisionZones) {
       if (zone.type === 'rect') {
         // Handle rectangular collision zone
-        const zoneX = obstacle.x + zone.offsetX;
-        const zoneY = obstacle.y + zone.offsetY;
-        const zoneWidth = zone.width * zoneScale;
-        const zoneHeight = zone.height * zoneScale;
+        const zoneX = obstacle.x + zone.offsetX * scale;
+        const zoneY = obstacle.y + zone.offsetY * scale;
+        const zoneWidth = zone.width * scale;
+        const zoneHeight = zone.height * scale;
         
         resolveRectCollision(player, {
           x: zoneX - zoneWidth / 2,
           y: zoneY - zoneHeight / 2,
           width: zoneWidth,
           height: zoneHeight
-        }, zoneScale);
+        });
       } else if (zone.type === 'circle') {
         // Handle circular collision zone
-        const zoneX = obstacle.x + zone.offsetX;
-        const zoneY = obstacle.y + zone.offsetY;
-        const zoneRadius = zone.radius * zoneScale;
+        const zoneX = obstacle.x + zone.offsetX * scale;
+        const zoneY = obstacle.y + zone.offsetY * scale;
+        const zoneRadius = zone.radius * scale;
         
         resolveCircularCollision(player, {
           x: zoneX,
           y: zoneY,
           radius: zoneRadius
-        }, zoneScale);
+        });
       }
     }
     return;
@@ -45,9 +45,9 @@ function resolveCollision(player, obstacle, scale = 1) {
   let playerCenterY = player.absY;
   let obstacleCenterX = obstacle.x + obstacle.width / 2;
   let obstacleCenterY = obstacle.y + obstacle.height / 2;
-  let halfWidthPlayer = (player.width * scale) / 2;
+  let halfWidthPlayer = player.width / 2;
   let halfWidthObstacle = obstacle.width / 2;
-  let halfHeightPlayer = (player.height * scale) / 2;
+  let halfHeightPlayer = player.height / 2;
   let halfHeightObstacle = obstacle.height / 2;
   let dx = playerCenterX - obstacleCenterX;
   let dy = playerCenterY - obstacleCenterY;
@@ -72,14 +72,14 @@ function resolveCollision(player, obstacle, scale = 1) {
 }
 
 // Helper function to resolve collision with rectangular obstacles
-function resolveRectCollision(player, obstacle, scale = 1) {
+function resolveRectCollision(player, obstacle) {
   let playerCenterX = player.x;
   let playerCenterY = player.absY;
   let obstacleCenterX = obstacle.x + obstacle.width / 2;
   let obstacleCenterY = obstacle.y + obstacle.height / 2;
-  let halfWidthPlayer = (player.width * scale) / 2;
+  let halfWidthPlayer = player.width / 2;
   let halfWidthObstacle = obstacle.width / 2;
-  let halfHeightPlayer = (player.height * scale) / 2;
+  let halfHeightPlayer = player.height / 2;
   let halfHeightObstacle = obstacle.height / 2;
   let dx = playerCenterX - obstacleCenterX;
   let dy = playerCenterY - obstacleCenterY;
@@ -104,12 +104,12 @@ function resolveRectCollision(player, obstacle, scale = 1) {
 }
 
 // Function to resolve collision with circular obstacles
-function resolveCircularCollision(player, circle, scale = 1) {
+function resolveCircularCollision(player, circle) {
   const dx = player.x - circle.x;
   const dy = player.absY - circle.y;
   const distance = Math.sqrt(dx * dx + dy * dy);
-  const combinedRadius = (Math.max(player.width, player.height) * scale) / 2 + circle.radius;
-
+  const combinedRadius = (Math.max(player.width, player.height)) / 2 + circle.radius;
+  
   if (distance < combinedRadius) {
     // Collision detected, push the player away from the circle
     const overlap = combinedRadius - distance;
@@ -129,9 +129,6 @@ function resolveCircularCollision(player, circle, scale = 1) {
     }
   }
 }
-
-// Add this line to export the resolveCollision function
-export { resolveCollision };
 
 // Draws the camera overlay with the POV cone and a steady altitude line.
 function drawCameraOverlay() {
@@ -256,3 +253,5 @@ function drawEntities() {
   // Draw the camera overlay.
   drawCameraOverlay();
 }
+
+export { resolveCollision, resolveRectCollision, resolveCircularCollision, drawCameraOverlay, drawEntities };
