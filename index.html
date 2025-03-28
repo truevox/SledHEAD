@@ -34,10 +34,9 @@
     <p id="moneyText">Money: $200</p>
   </div>
   
-  <!-- Game Screen (Phaser will attach here; hidden during house phase) -->
-  <div id="game-screen" style="display: none; width: 800px; height: 600px; margin: 0 auto;">
-    <!-- Phaser will insert its canvas here -->
-  </div>
+  <!-- Game Screen: Phaser will attach its canvas here.
+       Note: No fixed width/height here; the Scale Manager in game.js will handle resizing. -->
+  <div id="game-screen"></div>
   
   <!-- House/Upgrade Menu -->
   <div id="upgrade-menu">
@@ -79,7 +78,7 @@
             Less time climbing, more time sledding.
           </p>
         </div>
-        <!-- The remaining personal upgrades are locked for now -->
+        <!-- The remaining personal upgrades -->
         <div class="upgrade-entry">
           <button id="upgradeGrapplingAnchor">Grappling Anchor (Lv 0/0)</button>
           <p class="upgrade-desc">

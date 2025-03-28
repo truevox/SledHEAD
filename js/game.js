@@ -12,9 +12,9 @@ var isFirstHouseEntry = true;
 var houseReEntry = 0;
 var playerStartAbsY = 0;
 
-// We'll store a "canvas" object for width/height references
-var canvas = { width: 800, height: 600 };
-// We'll store a reference to the texture context
+// We'll store a "canvas" object for width/height references (fixed size)
+var canvas = { width: 800, height: 450 };
+// We'll store a reference to the texture context (set in create())
 var ctx = null;
 
 // Create a Phaser Scene to run your game logic
@@ -29,17 +29,11 @@ class MainScene extends Phaser.Scene {
 
   create() {
     // Create a Canvas Texture of the same size as your old canvas
-    // This gives us a .context we can draw on, just like normal HTML canvas
     this.rt = this.textures.createCanvas("myCanvas", canvas.width, canvas.height);
     ctx = this.rt.context;
 
     // Add it to the scene as an Image so Phaser will display it
-    // Position at (0,0) with top-left origin
     this.image = this.add.image(0, 0, "myCanvas").setOrigin(0, 0);
-
-    // Let Phaser parent be the #game-screen div
-    // (We'll hide/show that div in changeState just like you did)
-    // The config below is in the global var config at the bottom
 
     // Hook up your DOM event listeners for buttons
     document.getElementById("startGame").addEventListener("click", () => {
@@ -79,26 +73,23 @@ class MainScene extends Phaser.Scene {
   }
 
   update(time, delta) {
-    // Convert delta to ms (Phaser already gives ms, so we can use it directly)
+    // Update game mechanics (delta in ms)
     updateMechanics(delta);
 
     // Update floating texts
     floatingTexts = floatingTexts.filter(text => text.update(delta));
 
-    // Now do our normal "render()" call, which draws onto ctx
-    // We'll do a full clear each frame, so old drawings don't linger
+    // Call the render function (draws onto ctx)
     render();
 
-    // Refresh the Canvas Texture so Phaser sees the new drawing
+    // Refresh the Canvas Texture so Phaser displays the new drawing
     this.rt.refresh();
   }
 }
 
-// Original changeState function (unchanged, except we skip anything referencing old canvas directly)
+// Original changeState function (unchanged in logic)
 function changeState(newState) {
   const prevState = currentState;
-
-  // Handle mid-jump transitions
   if (player.isJumping && newState !== GameState.HOUSE) {
     if (player.currentTrick) {
       resetTrickState();
@@ -112,26 +103,22 @@ function changeState(newState) {
     });
     return;
   }
-
   completeStateChange(newState, prevState);
 }
 
 function completeStateChange(newState, prevState) {
   currentState = newState;
-
   if (currentState === GameState.HOUSE) {
     document.getElementById("upgrade-menu").style.display = "block";
     document.getElementById("game-screen").style.display = "none";
     const bestTimeText = document.getElementById("bestTimeText");
     bestTimeText.textContent = player.bestTime === Infinity ? "Best Time: N/A"
                                                            : `Best Time: ${player.bestTime.toFixed(2)}s`;
-
     if (player.sledDamaged > 0) {
       player.sledDamaged = 0;
       console.log("Sled has been repaired at the house!");
       showSledRepairedNotice();
     }
-
     if (!isFirstHouseEntry && (prevState === GameState.DOWNHILL || prevState === GameState.UPHILL)) {
       if (typeof despawnAllAnimals === 'function') {
         despawnAllAnimals();
@@ -145,17 +132,14 @@ function completeStateChange(newState, prevState) {
         console.log("House re-entry count:", houseReEntry);
       }
     }
-
     if (isFirstHouseEntry) {
       isFirstHouseEntry = false;
     }
-
     updateMoneyDisplay();
   }
   else if (currentState === GameState.DOWNHILL) {
     document.getElementById("upgrade-menu").style.display = "none";
     document.getElementById("game-screen").style.display = "block";
-
     if (prevState === GameState.HOUSE) {
       earlyFinish = false;
       player.collisions = 0;
@@ -178,24 +162,26 @@ function completeStateChange(newState, prevState) {
   else if (currentState === GameState.UPHILL) {
     document.getElementById("upgrade-menu").style.display = "none";
     document.getElementById("game-screen").style.display = "block";
-
     if (prevState === GameState.DOWNHILL) {
       awardMoney();
     }
     player.xVel = 0;
   }
-
   console.log(`Game state changed: ${prevState} -> ${currentState}`);
 }
 
-// Finally, create and launch the Phaser game
+// Create and launch the Phaser game with scale options for responsiveness
 var config = {
   type: Phaser.AUTO,
   parent: "game-screen",
   width: canvas.width,
   height: canvas.height,
   scene: MainScene,
-  backgroundColor: "#000000"
+  backgroundColor: "#000000",
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH
+  }
 };
 
 var phaserGame = new Phaser.Game(config);
