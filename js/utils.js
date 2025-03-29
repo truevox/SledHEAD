@@ -9,7 +9,7 @@ var GameState = {
 
 // Instead of getting the canvas element (which no longer exists),
 // we define a dummy canvas object for width/height references.
-var canvas = { width: 800, height: 600 };
+var canvas = { width: 800, height: 450 };
 // We'll set ctx in game.js once the Phaser Canvas Texture is created.
 var ctx = null;
 
