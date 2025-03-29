@@ -2,6 +2,13 @@
 // knob-turnings go here
 
 /* Global Configuration & Shared Globals */
+
+// Define our current mountain biome and layer defaults.
+var currentBiome = "starterMountain";  // We're on the Starter Mountain by default.
+var currentMountainLayer = 1;          // Default layer (if you're using numeric layers)
+var currentLayerPercent = 25;          // Or if you're using percentages (0-100)
+
+
 var TWEAK = {
     tweakNob: 1,
 

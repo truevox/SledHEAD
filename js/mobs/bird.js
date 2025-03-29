@@ -1,7 +1,7 @@
 /* bird.js - Bird Animal Module
 // This module defines the bird characteristics for the wildlife simulation.
 // It registers itself with wildlife.js by calling registerAnimalType().
-// All bird-specific settings (appearance, movement, photo bonus, etc.) are defined here.
+// Spawning Biomes: Spawns on all layers of the Starter Mountain.
 */
 
 (function() {
@@ -14,6 +14,9 @@
         speed: (typeof TWEAK !== 'undefined' && TWEAK.birdSpeed) || 12,
         basePhotoBonus: 5, // Birds yield a lower photo bonus
         color: "#1E90FF",
+        spawningBiomes: [
+            { biome: "starterMountain" }  // Spawns on all layers of the Starter Mountain
+        ],
         customUpdate: null,
         customDraw: function(animal, screenY, ctx) {
             // Draw the bird's body

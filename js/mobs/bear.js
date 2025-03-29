@@ -1,7 +1,7 @@
 /* bear.js - Bear Animal Module
 // This module defines the bear characteristics for the wildlife simulation.
 // It registers itself with wildlife.js by calling registerAnimalType().
-// All bear-specific settings (appearance, movement, photo bonus, etc.) are defined here.
+// Spawning Biomes: Spawns on all layers of the Starter Mountain.
 */
 
 (function() {
@@ -13,8 +13,10 @@
         detectionRadius: (typeof TWEAK !== 'undefined' && TWEAK.bearDetectionRadius) || 50,
         speed: (typeof TWEAK !== 'undefined' && TWEAK.bearSpeed) || 8,
         basePhotoBonus: 10, // Bears yield a higher photo bonus
-        // Optional color property for fallback drawing
         color: "#8B4513",
+        spawningBiomes: [
+            { biome: "starterMountain" }  // Spawns on all layers of the Starter Mountain
+        ],
         customUpdate: null,
         customDraw: function(animal, screenY, ctx) {
             // Draw the bear's body
@@ -25,7 +27,7 @@
                 animal.width,
                 animal.height
             );
-            // Draw bear ears
+            // Draw bear ears as simple rectangles
             ctx.fillStyle = "#000000";
             ctx.fillRect(
                 animal.x - animal.width / 3,
