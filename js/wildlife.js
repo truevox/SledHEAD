@@ -1,23 +1,39 @@
-/* wildlife.js - Wildlife Simulation */
-// This file is responsible for handling the wildlife simulation,
-// including the animals' behavior, interactions with the
-// environment, and spawning.
+/* wildlife.js - Wildlife Simulation (Refactored)
+// This file handles the overall wildlife simulation logic,
+// using a registration system for animal types.
+// Each animal module (e.g., bear.js, bird.js, etc.) registers
+// itself by calling registerAnimalType(), so you don't have to update
+// this file when adding new animals.
+*/
 
-// Global variables for animal system
+// Global registry for animal types
+var animalRegistry = [];
+
+// Function for animal modules to register themselves
+function registerAnimalType(animalData) {
+    animalRegistry.push(animalData);
+    console.log("Registered animal type: " + animalData.type);
+}
+
+// Global variables for the animal system
 var activeAnimal = null;
-var animalStateCheckInterval = null; // Interval for checking animal states
+var animalStateCheckInterval = null;
 
 // ------------------- Animal (Critter) Update Logic -------------------
-// Updates the state of the active animal (critter)
 function updateAnimal() {
   if (!activeAnimal) return;
   
-  // Check proximity to player - may cause animal to flee
+  // Call custom update if provided
+  if (activeAnimal.customUpdate && typeof activeAnimal.customUpdate === 'function') {
+      activeAnimal.customUpdate(activeAnimal);
+  }
+  
+  // Check if player is too close, forcing the animal to flee
   checkPlayerProximity();
   
   if (activeAnimal.state === "fleeing") {
-    if (activeAnimal.fleeingLogOnce !== true) {
-      console.log(`🦁 Animal fleeing - Type: ${activeAnimal.type}, Angle: ${activeAnimal.fleeAngleActual.toFixed(2)}°, Speed: ${activeAnimal.speed}`);
+    if (!activeAnimal.fleeingLogOnce) {
+      console.log(`Animal fleeing - Type: ${activeAnimal.type}, Angle: ${activeAnimal.fleeAngleActual.toFixed(2)}°, Speed: ${activeAnimal.speed}`);
       activeAnimal.fleeingLogOnce = true;
     }
     
@@ -42,8 +58,8 @@ function updateAnimal() {
       }, 5000);
     }
   } else if (activeAnimal.state === "sitting") {
-    // Animals have a small chance to start fleeing randomly
-    if (Math.random() < 0.0001) { // 0.01% chance per frame to spontaneously flee
+    // Small chance to spontaneously start fleeing
+    if (Math.random() < 0.0001) {
       console.log(`Animal (${activeAnimal.type}) spontaneously changing state from sitting to fleeing`);
       activeAnimal.state = "fleeing";
       activeAnimal.fleeingLogOnce = false;
@@ -51,7 +67,7 @@ function updateAnimal() {
   }
 }
 
-// Check if the player is too close to the animal, causing it to flee
+// Check if the player is too close to the animal
 function checkPlayerProximity() {
   if (!activeAnimal || activeAnimal.state === "fleeing") return;
   
@@ -64,76 +80,77 @@ function checkPlayerProximity() {
     activeAnimal.state = "fleeing";
     activeAnimal.fleeingLogOnce = false;
     
-    // Recalculate flee angle directly away from player
+    // Calculate flee angle directly away from player with some randomness
     activeAnimal.fleeAngleActual = Math.atan2(dy, dx) * (180 / Math.PI);
-    // Add slight randomness to the flee direction
-    activeAnimal.fleeAngleActual += (Math.random() - 0.5) * 30; // ±15 degrees of randomness
+    activeAnimal.fleeAngleActual += (Math.random() - 0.5) * 30;
   }
 }
 
-// Spawn a new animal at a random position
+// Spawn a new animal using the registered types
 function spawnAnimal() {
   if (currentState !== GameState.UPHILL || activeAnimal !== null) return;
   
-  const isBear = Math.random() < TWEAK.bearSpawnProbability;
-  const type = isBear ? "bear" : "bird";
-  // Determine spawn position
-  // Spawn just outside the viewport horizontally
+  if (animalRegistry.length === 0) {
+    console.error("No animal types registered!");
+    return;
+  }
+  
+  // Determine spawn position and altitude
   let spawnX = (window.innerWidth * 0.1) + (Math.random() * window.innerWidth * 0.9);
   let spawnY = player.absY - (window.innerHeight / 2);
-  // Altitude is a number between 0-100 representing the altitude line
   let altitude = Math.floor(Math.random() * 100);
-  
-  // Initial state - sitting or fleeing
   let initialState = "sitting";
   
-  // Flee angle calculation using MAINEntities.js logic
-  let baseAngle;
-  if (spawnX > window.innerWidth / 2) {
-    // Animal spawns on the right side, so it should flee leftwards.
-    baseAngle = Math.random() * (170 - 135) + 135;
-  } else {
-    // Animal spawns on the left side, so it should flee rightwards.
-    baseAngle = Math.random() * (55 - 20) + 20;
-  }
-  let angleOffset = Math.random() * TWEAK.fleeAngle;
+  // Calculate flee angle based on spawn position
+  let baseAngle = spawnX > window.innerWidth / 2 ?
+                  Math.random() * (170 - 135) + 135 :
+                  Math.random() * (55 - 20) + 20;
+  let angleOffset = Math.random() * 15;
   let fleeAngleActual = baseAngle + (Math.random() < 0.5 ? -angleOffset : angleOffset);
   
-  // Calculate detection radius and speed based on animal type
-  let detectionRadius = type === "bear" ? 
-    (TWEAK.bearDetectionRadius || 50) : 
-    (TWEAK.birdDetectionRadius || 50);
-    
-  let speed = type === "bear" ? 
-    (TWEAK.bearSpeed || 8) : 
-    (TWEAK.birdSpeed || 12);
+  // Select an animal type based on weighted spawnProbability
+  let totalWeight = animalRegistry.reduce((sum, animal) => sum + animal.spawnProbability, 0);
+  let r = Math.random() * totalWeight;
+  let chosenAnimalType = null;
+  for (let animal of animalRegistry) {
+    r -= animal.spawnProbability;
+    if (r <= 0) {
+      chosenAnimalType = animal;
+      break;
+    }
+  }
+  if (!chosenAnimalType) chosenAnimalType = animalRegistry[0];
   
+  // Create the active animal object with properties from the chosen type
   activeAnimal = {
-    type,
+    type: chosenAnimalType.type,
     x: spawnX,
     y: spawnY,
-    width: type === "bear" ? 40 : 20,
-    height: type === "bear" ? 60 : 20,
+    width: chosenAnimalType.width,
+    height: chosenAnimalType.height,
     state: initialState,
-    speed: speed,
+    speed: chosenAnimalType.speed,
     altitude: altitude,
     hasBeenPhotographed: false,
-    detectionRadius: detectionRadius,
-    fleeAngleActual,
+    detectionRadius: chosenAnimalType.detectionRadius,
+    fleeAngleActual: fleeAngleActual,
     fleeingLogOnce: false,
     lastStateChange: Date.now(),
-    stateChangeCount: 0
+    stateChangeCount: 0,
+    basePhotoBonus: chosenAnimalType.basePhotoBonus || 0,
+    customUpdate: chosenAnimalType.customUpdate || null,
+    customDraw: chosenAnimalType.customDraw || null,
+    // Other properties can be added here as needed.
   };
   
-  console.log(`Spawned ${type} at (${spawnX.toFixed(1)}, ${spawnY.toFixed(1)}), altitude: ${altitude}, state: ${initialState}, speed: ${speed}, detectionRadius: ${detectionRadius}`);
+  console.log(`Spawned ${activeAnimal.type} at (${spawnX.toFixed(1)}, ${spawnY.toFixed(1)}), altitude: ${altitude}, state: ${initialState}, speed: ${activeAnimal.speed}, detectionRadius: ${activeAnimal.detectionRadius}`);
   
-  // Start state check interval if not already started
   if (!animalStateCheckInterval) {
-    animalStateCheckInterval = setInterval(logAnimalState, 3000); // Log every 3 seconds
+    animalStateCheckInterval = setInterval(logAnimalState, 3000);
   }
 }
 
-// Function to despawn all animals when entering house
+// Despawn all animals
 function despawnAllAnimals() {
     activeAnimal = null;
     console.log('All animals despawned');
@@ -163,88 +180,24 @@ function drawAnimal() {
   let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
   let animalScreenY = activeAnimal.y - cameraOffset;
   
-  // Animal is a simple colored rectangle for now
-  ctx.fillStyle = activeAnimal.type === "bear" ? "#8B4513" : "#1E90FF";
-  ctx.fillRect(
-    activeAnimal.x - activeAnimal.width / 2,
-    animalScreenY - activeAnimal.height / 2,
-    activeAnimal.width,
-    activeAnimal.height
-  );
-  
-  // For bears, add some details
-  if (activeAnimal.type === "bear") {
-    ctx.fillStyle = "#000000";
-    // Draw bear ears
-    ctx.fillRect(
-      activeAnimal.x - activeAnimal.width / 3,
-      animalScreenY - activeAnimal.height / 2 - 10,
-      10,
-      10
-    );
-    ctx.fillRect(
-      activeAnimal.x + activeAnimal.width / 3 - 10,
-      animalScreenY - activeAnimal.height / 2 - 10,
-      10,
-      10
-    );
+  // If the animal has a custom draw function, use it!
+  if (activeAnimal.customDraw && typeof activeAnimal.customDraw === 'function') {
+      activeAnimal.customDraw(activeAnimal, animalScreenY, ctx);
   } else {
-    // For birds, add wing details
-    ctx.fillStyle = "#000000";
-    if (Math.floor(Date.now() / 200) % 2 === 0) {
-      // Wings up
-      ctx.beginPath();
-      ctx.moveTo(activeAnimal.x, animalScreenY);
-      ctx.lineTo(activeAnimal.x - 20, animalScreenY - 10);
-      ctx.lineTo(activeAnimal.x + 20, animalScreenY - 10);
-      ctx.closePath();
-      ctx.fill();
-    } else {
-      // Wings down
-      ctx.beginPath();
-      ctx.moveTo(activeAnimal.x, animalScreenY);
-      ctx.lineTo(activeAnimal.x - 20, animalScreenY + 5);
-      ctx.lineTo(activeAnimal.x + 20, animalScreenY + 5);
-      ctx.closePath();
-      ctx.fill();
-    }
-  }
-  
-  // Draw altitude indicator - small colored marker
-  let t = 1 - (activeAnimal.altitude / 100);
-  let altitudeColor = lerpColor("#FF0000", "#0000FF", t);
-  ctx.fillStyle = altitudeColor;
-  ctx.fillRect(
-    activeAnimal.x + activeAnimal.width / 2 + 5,
-    animalScreenY - 5,
-    10,
-    10
-  );
-  
-  // If the animal is fleeing, add a trail effect
-  if (activeAnimal.state === "fleeing") {
-    ctx.fillStyle = "rgba(255, 0, 0, 0.3)";
-    ctx.beginPath();
-    ctx.arc(
-      activeAnimal.x,
-      animalScreenY,
-      activeAnimal.width,
-      0,
-      Math.PI * 2
-    );
-    ctx.fill();
-    
-    // Draw a small arrow showing the flee direction
-    let arrowLength = activeAnimal.width * 1.5;
-    let fleeRadians = activeAnimal.fleeAngleActual * Math.PI / 180;
-    let arrowEndX = activeAnimal.x + Math.cos(fleeRadians) * arrowLength;
-    let arrowEndY = animalScreenY + Math.sin(fleeRadians) * arrowLength;
-    
-    ctx.strokeStyle = "rgba(255, 0, 0, 0.7)";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(activeAnimal.x, animalScreenY);
-    ctx.lineTo(arrowEndX, arrowEndY);
-    ctx.stroke();
+      // Default drawing: a generic rectangle
+      ctx.fillStyle = activeAnimal.color || "#888888";
+      ctx.fillRect(
+        activeAnimal.x - activeAnimal.width / 2,
+        animalScreenY - activeAnimal.height / 2,
+        activeAnimal.width,
+        activeAnimal.height
+      );
   }
 }
+
+// Expose functions globally
+window.registerAnimalType = registerAnimalType;
+window.updateAnimal = updateAnimal;
+window.spawnAnimal = spawnAnimal;
+window.despawnAllAnimals = despawnAllAnimals;
+window.drawAnimal = drawAnimal;
