@@ -1,19 +1,19 @@
 /* render.js - Rendering Logic */
 
-// Floating Text System
+// Floating Text System (unchanged)
 class FloatingText {
   constructor(text, x, y) {
     this.text = text;
     this.x = x;
-    this.initialY = y; // Relative to the player
+    this.initialY = y;
     this.age = 0;
-    this.lifetime = 1000; // Duration in ms
-    this.visualOffsetY = -30; // Start offset
+    this.lifetime = 1000;
+    this.visualOffsetY = -30;
   }
 
   update(deltaTime) {
     this.age += deltaTime;
-    this.visualOffsetY -= deltaTime * 0.25; // Slow upward float
+    this.visualOffsetY -= deltaTime * 0.25;
     return this.age < this.lifetime;
   }
 
@@ -31,24 +31,16 @@ function addFloatingText(text, x, y) {
   floatingTexts.push(new FloatingText(text, x, y - 30));
 }
 
-// Live Money Update Functions
+// No changes to money display logic
 function updateLiveMoney() {
-  // Calculate real distance traveled based on starting and ending Y positions
-  // Note: In this game's coordinate system, higher Y values mean lower on the mountain
-  // So the distance traveled downhill is player.absY - playerStartAbsY
   let distanceTraveled = Math.max(1, player.absY - playerStartAbsY);
-  
-  // Ensure at least 1 unit
   distanceTraveled = Math.max(1, distanceTraveled);
-  
-  let moneyEarned = Math.floor(distanceTraveled / 100); // Every 100 distance = $1
-  moneyEarned = Math.max(1, moneyEarned); // Guarantee at least $1
-  
+  let moneyEarned = Math.floor(distanceTraveled / 100);
+  moneyEarned = Math.max(1, moneyEarned);
   let moneyText = document.getElementById("moneyText");
   if (moneyText) {
     moneyText.textContent = `Money: $${player.money} (+$${moneyEarned})`;
   }
-  // Optionally, add logic for milestone sounds or effects here.
 }
 
 function showMoneyGain(amount, source = "") {
@@ -66,7 +58,6 @@ function showMoneyGain(amount, source = "") {
   }
 }
 
-// General money display update
 function updateMoneyDisplay() {
   let moneyText = document.getElementById("moneyText");
   if (moneyText) {
@@ -74,17 +65,29 @@ function updateMoneyDisplay() {
   }
 }
 
+// MAIN RENDER
+function render() {
+  // Clear the canvas each frame
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Background color depends on state
+  ctx.fillStyle = (currentState === GameState.DOWNHILL) ? "#ADD8E6" : "#98FB98";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  drawEntities();
+  ctx.save();
+  floatingTexts.forEach(text => text.draw(ctx, player.absY - canvas.height / 2));
+  ctx.restore();
+  drawReHitIndicator();
+}
+
 function drawEntities() {
   let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = currentState === GameState.DOWNHILL ? "#ADD8E6" : "#98FB98";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  
-  // Draw terrain obstacles
+
+  // Terrain
   terrain.forEach(obstacle => {
     if (obstacle.y >= cameraOffset - 50 && obstacle.y <= cameraOffset + canvas.height + 50) {
       if (obstacle.type === 'tree') {
-        // Draw tree using the custom tree drawing function
         drawTree(ctx, {
           x: obstacle.x,
           y: obstacle.y - cameraOffset,
@@ -92,13 +95,13 @@ function drawEntities() {
           height: obstacle.height
         });
       } else {
-        // Default drawing for rocks/other obstacles
         ctx.fillStyle = "#808080";
         ctx.fillRect(obstacle.x, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
       }
     }
   });
-  
+
+  // Player
   let playerDrawY = player.absY - cameraOffset;
   ctx.save();
   if (player.currentTrick) {
@@ -107,11 +110,12 @@ function drawEntities() {
       ctx.rotate(player.trickRotation * Math.PI / 180);
       ctx.translate(-player.x, -playerDrawY);
     } else if (player.currentTrick === "airBrake" || player.currentTrick === "parachute") {
-      playerDrawY += player.currentTrick === "airBrake" ? player.trickOffset : -player.trickOffset;
+      playerDrawY += (player.currentTrick === "airBrake") ? player.trickOffset : -player.trickOffset;
     }
   }
   ctx.fillStyle = "#FF0000";
   ctx.fillRect(player.x - player.width / 2, playerDrawY - player.height / 2, player.width, player.height);
+
   if (player.currentTrick === "airBrake" || player.currentTrick === "parachute") {
     ctx.fillStyle = "#FFFF00";
     ctx.beginPath();
@@ -119,11 +123,8 @@ function drawEntities() {
     ctx.fill();
   }
   ctx.restore();
-  
-  // Draw camera overlay (from wildlifephotos.js)
+
   drawCameraOverlay();
-  
-  // Draw any animals (from wildlifephotos.js)
   drawAnimal();
 }
 
@@ -136,6 +137,7 @@ function drawCameraOverlay() {
   let povAngle = TWEAK.basePOVAngle + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsPOVIncrease);
   let leftAngle = (player.cameraAngle - povAngle / 2) * (Math.PI / 180);
   let rightAngle = (player.cameraAngle + povAngle / 2) * (Math.PI / 180);
+
   ctx.fillStyle = "rgba(255, 255, 0, 0.2)";
   ctx.beginPath();
   ctx.moveTo(centerX, centerY);
@@ -143,7 +145,8 @@ function drawCameraOverlay() {
   ctx.lineTo(centerX + coneLength * Math.cos(rightAngle), centerY + coneLength * Math.sin(rightAngle));
   ctx.closePath();
   ctx.fill();
-  let offsetTop = ((coneLength / 2) + player.height);
+
+  let offsetTop = (coneLength / 2) + player.height;
   let offsetBottom = player.height / 2;
   let offset = mapRange(player.altitudeLine, 0, 100, offsetTop, offsetBottom);
   let rad = player.cameraAngle * Math.PI / 180;
@@ -160,6 +163,7 @@ function drawCameraOverlay() {
   let altitudeColor = lerpColor("#FF0000", "#0000FF", t);
   ctx.strokeStyle = altitudeColor;
   ctx.lineWidth = 3;
+
   if (activeAnimal && isAnimalInsideCone(activeAnimal)) {
     let flashSpeed = mapRange(Math.abs(player.altitudeLine - activeAnimal.altitude), 0, 100, TWEAK.altitudeFlashMaxSpeed, TWEAK.altitudeFlashMinSpeed);
     if (Math.floor(Date.now() / flashSpeed) % 2 === 0) {
@@ -197,13 +201,4 @@ function drawReHitIndicator() {
     ctx.closePath();
     ctx.restore();
   }
-}
-
-// The main render function called in gameLoop
-function render() {
-  drawEntities();
-  ctx.save();
-  floatingTexts.forEach(text => text.draw(ctx, player.absY - canvas.height / 2));
-  ctx.restore();
-  drawReHitIndicator();
 }
