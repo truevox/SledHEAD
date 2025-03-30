@@ -1,5 +1,13 @@
 /* downhill.js - Downhill Mechanics & Physics */
 
+import {
+  processTrick,
+  checkTrickInputs,
+  resetTrickState
+} from './tricks.js';
+
+
+
 // Update all downhill-specific physics and mechanics
 function updateDownhill(deltaTime) {
   let rocketFactor = 1 + (playerUpgrades.rocketSurgery * TWEAK.rocketSurgeryFactorPerLevel);
@@ -200,7 +208,7 @@ function updateDownhill(deltaTime) {
     if (player.isJumping) {
       // Smoothly reset jump zoom and finalize landing
       lerpJumpZoomToZero(() => {
-        onPlayerLand(); // handles trick cleanup, sound, etc.
+        onPlayerJumpLand(); // handles trick cleanup, sound, etc.
       });
     }
     
