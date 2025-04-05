@@ -67,7 +67,6 @@ function updateMoneyDisplay() {
 
 // MAIN RENDER
 function render() {
-  console.log("render START");
   // Clear the canvas each frame
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
