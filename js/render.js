@@ -1,5 +1,17 @@
 /* render.js - Rendering Logic */
 
+// Add throttled logging mechanism
+const renderLogThrottleTimes = {};
+function throttledRenderLog(message, throttleTime = 5000) {
+  const currentTime = Date.now();
+  const key = message.split(' ')[0]; // Use the first word of the message as the key
+  
+  if (!renderLogThrottleTimes[key] || (currentTime - renderLogThrottleTimes[key] >= throttleTime)) {
+    console.log(message);
+    renderLogThrottleTimes[key] = currentTime;
+  }
+}
+
 // Floating Text System (unchanged)
 class FloatingText {
   constructor(text, x, y) {
@@ -79,7 +91,7 @@ function render() {
   window.floatingTexts.forEach(text => text.draw(ctx, player.absY - canvas.height / 2));
   ctx.restore();
   drawReHitIndicator();
-  console.log("render END");
+  throttledRenderLog("render END", 5000);
 }
 
 function drawEntities() {

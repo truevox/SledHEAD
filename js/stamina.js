@@ -68,6 +68,9 @@ class Stamina {
         player.money = Math.max(0, player.money - fee);
         this.throttledLog(`Charged re-entry fee: $${fee}`);
         
+        // Update the money display to show the new amount after the fee
+        updateMoneyDisplay();
+        
         // Increment re-entry counter
         reentryCount++;
         this.throttledLog(`Re-entry count increased to: ${reentryCount}`);

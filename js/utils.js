@@ -35,7 +35,8 @@ function getTimestamp() {
 
 // Helper function to log key presses with relevant info
 function logKeyEvent(type, key, gameState) {
-    if (GAME_KEYS.includes(key.toLowerCase()) || key === 'Tab') {
+    // Special handling for arrow keys, which are case-sensitive
+    if (GAME_KEYS.includes(key) || GAME_KEYS.includes(key.toLowerCase()) || key === 'Tab') {
         console.log(`[${getTimestamp()}] ${type}: ${key} (Game State: ${gameState})`);
     }
 }

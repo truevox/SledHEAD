@@ -2,26 +2,38 @@
 import { register } from './registry.js';
 
 function startTrick(trickName) {
-  if (player.currentTrick) return;
+  if (!player.isJumping || player.currentTrick || player.trickCooldowns[trickName] > 0) return;
+
+  console.log(`[${getTimestamp()}] TRICK START: ${trickName} (Jump Height: ${player.jumpZoomBonus.toFixed(2)})`);
+  
   player.currentTrick = trickName;
   player.trickTimer = 0;
   player.trickRotation = 0;
   player.trickOffset = 0;
-  let now = Date.now();
-  let cooldownEnd = player.trickCooldowns[trickName] || 0;
-  let timeLeft = Math.max(0, cooldownEnd - now);
-  player.currentTrickValueMultiplier = timeLeft > 0 ? Math.max(0.1, 1 - (timeLeft / TWEAK._trickCooldown)) : 1;
-  player.trickCooldowns[trickName] = now + TWEAK._trickCooldown;
-  console.log(`Starting ${trickName} (Value: ${(player.currentTrickValueMultiplier * 100).toFixed(0)}%)`);
+
+  // Return true to indicate trick was started (useful for caller)
+  return true;
 }
 register("startTrick", startTrick);
 
 function checkTrickInputs() {
   if (!player.currentTrick && player.isJumping) {
-    if (keysDown["ArrowLeft"]) startTrick("leftHelicopter");
-    else if (keysDown["ArrowRight"]) startTrick("rightHelicopter");
-    else if (keysDown["ArrowUp"]) startTrick("airBrake");
-    else if (keysDown["ArrowDown"]) startTrick("parachute");
+    if (keysDown["ArrowLeft"]) {
+      startTrick("leftHelicopter");
+      console.log(`[${getTimestamp()}] ARROW INPUT: ArrowLeft triggered leftHelicopter trick`);
+    }
+    else if (keysDown["ArrowRight"]) {
+      startTrick("rightHelicopter");
+      console.log(`[${getTimestamp()}] ARROW INPUT: ArrowRight triggered rightHelicopter trick`);
+    }
+    else if (keysDown["ArrowUp"]) {
+      startTrick("airBrake");
+      console.log(`[${getTimestamp()}] ARROW INPUT: ArrowUp triggered airBrake trick`);
+    }
+    else if (keysDown["ArrowDown"]) {
+      startTrick("parachute");
+      console.log(`[${getTimestamp()}] ARROW INPUT: ArrowDown triggered parachute trick`);
+    }
   }
 }
 register("checkTrickInputs", checkTrickInputs);

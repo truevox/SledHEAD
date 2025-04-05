@@ -17,6 +17,24 @@ var houseReEntry = 0;
 var playerStartAbsY = 0;
 window.playerStartAbsY = playerStartAbsY; // Make playerStartAbsY globally accessible
 
+// Add a throttled logging mechanism
+const logThrottleTimes = {};
+function throttledLog(message, throttleTime = 5000) {
+  const currentTime = Date.now();
+  const key = message.split(' ')[0]; // Use the first word of the message as the key
+  
+  // Special handling for arrow key events which should always be logged
+  if (message.includes('Arrow') && message.includes('trick')) {
+    console.log(`[${getTimestamp()}] ${message}`);
+    return;
+  }
+  
+  if (!logThrottleTimes[key] || (currentTime - logThrottleTimes[key] >= throttleTime)) {
+    console.log(message);
+    logThrottleTimes[key] = currentTime;
+  }
+}
+
 // We'll access the global canvas object
 // var ctx is defined later after context creation
 
@@ -100,7 +118,7 @@ class MainScene extends Phaser.Scene {
   }
 
   update(time, delta) {
-    console.log("MainScene update START");
+    throttledLog("MainScene update START", 5000);
     // Update game mechanics (delta in ms)
     updateMechanics(delta);
 
@@ -116,7 +134,7 @@ class MainScene extends Phaser.Scene {
     // Make sure the image is visible after state changes
     this.image.visible = true;
     
-    console.log("MainScene update END");
+    throttledLog("MainScene update END", 5000);
   }
 }
 
