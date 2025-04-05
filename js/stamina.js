@@ -28,7 +28,7 @@ class Stamina {
     // New method to drain stamina on jump initiation
     drainJump() {
       if (!this.jumpTriggered) {
-        this.currentStamina -= this.staminaDrainJumping;
+        this.currentStamina = parseFloat((this.currentStamina - this.staminaDrainJumping).toFixed(2));
         this.jumpTriggered = true;
         this.throttledLog("Jump drain: stamina reduced by " + this.staminaDrainJumping + " New stamina: " + this.currentStamina);
       }
@@ -53,7 +53,7 @@ class Stamina {
         this.throttledLog("Stamina depleted - returning to house");
         
         // Move player to house
-        changeState(GameState.HOUSE);
+        changeState(window.GameState.HOUSE);
         
         // Refill stamina
         this.currentStamina = this.maxStamina;
@@ -75,50 +75,50 @@ class Stamina {
   
     update() {
       // Check for entering house state (state transition)
-      const enteringHouse = this.previousState !== GameState.HOUSE && currentState === GameState.HOUSE;
+      const enteringHouse = this.previousState !== window.GameState.HOUSE && window.currentState === window.GameState.HOUSE;
       
       // Only show stamina bar if the player is NOT at home
-      this.isVisible = (currentState !== GameState.HOUSE);
+      this.isVisible = (window.currentState !== window.GameState.HOUSE);
       if (!this.isVisible) {
         if (enteringHouse) {
           this.currentStamina = this.maxStamina; // Reset stamina only when entering the house
           this.throttledLog("At home - resetting stamina");
         }
         this.canvas.style.display = "none";
-        this.previousState = currentState; // Update previous state
+        this.previousState = window.currentState; // Update previous state
         return;
       }
       this.canvas.style.display = "block";
   
       // Drain stamina when moving uphill
-      if (currentState === GameState.UPHILL) {
+      if (window.currentState === window.GameState.UPHILL) {
         if (keysDown["w"] || keysDown["a"] || keysDown["s"] || keysDown["d"]) {
-          this.currentStamina -= this.staminaDrainWalking;
+          // Fix floating-point precision issue
+          this.currentStamina = parseFloat((this.currentStamina - this.staminaDrainWalking).toFixed(2));
           this.throttledLog("UPHILL movement: draining stamina by " + this.staminaDrainWalking + " Current stamina: " + this.currentStamina);
         }
       }
   
-      // (No jump drain logic here now—it's moved to mechanics.js)
-  
       // Drain stamina very slowly when sledding
       if (player.isSliding) {
-        this.currentStamina -= this.staminaDrainSledding;
+        // Fix floating-point precision issue
+        this.currentStamina = parseFloat((this.currentStamina - this.staminaDrainSledding).toFixed(2));
         this.throttledLog("Sledding: draining stamina by " + this.staminaDrainSledding + " Current stamina: " + this.currentStamina);
       }
   
       // Check for stamina depletion
-      if (this.currentStamina <= 0 && currentState !== GameState.HOUSE) {
+      if (this.currentStamina <= 0 && window.currentState !== window.GameState.HOUSE) {
         this.handleStaminaDepletion();
       }
   
       // Clamp stamina value between 0 and max
-      this.currentStamina = Math.max(0, Math.min(this.currentStamina, this.maxStamina));
+      this.currentStamina = parseFloat(Math.max(0, Math.min(this.currentStamina, this.maxStamina)).toFixed(2));
   
       // Render the stamina bar
       this.render();
       
       // Update previous state
-      this.previousState = currentState;
+      this.previousState = window.currentState;
     }
   
     render() {
@@ -149,3 +149,6 @@ class Stamina {
     requestAnimationFrame(updateStamina);
   }
   updateStamina();
+
+// Make stamina available globally
+window.stamina = stamina;

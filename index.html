@@ -4,20 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SledHEAD</title>
-  <!-- Global UI styles -->
   <link rel="stylesheet" href="styles.css">
-  <!-- Phaser library -->
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
 </head>
 <body>
-  <!-- Cursor Position Display -->
+  <!-- UI Elements -->
   <div id="cursor-position"
        style="position: fixed; top: 10px; left: 10px; background: rgba(0,0,0,0.7); color: white;
               padding: 5px; border-radius: 3px; font-family: monospace; z-index: 1000;">
     Abs: (0, 0) | View: (0, 0)
   </div>
 
-  <!-- Victory Banner (hidden by default) -->
   <div id="victoryBanner"
        style="display: none; position: fixed; top: 50%; left: 50%;
               transform: translate(-50%, -50%); background: gold; padding: 20px;
@@ -25,201 +22,54 @@
     🎉 VICTORY! 🎉<br>
     You've paid off your loan!
   </div>
-  
-  <!-- Title (Global UI) -->
+
   <h1>SledHEAD</h1>
-  
-  <!-- Money Display (Global UI, upper right corner) -->
   <div id="moneyDisplay">
     <p id="moneyText">Money: $200</p>
   </div>
-  
-  <!-- Game Screen: Phaser will attach its canvas here.
-       Note: No fixed width/height here; the Scale Manager in game.js will handle resizing. -->
+
   <div id="game-screen"></div>
-  
-  <!-- House/Upgrade Menu -->
+
+  <!-- Upgrades -->
   <div id="upgrade-menu">
-    <!-- Game Control Buttons -->
     <div class="game-controls">
       <button id="startGame">Start Sled Run</button>
       <button id="payLoan">Pay Loan ($100,000)</button>
     </div>
-    <!-- Upgrade Menu Columns -->
-    <div class="upgrade-menu-columns">
-      <!-- Left Column: Personal Upgrades -->
-      <div class="upgrade-column">
-        <h2>Personal Upgrades</h2>
-        <div class="upgrade-entry">
-          <button id="upgradeRocketSurgery">Rocket Surgery (Lv 0/10 – Cost: $110)</button>
-          <p class="upgrade-desc">
-            Speed down the mountain with red paint, sled wax, and more!<br>
-            Boosts top speed &amp; acceleration for faster downhill runs.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeOptimalOptics">Optimal Optics (Lv 0/10 – Cost: $110)</button>
-          <p class="upgrade-desc">
-            Go from phone to GoPro/drone for better footage!<br>
-            Frees focus &amp; boosts fan engagement for easier weaving.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeSledDurability">Sled Durability (Lv 0/10 – Cost: $110)</button>
-          <p class="upgrade-desc">
-            Reinforce your sled to withstand bigger impacts.<br>
-            +1 collision allowed before a crash occurs.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeFancierFootwear">Fancier Footwear (Lv 0/10 – Cost: $110)</button>
-          <p class="upgrade-desc">
-            Hike faster &amp; slip less on icy terrain.<br>
-            Less time climbing, more time sledding.
-          </p>
-        </div>
-        <!-- The remaining personal upgrades -->
-        <div class="upgrade-entry">
-          <button id="upgradeGrapplingAnchor">Grappling Anchor (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Hook onto terrain to swing into tricky spots.<br>
-            Longer range &amp; stronger anchor with each upgrade.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeAttendLegDay">Attend Leg Day (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Reduce stamina cost for climbing back up.<br>
-            Run out of stamina, and the day is done.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeShortcutAwareness">Shortcut Awareness (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Reveal hidden shortcuts &amp; groomed trails.<br>
-            Optimize your route to beat best times.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeCrowdHypeman">Crowd Hypeman (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Perform tricks near fans for speed &amp; cash boosts.<br>
-            Chain multiple fans for even bigger bonuses!
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeCrowdWeaver">Crowd Weaver (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Non-fan crowds move aside more often.<br>
-            Fans already dodge, so this reduces obstacles further.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeWeatherWarrior">Weather Warrior (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Storms &amp; blizzards barely slow you down.<br>
-            Keep performance steady in harsh weather.
-          </p>
-        </div>
-      </div>
-      <!-- Right Column: Mountain Upgrades -->
-      <div class="upgrade-column">
-        <h2>Mountain Upgrades</h2>
-        <div class="upgrade-entry">
-          <button id="upgradeSkiLifts">High-Speed Ski Lift Expansion (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Add lifts for more visitors &amp; bigger crowds.<br>
-            Ride lifts up the mountain faster yourself.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeSnowmobileRentals">Snowmobile Rentals (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Rent out snowmobiles for income &amp; new obstacles.<br>
-            You can also rent one to speed up your ascent.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeEateries">Eateries &amp; Snack Bars (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Install stands for visitors &amp; extra cash flow.<br>
-            Eating there restores your stamina.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeGroomedTrails">Groomed Trails (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Smooth paths attract crowds (and hazards).<br>
-            Sometimes grants speed boosts downhill.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeFirstAidStations">Safety &amp; First-Aid Stations (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            More safety = more popularity &amp; money.<br>
-            Use them to heal &amp; reduce collision penalties.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeScenicOverlooks">Scenic Overlook Platforms (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Build scenic spots to lure tourists &amp; sponsors.<br>
-            If not crowded, can be used as shortcuts.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeAdvertisingRamps">Advertising Ramp-Billboards (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Boost sponsor revenue with flashy ads.<br>
-            Doubles as ramps for epic tricks.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeResortLodges">Resort Amenities &amp; Lodges (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Add luxury lodges for high-end guests.<br>
-            You can start runs from these remote spots.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeNightLighting">Night Lighting Upgrades (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Enable night sledding for 24/7 fun.<br>
-            Unlock special night-only runs &amp; bigger rewards.
-          </p>
-        </div>
-        <div class="upgrade-entry">
-          <button id="upgradeWeatherControl">Weather Control Systems (Lv 0/0)</button>
-          <p class="upgrade-desc">
-            Moderate snow &amp; ice conditions at will.<br>
-            Reduce hazards or ramp up challenge for more rewards.
-          </p>
-        </div>
-      </div>
+    <div id="dynamic-upgrade-columns" class="upgrade-menu-columns">
+      <!-- Populated dynamically -->
     </div>
     <p id="bestTimeText">Best Time: N/A</p>
   </div>
 
-  <!-- Load JS files in proper order -->
+  <!-- JS Includes -->
   <script src="js/settings.js"></script>
   <script src="js/notify.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/input.js"></script>
-  <script src="js/upgrades.js"></script>
   <script src="js/world.js"></script>
   <script src="js/player.js"></script>
   <script src="js/entities.js"></script>
   <script src="js/wildlife.js"></script>
+  <script src="js/mobs/bear.js"></script>
+  <script src="js/mobs/mountainlion.js"></script>
+  <script src="js/mobs/bird.js"></script>
   <script src="js/trees.js"></script>
   <script src="js/camera.js"></script>
-  <script src="js/tricks.js"></script>
   <script src="js/jumpsled.js"></script>
-  <script src="js/downhill.js"></script>
-  <script src="js/uphill.js"></script>
-  <script src="js/loan.js"></script>
   <script src="js/mechanics.js"></script>
   <script src="js/render.js"></script>
-  <script src="js/game.js"></script>
   <script src="js/stamina.js"></script>
+  <script src="js/loan.js"></script>
+  <script src="js/uphill.js"></script>
+
+  <!-- Modules -->
+  <script type="module" src="js/registry.js"></script>
+  <script type="module" src="js/tricks.js"></script>
+  <script type="module" src="js/downhill.js"></script>
+  <script type="module" src="js/upgradeData.js"></script>
+  <script type="module" src="js/upgradeLogic.js"></script>
+  <script type="module" src="js/upgrades.js"></script>
+  <script type="module" src="js/game.js"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 /* tricks.js - Trick System & Logic */
+import { register } from './registry.js';
 
-// Function to start a trick
 function startTrick(trickName) {
   if (player.currentTrick) return;
   player.currentTrick = trickName;
@@ -14,8 +14,8 @@ function startTrick(trickName) {
   player.trickCooldowns[trickName] = now + TWEAK._trickCooldown;
   console.log(`Starting ${trickName} (Value: ${(player.currentTrickValueMultiplier * 100).toFixed(0)}%)`);
 }
+register("startTrick", startTrick);
 
-// Check trick inputs and start a trick if applicable
 function checkTrickInputs() {
   if (!player.currentTrick && player.isJumping) {
     if (keysDown["ArrowLeft"]) startTrick("leftHelicopter");
@@ -24,14 +24,12 @@ function checkTrickInputs() {
     else if (keysDown["ArrowDown"]) startTrick("parachute");
   }
 }
+register("checkTrickInputs", checkTrickInputs);
 
-// Process the current trick's animation and state
 function processTrick(deltaTime) {
   if (player.currentTrick) {
     player.trickTimer += deltaTime;
     let trickProgress = player.trickTimer / (TWEAK._trickBaseDuration * TWEAK._trickTimeMultiplier + TWEAK._trickTimeAdder);
-    
-    // Apply trick-specific effects
     switch (player.currentTrick) {
       case "leftHelicopter":
         player.trickRotation -= TWEAK._trickRotationSpeed * (deltaTime / 1000);
@@ -44,19 +42,16 @@ function processTrick(deltaTime) {
         player.trickOffset = TWEAK._trickOffsetDistance * Math.sin(Math.PI * trickProgress);
         break;
     }
-    
-    // Check if trick is complete
     if (trickProgress >= 1) {
       completeTrick();
     }
   }
 }
+register("processTrick", processTrick);
 
-// Complete a trick and award money
 function completeTrick() {
   let trickMoney = TWEAK._trickMoneyBase;
   let chainBonus = 1;
-  
   if (player.lastTrick && player.lastTrick !== player.currentTrick) {
     player.trickChainCount++;
     chainBonus = Math.pow(TWEAK._trickChainMultiplier, player.trickChainCount);
@@ -64,24 +59,21 @@ function completeTrick() {
   } else {
     player.trickChainCount = 0;
   }
-  
   trickMoney *= player.currentTrickValueMultiplier;
   let finalMoney = Math.floor(trickMoney);
   player.money += finalMoney;
   showMoneyGain(finalMoney, `(${player.currentTrick})`);
   addFloatingText(`+$${finalMoney} ${player.currentTrick}`, player.x, player.absY);
   console.log(`Completed ${player.currentTrick}! +$${finalMoney}`);
-  
   player.lastTrick = player.currentTrick;
   player.currentTrick = null;
   player.trickTimer = 0;
   player.trickRotation = 0;
   player.trickOffset = 0;
-  
   playTrickCompleteSound();
 }
+register("completeTrick", completeTrick);
 
-// Reset trick state when landing or crashing
 function resetTrickState() {
   player.currentTrick = null;
   player.trickTimer = 0;
@@ -90,8 +82,23 @@ function resetTrickState() {
   player.lastTrick = null;
   player.trickChainCount = 0;
 }
+register("resetTrickState", resetTrickState);
 
-// Play sound when a trick is completed
 function playTrickCompleteSound() {
   playTone(600, "sine", 0.1, 0.2);
 }
+register("playTrickCompleteSound", playTrickCompleteSound);
+
+// Expose checkTrickInputs globally so that other modules (like downhill.js) can call it.
+window.checkTrickInputs = checkTrickInputs;
+// Expose resetTrickState globally so game.js can use it during state transitions
+window.resetTrickState = resetTrickState;
+
+export {
+  startTrick,
+  checkTrickInputs,
+  processTrick,
+  completeTrick,
+  resetTrickState,
+  playTrickCompleteSound,
+};

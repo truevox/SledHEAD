@@ -1,7 +1,7 @@
 /* utils.js */
 // Global Configuration & Shared Globals moved to settings.js
 
-var GameState = {
+window.GameState = {
     HOUSE: 'house',
     DOWNHILL: 'downhill',
     UPHILL: 'uphill'
@@ -10,8 +10,35 @@ var GameState = {
 // Instead of getting the canvas element (which no longer exists),
 // we define a dummy canvas object for width/height references.
 var canvas = { width: 800, height: 450 };
+// We'll expose canvas globally for other scripts to access
+window.canvas = canvas;
 // We'll set ctx in game.js once the Phaser Canvas Texture is created.
 var ctx = null;
+
+// Game-relevant keys that should be logged
+const GAME_KEYS = [
+    'a', 'd', 'w', 's',  // Movement
+    'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',  // Alt movement
+    ' ',  // Jump/spacebar
+    'Tab',  // Toggle state
+    'e',  // Spawn animal (debug)
+    'r',  // Reserved for future use
+    '1', '2', '3', '4',  // Trick buttons
+    'q', 'z', 'x', 'c'   // Alternative trick buttons
+];
+
+// Helper function to format timestamp for logging
+function getTimestamp() {
+    const now = new Date();
+    return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}.${now.getMilliseconds().toString().padStart(3, '0')}`;
+}
+
+// Helper function to log key presses with relevant info
+function logKeyEvent(type, key, gameState) {
+    if (GAME_KEYS.includes(key.toLowerCase()) || key === 'Tab') {
+        console.log(`[${getTimestamp()}] ${type}: ${key} (Game State: ${gameState})`);
+    }
+}
 
 /* NEW: Global keysDown object and event listeners */
 var keysDown = {};
@@ -22,41 +49,50 @@ window.addEventListener("keydown", function (e) {
     if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", " ", "Tab"].includes(e.key)) {
         e.preventDefault();
     }
+    
+    // Only log if this is a fresh key press, not a key repeat
+    if (!keysDown[e.key]) {
+        logKeyEvent('KEY DOWN', e.key, window.currentState);
+    }
+    
     keysDown[e.key] = true;
 
     // Track space in HOUSE state
-    if (e.key === " " && currentState === GameState.HOUSE) {
+    if (e.key === " " && window.currentState === window.GameState.HOUSE) {
         spacePressed = true;
     }
     // Take a photo in UPHILL state when space is pressed
-    if (e.key === " " && currentState === GameState.UPHILL) {
+    if (e.key === " " && window.currentState === window.GameState.UPHILL) {
         takePhoto();
     }
     // Press "E" to manually spawn an animal in UPHILL mode (DEBUG)
-    if (e.key.toLowerCase() === 'e' && currentState === GameState.UPHILL) {
+    if (e.key.toLowerCase() === 'e' && window.currentState === window.GameState.UPHILL) {
         spawnAnimal();
     }
     // Handle Tab key to toggle between UPHILL and DOWNHILL
-    if (e.key === "Tab" && currentState !== GameState.HOUSE) {
-        if (currentState === GameState.UPHILL && player.sledDamaged === 1) {
+    if (e.key === "Tab" && window.currentState !== window.GameState.HOUSE) {
+        if (window.currentState === window.GameState.UPHILL && player.sledDamaged === 1) {
             console.log("Cannot switch to DOWNHILL mode - Sled is damaged and needs repair");
             showSledDamageNotice();
             return;
         }
-        const newState = currentState === GameState.UPHILL ? GameState.DOWNHILL : GameState.UPHILL;
+        const newState = window.currentState === window.GameState.UPHILL ? window.GameState.DOWNHILL : window.GameState.UPHILL;
         changeState(newState);
     }
 });
 
 window.addEventListener("keyup", function (e) {
+    // Log key up events for game-relevant keys
+    logKeyEvent('KEY UP', e.key, window.currentState);
+    
     delete keysDown[e.key];
 
-    if (e.key === " " && currentState === GameState.HOUSE) {
+    if (e.key === " " && window.currentState === window.GameState.HOUSE) {
         spacePressed = false;
         console.log("Space released, starting sled run.");
         unlockAudioContext();
         playStartGameSound();
-        changeState(GameState.DOWNHILL);
+        changeState(window.GameState.DOWNHILL);
     }
 });
 
@@ -78,6 +114,13 @@ function getCameraOffset(playerAbsY, canvasHeight, mountainHeight) {
     let offset = playerAbsY - canvasHeight / 2;
     return clamp(offset, 0, mountainHeight - canvasHeight);
 }
+
+// Make utility functions available globally for both normal scripts and modules
+window.formatUpgradeName = formatUpgradeName;
+window.capitalizeFirstLetter = capitalizeFirstLetter;
+window.checkCollision = checkCollision;
+window.clamp = clamp;
+window.getCameraOffset = getCameraOffset;
 
 /* Ensure Web Audio API is unlocked */
 let audioCtx;
@@ -179,3 +222,19 @@ function showSledDamageNotice() {
 function showSledRepairedNotice() {
   showSuccessNotification('Sled Repaired!');
 }
+
+// Add additional utility functions to window object
+window.mapRange = mapRange;
+window.hexToRgb = hexToRgb;
+window.rgbToHex = rgbToHex;
+window.lerpColor = lerpColor;
+window.showSledDamageNotice = showSledDamageNotice;
+window.showSledRepairedNotice = showSledRepairedNotice;
+window.playTone = playTone;
+window.playStartGameSound = playStartGameSound;
+window.playCrashSound = playCrashSound;
+window.playRockHitSound = playRockHitSound;
+window.playMoneyGainSound = playMoneyGainSound;
+window.unlockAudioContext = unlockAudioContext;
+
+// Note: export statement has been removed and all functions are now attached to window

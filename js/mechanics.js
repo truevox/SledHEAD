@@ -3,10 +3,10 @@
 // Update all gameplay state and physics – including jump/trick handling and collision updates.
 function updateMechanics(deltaTime) {
     deltaTime *= 1;
-    if (currentState === GameState.DOWNHILL) {
+    if (window.currentState === window.GameState.DOWNHILL) {
       // Call the refactored downhill function from downhill.js
       updateDownhill(deltaTime);
-    } else if (currentState === GameState.UPHILL) {
+    } else if (window.currentState === window.GameState.UPHILL) {
       // Call the refactored uphill function from uphill.js
       updateUphill(deltaTime);
     }

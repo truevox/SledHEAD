@@ -1,7 +1,7 @@
 /* input.js - Keyboard Input Handling */
 
 // Global keyboard input tracking
-var keysDown = {};
+// var keysDown = {}; // Now using the one from utils.js
 
 // Global cursor position tracking
 var cursorPosition = {
@@ -12,14 +12,8 @@ var cursorPosition = {
   lastUpdateTime: 0
 };
 
-// Set up event listeners for keyboard input
-window.addEventListener("keydown", function(e) {
-  keysDown[e.key] = true;
-});
-
-window.addEventListener("keyup", function(e) {
-  keysDown[e.key] = false;
-});
+// We're no longer setting up duplicate key event listeners here
+// The main event listeners are now in utils.js with logging
 
 // Set up event listener for mouse movement
 window.addEventListener("mousemove", function(e) {
@@ -28,6 +22,15 @@ window.addEventListener("mousemove", function(e) {
   cursorPosition.absoluteY = e.pageY;
   cursorPosition.viewportX = e.clientX;
   cursorPosition.viewportY = e.clientY;
+});
+
+// Add logging for mouse clicks when they're used for game interactions
+window.addEventListener("mousedown", function(e) {
+  // Log only left and right clicks for game interactions
+  if (e.button === 0 || e.button === 2) {
+    const buttonName = e.button === 0 ? "LEFT CLICK" : "RIGHT CLICK";
+    console.log(`[${getTimestamp()}] MOUSE ${buttonName}: (${e.clientX}, ${e.clientY}) (Game State: ${window.currentState})`);
+  }
 });
 
 // Update the cursor position display
@@ -43,5 +46,5 @@ setInterval(updateCursorPositionDisplay, 1000);
 
 // Helper function to check if a key is currently pressed
 function isKeyDown(key) {
-  return keysDown[key] === true;
+  return window.keysDown && window.keysDown[key] === true;
 }
