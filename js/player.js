@@ -8,7 +8,7 @@ let player = {
   xVel: 0,
   collisions: 0,
   bestTime: Infinity,
-  money: 200, // Default initial value instead of directly accessing TWEAK.starterCash
+  money: 0, // Default initial value instead of directly accessing TWEAK.starterCash
   sledDamaged: 0,  // Track if sled is damaged: 0 = not damaged, >0 = damaged
   // Camera aim properties
   cameraAngle: 270,  // Camera rotation in degrees
