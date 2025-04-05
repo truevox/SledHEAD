@@ -53,7 +53,7 @@ class Stamina {
         this.throttledLog("Stamina depleted - returning to house");
         
         // Move player to house
-        changeState(GameState.HOUSE);
+        changeState(window.GameState.HOUSE);
         
         // Refill stamina
         this.currentStamina = this.maxStamina;
@@ -75,23 +75,23 @@ class Stamina {
   
     update() {
       // Check for entering house state (state transition)
-      const enteringHouse = this.previousState !== GameState.HOUSE && currentState === GameState.HOUSE;
+      const enteringHouse = this.previousState !== window.GameState.HOUSE && window.currentState === window.GameState.HOUSE;
       
       // Only show stamina bar if the player is NOT at home
-      this.isVisible = (currentState !== GameState.HOUSE);
+      this.isVisible = (window.currentState !== window.GameState.HOUSE);
       if (!this.isVisible) {
         if (enteringHouse) {
           this.currentStamina = this.maxStamina; // Reset stamina only when entering the house
           this.throttledLog("At home - resetting stamina");
         }
         this.canvas.style.display = "none";
-        this.previousState = currentState; // Update previous state
+        this.previousState = window.currentState; // Update previous state
         return;
       }
       this.canvas.style.display = "block";
   
       // Drain stamina when moving uphill
-      if (currentState === GameState.UPHILL) {
+      if (window.currentState === window.GameState.UPHILL) {
         if (keysDown["w"] || keysDown["a"] || keysDown["s"] || keysDown["d"]) {
           this.currentStamina -= this.staminaDrainWalking;
           this.throttledLog("UPHILL movement: draining stamina by " + this.staminaDrainWalking + " Current stamina: " + this.currentStamina);
@@ -107,7 +107,7 @@ class Stamina {
       }
   
       // Check for stamina depletion
-      if (this.currentStamina <= 0 && currentState !== GameState.HOUSE) {
+      if (this.currentStamina <= 0 && window.currentState !== window.GameState.HOUSE) {
         this.handleStaminaDepletion();
       }
   
@@ -118,7 +118,7 @@ class Stamina {
       this.render();
       
       // Update previous state
-      this.previousState = currentState;
+      this.previousState = window.currentState;
     }
   
     render() {
@@ -149,3 +149,6 @@ class Stamina {
     requestAnimationFrame(updateStamina);
   }
   updateStamina();
+
+// Make stamina available globally
+window.stamina = stamina;

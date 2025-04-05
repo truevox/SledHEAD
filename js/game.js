@@ -1,21 +1,24 @@
 /* game.js - Core Loop & State Management (Phaserized) */
 
+// Import necessary functions and variables
+import { playerUpgrades, mountainUpgrades, initUpgradeButton, purchaseUpgrade, updateMoneyDisplay } from './upgradeLogic.js';
+
 // Keep your globals
 var downhillStartTime = null;
+window.downhillStartTime = null; // Make downhillStartTime globally accessible
 var lastTime = 0;
-var currentState = GameState.HOUSE;
+// Local currentState variable removed - we'll use window.currentState exclusively
 var jumpOsc = null;
 var jumpGain = null;
 var loanAmount = 100000;
-var floatingTexts = [];
+window.floatingTexts = [];  // Make floatingTexts accessible globally
 var isFirstHouseEntry = true;
 var houseReEntry = 0;
 var playerStartAbsY = 0;
+window.playerStartAbsY = playerStartAbsY; // Make playerStartAbsY globally accessible
 
-// We'll store a "canvas" object for width/height references (fixed size)
-var canvas = { width: 800, height: 450 };
-// We'll store a reference to the texture context (set in create())
-var ctx = null;
+// We'll access the global canvas object
+// var ctx is defined later after context creation
 
 // Create a Phaser Scene to run your game logic
 class MainScene extends Phaser.Scene {
@@ -28,19 +31,43 @@ class MainScene extends Phaser.Scene {
   }
 
   create() {
+    // Initialize global game state
+    window.currentState = window.GameState.HOUSE;
+    
     // Create a Canvas Texture of the same size as your old canvas
-    this.rt = this.textures.createCanvas("myCanvas", canvas.width, canvas.height);
+    this.rt = this.textures.createCanvas("myCanvas", window.canvas.width, window.canvas.height);
+    
+    // Get the canvas context
     ctx = this.rt.context;
-
-    // Add it to the scene as an Image so Phaser will display it
+    
+    // Set the willReadFrequently attribute on the original canvas
+    // We do this by creating a new canvas with the attribute and copying the context methods
+    const canvasElement = this.game.canvas;
+    canvasElement.willReadFrequently = true;
+    
+    // Make the canvas and context accessible globally
+    window.gameCanvas = canvasElement;
+    window.gameCtx = ctx;
+    
+    // Add the canvas texture to the scene as an Image so Phaser will display it
     this.image = this.add.image(0, 0, "myCanvas").setOrigin(0, 0);
+    
+    // Make sure the image is visible and covers the full game area
+    this.image.displayWidth = window.canvas.width;
+    this.image.displayHeight = window.canvas.height;
+    this.image.setDepth(1); // Ensure it's on top of other elements
+
+    // Initialize player money now that TWEAK is available
+    if (typeof window.initializePlayerMoney === 'function') {
+      window.initializePlayerMoney();
+    }
 
     // Hook up your DOM event listeners for buttons
     document.getElementById("startGame").addEventListener("click", () => {
       console.log("Start run clicked.");
       unlockAudioContext();
       playStartGameSound();
-      changeState(GameState.DOWNHILL);
+      changeState(window.GameState.DOWNHILL);
     });
 
     document.getElementById("payLoan").addEventListener("click", () => {
@@ -51,7 +78,7 @@ class MainScene extends Phaser.Scene {
     // Initialize upgrade buttons
     Object.keys(playerUpgrades).forEach(upg => {
       initUpgradeButton(upg, playerUpgrades[upg]);
-      const btnId = `upgrade${capitalizeFirstLetter(upg)}`;
+      const btnId = `upgrade${window.capitalizeFirstLetter(upg)}`;
       document.getElementById(btnId).addEventListener("click", () => {
         console.log("Upgrade button clicked:", upg, "Current money:", player.money);
         purchaseUpgrade(playerUpgrades, upg);
@@ -59,7 +86,7 @@ class MainScene extends Phaser.Scene {
     });
     Object.keys(mountainUpgrades).forEach(upg => {
       initUpgradeButton(upg, mountainUpgrades[upg]);
-      const btnId = `upgrade${capitalizeFirstLetter(upg)}`;
+      const btnId = `upgrade${window.capitalizeFirstLetter(upg)}`;
       document.getElementById(btnId).addEventListener("click", () => {
         console.log("Upgrade button clicked:", upg, "Current money:", player.money);
         purchaseUpgrade(mountainUpgrades, upg);
@@ -69,28 +96,40 @@ class MainScene extends Phaser.Scene {
     // Set up the world
     generateTerrain();
     updateLoanButton();
-    changeState(GameState.HOUSE);
+    changeState(window.GameState.HOUSE);
   }
 
   update(time, delta) {
+    console.log("MainScene update START");
     // Update game mechanics (delta in ms)
     updateMechanics(delta);
 
     // Update floating texts
-    floatingTexts = floatingTexts.filter(text => text.update(delta));
+    window.floatingTexts = window.floatingTexts.filter(text => text.update(delta));
 
     // Call the render function (draws onto ctx)
     render();
 
     // Refresh the Canvas Texture so Phaser displays the new drawing
     this.rt.refresh();
+    
+    // Make sure the image is visible after state changes
+    this.image.visible = true;
+    
+    console.log("MainScene update END");
   }
 }
 
 // Original changeState function (unchanged in logic)
 function changeState(newState) {
-  const prevState = currentState;
-  if (player.isJumping && newState !== GameState.HOUSE) {
+  // Guard clause to prevent redundant state changes
+  if (newState === window.currentState) {
+    console.log(`State change ignored: already in state ${newState}`);
+    return;
+  }
+
+  const prevState = window.currentState;
+  if (player.isJumping && newState !== window.GameState.HOUSE) {
     if (player.currentTrick) {
       resetTrickState();
       playCrashSound();
@@ -107,8 +146,8 @@ function changeState(newState) {
 }
 
 function completeStateChange(newState, prevState) {
-  currentState = newState;
-  if (currentState === GameState.HOUSE) {
+  window.currentState = newState;
+  if (window.currentState === window.GameState.HOUSE) {
     document.getElementById("upgrade-menu").style.display = "block";
     document.getElementById("game-screen").style.display = "none";
     const bestTimeText = document.getElementById("bestTimeText");
@@ -119,7 +158,7 @@ function completeStateChange(newState, prevState) {
       console.log("Sled has been repaired at the house!");
       showSledRepairedNotice();
     }
-    if (!isFirstHouseEntry && (prevState === GameState.DOWNHILL || prevState === GameState.UPHILL)) {
+    if (!isFirstHouseEntry && (prevState === window.GameState.DOWNHILL || prevState === window.GameState.UPHILL)) {
       if (typeof despawnAllAnimals === 'function') {
         despawnAllAnimals();
       }
@@ -137,45 +176,49 @@ function completeStateChange(newState, prevState) {
     }
     updateMoneyDisplay();
   }
-  else if (currentState === GameState.DOWNHILL) {
+  else if (window.currentState === window.GameState.DOWNHILL) {
     document.getElementById("upgrade-menu").style.display = "none";
     document.getElementById("game-screen").style.display = "block";
-    if (prevState === GameState.HOUSE) {
+    if (prevState === window.GameState.HOUSE) {
       earlyFinish = false;
       player.collisions = 0;
-      player.x = canvas.width / 2;
+      player.x = window.canvas.width / 2;
       player.absY = mountainHeight - (player.height * 3);
       player.velocityY = 0;
       player.xVel = 0;
       downhillStartTime = performance.now();
+      window.downhillStartTime = downhillStartTime; // Ensure global value is updated
       playerStartAbsY = player.absY;
+      window.playerStartAbsY = playerStartAbsY; // Update global value
       console.log(`DOWNHILL starting position: ${playerStartAbsY}`);
     }
-    else if (prevState === GameState.UPHILL) {
+    else if (prevState === window.GameState.UPHILL) {
       player.velocityY = 0;
       player.xVel = 0;
       downhillStartTime = performance.now();
+      window.downhillStartTime = downhillStartTime; // Ensure global value is updated
       playerStartAbsY = player.absY;
+      window.playerStartAbsY = playerStartAbsY; // Update global value
       console.log(`DOWNHILL starting position: ${playerStartAbsY}`);
     }
   }
-  else if (currentState === GameState.UPHILL) {
+  else if (window.currentState === window.GameState.UPHILL) {
     document.getElementById("upgrade-menu").style.display = "none";
     document.getElementById("game-screen").style.display = "block";
-    if (prevState === GameState.DOWNHILL) {
+    if (prevState === window.GameState.DOWNHILL) {
       awardMoney();
     }
     player.xVel = 0;
   }
-  console.log(`Game state changed: ${prevState} -> ${currentState}`);
+  console.log(`Game state changed: ${prevState} -> ${window.currentState}`);
 }
 
 // Create and launch the Phaser game with scale options for responsiveness
 var config = {
   type: Phaser.AUTO,
   parent: "game-screen",
-  width: canvas.width,
-  height: canvas.height,
+  width: window.canvas.width,  // Reference from global window.canvas
+  height: window.canvas.height, // Reference from global window.canvas
   scene: MainScene,
   backgroundColor: "#000000",
   scale: {
@@ -185,3 +228,7 @@ var config = {
 };
 
 var phaserGame = new Phaser.Game(config);
+
+// Make functions available globally
+window.changeState = changeState;
+// Removed redundant global assignment - window.currentState is now managed directly

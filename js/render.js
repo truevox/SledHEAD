@@ -28,7 +28,7 @@ class FloatingText {
 }
 
 function addFloatingText(text, x, y) {
-  floatingTexts.push(new FloatingText(text, x, y - 30));
+  window.floatingTexts.push(new FloatingText(text, x, y - 30));
 }
 
 // No changes to money display logic
@@ -67,18 +67,20 @@ function updateMoneyDisplay() {
 
 // MAIN RENDER
 function render() {
+  console.log("render START");
   // Clear the canvas each frame
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Background color depends on state
-  ctx.fillStyle = (currentState === GameState.DOWNHILL) ? "#ADD8E6" : "#98FB98";
+  ctx.fillStyle = (window.currentState === window.GameState.DOWNHILL) ? "#ADD8E6" : "#98FB98";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   drawEntities();
   ctx.save();
-  floatingTexts.forEach(text => text.draw(ctx, player.absY - canvas.height / 2));
+  window.floatingTexts.forEach(text => text.draw(ctx, player.absY - canvas.height / 2));
   ctx.restore();
   drawReHitIndicator();
+  console.log("render END");
 }
 
 function drawEntities() {
@@ -129,7 +131,7 @@ function drawEntities() {
 }
 
 function drawCameraOverlay() {
-  if (currentState !== GameState.UPHILL) return;
+  if (window.currentState !== window.GameState.UPHILL) return;
   let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
   let centerX = player.x;
   let centerY = player.absY - cameraOffset;

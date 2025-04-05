@@ -10,33 +10,33 @@ import {
 
 // Update all downhill-specific physics and mechanics
 function updateDownhill(deltaTime) {
-  let rocketFactor = 1 + (playerUpgrades.rocketSurgery * TWEAK.rocketSurgeryFactorPerLevel);
+  let rocketFactor = 1 + (window.playerUpgrades.rocketSurgery * TWEAK.rocketSurgeryFactorPerLevel);
   let gravity = TWEAK.baseGravity * rocketFactor;
-  let maxXVel = TWEAK.baseMaxXVel * (rocketFactor - (playerUpgrades.optimalOptics * TWEAK.optimalOpticsFrictionFactorPerLevel));
+  let maxXVel = TWEAK.baseMaxXVel * (rocketFactor - (window.playerUpgrades.optimalOptics * TWEAK.optimalOpticsFrictionFactorPerLevel));
   maxXVel = Math.max(0, maxXVel);
-  let opticsFactor = 1 + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsAccelFactorPerLevel);
+  let opticsFactor = 1 + (window.playerUpgrades.optimalOptics * TWEAK.optimalOpticsAccelFactorPerLevel);
   let horizontalAccel = TWEAK.baseHorizontalAccel * opticsFactor;
-  let friction = TWEAK.baseFriction - (playerUpgrades.optimalOptics * TWEAK.optimalOpticsFrictionFactorPerLevel);
+  let friction = TWEAK.baseFriction - (window.playerUpgrades.optimalOptics * TWEAK.optimalOpticsFrictionFactorPerLevel);
   if (friction < 0.8) friction = 0.8;
   
   // Horizontal movement handling with bounds checking
-  if (keysDown["a"]) { player.xVel -= horizontalAccel; }
-  if (keysDown["d"]) { player.xVel += horizontalAccel; }
+  if (window.keysDown["a"]) { player.xVel -= horizontalAccel; }
+  if (window.keysDown["d"]) { player.xVel += horizontalAccel; }
   player.xVel *= friction;
   player.xVel = clamp(player.xVel, -maxXVel, maxXVel);
   let newX = player.x + player.xVel;
   // Prevent going off screen horizontally
-  player.x = clamp(newX, player.width/2, canvas.width - player.width/2);
+  player.x = clamp(newX, player.width/2, window.canvas.width - player.width/2);
   
   // --- Jump Input Handling ---
   // Immediate Mode:
   if (TWEAK.jumpType === "immediate") {
-    if (keysDown[" "] && !player.isJumping && player.canJump) {
+    if (window.keysDown[" "] && !player.isJumping && player.canJump) {
       player.isJumping = true;
       player.canJump = false;
       player.isCharging = false;
-      let heightBonus = 1 + (playerUpgrades.rocketSurgery * TWEAK.jumpHeightPerRocketSurgery);
-      let timeBonus = 1 + (playerUpgrades.rocketSurgery * TWEAK.jumpTimePerRocketSurgery);
+      let heightBonus = 1 + (window.playerUpgrades.rocketSurgery * TWEAK.jumpHeightPerRocketSurgery);
+      let timeBonus = 1 + (window.playerUpgrades.rocketSurgery * TWEAK.jumpTimePerRocketSurgery);
       let heightIncrease = heightBonus - 1;
       let extraZoom = heightIncrease * TWEAK.jumpZoomPerHeightIncrease;
       player.jumpHeightFactor = heightBonus;
@@ -44,22 +44,22 @@ function updateDownhill(deltaTime) {
       player.jumpZoomBonus = extraZoom;
       player.jumpTimer = 0;
       player.hasReachedJumpPeak = false;
-      if (playerUpgrades.rocketSurgery > 0) {
-        console.log(`Jump boosted by Rocket Surgery ${playerUpgrades.rocketSurgery}: Height x${heightBonus.toFixed(2)}, Time x${timeBonus.toFixed(2)}, Zoom +${(extraZoom*100).toFixed(0)}%`);
+      if (window.playerUpgrades.rocketSurgery > 0) {
+        console.log(`Jump boosted by Rocket Surgery ${window.playerUpgrades.rocketSurgery}: Height x${heightBonus.toFixed(2)}, Time x${timeBonus.toFixed(2)}, Zoom +${(extraZoom*100).toFixed(0)}%`);
       }
       onPlayerJumpStart();
     }
   }
   // Charge Mode:
   else if (TWEAK.jumpType === "charge") {
-    if (keysDown[" "] && !player.isJumping && !player.isCharging && player.canJump) {
+    if (window.keysDown[" "] && !player.isJumping && !player.isCharging && player.canJump) {
       player.isCharging = true;
       player.canJump = false;
       player.jumpChargeTime = 0;
     }
     if (player.isCharging) {
       player.jumpChargeTime += deltaTime;
-      if (!keysDown[" "]) {
+      if (!window.keysDown[" "]) {
         let chargeRatio = Math.min(1, player.jumpChargeTime / TWEAK.jumpMaxHoldTime);
         player.isCharging = false;
         player.isJumping = true;
@@ -86,7 +86,7 @@ function updateDownhill(deltaTime) {
     let progress = player.jumpTimer / player.jumpDuration;
     // Re-hit window handling:
     if (progress >= TWEAK.reHitWindowStart && progress < 1.0) {
-      if (keysDown[" "] && !player.reHitActivated && !player.isCharging) {
+      if (window.keysDown[" "] && !player.reHitActivated && !player.isCharging) {
         console.log("Re-hit jump activated!");
         player.reHitActivated = true;
         player.jumpTimer = 0;
@@ -160,10 +160,12 @@ function updateDownhill(deltaTime) {
       player.height = player.baseHeight * scale;
     }
   }
+  
   // Allow jump restart when space is released
-  if (!keysDown[" "]) {
+  if (!window.keysDown[" "]) {
     player.canJump = true;
   }
+  
   // Normal downhill physics & collision handling (skip during jump)
   let prevAbsY = player.absY;
   if (!player.isJumping) {
@@ -194,6 +196,7 @@ function updateDownhill(deltaTime) {
       }
     }
   }
+  
   player.velocityY += player.isJumping ? TWEAK.baseGravity : gravity;
   player.absY += player.velocityY;
   updateLiveMoney();
@@ -252,3 +255,10 @@ function lerpJumpZoomToZero(callback) {
 
   requestAnimationFrame(animate);
 }
+
+// Make functions available globally
+window.updateDownhill = updateDownhill;
+window.lerpJumpZoomToZero = lerpJumpZoomToZero;
+
+// Export necessary functions for module imports
+export { updateDownhill, lerpJumpZoomToZero };

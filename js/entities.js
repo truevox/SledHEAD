@@ -33,7 +33,7 @@ function resolveCollision(player, obstacle) {
 // Draws the camera overlay with the POV cone and a steady altitude line.
 function drawCameraOverlay() {
   // Only display the overlay when in UPHILL mode.
-  if (currentState !== GameState.UPHILL) return;
+  if (window.currentState !== window.GameState.UPHILL) return;
 
   let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
   let centerX = player.x;
@@ -92,7 +92,7 @@ function drawEntities() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Draw background.
-  ctx.fillStyle = currentState === GameState.DOWNHILL ? "#ADD8E6" : "#98FB98";
+  ctx.fillStyle = window.currentState === window.GameState.DOWNHILL ? "#ADD8E6" : "#98FB98";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // Draw terrain obstacles.

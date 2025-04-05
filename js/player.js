@@ -1,6 +1,6 @@
 /* player.js */
 let player = {
-  x: canvas.width / 2,
+  x: window.canvas.width / 2,  // Use global canvas reference
   absY: 0,
   width: 20,
   height: 20,
@@ -8,7 +8,7 @@ let player = {
   xVel: 0,
   collisions: 0,
   bestTime: Infinity,
-  money: TWEAK.starterCash,
+  money: 200, // Default initial value instead of directly accessing TWEAK.starterCash
   sledDamaged: 0,  // Track if sled is damaged: 0 = not damaged, >0 = damaged
   // Camera aim properties
   cameraAngle: 270,  // Camera rotation in degrees
@@ -42,3 +42,14 @@ let player = {
   baseWidth: 20,             // Original sprite width (for scaling)
   baseHeight: 20             // Original sprite height (for scaling)
 };
+
+// Initialize player money from TWEAK settings once they're available
+function initializePlayerMoney() {
+  if (window.TWEAK && typeof window.TWEAK.starterCash !== 'undefined') {
+    player.money = window.TWEAK.starterCash;
+    console.log("Player money initialized to:", player.money);
+  }
+}
+
+// Call this function after TWEAK is initialized (e.g., from game.js)
+window.initializePlayerMoney = initializePlayerMoney;

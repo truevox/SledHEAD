@@ -1,6 +1,14 @@
 // js/upgrades.js
 import { upgradeCategories } from './upgradeData.js';
-import { playerUpgrades, mountainUpgrades, upgradeMaxLevel, purchaseUpgrade, getUpgradeDisplayText, capitalizeFirstLetter } from './upgradeLogic.js';
+import { 
+  playerUpgrades, 
+  mountainUpgrades, 
+  upgradeMaxLevel, 
+  purchaseUpgrade, 
+  getUpgradeCost,
+  getUpgradeDisplayText 
+} from './upgradeLogic.js';
+// Using global capitalizeFirstLetter instead of importing it
 
 function createUpgradeElement(upgrade, isPlayerUpgrade = true) {
   const upgradeType = isPlayerUpgrade ? playerUpgrades : mountainUpgrades;

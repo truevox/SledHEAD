@@ -50,8 +50,8 @@ function generateTerrain() {
 function awardMoney() {
     // Calculate real distance traveled based on starting and ending Y positions
     // Note: In this game's coordinate system, higher Y values mean lower on the mountain
-    // So the distance traveled downhill is player.absY - playerStartAbsY
-    let distanceTraveled = Math.max(1, player.absY - playerStartAbsY);
+    // So the distance traveled downhill is player.absY - window.playerStartAbsY
+    let distanceTraveled = Math.max(1, player.absY - window.playerStartAbsY);
     
     // Ensure at least 1 unit
     distanceTraveled = Math.max(1, distanceTraveled);
@@ -59,7 +59,7 @@ function awardMoney() {
     // Calculate the height multiplier based on starting position
     // Higher up the mountain (lower playerStartAbsY value) gives better multiplier
     // This will make a run from the top worth 3x more than from the bottom
-    const startHeightRatio = 1 - (playerStartAbsY / mountainHeight); // 0 at bottom, 1 at top
+    const startHeightRatio = 1 - (window.playerStartAbsY / mountainHeight); // 0 at bottom, 1 at top
     const startHeightMultiplier = 1 + (startHeightRatio * 2 * heightMultiplierBase); // Range: 1-3x
     
     // Calculate the distance multiplier based on how much of the mountain was traversed
@@ -70,8 +70,8 @@ function awardMoney() {
     
     // Calculate speed multiplier based on the time taken to complete the run
     let speedMultiplier = 1;
-    if (downhillStartTime !== null) {
-        const runDuration = (performance.now() - downhillStartTime) / 1000; // Convert to seconds
+    if (window.downhillStartTime !== null) {
+        const runDuration = (performance.now() - window.downhillStartTime) / 1000; // Convert to seconds
         
         // Calculate expected time based on distance
         // Assuming an "average" speed would be covering the entire mountain in the below number of seconds
