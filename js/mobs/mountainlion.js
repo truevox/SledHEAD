@@ -19,7 +19,7 @@
 
     var mountainLionData = {
         type: "mountainlion",
-        spawnProbability: 2.0, // Very high spawn chance
+        spawnProbability: 0.5, // 2.0 is very high spawn chance
         width: 50,
         height: 30,
         detectionRadius: 60,

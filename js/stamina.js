@@ -28,7 +28,7 @@ class Stamina {
     // New method to drain stamina on jump initiation
     drainJump() {
       if (!this.jumpTriggered) {
-        this.currentStamina -= this.staminaDrainJumping;
+        this.currentStamina = parseFloat((this.currentStamina - this.staminaDrainJumping).toFixed(2));
         this.jumpTriggered = true;
         this.throttledLog("Jump drain: stamina reduced by " + this.staminaDrainJumping + " New stamina: " + this.currentStamina);
       }
@@ -93,16 +93,16 @@ class Stamina {
       // Drain stamina when moving uphill
       if (window.currentState === window.GameState.UPHILL) {
         if (keysDown["w"] || keysDown["a"] || keysDown["s"] || keysDown["d"]) {
-          this.currentStamina -= this.staminaDrainWalking;
+          // Fix floating-point precision issue
+          this.currentStamina = parseFloat((this.currentStamina - this.staminaDrainWalking).toFixed(2));
           this.throttledLog("UPHILL movement: draining stamina by " + this.staminaDrainWalking + " Current stamina: " + this.currentStamina);
         }
       }
   
-      // (No jump drain logic here now—it's moved to mechanics.js)
-  
       // Drain stamina very slowly when sledding
       if (player.isSliding) {
-        this.currentStamina -= this.staminaDrainSledding;
+        // Fix floating-point precision issue
+        this.currentStamina = parseFloat((this.currentStamina - this.staminaDrainSledding).toFixed(2));
         this.throttledLog("Sledding: draining stamina by " + this.staminaDrainSledding + " Current stamina: " + this.currentStamina);
       }
   
@@ -112,7 +112,7 @@ class Stamina {
       }
   
       // Clamp stamina value between 0 and max
-      this.currentStamina = Math.max(0, Math.min(this.currentStamina, this.maxStamina));
+      this.currentStamina = parseFloat(Math.max(0, Math.min(this.currentStamina, this.maxStamina)).toFixed(2));
   
       // Render the stamina bar
       this.render();

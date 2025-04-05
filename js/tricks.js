@@ -91,6 +91,8 @@ register("playTrickCompleteSound", playTrickCompleteSound);
 
 // Expose checkTrickInputs globally so that other modules (like downhill.js) can call it.
 window.checkTrickInputs = checkTrickInputs;
+// Expose resetTrickState globally so game.js can use it during state transitions
+window.resetTrickState = resetTrickState;
 
 export {
   startTrick,

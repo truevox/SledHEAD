@@ -44,3 +44,18 @@ function onPlayerLand() {
   cleanupJumpSound();
   stamina.resetJumpTrigger();
 }
+
+// Add the missing function to handle jump landing during state transitions
+function onPlayerJumpLand() {
+  // This function is specifically used during state transitions
+  console.log("Jump landing during state transition");
+  cleanupJumpSound();
+  resetTrickState();
+  stamina.resetJumpTrigger();
+}
+
+// Expose functions globally
+window.onPlayerJumpStart = onPlayerJumpStart;
+window.onPlayerJumpPeak = onPlayerJumpPeak;
+window.onPlayerLand = onPlayerLand;
+window.onPlayerJumpLand = onPlayerJumpLand;

@@ -224,6 +224,10 @@ var config = {
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH
+  },
+  // Add canvas attributes to fix the willReadFrequently warning
+  canvasAttributes: {
+    willReadFrequently: true
   }
 };
 
