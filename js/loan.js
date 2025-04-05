@@ -3,6 +3,9 @@
 // Loan System
 var loanAmount = 100000; // Initial loan amount
 
+// Loan interest parameters
+const LOAN_INTEREST_RATE = 0.005; // 5% interest rate per house re-entry
+
 function updateLoanButton() {
   const loanButton = document.getElementById("payLoan");
   if (loanButton) {
@@ -16,6 +19,22 @@ function updateLoanButton() {
       loanButton.disabled = false;
     }
   }
+}
+
+// Function to calculate and apply loan interest when entering the house
+function calculateLoanInterest() {
+  if (loanAmount > 0) {
+    // Calculate interest amount based on current loan
+    const interestAmount = Math.ceil(loanAmount * LOAN_INTEREST_RATE);
+    loanAmount += interestAmount;
+    
+    // Update the UI to show new loan amount
+    updateLoanButton();
+    
+    // Return the interest amount for logging
+    return interestAmount;
+  }
+  return 0;
 }
 
 function payLoan() {

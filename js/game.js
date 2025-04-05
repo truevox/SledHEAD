@@ -114,6 +114,7 @@ class MainScene extends Phaser.Scene {
     // Set up the world
     generateTerrain();
     updateLoanButton();
+    
     changeState(window.GameState.HOUSE);
   }
 
@@ -181,11 +182,17 @@ function completeStateChange(newState, prevState) {
         despawnAllAnimals();
       }
       if (loanAmount > 0) {
+        // First calculate house entry fee
         const deduction = Math.ceil(loanAmount * TWEAK.houseEntryLoanDeduction);
         loanAmount += deduction;
+        
+        // Then calculate interest on the updated loan amount
+        const interestAmount = calculateLoanInterest();
+        
         updateLoanButton();
         houseReEntry++;
-        console.log(`House entry fee: -$${deduction} (${TWEAK.houseEntryLoanDeduction * 100}% of $${loanAmount} loan)`);
+        console.log(`House entry fee: $${deduction} (${TWEAK.houseEntryLoanDeduction * 100}% of loan)`);
+        console.log(`Loan interest: $${interestAmount} (${LOAN_INTEREST_RATE * 100}% of loan)`);
         console.log("House re-entry count:", houseReEntry);
       }
     }
