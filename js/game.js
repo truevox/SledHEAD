@@ -3,6 +3,10 @@
 // Import necessary functions and variables
 import { playerUpgrades, mountainUpgrades, initUpgradeButton, purchaseUpgrade, updateMoneyDisplay } from './upgradeLogic.js';
 
+// Global flag for debouncing upgrade clicks
+window.upgradeClickInProgress = false;
+const DEBOUNCE_DELAY = 100; // milliseconds
+
 // Keep your globals
 var downhillStartTime = null;
 window.downhillStartTime = null; // Make downhillStartTime globally accessible
@@ -37,6 +41,21 @@ function throttledLog(message, throttleTime = 5000) {
 
 // We'll access the global canvas object
 // var ctx is defined later after context creation
+
+// Helper function to handle upgrade clicks with debouncing
+function handleUpgradeClick(upgradeType, upgradeKey) {
+  if (window.upgradeClickInProgress) {
+    console.log("Debounced duplicate upgrade click for:", upgradeKey);
+    return false; // Click handled (blocked)
+  }
+  
+  window.upgradeClickInProgress = true;
+  console.log("Upgrade button clicked:", upgradeKey, "Current money:", player.money);
+  purchaseUpgrade(upgradeType, upgradeKey);
+  
+  setTimeout(() => { window.upgradeClickInProgress = false; }, DEBOUNCE_DELAY);
+  return true; // Click handled (processed)
+}
 
 // Create a Phaser Scene to run your game logic
 class MainScene extends Phaser.Scene {
@@ -85,34 +104,63 @@ class MainScene extends Phaser.Scene {
     }
 
     // Hook up your DOM event listeners for buttons
-    document.getElementById("startGame").addEventListener("click", () => {
-      console.log("Start run clicked.");
-      unlockAudioContext();
-      playStartGameSound();
-      changeState(window.GameState.DOWNHILL);
-    });
+    const startGameBtn = document.getElementById("startGame");
+    if (startGameBtn) {
+      // Remove any existing listeners first
+      const newStartGameBtn = startGameBtn.cloneNode(true);
+      startGameBtn.parentNode.replaceChild(newStartGameBtn, startGameBtn);
+      
+      newStartGameBtn.addEventListener("click", () => {
+        console.log("Start run clicked.");
+        unlockAudioContext();
+        playStartGameSound();
+        changeState(window.GameState.DOWNHILL);
+      });
+    }
 
-    document.getElementById("payLoan").addEventListener("click", () => {
-      console.log("Paying loan...");
-      payLoan();
-    });
+    const payLoanBtn = document.getElementById("payLoan");
+    if (payLoanBtn) {
+      // Remove any existing listeners first
+      const newPayLoanBtn = payLoanBtn.cloneNode(true);
+      payLoanBtn.parentNode.replaceChild(newPayLoanBtn, payLoanBtn);
+      
+      newPayLoanBtn.addEventListener("click", () => {
+        console.log("Paying loan...");
+        payLoan();
+      });
+    }
 
     // Initialize upgrade buttons
     Object.keys(playerUpgrades).forEach(upg => {
       initUpgradeButton(upg, playerUpgrades[upg]);
       const btnId = `upgrade${window.capitalizeFirstLetter(upg)}`;
-      document.getElementById(btnId).addEventListener("click", () => {
-        console.log("Upgrade button clicked:", upg, "Current money:", player.money);
-        purchaseUpgrade(playerUpgrades, upg);
-      });
+      const btn = document.getElementById(btnId);
+      
+      if (btn) {
+        // Remove any existing listeners by replacing the button with a clone
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+        
+        newBtn.addEventListener("click", () => {
+          handleUpgradeClick(playerUpgrades, upg);
+        });
+      }
     });
+    
     Object.keys(mountainUpgrades).forEach(upg => {
       initUpgradeButton(upg, mountainUpgrades[upg]);
       const btnId = `upgrade${window.capitalizeFirstLetter(upg)}`;
-      document.getElementById(btnId).addEventListener("click", () => {
-        console.log("Upgrade button clicked:", upg, "Current money:", player.money);
-        purchaseUpgrade(mountainUpgrades, upg);
-      });
+      const btn = document.getElementById(btnId);
+      
+      if (btn) {
+        // Remove any existing listeners by replacing the button with a clone
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+        
+        newBtn.addEventListener("click", () => {
+          handleUpgradeClick(mountainUpgrades, upg);
+        });
+      }
     });
 
     // Set up the world
