@@ -80,7 +80,7 @@ function updateDownhill(deltaTime) {
     }
   }
   
-  // Jump Animation & Trick Handling:
+  // Trick Animation & Trick Handling:
   if (player.isJumping) {
     player.jumpTimer += deltaTime;
     let progress = player.jumpTimer / player.jumpDuration;
@@ -129,10 +129,20 @@ function updateDownhill(deltaTime) {
       if (landingDuringTrick) {
         console.log(`Crash! Landed during trick (${player.currentTrick} - ${player.trickState} phase)`);
         resetTrickState();
-        player.velocityY = -TWEAK.bounceImpulse * TWEAK.jumpCollisionMultiplier;
-        player.absY -= TWEAK.bounceImpulse * TWEAK.jumpCollisionMultiplier;
         player.collisions++;
+        
+        // Switch to UPHILL mode immediately
         playCrashSound();
+        
+        // If max collisions reached, mark sled as damaged
+        if (player.collisions >= TWEAK.getMaxCollisions()) {
+          console.log("Max collisions reached.");
+          player.sledDamaged = 1; // Mark sled as damaged
+          console.log("Sled marked as damaged! You'll need to repair it before going downhill again.");
+        }
+        
+        changeState(GameState.UPHILL);
+        return;
       } else {
         // Normal landing - full trick completion
         resetTrickState();
@@ -152,21 +162,21 @@ function updateDownhill(deltaTime) {
             obstacle.width, obstacle.height
         )) {
           console.log("Collision on landing.");
-          player.velocityY = -TWEAK.bounceImpulse * TWEAK.jumpCollisionMultiplier;
-          player.absY -= TWEAK.bounceImpulse * TWEAK.jumpCollisionMultiplier;
+          // terrain.splice(i, 1); // Commented out obstacle destruction
           player.collisions++;
-          terrain.splice(i, 1);
+          
+          // Switch to UPHILL mode immediately
+          playCrashSound();
+          
+          // If max collisions reached, mark sled as damaged
           if (player.collisions >= TWEAK.getMaxCollisions()) {
             console.log("Max collisions reached.");
             player.sledDamaged = 1; // Mark sled as damaged
             console.log("Sled marked as damaged! You'll need to repair it before going downhill again.");
-            playCrashSound();
-            changeState(GameState.UPHILL);
-            return;
-          } else {
-            playRockHitSound();
           }
-          break;
+          
+          changeState(GameState.UPHILL);
+          return;
         }
       }
     } else {
@@ -195,21 +205,23 @@ function updateDownhill(deltaTime) {
           obstacle.width, obstacle.height
       )) {
         console.log("Collision on downhill.");
-        player.velocityY = -TWEAK.bounceImpulse;
-        player.absY = prevAbsY - TWEAK.bounceImpulse;
+        // terrain.splice(i, 1); // Commented out obstacle destruction
         player.collisions++;
-        terrain.splice(i, 1);
+        
+        // Switch to UPHILL mode immediately
+        playCrashSound();
+        
+        // If max collisions reached, mark sled as damaged
         if (player.collisions >= TWEAK.getMaxCollisions()) {
           console.log("Max collisions reached. Ending run.");
           player.sledDamaged = 1; // Mark sled as damaged
           console.log("Sled marked as damaged! You'll need to repair it before going downhill again.");
-          awardMoney();
-          playCrashSound();
-          changeState(GameState.UPHILL);
-          return;
-        } else {
-          playRockHitSound();
         }
+        
+        // Award money even if not at the bottom
+        awardMoney();
+        changeState(GameState.UPHILL);
+        return;
       }
     }
   }

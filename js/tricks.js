@@ -106,18 +106,24 @@ function processAnimations(deltaTime) {
       } 
       else if (player.trickState === 'mid') {
         // Mid phase: continue rotating
-        player.trickRotation += rotationDir * rotationSpeed * 360; // Constant rotation
+        player.trickRotation += rotationDir * rotationSpeed; // Constant rotation
       } 
       else if (player.trickState === 'end') {
-        // End phase: interpolate back to 0 from current rotation
+        // End phase: continue spinning but gradually slow down to complete the current rotation
         const endProgress = Math.min(1, player.trickPhaseTimer / endPhaseDuration);
-        const startRotation = player.trickRotation;
-        // Calculate shortest path to 0 (consider rotation is in degrees)
-        let targetRotation = 0;
-        while (targetRotation < startRotation - 180) targetRotation += 360;
-        while (targetRotation > startRotation + 180) targetRotation -= 360;
+        const slowdownFactor = 1 - endProgress; // From 1 (full speed) to 0 (stopped)
         
-        player.trickRotation = startRotation + (targetRotation - startRotation) * endProgress;
+        // Continue in same direction but slow down
+        player.trickRotation += rotationDir * rotationSpeed * slowdownFactor;
+        
+        // Snap to a multiple of 360 degrees at the very end to avoid awkward final positions
+        if (endProgress > 0.95) {
+          // Calculate target rotation (nearest multiple of 360)
+          const target = Math.round(player.trickRotation / 360) * 360;
+          // Smoothly approach the target in the last 5% of the animation
+          const finalLerpFactor = (endProgress - 0.95) / 0.05; // 0 to 1 in the last 5%
+          player.trickRotation = player.trickRotation + (target - player.trickRotation) * finalLerpFactor;
+        }
       }
       break;
       

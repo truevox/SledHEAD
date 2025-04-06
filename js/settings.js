@@ -94,7 +94,7 @@ var TWEAK = {
     _trickTimeMultiplier: 1.0,     // Global trick duration multiplier
     _trickTimeAdder: 0,            // Global trick duration additive time
     _trickBaseDuration: 250,       // Base duration for tricks (ms)
-    _trickRotationSpeed: 720,     // Degrees per second for helicopter tricks (3 full spins)
+    _trickRotationSpeed: 360,     // Degrees per second for helicopter tricks (1 full spin)
     _trickOffsetDistance: 40,      // Pixels to offset sled for air brake/parachute
     _trickMoneyBase: 50,           // Base money earned per trick
     _trickChainMultiplier: 1.5,    // Multiplier for chaining different tricks
