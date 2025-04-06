@@ -214,6 +214,9 @@ function completeTrick() {
     totalMoney *= player.currentTrickValueMultiplier;
   }
   
+  // Reduce trick award to 1/4 of original value
+  totalMoney = totalMoney / 4;
+  
   // Final money amount as integer
   let finalMoney = Math.floor(totalMoney);
   
