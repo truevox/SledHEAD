@@ -121,11 +121,28 @@ function updateDownhill(deltaTime) {
       player.isJumping = false;
       player.jumpTimer = 0;
       player.hasReachedJumpPeak = false;
-      resetTrickState();
+      
+      // Check if a trick is currently active (any phase) when landing
+      let landingDuringTrick = (player.trickState === 'start' || player.trickState === 'mid' || player.trickState === 'end');
+      
+      // If landing while doing a trick, it's a crash
+      if (landingDuringTrick) {
+        console.log(`Crash! Landed during trick (${player.currentTrick} - ${player.trickState} phase)`);
+        resetTrickState();
+        player.velocityY = -TWEAK.bounceImpulse * TWEAK.jumpCollisionMultiplier;
+        player.absY -= TWEAK.bounceImpulse * TWEAK.jumpCollisionMultiplier;
+        player.collisions++;
+        playCrashSound();
+      } else {
+        // Normal landing - full trick completion
+        resetTrickState();
+      }
+      
       player.width = player.baseWidth;
       player.height = player.baseHeight;
       onPlayerLand();
-      // Check for landing collisions
+      
+      // Check for landing collisions after checking trick state
       for (let i = 0; i < terrain.length; i++) {
         let obstacle = terrain[i];
         if (checkCollision(

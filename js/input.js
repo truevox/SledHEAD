@@ -12,6 +12,17 @@ var cursorPosition = {
   lastUpdateTime: 0
 };
 
+// Map of trick keys and their corresponding tricks
+const trickKeyMap = {
+  "ArrowLeft": "leftHelicopter",
+  "ArrowRight": "rightHelicopter",
+  "ArrowUp": "airBrake",
+  "ArrowDown": "parachute"
+};
+
+// Track the active trick buttons
+let activeTrickKeys = {};
+
 // We're no longer setting up duplicate key event listeners here
 // The main event listeners are now in utils.js with logging
 
@@ -33,6 +44,35 @@ window.addEventListener("mousedown", function(e) {
   }
 });
 
+// Additional event listeners for trick key handling
+window.addEventListener("keydown", function(e) {
+  // Check if this is a trick key
+  if (trickKeyMap[e.key]) {
+    const trickName = trickKeyMap[e.key];
+    activeTrickKeys[e.key] = true;
+    
+    // Only try to start a trick if we're not already doing one
+    if (player.trickState === 'none' && player.isJumping) {
+      startTrickPhase(trickName, 'start');
+    }
+  }
+});
+
+window.addEventListener("keyup", function(e) {
+  // Check if this is a trick key being released
+  if (trickKeyMap[e.key] && activeTrickKeys[e.key]) {
+    const trickName = trickKeyMap[e.key];
+    activeTrickKeys[e.key] = false;
+    
+    // Only trigger the end phase if we're in the mid phase or have completed the start phase
+    if (player.currentTrick === trickName && 
+        (player.trickState === 'mid' || 
+         (player.trickState === 'start' && player.trickPhaseTimer >= TWEAK._trickStartPhaseDuration))) {
+      startTrickPhase(trickName, 'end');
+    }
+  }
+});
+
 // Update the cursor position display
 function updateCursorPositionDisplay() {
   const cursorPositionElement = document.getElementById("cursor-position");
@@ -48,3 +88,16 @@ setInterval(updateCursorPositionDisplay, 1000);
 function isKeyDown(key) {
   return window.keysDown && window.keysDown[key] === true;
 }
+
+// Helper function to check if a trick button is currently held
+function isTrickButtonHeld(trickName) {
+  for (const key in trickKeyMap) {
+    if (trickKeyMap[key] === trickName && activeTrickKeys[key]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// Export functions
+window.isTrickButtonHeld = isTrickButtonHeld;

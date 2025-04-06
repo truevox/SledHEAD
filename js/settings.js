@@ -100,6 +100,10 @@ var TWEAK = {
     _trickChainMultiplier: 1.5,    // Multiplier for chaining different tricks
     _trickHeightNormalization: 10, // Normalization factor for jump height in trick calculations
     
+    // New three-phase trick system config
+    _trickStartPhaseDuration: 300, // Duration of the START animation phase (ms)
+    _trickEndPhaseDuration: 300,   // Duration of the END animation phase (ms)
+    
     // Getters to apply tweakNob multiplier
 
     get sledMass() { return this._sledMass * this.tweakNob; },
