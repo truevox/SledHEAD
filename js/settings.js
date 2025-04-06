@@ -75,10 +75,10 @@ var TWEAK = {
 
     // Underlying base values
     _sledMass: 1.0,
-    _baseGravity: 0.1,
+    _baseGravity: 0.04,   // REDUCED from 0.1 to make downhill acceleration much slower
     _baseHorizontalAccel: 0.25,
-    _baseFriction: 0.95,
-    _baseMaxXVel: 3,
+    _baseFriction: 0.98,  // INCREASED from 0.95 to add more friction/resistance
+    _baseMaxXVel: 1.5,    // REDUCED from 3 to make max speed much lower
     _rocketSurgeryFactorPerLevel: 0.1,
     _optimalOpticsAccelFactorPerLevel: 0.02,
     _optimalOpticsFrictionFactorPerLevel: 0.005,
