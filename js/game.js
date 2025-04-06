@@ -55,13 +55,17 @@ class MainScene extends Phaser.Scene {
     // Create a Canvas Texture of the same size as your old canvas
     this.rt = this.textures.createCanvas("myCanvas", window.canvas.width, window.canvas.height);
     
-    // Get the canvas context
-    ctx = this.rt.context;
+    // Get the canvas context with willReadFrequently attribute set to true
+    const contextSettings = { willReadFrequently: true };
+    ctx = this.rt.canvas.getContext('2d', contextSettings);
+    this.rt.context = ctx; // Update the texture's context reference
     
-    // Set the willReadFrequently attribute on the original canvas
-    // We do this by creating a new canvas with the attribute and copying the context methods
+    // Apply willReadFrequently to the game canvas context as well
+    this.game.context.willReadFrequently = true;
+    
+    // Set attribute on the original canvas 
     const canvasElement = this.game.canvas;
-    canvasElement.willReadFrequently = true;
+    // This will help Phaser's internal operations with getImageData
     
     // Make the canvas and context accessible globally
     window.gameCanvas = canvasElement;

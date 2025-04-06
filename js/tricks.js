@@ -61,22 +61,80 @@ function processTrick(deltaTime) {
 }
 register("processTrick", processTrick);
 
+// Helper function to get current jump data safely
+function getCurrentJumpData() {
+  // Safely access window.jumpData or provide fallback with default values
+  return window.jumpData || { peakHeight: 0, startTime: Date.now() };
+}
+
 function completeTrick() {
-  let trickMoney = TWEAK._trickMoneyBase;
+  // Get jump data safely
+  let jumpData = getCurrentJumpData();
+  let currentTime = Date.now();
+  
+  // Store trick name before resetting
+  const trickName = player.currentTrick;
+  
+  // Get timing values with safety checks
+  let trickStartTime = player.trickTimer ? (currentTime - player.trickTimer) : currentTime;
+  let elapsedTime = Math.max(0, (currentTime - trickStartTime) / 1000); // seconds, ensure positive
+  
+  // Get base values with safety checks
+  let baseValue = TWEAK._trickMoneyBase || 50; // Fallback to 50 if undefined
+  
+  // Get multipliers with safety checks for division by zero
+  let trickTimeNormalization = TWEAK._trickTimeMultiplier || 1; // Fallback to 1 if undefined
+  if (trickTimeNormalization <= 0) trickTimeNormalization = 1; // Prevent division by zero
+  
+  let airtimeMultiplier = 1 + (elapsedTime / trickTimeNormalization);
+  
+  // Get height multiplier with safety checks
+  let peakHeight = jumpData.peakHeight || 0;
+  let trickHeightNormalization = 10; // Default value if no configuration exists
+  
+  if (typeof TWEAK._trickHeightNormalization !== 'undefined' && TWEAK._trickHeightNormalization > 0) {
+    trickHeightNormalization = TWEAK._trickHeightNormalization;
+  }
+  
+  let heightMultiplier = 1 + (peakHeight / trickHeightNormalization);
+  
+  // Calculate final money amount
+  let totalMoney = Math.floor(baseValue * airtimeMultiplier * heightMultiplier);
+  
+  // Debug log to help identify issues
+  console.log(`Debug trick calculation: baseValue=${baseValue}, elapsedTime=${elapsedTime.toFixed(2)}s, airtimeMultiplier=${airtimeMultiplier.toFixed(2)}, peakHeight=${peakHeight}, heightMultiplier=${heightMultiplier.toFixed(2)}`);
+  
+  // Ensure totalMoney is a valid number
+  if (isNaN(totalMoney) || !isFinite(totalMoney)) {
+    console.error(`Error calculating trick money for ${trickName}. Using default value.`);
+    totalMoney = baseValue; // Fallback to base value if calculation fails
+  }
+  
+  // Chain bonus logic
   let chainBonus = 1;
   if (player.lastTrick && player.lastTrick !== player.currentTrick) {
     player.trickChainCount++;
     chainBonus = Math.pow(TWEAK._trickChainMultiplier, player.trickChainCount);
-    trickMoney *= chainBonus;
+    totalMoney *= chainBonus;
   } else {
     player.trickChainCount = 0;
   }
-  trickMoney *= player.currentTrickValueMultiplier;
-  let finalMoney = Math.floor(trickMoney);
+  
+  // Apply trick value multiplier if it exists
+  if (player.currentTrickValueMultiplier) {
+    totalMoney *= player.currentTrickValueMultiplier;
+  }
+  
+  // Final money amount as integer
+  let finalMoney = Math.floor(totalMoney);
+  
+  // Add money and display
   player.money += finalMoney;
-  showMoneyGain(finalMoney, `(${player.currentTrick})`);
-  addFloatingText(`+$${finalMoney} ${player.currentTrick}`, player.x, player.absY);
-  console.log(`Completed ${player.currentTrick}! +$${finalMoney}`);
+  showMoneyGain(finalMoney, `(${trickName})`);
+  addFloatingText(`+$${finalMoney} ${trickName}`, player.x, player.absY);
+  console.log(`Completed ${trickName}! +$${finalMoney}`);
+  
+  // Reset trick state
   player.lastTrick = player.currentTrick;
   player.currentTrick = null;
   player.trickTimer = 0;

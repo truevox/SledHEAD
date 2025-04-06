@@ -98,6 +98,7 @@ var TWEAK = {
     _trickOffsetDistance: 40,      // Pixels to offset sled for air brake/parachute
     _trickMoneyBase: 50,           // Base money earned per trick
     _trickChainMultiplier: 1.5,    // Multiplier for chaining different tricks
+    _trickHeightNormalization: 10, // Normalization factor for jump height in trick calculations
     
     // Getters to apply tweakNob multiplier
 

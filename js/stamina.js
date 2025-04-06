@@ -15,7 +15,7 @@ class Stamina {
       this.lastLogTime = 0;              // Timestamp for throttling log messages
       
       this.canvas = document.createElement("canvas");
-      this.ctx = this.canvas.getContext("2d");
+      this.ctx = this.canvas.getContext("2d", { willReadFrequently: true });
       this.canvas.width = 200;
       this.canvas.height = 20;
       this.canvas.style.position = "fixed";
