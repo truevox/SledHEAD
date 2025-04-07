@@ -14,6 +14,7 @@
         speed: (typeof TWEAK !== 'undefined' && TWEAK.birdSpeed) || 12,
         basePhotoBonus: 5, // Birds yield a lower photo bonus
         color: "#1E90FF",
+        validBiomes: ['forest', 'alpine', 'peak', 'grassland'], // Birds can live in all biomes
         spawningBiomes: [
             { biome: "starterMountain" }  // Spawns on all layers of the Starter Mountain
         ],

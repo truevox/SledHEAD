@@ -13,8 +13,10 @@ var TWEAK = {
     tweakNob: 1,
 
     // Animal spawning and movement
-    minSpawnTime: 5000, // Minimum delay between spawns (5 sec)
-    maxSpawnTime: 10000, // Maximum delay between spawns (10 sec)
+    // minSpawnTime: 5000, // Minimum delay between spawns (5 sec) - REMOVED for persistent animals
+    // maxSpawnTime: 10000, // Maximum delay between spawns (10 sec) - REMOVED for persistent animals
+    minSitTime: 500, // Minimum time an animal sits still (in ticks)
+    maxSitTime: 1500, // Maximum time an animal sits still (in ticks)
     minIdleTime: 3000, // Minimum time an animal sits still (1 sec)
     maxIdleTime: 8000, // Maximum time an animal sits still (20 sec)
     minMoveSpeed: 5, // Slowest movement speed for animals

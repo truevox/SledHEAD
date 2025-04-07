@@ -6,31 +6,36 @@
 // - startY: absolute Y coordinate where this layer begins (inclusive)
 // - endY: absolute Y coordinate where this layer ends (exclusive)
 // - width: horizontal width (circumference) of this specific layer
+// - totalAnimalsPerLayer: maximum number of persistent animals in this layer
 // Layers are ordered by increasing Y coordinate (from top to bottom of the mountain)
 const mountainLayers = [
   {
     id: 0,
     startY: 0,
     endY: 50000,
-    width: 1000
+    width: 1000,
+    totalAnimalsPerLayer: 15
   },
   {
     id: 1,
     startY: 50000,
     endY: 100000,
-    width: 1500
+    width: 1500,
+    totalAnimalsPerLayer: 18
   },
   {
     id: 2,
     startY: 100000,
     endY: 150000,
-    width: 2000
+    width: 2000,
+    totalAnimalsPerLayer: 22
   },
   {
     id: 3,
     startY: 150000,
     endY: 200000, //200000,
-    width: 2500  //2500
+    width: 2500,  //2500
+    totalAnimalsPerLayer: 25
   }
 ];
 

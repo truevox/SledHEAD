@@ -180,7 +180,8 @@ function spawnAnimal() {
     basePhotoBonus: chosenAnimalType.basePhotoBonus || 0,
     customUpdate: chosenAnimalType.customUpdate || null,
     customDraw: chosenAnimalType.customDraw || null,
-    layer: playerLayer.id // Store which layer this animal belongs to
+    layer: playerLayer.id, // Store which layer this animal belongs to
+    sitTimer: null // Timer for sitting state duration
   };
   
   console.log(`Spawned ${activeAnimal.type} at (${spawnX.toFixed(1)}, ${spawnY.toFixed(1)}), altitude: ${altitude}, state: ${initialState}, speed: ${activeAnimal.speed}, detectionRadius: ${activeAnimal.detectionRadius}, layer: ${playerLayer.id}`);
