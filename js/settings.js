@@ -75,10 +75,10 @@ var TWEAK = {
 
     // Underlying base values
     _sledMass: 1.0,
-    _baseGravity: 0.1,
+    _baseGravity: 0.04,   // REDUCED from 0.1 to make downhill acceleration much slower
     _baseHorizontalAccel: 0.25,
-    _baseFriction: 0.95,
-    _baseMaxXVel: 3,
+    _baseFriction: 0.98,  // INCREASED from 0.95 to add more friction/resistance
+    _baseMaxXVel: 1.5,    // REDUCED from 3 to make max speed much lower
     _rocketSurgeryFactorPerLevel: 0.1,
     _optimalOpticsAccelFactorPerLevel: 0.02,
     _optimalOpticsFrictionFactorPerLevel: 0.005,
@@ -94,10 +94,15 @@ var TWEAK = {
     _trickTimeMultiplier: 1.0,     // Global trick duration multiplier
     _trickTimeAdder: 0,            // Global trick duration additive time
     _trickBaseDuration: 250,       // Base duration for tricks (ms)
-    _trickRotationSpeed: 720,     // Degrees per second for helicopter tricks (3 full spins)
+    _trickRotationSpeed: 360,     // Degrees per second for helicopter tricks (1 full spin)
     _trickOffsetDistance: 40,      // Pixels to offset sled for air brake/parachute
     _trickMoneyBase: 50,           // Base money earned per trick
     _trickChainMultiplier: 1.5,    // Multiplier for chaining different tricks
+    _trickHeightNormalization: 10, // Normalization factor for jump height in trick calculations
+    
+    // New three-phase trick system config
+    _trickStartPhaseDuration: 300, // Duration of the START animation phase (ms)
+    _trickEndPhaseDuration: 300,   // Duration of the END animation phase (ms)
     
     // Getters to apply tweakNob multiplier
 

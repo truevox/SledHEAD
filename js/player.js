@@ -27,6 +27,11 @@ let player = {
     airBrake: 0,
     parachute: 0
   },
+  // New trick phase system
+  trickState: 'none',       // Current trick animation phase: 'none', 'start', 'mid', 'end'
+  trickButtonHeld: false,   // Whether the corresponding trick button is currently held
+  trickPhaseTimer: 0,       // Time elapsed in the current trick phase
+  trickTotalTime: 0,        // Total time spent on the entire trick (all phases)
 
   // *** NEW: Jump State Properties ***
   isJumping: false,          // Are we in a jump?

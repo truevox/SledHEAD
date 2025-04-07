@@ -1,0 +1,21 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Run Repomix and copy output",
+        "type": "shell",
+        "command": "repomix && cp complete-condensed-codebase-for-reference.md complete-condensed-codebase-for-reference.md.txt",
+        "problemMatcher": [],
+        "runOptions": {
+          "runOn": "fileSave"
+        },
+        "presentation": {
+          "echo": true,
+          "reveal": "never",
+          "focus": false,
+          "panel": "shared"
+        }
+      }
+    ]
+  }
+  

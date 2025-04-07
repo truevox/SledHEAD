@@ -80,7 +80,7 @@ function updateDownhill(deltaTime) {
     }
   }
   
-  // Jump Animation & Trick Handling:
+  // Trick Animation & Trick Handling:
   if (player.isJumping) {
     player.jumpTimer += deltaTime;
     let progress = player.jumpTimer / player.jumpDuration;
@@ -121,11 +121,38 @@ function updateDownhill(deltaTime) {
       player.isJumping = false;
       player.jumpTimer = 0;
       player.hasReachedJumpPeak = false;
-      resetTrickState();
+      
+      // Check if a trick is currently active (any phase) when landing
+      let landingDuringTrick = (player.trickState === 'start' || player.trickState === 'mid' || player.trickState === 'end');
+      
+      // If landing while doing a trick, it's a crash
+      if (landingDuringTrick) {
+        console.log(`Crash! Landed during trick (${player.currentTrick} - ${player.trickState} phase)`);
+        resetTrickState();
+        player.collisions++;
+        
+        // Switch to UPHILL mode immediately
+        playCrashSound();
+        
+        // If max collisions reached, mark sled as damaged
+        if (player.collisions >= TWEAK.getMaxCollisions()) {
+          console.log("Max collisions reached.");
+          player.sledDamaged = 1; // Mark sled as damaged
+          console.log("Sled marked as damaged! You'll need to repair it before going downhill again.");
+        }
+        
+        changeState(GameState.UPHILL);
+        return;
+      } else {
+        // Normal landing - full trick completion
+        resetTrickState();
+      }
+      
       player.width = player.baseWidth;
       player.height = player.baseHeight;
       onPlayerLand();
-      // Check for landing collisions
+      
+      // Check for landing collisions after checking trick state
       for (let i = 0; i < terrain.length; i++) {
         let obstacle = terrain[i];
         if (checkCollision(
@@ -135,21 +162,21 @@ function updateDownhill(deltaTime) {
             obstacle.width, obstacle.height
         )) {
           console.log("Collision on landing.");
-          player.velocityY = -TWEAK.bounceImpulse * TWEAK.jumpCollisionMultiplier;
-          player.absY -= TWEAK.bounceImpulse * TWEAK.jumpCollisionMultiplier;
+          // terrain.splice(i, 1); // Commented out obstacle destruction
           player.collisions++;
-          terrain.splice(i, 1);
+          
+          // Switch to UPHILL mode immediately
+          playCrashSound();
+          
+          // If max collisions reached, mark sled as damaged
           if (player.collisions >= TWEAK.getMaxCollisions()) {
             console.log("Max collisions reached.");
             player.sledDamaged = 1; // Mark sled as damaged
             console.log("Sled marked as damaged! You'll need to repair it before going downhill again.");
-            playCrashSound();
-            changeState(GameState.UPHILL);
-            return;
-          } else {
-            playRockHitSound();
           }
-          break;
+          
+          changeState(GameState.UPHILL);
+          return;
         }
       }
     } else {
@@ -178,21 +205,23 @@ function updateDownhill(deltaTime) {
           obstacle.width, obstacle.height
       )) {
         console.log("Collision on downhill.");
-        player.velocityY = -TWEAK.bounceImpulse;
-        player.absY = prevAbsY - TWEAK.bounceImpulse;
+        // terrain.splice(i, 1); // Commented out obstacle destruction
         player.collisions++;
-        terrain.splice(i, 1);
+        
+        // Switch to UPHILL mode immediately
+        playCrashSound();
+        
+        // If max collisions reached, mark sled as damaged
         if (player.collisions >= TWEAK.getMaxCollisions()) {
           console.log("Max collisions reached. Ending run.");
           player.sledDamaged = 1; // Mark sled as damaged
           console.log("Sled marked as damaged! You'll need to repair it before going downhill again.");
-          awardMoney();
-          playCrashSound();
-          changeState(GameState.UPHILL);
-          return;
-        } else {
-          playRockHitSound();
         }
+        
+        // Award money even if not at the bottom
+        awardMoney();
+        changeState(GameState.UPHILL);
+        return;
       }
     }
   }
