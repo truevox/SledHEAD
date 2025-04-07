@@ -105,8 +105,39 @@ function formatUpgradeName(name) {
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
-function checkCollision(ax, ay, aw, ah, bx, by, bw, bh) {
-    return ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by;
+/**
+ * Checks if two rectangular objects collide, considering layer-based wrapping
+ * @param {number} ax - X coordinate of first object's left edge
+ * @param {number} ay - Y coordinate of first object's top edge
+ * @param {number} aw - Width of first object
+ * @param {number} ah - Height of first object
+ * @param {number} bx - X coordinate of second object's left edge
+ * @param {number} by - Y coordinate of second object's top edge
+ * @param {number} bw - Width of second object
+ * @param {number} bh - Height of second object
+ * @param {number} layerWidth - Width of the layer (for wrap calculation)
+ * @returns {boolean} True if objects collide, false otherwise
+ */
+function checkCollision(ax, ay, aw, ah, bx, by, bw, bh, layerWidth) {
+    // Standard Y collision check (no wrapping for vertical)
+    const collideY = ay < by + bh && ay + ah > by;
+    
+    if (!collideY) return false;
+    
+    // Standard X collision check if layerWidth is not provided
+    if (!layerWidth) {
+        return ax < bx + bw && ax + aw > bx;
+    }
+    
+    // For wrapped collision, calculate the minimum horizontal distance
+    // between the centers of the objects
+    const aCenterX = ax + aw / 2;
+    const bCenterX = bx + bw / 2;
+    const wrappedDistX = calculateWrappedDistanceX(aCenterX, bCenterX, layerWidth);
+    
+    // Collision occurs if the wrapped distance is less than half the sum of the widths
+    const combinedHalfWidths = (aw + bw) / 2;
+    return wrappedDistX < combinedHalfWidths;
 }
 function clamp(val, min, max) {
     return Math.max(min, Math.min(max, val));
@@ -249,7 +280,27 @@ function calculateWrappedX(potentialX, layerWidth) {
   return (potentialX % layerWidth + layerWidth) % layerWidth;
 }
 
-// Make the function available globally
+/**
+ * Calculates the smallest horizontal distance between two points in a cylindrical layer
+ * accounting for wrapping at the edges
+ * @param {number} x1 - The x coordinate of the first point
+ * @param {number} x2 - The x coordinate of the second point
+ * @param {number} layerWidth - The width of the layer
+ * @returns {number} The minimum horizontal distance between the points
+ */
+function calculateWrappedDistanceX(x1, x2, layerWidth) {
+  // Regular direct distance
+  const directDistance = Math.abs(x1 - x2);
+  
+  // Distance going around the other way (wrapping around the cylinder)
+  const wrappedDistance = layerWidth - directDistance;
+  
+  // Return the smaller of the two distances
+  return Math.min(directDistance, wrappedDistance);
+}
+
+// Make the functions available globally
 window.calculateWrappedX = calculateWrappedX;
+window.calculateWrappedDistanceX = calculateWrappedDistanceX;
 
 // Note: export statement has been removed and all functions are now attached to window

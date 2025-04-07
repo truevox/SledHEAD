@@ -163,11 +163,15 @@ function updateDownhill(deltaTime) {
       // Check for landing collisions after checking trick state
       for (let i = 0; i < terrain.length; i++) {
         let obstacle = terrain[i];
+        // Get the layer for the obstacle
+        const obstacleLayer = getLayerByY(obstacle.y);
+        
         if (checkCollision(
             player.x - player.width / 2, player.absY - player.height / 2,
             player.width, player.height,
             obstacle.x, obstacle.y,
-            obstacle.width, obstacle.height
+            obstacle.width, obstacle.height,
+            obstacleLayer.width // Pass layer width for wrapped collision detection
         )) {
           console.log("Collision on landing.");
           // terrain.splice(i, 1); // Commented out obstacle destruction
@@ -206,11 +210,15 @@ function updateDownhill(deltaTime) {
   if (!player.isJumping) {
     for (let i = 0; i < terrain.length; i++) {
       let obstacle = terrain[i];
+      // Get the layer for the obstacle
+      const obstacleLayer = getLayerByY(obstacle.y);
+      
       if (checkCollision(
           player.x - player.width / 2, player.absY - player.height / 2,
           player.width, player.height,
           obstacle.x, obstacle.y,
-          obstacle.width, obstacle.height
+          obstacle.width, obstacle.height,
+          obstacleLayer.width // Pass layer width for wrapped collision detection
       )) {
         console.log("Collision on downhill.");
         // terrain.splice(i, 1); // Commented out obstacle destruction

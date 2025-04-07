@@ -42,11 +42,15 @@ function updateUphill(deltaTime) {
   
   // Check for collisions with terrain
   terrain.forEach(obstacle => {
+    // Get the layer for the obstacle
+    const obstacleLayer = getLayerByY(obstacle.y);
+    
     if (checkCollision(
         player.x - player.width / 2, player.absY - player.height / 2,
         player.width, player.height,
         obstacle.x, obstacle.y,
-        obstacle.width, obstacle.height
+        obstacle.width, obstacle.height,
+        obstacleLayer.width // Pass layer width for wrapped collision detection
     )) {
       console.log("Collision on uphill.");
       resolveCollision(player, obstacle);
