@@ -8,11 +8,16 @@ function updateUphill(deltaTime) {
   if (keysDown["w"]) { player.absY -= upSpeed; }
   if (keysDown["s"]) { player.absY += upSpeed; }
   
-  // Horizontal movement with bounds checking
+  // Get the current layer based on player's Y position
+  const currentLayer = getLayerByY(player.absY);
+  
+  // Horizontal movement with bounds checking based on layer width
   let newXUphill = player.x;
   if (keysDown["a"]) { newXUphill -= upSpeed; }
   if (keysDown["d"]) { newXUphill += upSpeed; }
-  player.x = clamp(newXUphill, player.width/2, canvas.width - player.width/2);
+  
+  // Use layer width instead of canvas width for boundaries
+  player.x = clamp(newXUphill, player.width/2, currentLayer.width - player.width/2);
 
   // Prevent going beyond mountain bounds vertically
   player.absY = clamp(player.absY, 0, mountainHeight);

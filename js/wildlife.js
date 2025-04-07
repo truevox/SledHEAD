@@ -115,12 +115,19 @@ function spawnAnimal() {
       return;
   }
   
-  let spawnX = (window.innerWidth * 0.1) + (Math.random() * window.innerWidth * 0.9);
+  // Get the appropriate layer for the player's current position
+  const playerLayer = getLayerByY(player.absY);
+  
+  // Calculate spawn X based on the layer width instead of window width
+  // This keeps animals within the current layer boundaries
+  let spawnX = Math.random() * playerLayer.width;
   let spawnY = player.absY - (window.innerHeight / 2);
   let altitude = Math.floor(Math.random() * 100);
   let initialState = "sitting";
   
-  let baseAngle = spawnX > window.innerWidth / 2 ?
+  // Get the layer width as a reference for calculating flee angles
+  const layerWidth = playerLayer.width;
+  let baseAngle = spawnX > layerWidth / 2 ?
                   Math.random() * (170 - 135) + 135 :
                   Math.random() * (55 - 20) + 20;
   let angleOffset = Math.random() * 15;
@@ -156,9 +163,10 @@ function spawnAnimal() {
     basePhotoBonus: chosenAnimalType.basePhotoBonus || 0,
     customUpdate: chosenAnimalType.customUpdate || null,
     customDraw: chosenAnimalType.customDraw || null,
+    layer: playerLayer.id // Store which layer this animal belongs to
   };
   
-  console.log(`Spawned ${activeAnimal.type} at (${spawnX.toFixed(1)}, ${spawnY.toFixed(1)}), altitude: ${altitude}, state: ${initialState}, speed: ${activeAnimal.speed}, detectionRadius: ${activeAnimal.detectionRadius}`);
+  console.log(`Spawned ${activeAnimal.type} at (${spawnX.toFixed(1)}, ${spawnY.toFixed(1)}), altitude: ${altitude}, state: ${initialState}, speed: ${activeAnimal.speed}, detectionRadius: ${activeAnimal.detectionRadius}, layer: ${playerLayer.id}`);
   
   if (!animalStateCheckInterval) {
     animalStateCheckInterval = setInterval(logAnimalState, 3000);

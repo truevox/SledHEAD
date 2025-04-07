@@ -102,6 +102,11 @@ class MainScene extends Phaser.Scene {
     if (typeof window.initializePlayerMoney === 'function') {
       window.initializePlayerMoney();
     }
+    
+    // Initialize player position based on mountain layers
+    if (typeof window.initializePlayerPosition === 'function') {
+      window.initializePlayerPosition();
+    }
 
     // Hook up your DOM event listeners for buttons
     const startGameBtn = document.getElementById("startGame");
@@ -259,15 +264,20 @@ function completeStateChange(newState, prevState) {
     if (prevState === window.GameState.HOUSE) {
       earlyFinish = false;
       player.collisions = 0;
-      player.x = window.canvas.width / 2;
-      player.absY = mountainHeight - (player.height * 3);
+      
+      // Get the layer for the starting position
+      const startY = mountainHeight - (player.height * 3);
+      const startLayer = getLayerByY(startY);
+      player.x = startLayer.width / 2; // Use layer width instead of canvas width
+      player.absY = startY;
+      
       player.velocityY = 0;
       player.xVel = 0;
       downhillStartTime = performance.now();
       window.downhillStartTime = downhillStartTime; // Ensure global value is updated
       playerStartAbsY = player.absY;
       window.playerStartAbsY = playerStartAbsY; // Update global value
-      console.log(`DOWNHILL starting position: ${playerStartAbsY}`);
+      console.log(`DOWNHILL starting position: ${playerStartAbsY}, layer: ${startLayer.id}, width: ${startLayer.width}`);
     }
     else if (prevState === window.GameState.UPHILL) {
       player.velocityY = 0;

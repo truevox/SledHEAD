@@ -56,5 +56,17 @@ function initializePlayerMoney() {
   }
 }
 
+// Initialize player position based on layer width
+function initializePlayerPosition() {
+  // Get the top layer (where player starts)
+  const topLayer = getLayerByY(0);
+  if (topLayer) {
+    // Place player in the middle of the layer's width
+    player.x = topLayer.width / 2;
+    console.log("Player positioned at x:", player.x, "in layer:", topLayer.id);
+  }
+}
+
 // Call this function after TWEAK is initialized (e.g., from game.js)
 window.initializePlayerMoney = initializePlayerMoney;
+window.initializePlayerPosition = initializePlayerPosition;
