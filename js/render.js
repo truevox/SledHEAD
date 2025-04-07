@@ -12,6 +12,59 @@ function throttledRenderLog(message, throttleTime = 5000) {
   }
 }
 
+// Store camera position for smooth interpolation
+let cameraX = 0;
+let cameraTargetX = 0;
+const cameraLerpFactor = 0.1; // Adjust for smoother or snappier camera follow
+
+// Make camera variables available globally
+window.cameraX = cameraX;
+window.cameraTargetX = cameraTargetX;
+
+/**
+ * Updates the camera position to follow the player's X position with wrapping
+ * @param {number} playerX - Player's current X position
+ * @param {number} layerWidth - Width of the current layer
+ */
+function updateCameraX(playerX, layerWidth) {
+  // Calculate canvas center position - this is where we want the player to appear
+  const canvasCenterX = canvas.width / 2;
+  
+  // Calculate the potential camera X position (centered on player)
+  cameraTargetX = playerX - canvasCenterX;
+  
+  // Determine wrapping direction - calculate both direct and wrapped distance between camera positions
+  const directDistance = Math.abs(cameraTargetX - cameraX);
+  
+  // If the player is near a layer edge, we need to handle wrapping specially
+  // Check if the player is closer when wrapped
+  const wrappedPlayerPos = playerX < canvasCenterX ? playerX + layerWidth : playerX - layerWidth;
+  const wrappedCameraTarget = wrappedPlayerPos - canvasCenterX;
+  const wrappedDistance = Math.abs(wrappedCameraTarget - cameraX);
+  
+  // Use the smaller distance for smoother camera transitions
+  if (wrappedDistance < directDistance) {
+    cameraTargetX = wrappedCameraTarget;
+  }
+  
+  // Smooth interpolation to target position
+  cameraX = cameraX + (cameraTargetX - cameraX) * cameraLerpFactor;
+  
+  // If we're very close to the target, snap to it to avoid microstutters
+  if (Math.abs(cameraX - cameraTargetX) < 0.1) {
+    cameraX = cameraTargetX;
+  }
+  
+  // Update global variables for other modules to access
+  window.cameraX = cameraX;
+  window.cameraTargetX = cameraTargetX;
+  
+  // log camera position every second
+  throttledRenderLog(`Camera: X=${cameraX.toFixed(1)}, TargetX=${cameraTargetX.toFixed(1)}, PlayerX=${playerX.toFixed(1)}`, 1000);
+  
+  // The actual drawing offset will be based on cameraX and wrapping will be handled in the drawing functions
+}
+
 // Floating Text System (unchanged)
 class FloatingText {
   constructor(text, x, y) {
@@ -86,6 +139,13 @@ function render() {
   ctx.fillStyle = (window.currentState === window.GameState.DOWNHILL) ? "#ADD8E6" : "#98FB98";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+  // Get player's current layer for camera and wrapping
+  const playerLayer = getLayerByY(player.absY);
+  const layerWidth = playerLayer.width;
+  
+  // Update camera position with wrapping support
+  updateCameraX(player.x, layerWidth);
+
   drawEntities();
   ctx.save();
   window.floatingTexts.forEach(text => text.draw(ctx, player.absY - canvas.height / 2));
@@ -95,7 +155,9 @@ function render() {
 }
 
 function drawEntities() {
+  // Get vertical camera offset (unchanged)
   let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
+  
   // Get player's current layer for wrapping visualization
   const playerLayer = getLayerByY(player.absY);
   const playerLayerWidth = playerLayer.width;
@@ -107,29 +169,34 @@ function drawEntities() {
       const obstacleLayer = getLayerByY(obstacle.y);
       const layerWidth = obstacleLayer.width;
       
+      // Calculate wrapped obstacle position relative to camera
+      const wrappedObstacleX = calculateWrappedPosRelativeToCamera(obstacle.x, cameraX, layerWidth);
+      
       if (obstacle.type === 'tree') {
         // Draw the tree
         drawTree(ctx, {
-          x: obstacle.x,
+          x: wrappedObstacleX,
           y: obstacle.y - cameraOffset,
           width: obstacle.width,
           height: obstacle.height
         });
         
-        // Draw wrapped version if near edges
-        const wrapThreshold = obstacle.width * 2;
-        if (obstacle.x < wrapThreshold) {
-          // Draw duplicate on right side
+        // Draw wrapped versions if near edges of visible area
+        const viewThreshold = canvas.width + obstacle.width * 2;
+        
+        // If the obstacle is near the right edge of view
+        if (wrappedObstacleX > canvas.width - obstacle.width * 2) {
           drawTree(ctx, {
-            x: obstacle.x + layerWidth,
+            x: wrappedObstacleX - layerWidth,
             y: obstacle.y - cameraOffset,
             width: obstacle.width,
             height: obstacle.height
           });
-        } else if (obstacle.x > layerWidth - wrapThreshold) {
-          // Draw duplicate on left side
+        }
+        // If the obstacle is near the left edge of view
+        else if (wrappedObstacleX < obstacle.width * 2) {
           drawTree(ctx, {
-            x: obstacle.x - layerWidth,
+            x: wrappedObstacleX + layerWidth,
             y: obstacle.y - cameraOffset,
             width: obstacle.width,
             height: obstacle.height
@@ -138,16 +205,33 @@ function drawEntities() {
       } else {
         // Draw the rock
         ctx.fillStyle = "#808080";
-        ctx.fillRect(obstacle.x, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
+        ctx.fillRect(
+          wrappedObstacleX, 
+          obstacle.y - cameraOffset, 
+          obstacle.width, 
+          obstacle.height
+        );
         
-        // Draw wrapped version if near edges
-        const wrapThreshold = obstacle.width * 2;
-        if (obstacle.x < wrapThreshold) {
-          // Draw duplicate on right side
-          ctx.fillRect(obstacle.x + layerWidth, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
-        } else if (obstacle.x > layerWidth - wrapThreshold) {
-          // Draw duplicate on left side
-          ctx.fillRect(obstacle.x - layerWidth, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
+        // Draw wrapped versions if near edges of visible area
+        const viewThreshold = canvas.width + obstacle.width * 2;
+        
+        // If the obstacle is near the right edge of view
+        if (wrappedObstacleX > canvas.width - obstacle.width * 2) {
+          ctx.fillRect(
+            wrappedObstacleX - layerWidth, 
+            obstacle.y - cameraOffset, 
+            obstacle.width, 
+            obstacle.height
+          );
+        }
+        // If the obstacle is near the left edge of view
+        else if (wrappedObstacleX < obstacle.width * 2) {
+          ctx.fillRect(
+            wrappedObstacleX + layerWidth, 
+            obstacle.y - cameraOffset, 
+            obstacle.width, 
+            obstacle.height
+          );
         }
       }
     }
@@ -156,12 +240,42 @@ function drawEntities() {
   // Player
   let playerDrawY = player.absY - cameraOffset;
   
-  // Draw player with wrapping if near edges
-  drawPlayerWithWrapping(playerDrawY, playerLayerWidth);
+  // Draw player centered on screen, regardless of its actual X position
+  const playerDrawX = canvas.width / 2;
+  drawPlayerAt(playerDrawX, playerDrawY);
 
   drawCameraOverlay();
   drawAnimal();
 }
+
+/**
+ * Calculates the screen position of an entity considering camera position and wrapping
+ * @param {number} entityX - Entity's world X position
+ * @param {number} cameraX - Current camera X position
+ * @param {number} layerWidth - Width of the current layer
+ * @returns {number} The wrapped screen position
+ */
+function calculateWrappedPosRelativeToCamera(entityX, cameraX, layerWidth) {
+  // Start with the direct calculation
+  let screenX = entityX - cameraX;
+  
+  // Check if there's a closer wrapped position
+  const directDist = Math.abs(screenX);
+  const wrappedRight = screenX + layerWidth;
+  const wrappedLeft = screenX - layerWidth;
+  
+  // Choose the closest representation
+  if (Math.abs(wrappedRight) < directDist) {
+    return wrappedRight;
+  } else if (Math.abs(wrappedLeft) < directDist) {
+    return wrappedLeft;
+  }
+  
+  return screenX;
+}
+
+// Make the function available globally
+window.calculateWrappedPosRelativeToCamera = calculateWrappedPosRelativeToCamera;
 
 /**
  * Draws the player with wrapping at layer edges
@@ -218,27 +332,13 @@ function drawCameraOverlay() {
   if (window.currentState !== window.GameState.UPHILL) return;
   
   let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
-  let centerX = player.x;
+  
+  // Use center of canvas for camera overlay, not the raw player position
+  let centerX = canvas.width / 2;
   let centerY = player.absY - cameraOffset;
   
-  // Get the current layer width for wrapping
-  const playerLayer = getLayerByY(player.absY);
-  const layerWidth = playerLayer.width;
-  
-  // Define wrapping threshold
-  const wrapThreshold = 300; // Based on cone length
-  
-  // Draw the main camera overlay
+  // Draw the camera overlay at the center of the screen
   drawCameraOverlayAt(centerX, centerY);
-  
-  // Check if we need to draw wrapped versions
-  if (centerX < wrapThreshold) {
-    // Draw on right side
-    drawCameraOverlayAt(centerX + layerWidth, centerY);
-  } else if (centerX > layerWidth - wrapThreshold) {
-    // Draw on left side
-    drawCameraOverlayAt(centerX - layerWidth, centerY);
-  }
 }
 
 /**

@@ -221,19 +221,20 @@ function drawAnimal() {
   const animalLayer = getLayerByY(activeAnimal.y);
   const layerWidth = animalLayer.width;
   
-  // Define wrapping threshold
-  const wrapThreshold = activeAnimal.width * 2;
+  // Calculate the animal's position relative to the camera
+  // Use the camera position from render.js
+  const wrappedAnimalX = calculateWrappedPosRelativeToCamera(activeAnimal.x, window.cameraX || 0, layerWidth);
   
-  // Draw the main animal
-  drawAnimalAt(activeAnimal.x, animalScreenY);
+  // Draw animal at the calculated position
+  drawAnimalAt(wrappedAnimalX, animalScreenY);
   
-  // Check if we need to draw wrapped versions
-  if (activeAnimal.x < wrapThreshold) {
-    // Draw on right side
-    drawAnimalAt(activeAnimal.x + layerWidth, animalScreenY);
-  } else if (activeAnimal.x > layerWidth - wrapThreshold) {
-    // Draw on left side
-    drawAnimalAt(activeAnimal.x - layerWidth, animalScreenY);
+  // Draw wrapped versions if near screen edges
+  if (wrappedAnimalX < activeAnimal.width * 2) {
+    // Draw duplicate on right side of screen
+    drawAnimalAt(wrappedAnimalX + layerWidth, animalScreenY);
+  } else if (wrappedAnimalX > canvas.width - activeAnimal.width * 2) {
+    // Draw duplicate on left side of screen
+    drawAnimalAt(wrappedAnimalX - layerWidth, animalScreenY);
   }
 }
 
