@@ -83,7 +83,35 @@ function updatePlayerLayer() {
   if (layer && layer.id !== player.currentLayerIndex) {
     const previousLayerIndex = player.currentLayerIndex;
     const previousLayer = mountainLayers[previousLayerIndex];
+    
+    // Store the previous layer's width before updating the current layer index
+    const previousLayerWidth = previousLayer.width;
+    const oldX = player.x;
+    
+    // Update to the new layer
     player.currentLayerIndex = layer.id;
+    
+    // Get the new layer's width
+    const newLayerWidth = layer.width;
+    
+    // Calculate the scaling factor (prevent division by zero)
+    const scaleFactor = previousLayerWidth > 0 ? newLayerWidth / previousLayerWidth : 1;
+    
+    // Handle special case: if player is exactly at the right edge, keep them at the right edge
+    if (player.x === previousLayerWidth) {
+      player.x = newLayerWidth;
+    } else {
+      // Scale the player's horizontal position proportionally
+      player.x = player.x * scaleFactor;
+      
+      // Only apply wrapping if the position is actually out of bounds
+      if (player.x >= newLayerWidth || player.x < 0) {
+        player.x = calculateWrappedX(player.x, newLayerWidth);
+      }
+    }
+    
+    // Log the scaling information
+    console.log(`Horizontal scaling: oldX=${oldX.toFixed(1)}, oldWidth=${previousLayerWidth}, newWidth=${newLayerWidth}, scaleFactor=${scaleFactor.toFixed(3)}, newX=${player.x.toFixed(1)}`);
     
     // Determine transition direction (up or down)
     if (previousLayerIndex > layer.id) {

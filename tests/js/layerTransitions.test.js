@@ -129,7 +129,32 @@ describe('Vertical Layer Transitions', () => {
     
     if (layer && layer.id !== mockPlayer.currentLayerIndex) {
       const previousLayerIndex = mockPlayer.currentLayerIndex;
+      const previousLayer = mockMountainLayers[previousLayerIndex];
+      
+      // Store the previous layer's width before updating the current layer index
+      const previousLayerWidth = previousLayer.width;
+      
+      // Update to the new layer
       mockPlayer.currentLayerIndex = layer.id;
+      
+      // Get the new layer's width
+      const newLayerWidth = layer.width;
+      
+      // Calculate the scaling factor (prevent division by zero)
+      const scaleFactor = previousLayerWidth > 0 ? newLayerWidth / previousLayerWidth : 1;
+      
+      // Handle special case: if player is exactly at the right edge, keep them at the right edge
+      if (mockPlayer.x === previousLayerWidth) {
+        mockPlayer.x = newLayerWidth;
+      } else {
+        // Scale the player's horizontal position proportionally
+        mockPlayer.x = mockPlayer.x * scaleFactor;
+        
+        // Only apply wrapping if the position is actually out of bounds
+        if (mockPlayer.x >= newLayerWidth || mockPlayer.x < 0) {
+          mockPlayer.x = ((mockPlayer.x % newLayerWidth) + newLayerWidth) % newLayerWidth;
+        }
+      }
       
       // Determine transition direction (up or down)
       if (previousLayerIndex > layer.id) {
@@ -203,24 +228,120 @@ describe('Vertical Layer Transitions', () => {
     expect(mockPlayer.absY).toBe(49999);
   });
   
-  test('x position remains unchanged during vertical transitions', () => {
-    // Start in layer 0
+  test('x position is scaled proportionally when moving to a wider layer', () => {
+    // Start in layer 0 (width: 1000)
     mockPlayer.absY = 25000;
     mockPlayer.currentLayerIndex = 0;
-    mockPlayer.x = 750;
+    mockPlayer.x = 500; // Center of layer 0 (50% of width)
+    
+    // Move down to layer 1 (width: 1500)
+    mockPlayer.absY = 60000;
+    mockUpdatePlayerLayer();
+    
+    // X position should be scaled to maintain the same proportional position
+    // 500/1000 = 0.5 (50% of width) => 0.5 * 1500 = 750
+    expect(mockPlayer.x).toBe(750);
+    
+    // Relative position should remain the same (50% of width)
+    expect(mockPlayer.x / mockMountainLayers[1].width).toBeCloseTo(0.5, 5);
+  });
+  
+  test('x position is scaled proportionally when moving to a narrower layer', () => {
+    // Start in layer 1 (width: 1500)
+    mockPlayer.absY = 55000;
+    mockPlayer.currentLayerIndex = 1;
+    mockPlayer.x = 750; // Center of layer 1 (50% of width)
+    
+    // Move up to layer 0 (width: 1000)
+    mockPlayer.absY = 45000;
+    mockUpdatePlayerLayer();
+    
+    // X position should be scaled to maintain the same proportional position
+    // 750/1500 = 0.5 (50% of width) => 0.5 * 1000 = 500
+    expect(mockPlayer.x).toBe(500);
+    
+    // Relative position should remain the same (50% of width)
+    expect(mockPlayer.x / mockMountainLayers[0].width).toBeCloseTo(0.5, 5);
+  });
+  
+  test('x position scaling handles edge positions correctly', () => {
+    // Test right edge
+    mockPlayer.absY = 25000;
+    mockPlayer.currentLayerIndex = 0;
+    mockPlayer.x = 1000; // Right edge of layer 0
     
     // Move down to layer 1
     mockPlayer.absY = 60000;
     mockUpdatePlayerLayer();
     
-    // X position should remain unchanged
-    expect(mockPlayer.x).toBe(750);
+    // Should be at the right edge of layer 1
+    expect(mockPlayer.x).toBe(1500);
     
-    // Move back up to layer 0
-    mockPlayer.absY = 25000;
+    // Test left edge
+    mockPlayer.absY = 55000;
+    mockPlayer.currentLayerIndex = 1;
+    mockPlayer.x = 0; // Left edge of layer 1
+    
+    // Move up to layer 0
+    mockPlayer.absY = 45000;
     mockUpdatePlayerLayer();
     
-    // X position should still remain unchanged
-    expect(mockPlayer.x).toBe(750);
+    // Should be at the left edge of layer 0
+    expect(mockPlayer.x).toBe(0);
+  });
+  
+  test('x position scaling preserves position when jumping multiple layers', () => {
+    // Start in layer 0 at 25% of width
+    mockPlayer.absY = 25000;
+    mockPlayer.currentLayerIndex = 0;
+    mockPlayer.x = 250; // 25% of layer 0 width
+    
+    // Jump down to layer 3
+    mockPlayer.absY = 175000;
+    mockUpdatePlayerLayer();
+    
+    // Position should be 25% of layer 3 width (2500 * 0.25 = 625)
+    expect(mockPlayer.x).toBeCloseTo(625, 1);
+    expect(mockPlayer.x / mockMountainLayers[3].width).toBeCloseTo(0.25, 5);
+    
+    // Jump back up to layer 0
+    mockPlayer.absY = 10000;
+    mockUpdatePlayerLayer();
+    
+    // Position should be back to 25% of layer 0 width
+    expect(mockPlayer.x).toBeCloseTo(250, 1);
+    expect(mockPlayer.x / mockMountainLayers[0].width).toBeCloseTo(0.25, 5);
+  });
+  
+  test('wrapping is applied correctly after scaling', () => {
+    // Test wrapping when scaling to a smaller layer
+    mockPlayer.absY = 55000;
+    mockPlayer.currentLayerIndex = 1;
+    mockPlayer.x = 1400; // Near right edge of layer 1 (width 1500)
+    
+    // Move up to layer 0 (width 1000)
+    mockPlayer.absY = 45000;
+    mockUpdatePlayerLayer();
+    
+    // Scaled position would be 1400 * (1000/1500) = 933.33...
+    // This should be within the bounds of layer 0 (width 1000)
+    expect(mockPlayer.x).toBeGreaterThanOrEqual(0);
+    expect(mockPlayer.x).toBeLessThan(1000);
+    expect(mockPlayer.x).toBeCloseTo(933.33, 1);
+    
+    // Test wrapping when moving to a larger layer with position that would exceed bounds
+    mockPlayer.absY = 45000;
+    mockPlayer.currentLayerIndex = 0;
+    mockPlayer.x = 950; // Near right edge of layer 0 (width 1000)
+    
+    // Move down to layer 1 (width 1500)
+    mockPlayer.absY = 55000;
+    mockUpdatePlayerLayer();
+    
+    // Scaled position would be 950 * (1500/1000) = 1425
+    // This should be within the bounds of layer 1 (width 1500)
+    expect(mockPlayer.x).toBeGreaterThanOrEqual(0);
+    expect(mockPlayer.x).toBeLessThan(1500);
+    expect(mockPlayer.x).toBeCloseTo(1425, 1);
   });
 }); 
