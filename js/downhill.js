@@ -33,8 +33,8 @@ function updateDownhill(deltaTime) {
   player.xVel *= friction;
   player.xVel = clamp(player.xVel, -maxXVel, maxXVel);
   let newX = player.x + player.xVel;
-  // Prevent going off screen horizontally - use layer width instead of canvas width
-  player.x = clamp(newX, player.width/2, currentLayer.width - player.width/2);
+  // Use wrapping instead of clamping for cylindrical world
+  player.x = calculateWrappedX(newX, currentLayer.width);
   
   // --- Jump Input Handling ---
   // Immediate Mode:

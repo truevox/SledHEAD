@@ -16,13 +16,13 @@ function updateUphill(deltaTime) {
     window.updatePlayerLayer();
   }
   
-  // Horizontal movement with bounds checking based on layer width
+  // Horizontal movement with wrapping around cylinder
   let newXUphill = player.x;
   if (keysDown["a"]) { newXUphill -= upSpeed; }
   if (keysDown["d"]) { newXUphill += upSpeed; }
   
-  // Use layer width instead of canvas width for boundaries
-  player.x = clamp(newXUphill, player.width/2, currentLayer.width - player.width/2);
+  // Use wrapping instead of clamping for cylindrical world
+  player.x = calculateWrappedX(newXUphill, currentLayer.width);
 
   // Prevent going beyond mountain bounds vertically
   player.absY = clamp(player.absY, 0, mountainHeight);

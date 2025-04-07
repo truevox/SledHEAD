@@ -238,4 +238,18 @@ window.playRockHitSound = playRockHitSound;
 window.playMoneyGainSound = playMoneyGainSound;
 window.unlockAudioContext = unlockAudioContext;
 
+/**
+ * Calculates a wrapped horizontal position for a cylindrical layer
+ * @param {number} potentialX - The potential x position before wrapping
+ * @param {number} layerWidth - The width of the current layer
+ * @returns {number} The wrapped x position within the [0, layerWidth) range
+ */
+function calculateWrappedX(potentialX, layerWidth) {
+  // This formula correctly handles both positive and negative potentialX values
+  return (potentialX % layerWidth + layerWidth) % layerWidth;
+}
+
+// Make the function available globally
+window.calculateWrappedX = calculateWrappedX;
+
 // Note: export statement has been removed and all functions are now attached to window

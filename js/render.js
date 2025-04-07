@@ -96,56 +96,157 @@ function render() {
 
 function drawEntities() {
   let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
+  // Get player's current layer for wrapping visualization
+  const playerLayer = getLayerByY(player.absY);
+  const playerLayerWidth = playerLayer.width;
 
   // Terrain
   terrain.forEach(obstacle => {
     if (obstacle.y >= cameraOffset - 50 && obstacle.y <= cameraOffset + canvas.height + 50) {
+      // Get the layer for this obstacle
+      const obstacleLayer = getLayerByY(obstacle.y);
+      const layerWidth = obstacleLayer.width;
+      
       if (obstacle.type === 'tree') {
+        // Draw the tree
         drawTree(ctx, {
           x: obstacle.x,
           y: obstacle.y - cameraOffset,
           width: obstacle.width,
           height: obstacle.height
         });
+        
+        // Draw wrapped version if near edges
+        const wrapThreshold = obstacle.width * 2;
+        if (obstacle.x < wrapThreshold) {
+          // Draw duplicate on right side
+          drawTree(ctx, {
+            x: obstacle.x + layerWidth,
+            y: obstacle.y - cameraOffset,
+            width: obstacle.width,
+            height: obstacle.height
+          });
+        } else if (obstacle.x > layerWidth - wrapThreshold) {
+          // Draw duplicate on left side
+          drawTree(ctx, {
+            x: obstacle.x - layerWidth,
+            y: obstacle.y - cameraOffset,
+            width: obstacle.width,
+            height: obstacle.height
+          });
+        }
       } else {
+        // Draw the rock
         ctx.fillStyle = "#808080";
         ctx.fillRect(obstacle.x, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
+        
+        // Draw wrapped version if near edges
+        const wrapThreshold = obstacle.width * 2;
+        if (obstacle.x < wrapThreshold) {
+          // Draw duplicate on right side
+          ctx.fillRect(obstacle.x + layerWidth, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
+        } else if (obstacle.x > layerWidth - wrapThreshold) {
+          // Draw duplicate on left side
+          ctx.fillRect(obstacle.x - layerWidth, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
+        }
       }
     }
   });
 
   // Player
   let playerDrawY = player.absY - cameraOffset;
-  ctx.save();
-  if (player.currentTrick) {
-    if (player.currentTrick === "leftHelicopter" || player.currentTrick === "rightHelicopter") {
-      ctx.translate(player.x, playerDrawY);
-      ctx.rotate(player.trickRotation * Math.PI / 180);
-      ctx.translate(-player.x, -playerDrawY);
-    } else if (player.currentTrick === "airBrake" || player.currentTrick === "parachute") {
-      playerDrawY += (player.currentTrick === "airBrake") ? player.trickOffset : -player.trickOffset;
-    }
-  }
-  ctx.fillStyle = "#FF0000";
-  ctx.fillRect(player.x - player.width / 2, playerDrawY - player.height / 2, player.width, player.height);
-
-  if (player.currentTrick === "airBrake" || player.currentTrick === "parachute") {
-    ctx.fillStyle = "#FFFF00";
-    ctx.beginPath();
-    ctx.arc(player.x, playerDrawY - player.trickOffset, player.width / 3, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  ctx.restore();
+  
+  // Draw player with wrapping if near edges
+  drawPlayerWithWrapping(playerDrawY, playerLayerWidth);
 
   drawCameraOverlay();
   drawAnimal();
 }
 
+/**
+ * Draws the player with wrapping at layer edges
+ * @param {number} playerDrawY - The Y position to draw the player at
+ * @param {number} layerWidth - The width of the current layer
+ */
+function drawPlayerWithWrapping(playerDrawY, layerWidth) {
+  // Define a threshold for when to draw the wrapped player
+  const wrapThreshold = player.width * 2;
+  
+  // First, draw the player at their actual position
+  drawPlayerAt(player.x, playerDrawY);
+  
+  // Check if player is near the edges and draw wrapped versions
+  if (player.x < wrapThreshold) {
+    // Draw duplicate on right side
+    drawPlayerAt(player.x + layerWidth, playerDrawY);
+  } else if (player.x > layerWidth - wrapThreshold) {
+    // Draw duplicate on left side
+    drawPlayerAt(player.x - layerWidth, playerDrawY);
+  }
+}
+
+/**
+ * Draws the player at the specified position
+ * @param {number} x - The X position to draw at
+ * @param {number} y - The Y position to draw at
+ */
+function drawPlayerAt(x, y) {
+  ctx.save();
+  if (player.currentTrick) {
+    if (player.currentTrick === "leftHelicopter" || player.currentTrick === "rightHelicopter") {
+      ctx.translate(x, y);
+      ctx.rotate(player.trickRotation * Math.PI / 180);
+      ctx.translate(-x, -y);
+    } else if (player.currentTrick === "airBrake" || player.currentTrick === "parachute") {
+      y += (player.currentTrick === "airBrake") ? player.trickOffset : -player.trickOffset;
+    }
+  }
+  
+  ctx.fillStyle = "#FF0000";
+  ctx.fillRect(x - player.width / 2, y - player.height / 2, player.width, player.height);
+
+  if (player.currentTrick === "airBrake" || player.currentTrick === "parachute") {
+    ctx.fillStyle = "#FFFF00";
+    ctx.beginPath();
+    ctx.arc(x, y - player.trickOffset, player.width / 3, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
 function drawCameraOverlay() {
   if (window.currentState !== window.GameState.UPHILL) return;
+  
   let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
   let centerX = player.x;
   let centerY = player.absY - cameraOffset;
+  
+  // Get the current layer width for wrapping
+  const playerLayer = getLayerByY(player.absY);
+  const layerWidth = playerLayer.width;
+  
+  // Define wrapping threshold
+  const wrapThreshold = 300; // Based on cone length
+  
+  // Draw the main camera overlay
+  drawCameraOverlayAt(centerX, centerY);
+  
+  // Check if we need to draw wrapped versions
+  if (centerX < wrapThreshold) {
+    // Draw on right side
+    drawCameraOverlayAt(centerX + layerWidth, centerY);
+  } else if (centerX > layerWidth - wrapThreshold) {
+    // Draw on left side
+    drawCameraOverlayAt(centerX - layerWidth, centerY);
+  }
+}
+
+/**
+ * Draws the camera overlay at the specified position
+ * @param {number} centerX - The X center position to draw at
+ * @param {number} centerY - The Y center position to draw at
+ */
+function drawCameraOverlayAt(centerX, centerY) {
   let coneLength = 300;
   let povAngle = TWEAK.basePOVAngle + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsPOVIncrease);
   let leftAngle = (player.cameraAngle - povAngle / 2) * (Math.PI / 180);

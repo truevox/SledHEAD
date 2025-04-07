@@ -30,32 +30,32 @@
             { biome: "starterMountain" }  // Spawns on all layers of the Starter Mountain
         ],
         customUpdate: null,
-        customDraw: function(animal, screenY, ctx) {
+        customDraw: function(animal, screenY, ctx, drawX) {
             // Draw the body
             ctx.fillStyle = animal.color;
             ctx.fillRect(
-                animal.x - animal.width / 2,
+                drawX - animal.width / 2,
                 screenY - animal.height / 2,
                 animal.width,
                 animal.height
             );
             // Draw left ear as a triangle
             ctx.beginPath();
-            ctx.moveTo(animal.x - animal.width / 4, screenY - animal.height / 2);
-            ctx.lineTo(animal.x - animal.width / 4 - 10, screenY - animal.height / 2 - 15);
-            ctx.lineTo(animal.x - animal.width / 4 + 10, screenY - animal.height / 2 - 15);
+            ctx.moveTo(drawX - animal.width / 4, screenY - animal.height / 2);
+            ctx.lineTo(drawX - animal.width / 4 - 10, screenY - animal.height / 2 - 15);
+            ctx.lineTo(drawX - animal.width / 4 + 10, screenY - animal.height / 2 - 15);
             ctx.closePath();
             ctx.fillStyle = "#000000";
             ctx.fill();
             // Draw right ear
             ctx.beginPath();
-            ctx.moveTo(animal.x + animal.width / 4, screenY - animal.height / 2);
-            ctx.lineTo(animal.x + animal.width / 4 - 10, screenY - animal.height / 2 - 15);
-            ctx.lineTo(animal.x + animal.width / 4 + 10, screenY - animal.height / 2 - 15);
+            ctx.moveTo(drawX + animal.width / 4, screenY - animal.height / 2);
+            ctx.lineTo(drawX + animal.width / 4 - 10, screenY - animal.height / 2 - 15);
+            ctx.lineTo(drawX + animal.width / 4 + 10, screenY - animal.height / 2 - 15);
             ctx.closePath();
             ctx.fill();
             // Draw a tail using an angled rectangle
-            let tailPivotX = animal.x + animal.width / 2;
+            let tailPivotX = drawX + animal.width / 2;
             let tailPivotY = screenY + animal.height / 2;
             let tailAngle = -45;
             let tailWidth = 20;
@@ -73,7 +73,7 @@
             let altitudeColor = lerpColor("#FF0000", "#0000FF", t);
             ctx.fillStyle = altitudeColor;
             ctx.fillRect(
-                animal.x + animal.width / 2 + 5,
+                drawX + animal.width / 2 + 5,
                 screenY - 5,
                 10,
                 10

@@ -36,11 +36,28 @@ function updateAnimal() {
     }
     
     let rad = activeAnimal.fleeAngleActual * Math.PI / 180;
-    activeAnimal.x += Math.cos(rad) * activeAnimal.speed * 0.5;
+    let newX = activeAnimal.x + Math.cos(rad) * activeAnimal.speed * 0.5;
     activeAnimal.y += Math.sin(rad) * activeAnimal.speed * 0.5;
+    
+    // Get the layer for the animal's current Y position
+    const animalLayer = getLayerByY(activeAnimal.y);
+    
+    // Apply wrapping for horizontal movement
+    activeAnimal.x = calculateWrappedX(newX, animalLayer.width);
     
     let dx = activeAnimal.x - player.x;
     let dy = activeAnimal.y - player.absY;
+    
+    // Adjust distance calculation for wrapped world
+    // If dx is more than half the layer width, it's shorter to go around the other way
+    if (Math.abs(dx) > animalLayer.width / 2) {
+      if (dx > 0) {
+        dx = dx - animalLayer.width;
+      } else {
+        dx = dx + animalLayer.width;
+      }
+    }
+    
     let distance = Math.sqrt(dx * dx + dy * dy);
     if (distance > 1000 && !activeAnimal.despawnScheduled) {
       activeAnimal.despawnScheduled = true;
@@ -200,16 +217,42 @@ function drawAnimal() {
   let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
   let animalScreenY = activeAnimal.y - cameraOffset;
   
+  // Get the layer for the animal's current position
+  const animalLayer = getLayerByY(activeAnimal.y);
+  const layerWidth = animalLayer.width;
+  
+  // Define wrapping threshold
+  const wrapThreshold = activeAnimal.width * 2;
+  
+  // Draw the main animal
+  drawAnimalAt(activeAnimal.x, animalScreenY);
+  
+  // Check if we need to draw wrapped versions
+  if (activeAnimal.x < wrapThreshold) {
+    // Draw on right side
+    drawAnimalAt(activeAnimal.x + layerWidth, animalScreenY);
+  } else if (activeAnimal.x > layerWidth - wrapThreshold) {
+    // Draw on left side
+    drawAnimalAt(activeAnimal.x - layerWidth, animalScreenY);
+  }
+}
+
+/**
+ * Draws an animal at the specified position
+ * @param {number} x - The X position to draw at
+ * @param {number} y - The Y position to draw at
+ */
+function drawAnimalAt(x, y) {
   if (activeAnimal.customDraw && typeof activeAnimal.customDraw === 'function') {
-      activeAnimal.customDraw(activeAnimal, animalScreenY, ctx);
+    activeAnimal.customDraw(activeAnimal, y, ctx, x);
   } else {
-      ctx.fillStyle = activeAnimal.color || "#888888";
-      ctx.fillRect(
-        activeAnimal.x - activeAnimal.width / 2,
-        animalScreenY - activeAnimal.height / 2,
-        activeAnimal.width,
-        activeAnimal.height
-      );
+    ctx.fillStyle = activeAnimal.color || "#888888";
+    ctx.fillRect(
+      x - activeAnimal.width / 2,
+      y - activeAnimal.height / 2,
+      activeAnimal.width,
+      activeAnimal.height
+    );
   }
 }
 
