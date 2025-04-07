@@ -13,6 +13,9 @@ let player = {
   // Camera aim properties
   cameraAngle: 270,  // Camera rotation in degrees
   altitudeLine: 50,  // Starts at 50% of the view range
+  
+  // Layer tracking for mountain segmentation
+  currentLayerIndex: 0, // Start in the top layer (index 0)
 
   // Trick system properties
   currentTrick: null,        // Currently active trick
@@ -63,10 +66,26 @@ function initializePlayerPosition() {
   if (topLayer) {
     // Place player in the middle of the layer's width
     player.x = topLayer.width / 2;
-    console.log("Player positioned at x:", player.x, "in layer:", topLayer.id);
+    // Initialize the player's layer index
+    player.currentLayerIndex = topLayer.id;
+    console.log("Player positioned at x:", player.x, "in layer:", player.currentLayerIndex);
+  }
+}
+
+/**
+ * Updates the player's current layer index based on their vertical position
+ * Called every frame during game update
+ */
+function updatePlayerLayer() {
+  const layer = getLayerByY(player.absY);
+  if (layer && layer.id !== player.currentLayerIndex) {
+    const previousLayer = player.currentLayerIndex;
+    player.currentLayerIndex = layer.id;
+    console.log(`Player changed layers: ${previousLayer} -> ${player.currentLayerIndex} at Y=${player.absY.toFixed(1)}`);
   }
 }
 
 // Call this function after TWEAK is initialized (e.g., from game.js)
 window.initializePlayerMoney = initializePlayerMoney;
 window.initializePlayerPosition = initializePlayerPosition;
+window.updatePlayerLayer = updatePlayerLayer;

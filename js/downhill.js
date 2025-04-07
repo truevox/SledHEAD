@@ -22,6 +22,11 @@ function updateDownhill(deltaTime) {
   // Get the current layer based on player's Y position
   const currentLayer = getLayerByY(player.absY);
   
+  // Update player's layer index
+  if (window.updatePlayerLayer) {
+    window.updatePlayerLayer();
+  }
+  
   // Horizontal movement handling with bounds checking
   if (window.keysDown["a"]) { player.xVel -= horizontalAccel; }
   if (window.keysDown["d"]) { player.xVel += horizontalAccel; }

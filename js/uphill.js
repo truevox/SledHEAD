@@ -11,6 +11,11 @@ function updateUphill(deltaTime) {
   // Get the current layer based on player's Y position
   const currentLayer = getLayerByY(player.absY);
   
+  // Update player's layer index
+  if (window.updatePlayerLayer) {
+    window.updatePlayerLayer();
+  }
+  
   // Horizontal movement with bounds checking based on layer width
   let newXUphill = player.x;
   if (keysDown["a"]) { newXUphill -= upSpeed; }
