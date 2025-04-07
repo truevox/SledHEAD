@@ -29,8 +29,8 @@ const mountainLayers = [
   {
     id: 3,
     startY: 150000,
-    endY: 200000,
-    width: 2500
+    endY: 200000, //200000,
+    width: 2500  //2500
   }
 ];
 

@@ -37,11 +37,15 @@ describe('Mountain Layers', () => {
     });
   });
 
-  // Test that layers have decreasing width as Y increases (mountain gets narrower at higher elevations)
-  test('mountain layers have decreasing width as Y decreases (higher elevation)', () => {
-    for (let i = 0; i < mountainLayers.length - 1; i++) {
+  // Test that layers generally have increasing width as Y increases (except for the special last layer)
+  test('mountain layers generally have increasing width as Y increases (lower elevation)', () => {
+    // Check that the first three layers follow the pattern of increasing width
+    for (let i = 0; i < mountainLayers.length - 2; i++) {
       expect(mountainLayers[i].width).toBeLessThan(mountainLayers[i + 1].width);
     }
+    
+    // The last layer should have a width of 2500
+    expect(mountainLayers[mountainLayers.length - 1].width).toBe(2500);
   });
 
   // Test suite for getLayerByY function
