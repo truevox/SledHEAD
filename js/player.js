@@ -74,14 +74,36 @@ function initializePlayerPosition() {
 
 /**
  * Updates the player's current layer index based on their vertical position
+ * Handles seamless transition between layers when crossing layer boundaries
  * Called every frame during game update
  */
 function updatePlayerLayer() {
   const layer = getLayerByY(player.absY);
+  
   if (layer && layer.id !== player.currentLayerIndex) {
-    const previousLayer = player.currentLayerIndex;
+    const previousLayerIndex = player.currentLayerIndex;
+    const previousLayer = mountainLayers[previousLayerIndex];
     player.currentLayerIndex = layer.id;
-    console.log(`Player changed layers: ${previousLayer} -> ${player.currentLayerIndex} at Y=${player.absY.toFixed(1)}`);
+    
+    // Determine transition direction (up or down)
+    if (previousLayerIndex > layer.id) {
+      // Moving UP to a higher layer (lower index)
+      console.log(`Transitioning UP to Layer ${layer.id} (from ${previousLayerIndex})`);
+      
+      // Place player at the bottom edge of the new higher layer
+      // Adjust player position to just inside the endY boundary of the new layer
+      player.absY = layer.endY - 1;
+      
+    } else {
+      // Moving DOWN to a lower layer (higher index)
+      console.log(`Transitioning DOWN to Layer ${layer.id} (from ${previousLayerIndex})`);
+      
+      // Place player at the top edge of the new lower layer
+      // Set player position to exactly at startY boundary of the new layer
+      player.absY = layer.startY;
+    }
+    
+    console.log(`Player repositioned to Y=${player.absY.toFixed(1)} at ${layer.id === previousLayerIndex - 1 ? 'bottom' : 'top'} of layer ${layer.id}`);
   }
 }
 
