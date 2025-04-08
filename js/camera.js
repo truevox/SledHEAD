@@ -118,3 +118,9 @@ function isAnimalInsideCone(animal) {
   
   return diffAngle <= coneAngle / 2;
 }
+
+// Export the camera functions to the global window object
+if (typeof window !== 'undefined') {
+  window.takePhoto = takePhoto;
+  window.isAnimalInsideCone = isAnimalInsideCone;
+}

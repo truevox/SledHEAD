@@ -438,8 +438,35 @@ function drawCameraOverlayAt(centerX, centerY) {
   ctx.strokeStyle = altitudeColor;
   ctx.lineWidth = 3;
 
+  // Check both activeAnimal and animals array for animals in the cone
+  let shouldFlash = false;
+  let flashSpeed = TWEAK.altitudeFlashMinSpeed; // Default to slow flash speed
+  
+  // Check activeAnimal first (legacy)
   if (activeAnimal && isAnimalInsideCone(activeAnimal)) {
-    let flashSpeed = mapRange(Math.abs(player.altitudeLine - activeAnimal.altitude), 0, 100, TWEAK.altitudeFlashMaxSpeed, TWEAK.altitudeFlashMinSpeed);
+    shouldFlash = true;
+    flashSpeed = mapRange(Math.abs(player.altitudeLine - activeAnimal.altitude), 0, 100, 
+                         TWEAK.altitudeFlashMaxSpeed, TWEAK.altitudeFlashMinSpeed);
+  }
+  
+  // Check global animals array (may override activeAnimal flash speed with closest match)
+  if (window.animals && window.animals.length > 0) {
+    window.animals.forEach(animal => {
+      if (isAnimalInsideCone(animal)) {
+        shouldFlash = true;
+        // Calculate flash speed based on altitude difference
+        let animalFlashSpeed = mapRange(Math.abs(player.altitudeLine - animal.altitude), 0, 100, 
+                                      TWEAK.altitudeFlashMaxSpeed, TWEAK.altitudeFlashMinSpeed);
+        // Use the fastest flash speed (which corresponds to the closest altitude match)
+        if (animalFlashSpeed < flashSpeed) {
+          flashSpeed = animalFlashSpeed;
+        }
+      }
+    });
+  }
+  
+  // Draw the altitude line, flashing if an animal is in the cone
+  if (shouldFlash) {
     if (Math.floor(Date.now() / flashSpeed) % 2 === 0) {
       ctx.beginPath();
       ctx.moveTo(x1, y1);
@@ -447,6 +474,7 @@ function drawCameraOverlayAt(centerX, centerY) {
       ctx.stroke();
     }
   } else {
+    // Draw non-flashing line if no animals in cone
     ctx.beginPath();
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);

@@ -35,7 +35,7 @@ const mountainLayers = [
     startY: 15000,
     endY: 20000,
     width: 2500,
-    totalAnimalsPerLayer: 25  // Reduced to a more reasonable number
+    totalAnimalsPerLayer: 100  // Reduced to a more reasonable number
   }
 ];
 
