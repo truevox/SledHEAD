@@ -14,7 +14,7 @@ var lastTime = 0;
 // Local currentState variable removed - we'll use window.currentState exclusively
 var jumpOsc = null;
 var jumpGain = null;
-var loanAmount = 100000;
+var loanAmount = 10000;
 window.floatingTexts = [];  // Make floatingTexts accessible globally
 var isFirstHouseEntry = true;
 var houseReEntry = 0;
@@ -79,12 +79,21 @@ class MainScene extends Phaser.Scene {
     ctx = this.rt.canvas.getContext('2d', contextSettings);
     this.rt.context = ctx; // Update the texture's context reference
     
-    // Apply willReadFrequently to the game canvas context as well
+    // Set willReadFrequently attribute for all canvas contexts in the game
     this.game.context.willReadFrequently = true;
     
-    // Set attribute on the original canvas 
+    // Set attribute on the original canvas element explicitly
     const canvasElement = this.game.canvas;
-    // This will help Phaser's internal operations with getImageData
+    canvasElement.setAttribute('willReadFrequently', 'true');
+    
+    // Also apply to the window.canvas if it's a different element
+    if (window.canvas && window.canvas instanceof HTMLCanvasElement) {
+      window.canvas.setAttribute('willReadFrequently', 'true');
+      const windowCtx = window.canvas.getContext('2d', { willReadFrequently: true });
+      if (windowCtx) {
+        windowCtx.willReadFrequently = true;
+      }
+    }
     
     // Make the canvas and context accessible globally
     window.gameCanvas = canvasElement;
@@ -170,6 +179,7 @@ class MainScene extends Phaser.Scene {
 
     // Set up the world
     generateTerrain();
+    
     updateLoanButton();
     
     changeState(window.GameState.HOUSE);
@@ -221,6 +231,9 @@ function changeState(newState) {
   completeStateChange(newState, prevState);
 }
 
+// Add a flag to track if animals have been spawned
+let animalsAlreadySpawned = false;
+
 function completeStateChange(newState, prevState) {
   window.currentState = newState;
   if (window.currentState === window.GameState.HOUSE) {
@@ -235,9 +248,16 @@ function completeStateChange(newState, prevState) {
       showSledRepairedNotice();
     }
     if (!isFirstHouseEntry && (prevState === window.GameState.DOWNHILL || prevState === window.GameState.UPHILL)) {
-      if (typeof despawnAllAnimals === 'function') {
-        despawnAllAnimals();
+      // Always despawn animals when returning to the house for consistent behavior
+      if (typeof window.despawnAllAnimals === 'function') {
+        console.log("Despawning animals on return to house");
+        window.despawnAllAnimals();
+      } else {
+        console.warn("despawnAllAnimals function not available");
+        // Fallback - just reset the flag
+        animalsAlreadySpawned = false;
       }
+      
       if (loanAmount > 0) {
         // First calculate house entry fee
         const deduction = Math.ceil(loanAmount * TWEAK.houseEntryLoanDeduction);
@@ -262,14 +282,26 @@ function completeStateChange(newState, prevState) {
     document.getElementById("upgrade-menu").style.display = "none";
     document.getElementById("game-screen").style.display = "block";
     if (prevState === window.GameState.HOUSE) {
+      // Spawn animals when leaving the house to downhill (only if not already spawned)
+      if (!animalsAlreadySpawned && typeof window.spawnInitialAnimals === 'function') {
+        console.log("Spawning animals as player leaves house for the first time...");
+        window.spawnInitialAnimals();
+        animalsAlreadySpawned = true;
+      }
+      
       earlyFinish = false;
       player.collisions = 0;
       
       // Get the layer for the starting position
-      const startY = mountainHeight - (player.height * 3);
-      const startLayer = getLayerByY(startY);
-      player.x = startLayer.width / 2; // Use layer width instead of canvas width
-      player.absY = startY;
+      // const startY = mountainHeight - (player.height * 3); // Keep original calculation for potential future use or logging
+      // const startLayer = getLayerByY(startY); // Keep original calculation for potential future use or logging
+      
+      // Set fixed starting position at the bottom of the mountain
+      player.x = 10; // Start at x = 10
+      player.absY = 19930; // Start at y = 19930 (bottom)
+
+      // Recalculate startLayer based on the new fixed position if needed for logging/other logic
+      const startLayer = getLayerByY(player.absY); 
       
       player.velocityY = 0;
       player.xVel = 0;
@@ -292,12 +324,33 @@ function completeStateChange(newState, prevState) {
   else if (window.currentState === window.GameState.UPHILL) {
     document.getElementById("upgrade-menu").style.display = "none";
     document.getElementById("game-screen").style.display = "block";
+    
+    if (prevState === window.GameState.HOUSE) {
+      // Spawn animals when leaving the house to uphill (only if not already spawned)
+      if (!animalsAlreadySpawned && typeof window.spawnInitialAnimals === 'function') {
+        console.log("Spawning animals as player leaves house for the first time...");
+        window.spawnInitialAnimals();
+        animalsAlreadySpawned = true;
+      }
+      
+      // Set fixed starting position at the bottom of the mountain
+      player.x = 10; // Start at x = 10
+      player.absY = 19930; // Start at y = 19930 (bottom)
+      console.log(`UPHILL starting position set to fixed point: x=${player.x}, y=${player.absY}`);
+    }
+    
     if (prevState === window.GameState.DOWNHILL) {
       awardMoney();
     }
     player.xVel = 0;
   }
   console.log(`Game state changed: ${prevState} -> ${window.currentState}`);
+}
+
+// Function to reset the animal spawn flag
+function resetAnimalsSpawnFlag() {
+  console.log("Resetting animals spawn flag");
+  animalsAlreadySpawned = false;
 }
 
 // Create and launch the Phaser game with scale options for responsiveness
@@ -312,9 +365,22 @@ var config = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH
   },
-  // Add canvas attributes to fix the willReadFrequently warning
+  // Enhanced canvas attributes to fix the willReadFrequently warning
   canvasAttributes: {
-    willReadFrequently: true
+    willReadFrequently: true,
+    style: 'width: 100%; height: 100%;'
+  },
+  render: {
+    willReadFrequently: true,
+    antialias: false,
+    pixelArt: true,
+    roundPixels: true
+  },
+  physics: {
+    default: 'arcade',
+    arcade: {
+      debug: false
+    }
   }
 };
 
@@ -322,4 +388,5 @@ var phaserGame = new Phaser.Game(config);
 
 // Make functions available globally
 window.changeState = changeState;
+window.resetAnimalsSpawnFlag = resetAnimalsSpawnFlag;
 // Removed redundant global assignment - window.currentState is now managed directly

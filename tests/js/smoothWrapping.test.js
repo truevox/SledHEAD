@@ -153,4 +153,71 @@ describe('Smooth Wrapping Features', () => {
     expect(newCameraX).not.toBe(cameraX);
     expect(Math.abs(newCameraX - cameraX)).toBeLessThan(Math.abs(cameraTargetX - cameraX));
   });
+
+  // Define test mountain layers
+  const mockMountainLayers = [
+    { id: 0, startY: 0, endY: 5000, width: 1000 },
+    { id: 1, startY: 5000, endY: 10000, width: 1500 },
+    { id: 2, startY: 10000, endY: 15000, width: 2000 },
+    { id: 3, startY: 15000, endY: 20000, width: 2500 }
+  ];
+  
+  // Define helper functions for testing
+  function getLayerByY(absY) {
+    const layer = mockMountainLayers.find(layer => 
+      absY >= layer.startY && absY < layer.endY
+    );
+    
+    // Handle edge cases
+    if (!layer) {
+      if (absY < mockMountainLayers[0].startY) {
+        return mockMountainLayers[0];
+      } else if (absY >= mockMountainLayers[mockMountainLayers.length - 1].endY) {
+        return mockMountainLayers[mockMountainLayers.length - 1];
+      }
+    }
+    
+    return layer;
+  }
+  
+  function layerWidth(layerId) {
+    return mockMountainLayers[layerId].width;
+  }
+  
+  function calcWrappedPosition(x, y) {
+    const layer = getLayerByY(y);
+    const width = layer ? layer.width : 1000; // Default to 1000 if no layer
+    
+    // Wrap the X position based on the layer's width
+    const wrappedX = ((x % width) + width) % width; // Ensure positive wrapping
+    
+    return {
+      wrappedX: wrappedX,
+      wrappedY: y
+    };
+  }
+  
+  test('calcWrappedPosition handles arbitrary Y values across layer boundaries', () => {
+    // Try various height ranges for Y values in each layer
+    
+    // Layer 0: 0 to 5000
+    let result = calcWrappedPosition(500, 100);
+    expect(result.wrappedX).toBe(500);
+    expect(result.wrappedY).toBe(100);
+    
+    // Layer 1: 5000 to 10000
+    result = calcWrappedPosition(300, 7500);
+    expect(result.wrappedX).toBe(300 % layerWidth(1));
+    expect(result.wrappedY).toBe(7500);
+    
+    // Layer 2: 10000 to 15000
+    result = calcWrappedPosition(2500, 12000);
+    expect(result.wrappedX).toBe(2500 % layerWidth(2));
+    expect(result.wrappedY).toBe(12000);
+    
+    // Layer 3: 15000 to 20000
+    result = calcWrappedPosition(3000, 18000);
+    expect(result.wrappedX).toBe(3000 % layerWidth(3));
+    expect(result.wrappedY).toBe(18000);
+  });
 });

@@ -10,32 +10,32 @@
 // Layers are ordered by increasing Y coordinate (from top to bottom of the mountain)
 const mountainLayers = [
   {
-    id: 0,
+    id: 0, //Peak Layer
     startY: 0,
-    endY: 50000,
+    endY: 5000,
     width: 1000,
-    totalAnimalsPerLayer: 15
-  },
-  {
-    id: 1,
-    startY: 50000,
-    endY: 100000,
-    width: 1500,
-    totalAnimalsPerLayer: 18
-  },
-  {
-    id: 2,
-    startY: 100000,
-    endY: 150000,
-    width: 2000,
-    totalAnimalsPerLayer: 22
-  },
-  {
-    id: 3,
-    startY: 150000,
-    endY: 200000, //200000,
-    width: 2500,  //2500
     totalAnimalsPerLayer: 25
+  },
+  {
+    id: 1, //Mid-Peak Layer
+    startY: 5000,
+    endY: 10000,
+    width: 1500,
+    totalAnimalsPerLayer: 25
+  },
+  {
+    id: 2, //Mid-Base Layer
+    startY: 10000,
+    endY: 15000,
+    width: 2000,
+    totalAnimalsPerLayer: 25
+  },
+  {
+    id: 3, // Base Layer (STARTING ZONE)
+    startY: 15000,
+    endY: 20000,
+    width: 2500,
+    totalAnimalsPerLayer: 25  // Reduced to a more reasonable number
   }
 ];
 

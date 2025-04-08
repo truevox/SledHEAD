@@ -245,7 +245,12 @@ function updateDownhill(deltaTime) {
   player.velocityY += player.isJumping ? TWEAK.baseGravity : gravity;
   player.absY += player.velocityY;
   updateLiveMoney();
-
+  
+  // Update all animals in the global array
+  if (typeof window.updateAllAnimals === 'function') {
+    window.updateAllAnimals();
+  }
+  
   // Check for transition to UPHILL mode near bottom
   if (player.absY >= mountainHeight - (player.height * 4)) {
     player.absY = mountainHeight - (player.height * 4);

@@ -73,16 +73,21 @@ window.addEventListener("keyup", function(e) {
   }
 });
 
-// Update the cursor position display
+// Update the cursor position display to show player position instead
 function updateCursorPositionDisplay() {
   const cursorPositionElement = document.getElementById("cursor-position");
-  if (cursorPositionElement) {
-    cursorPositionElement.textContent = `Abs-xy: (${cursorPosition.absoluteX}, ${cursorPosition.absoluteY}) | View: (${cursorPosition.viewportX}, ${cursorPosition.viewportY})`;
+  if (cursorPositionElement && typeof player !== 'undefined') {
+    // Format to 1 decimal place for readability
+    const playerX = player.x.toFixed(1);
+    const playerY = player.absY.toFixed(1);
+    const layerIndex = player.currentLayerIndex !== undefined ? player.currentLayerIndex : 'N/A';
+    
+    cursorPositionElement.textContent = `Position: (${playerX}, ${playerY}) | Layer: ${layerIndex}`;
   }
 }
 
-// Set up interval to update cursor position display once per second
-setInterval(updateCursorPositionDisplay, 1000);
+// Update the position display more frequently for smoother feedback
+setInterval(updateCursorPositionDisplay, 100);
 
 // Helper function to check if a key is currently pressed
 function isKeyDown(key) {

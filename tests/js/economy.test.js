@@ -30,7 +30,7 @@ describe('Economy System', () => {
     };
     
     // Setup for loan tests
-    global.loanAmount = 100000;
+    global.loanAmount = 10000;
     global.LOAN_INTEREST_RATE = 0.005;
     global.updateLoanButton = jest.fn();
     
@@ -184,14 +184,14 @@ describe('Economy System', () => {
     });
     
     // Check initial loan amount
-    expect(global.loanAmount).toBe(100000);
+    expect(global.loanAmount).toBe(10000);
     
     // Apply interest
     const interestAmount = global.calculateLoanInterest();
     
     // Interest should be 0.5% of loan
-    expect(interestAmount).toBe(Math.ceil(100000 * 0.005));
-    expect(global.loanAmount).toBe(100000 + interestAmount);
+    expect(interestAmount).toBe(Math.ceil(10000 * 0.005));
+    expect(global.loanAmount).toBe(10000 + interestAmount);
     
     // Test loan payment
     player.money = 5000;
@@ -200,7 +200,7 @@ describe('Economy System', () => {
     // Should pay full amount of player's money
     expect(payment).toBe(5000);
     expect(player.money).toBe(0);
-    expect(global.loanAmount).toBe(100000 + interestAmount - 5000);
+    expect(global.loanAmount).toBe(10000 + interestAmount - 5000);
   });
   
   test('game economy is balanced for progression', () => {

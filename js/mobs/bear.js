@@ -14,7 +14,7 @@
         speed: (typeof TWEAK !== 'undefined' && TWEAK.bearSpeed) || 8,
         basePhotoBonus: 10, // Bears yield a higher photo bonus
         color: "#8B4513",
-        validBiomes: ['forest', 'alpine'], // Bears live in forest and alpine areas
+        validBiomes: ['forest', 'alpine', 'starterMountain'], // Added starterMountain to valid biomes
         spawningBiomes: [
             { biome: "starterMountain" }  // Spawns on all layers of the Starter Mountain
         ],

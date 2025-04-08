@@ -133,7 +133,7 @@ describe('Save/Load System', () => {
       });
       
       // Reset loan
-      loanAmount = 100000;
+      loanAmount = 10000;
       
       // Remove save from localStorage
       localStorage.removeItem('sledheadSave');
@@ -215,7 +215,7 @@ describe('Save/Load System', () => {
     expect(player.bestTime).toBe(Infinity);
     expect(playerUpgrades.jumperLegs.level).toBe(0);
     expect(mountainUpgrades.wideLayers.level).toBe(0);
-    expect(loanAmount).toBe(100000);
+    expect(loanAmount).toBe(10000);
     
     // Verify save data was removed
     expect(localStorage.removeItem).toHaveBeenCalledWith('sledheadSave');

@@ -26,7 +26,7 @@
         speed: 10,
         basePhotoBonus: 15, // Good bonus for a pretty kitty
         color: "#F9E79F",   // A soft golden color
-        validBiomes: ['alpine', 'peak'], // Mountain lions prefer higher altitude areas
+        validBiomes: ['alpine', 'peak', 'starterMountain'], // Added starterMountain
         spawningBiomes: [
             { biome: "starterMountain" }  // Spawns on all layers of the Starter Mountain
         ],

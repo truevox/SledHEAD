@@ -302,6 +302,10 @@ function drawEntities() {
 
   drawCameraOverlay();
   drawAnimal();
+  // Draw all animals from the animals array
+  if (typeof window.drawAllAnimals === 'function') {
+    window.drawAllAnimals();
+  }
 }
 
 /**

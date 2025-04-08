@@ -60,6 +60,11 @@ function updateUphill(deltaTime) {
   // Call animal update from wildlife.js
   updateAnimal();
   
+  // Call update for all animals in the global array
+  if (typeof window.updateAllAnimals === 'function') {
+    window.updateAllAnimals();
+  }
+  
   // Return to house if player reaches bottom of mountain
   if (player.absY >= mountainHeight) {
     player.absY = mountainHeight;

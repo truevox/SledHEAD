@@ -61,14 +61,16 @@ function initializePlayerMoney() {
 
 // Initialize player position based on layer width
 function initializePlayerPosition() {
-  // Get the top layer (where player starts)
-  const topLayer = getLayerByY(0);
-  if (topLayer) {
-    // Place player in the middle of the layer's width
-    player.x = topLayer.width / 2;
+  // Set fixed starting position at the bottom of the mountain
+  player.x = 10; // Start at x = 10
+  player.absY = 19930; // Start at y = 19930 (bottom)
+  
+  // Get the layer for this position
+  const layer = getLayerByY(player.absY);
+  if (layer) {
     // Initialize the player's layer index
-    player.currentLayerIndex = topLayer.id;
-    console.log("Player positioned at x:", player.x, "in layer:", player.currentLayerIndex);
+    player.currentLayerIndex = layer.id;
+    console.log("Player positioned at x:", player.x, "y:", player.absY, "in layer:", player.currentLayerIndex);
   }
 }
 

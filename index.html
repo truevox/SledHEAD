@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SledHEAD</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="js/canvas-fix.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
 </head>
 <body>
@@ -12,7 +13,16 @@
   <div id="cursor-position"
        style="position: fixed; top: 10px; left: 10px; background: rgba(0,0,0,0.7); color: white;
               padding: 5px; border-radius: 3px; font-family: monospace; z-index: 1000;">
-    Abs: (0, 0) | View: (0, 0)
+    Position: (0.0, 0.0) | Layer: 0
+  </div>
+
+  <!-- Debug Controls -->
+  <div id="debug-controls"
+       style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white;
+              padding: 5px; border-radius: 3px; font-family: monospace; z-index: 1000; display: flex; gap: 10px;">
+    <button id="respawn-animals" style="background: #ff5722; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px;">
+      Respawn Animals
+    </button>
   </div>
 
   <div id="victoryBanner"
@@ -55,6 +65,8 @@
   <script src="js/mobs/bear.js"></script>
   <script src="js/mobs/mountainlion.js"></script>
   <script src="js/mobs/bird.js"></script>
+  <script src="js/animal-loader.js"></script>
+  <script src="js/wildlife-fix.js"></script>
   <script src="js/trees.js"></script>
   <script src="js/camera.js"></script>
   <script src="js/jumpsled.js"></script>
@@ -72,5 +84,10 @@
   <script type="module" src="js/upgradeLogic.js"></script>
   <script type="module" src="js/upgrades.js"></script>
   <script type="module" src="js/game.js"></script>
+  
+  <!-- Animal rendering fix -->
+  <script src="js/fix-animal-rendering.js"></script>
+  <script src="js/animal-debug.js"></script>
+  <script src="js/animal-test.js"></script>
 </body>
 </html>

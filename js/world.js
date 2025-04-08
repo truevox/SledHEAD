@@ -1,8 +1,8 @@
 /* world.js */
-const mountainHeight = 200000; // Mountain is now 100x bigger!
+const mountainHeight = 20000; // Mountain is now at a more reasonable height
 let terrain = [];
-const obstacleCount = 1500; // Reduced rock count to make room for trees
-const treeClusterCount = 3000; // Number of tree clusters to generate
+const obstacleCount = 600; // Reduced rock count to make room for trees
+const treeClusterCount = 600; // Number of tree clusters to generate
 let earlyFinish = false;
 const heightMultiplierBase = 1; // Base value for height multiplier - can be adjusted later
 const distanceMultiplierBase = 1; // Base value for distance multiplier - can be adjusted later

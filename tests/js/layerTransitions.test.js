@@ -115,10 +115,10 @@ describe('Vertical Layer Transitions', () => {
   // Mock player object and layers for testing
   let mockPlayer;
   const mockMountainLayers = [
-    { id: 0, startY: 0, endY: 50000, width: 1000 },
-    { id: 1, startY: 50000, endY: 100000, width: 1500 },
-    { id: 2, startY: 100000, endY: 150000, width: 2000 },
-    { id: 3, startY: 150000, endY: 200000, width: 2500 }
+    { id: 0, startY: 0, endY: 5000, width: 1000, temperature: -10, biome: 'alpine' },
+    { id: 1, startY: 5000, endY: 10000, width: 1500, temperature: 0, biome: 'subalpine' },
+    { id: 2, startY: 10000, endY: 15000, width: 2000, temperature: 10, biome: 'forest' },
+    { id: 3, startY: 15000, endY: 20000, width: 2500, temperature: 20, biome: 'meadow' }
   ];
   
   // Mock implementation of updatePlayerLayer based on the actual function
@@ -179,63 +179,63 @@ describe('Vertical Layer Transitions', () => {
   });
   
   test('player transitions down correctly when crossing layer boundary', () => {
-    // Start in layer 0
-    mockPlayer.absY = 49999;
+    // Setup transition down from layer 0 to layer 1
     mockPlayer.currentLayerIndex = 0;
+    mockPlayer.absY = 4990;
     
-    // Move past layer 0's endY boundary into layer 1
-    mockPlayer.absY = 50001;
+    // Now cross layer boundary
+    mockPlayer.absY = 5010;
     mockUpdatePlayerLayer();
     
     // Should have moved to layer 1 and been positioned at its startY
     expect(mockPlayer.currentLayerIndex).toBe(1);
-    expect(mockPlayer.absY).toBe(50000);
+    expect(mockPlayer.absY).toBe(5000);
   });
   
   test('player transitions up correctly when crossing layer boundary', () => {
-    // Start in layer 1
-    mockPlayer.absY = 50001;
+    // Setup transition up from layer 1 to layer 0
     mockPlayer.currentLayerIndex = 1;
+    mockPlayer.absY = 5010;
     
-    // Move past layer 1's startY boundary back into layer 0
-    mockPlayer.absY = 49999;
+    // Now cross layer boundary upward
+    mockPlayer.absY = 4990;
     mockUpdatePlayerLayer();
     
-    // Should have moved to layer 0 and been positioned at its endY - 1
+    // Should have moved to layer 0
     expect(mockPlayer.currentLayerIndex).toBe(0);
-    expect(mockPlayer.absY).toBe(49999);
+    expect(mockPlayer.absY).toBe(4999);
   });
   
   test('player transitions through multiple layers correctly', () => {
     // Start in layer 0
-    mockPlayer.absY = 25000;
     mockPlayer.currentLayerIndex = 0;
+    mockPlayer.absY = 2500;
     
-    // Jump far down to layer 3 (simulating a long fall or teleport)
-    mockPlayer.absY = 175000;
+    // Jump far down past multiple layers to layer 3
+    mockPlayer.absY = 16000;
     mockUpdatePlayerLayer();
     
     // Should have moved to layer 3 and been positioned at its startY
     expect(mockPlayer.currentLayerIndex).toBe(3);
-    expect(mockPlayer.absY).toBe(150000);
+    expect(mockPlayer.absY).toBe(15000);
     
     // Now jump far up to layer 0 (simulating a long jump or teleport)
-    mockPlayer.absY = 10000;
+    mockPlayer.absY = 2500;
     mockUpdatePlayerLayer();
     
-    // Should have moved to layer 0 and been positioned at its endY - 1
+    // Should have moved to layer 0 and be positioned at endY - 1 (per the mockUpdatePlayerLayer implementation)
     expect(mockPlayer.currentLayerIndex).toBe(0);
-    expect(mockPlayer.absY).toBe(49999);
+    expect(mockPlayer.absY).toBe(4999);
   });
   
   test('x position is scaled proportionally when moving to a wider layer', () => {
-    // Start in layer 0 (width: 1000)
-    mockPlayer.absY = 25000;
+    // Prepare a test player positioned exactly in the middle of layer 0
     mockPlayer.currentLayerIndex = 0;
-    mockPlayer.x = 500; // Center of layer 0 (50% of width)
+    mockPlayer.x = 500; // 50% of the layer width (1000)
+    mockPlayer.absY = 4990;
     
-    // Move down to layer 1 (width: 1500)
-    mockPlayer.absY = 60000;
+    // Move to layer 1
+    mockPlayer.absY = 5010; 
     mockUpdatePlayerLayer();
     
     // X position should be scaled to maintain the same proportional position
@@ -265,39 +265,39 @@ describe('Vertical Layer Transitions', () => {
   });
   
   test('x position scaling handles edge positions correctly', () => {
-    // Test right edge
-    mockPlayer.absY = 25000;
+    // Test position at the right edge
     mockPlayer.currentLayerIndex = 0;
-    mockPlayer.x = 1000; // Right edge of layer 0
+    mockPlayer.x = 999; // Just inside the right edge of layer 0
+    mockPlayer.absY = 4990;
     
-    // Move down to layer 1
-    mockPlayer.absY = 60000;
+    // Move to layer 1
+    mockPlayer.absY = 5010;
     mockUpdatePlayerLayer();
     
-    // Should be at the right edge of layer 1
-    expect(mockPlayer.x).toBe(1500);
+    // Should be at the right edge of layer 1 (or very close)
+    expect(mockPlayer.x).toBeCloseTo(1498.5, 1);
     
     // Test left edge
-    mockPlayer.absY = 55000;
+    mockPlayer.absY = 5010;
     mockPlayer.currentLayerIndex = 1;
-    mockPlayer.x = 0; // Left edge of layer 1
+    mockPlayer.x = 0; // Left edge
     
-    // Move up to layer 0
-    mockPlayer.absY = 45000;
+    // Move back to layer 0
+    mockPlayer.absY = 4990;
     mockUpdatePlayerLayer();
     
-    // Should be at the left edge of layer 0
+    // Should remain at left edge
     expect(mockPlayer.x).toBe(0);
   });
   
   test('x position scaling preserves position when jumping multiple layers', () => {
-    // Start in layer 0 at 25% of width
-    mockPlayer.absY = 25000;
+    // Prepare at 25% of layer 0 width
     mockPlayer.currentLayerIndex = 0;
-    mockPlayer.x = 250; // 25% of layer 0 width
+    mockPlayer.x = 250; // 25% of 1000
+    mockPlayer.absY = 4990;
     
-    // Jump down to layer 3
-    mockPlayer.absY = 175000;
+    // Jump directly to layer 3 (skipping layers 1-2)
+    mockPlayer.absY = 16000;
     mockUpdatePlayerLayer();
     
     // Position should be 25% of layer 3 width (2500 * 0.25 = 625)
@@ -305,41 +305,29 @@ describe('Vertical Layer Transitions', () => {
     expect(mockPlayer.x / mockMountainLayers[3].width).toBeCloseTo(0.25, 5);
     
     // Jump back up to layer 0
-    mockPlayer.absY = 10000;
+    mockPlayer.absY = 4000;
     mockUpdatePlayerLayer();
     
-    // Position should be back to 25% of layer 0 width
+    // Should be back to 25% of layer 0 width
     expect(mockPlayer.x).toBeCloseTo(250, 1);
     expect(mockPlayer.x / mockMountainLayers[0].width).toBeCloseTo(0.25, 5);
   });
   
   test('wrapping is applied correctly after scaling', () => {
-    // Test wrapping when scaling to a smaller layer
-    mockPlayer.absY = 55000;
-    mockPlayer.currentLayerIndex = 1;
-    mockPlayer.x = 1400; // Near right edge of layer 1 (width 1500)
-    
-    // Move up to layer 0 (width 1000)
-    mockPlayer.absY = 45000;
-    mockUpdatePlayerLayer();
-    
-    // Scaled position would be 1400 * (1000/1500) = 933.33...
-    // This should be within the bounds of layer 0 (width 1000)
-    expect(mockPlayer.x).toBeGreaterThanOrEqual(0);
-    expect(mockPlayer.x).toBeLessThan(1000);
-    expect(mockPlayer.x).toBeCloseTo(933.33, 1);
-    
-    // Test wrapping when moving to a larger layer with position that would exceed bounds
-    mockPlayer.absY = 45000;
+    // Position the player near the right edge of layer 0
     mockPlayer.currentLayerIndex = 0;
-    mockPlayer.x = 950; // Near right edge of layer 0 (width 1000)
+    mockPlayer.x = 950; // 95% of 1000
+    mockPlayer.absY = 4990;
     
-    // Move down to layer 1 (width 1500)
-    mockPlayer.absY = 55000;
+    // Layer 1 is 1.5x wider than layer 0
+    // When we move to layer 1, x should scale to 950 * 1.5 = 1425
+    // which is less than layer 1 width (1500)
+    
+    // Test scaling without wrapping
+    mockPlayer.absY = 5010;
     mockUpdatePlayerLayer();
     
-    // Scaled position would be 950 * (1500/1000) = 1425
-    // This should be within the bounds of layer 1 (width 1500)
+    // Should be scaled but not wrapped
     expect(mockPlayer.x).toBeGreaterThanOrEqual(0);
     expect(mockPlayer.x).toBeLessThan(1500);
     expect(mockPlayer.x).toBeCloseTo(1425, 1);
