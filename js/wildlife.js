@@ -199,25 +199,34 @@ function spawnAnimal() {
  */
 function spawnInitialAnimals() {
   console.log("Spawning initial animals for all mountain layers...");
+  
+  // Initialize animals array if it doesn't exist yet, but DON'T clear it if it does
+  if (!animals) {
+    animals = [];
+    if (typeof global !== 'undefined') {
+      global.animals = animals;
+    }
+  }
+  
+  // Only proceed with spawning if the animals array is empty
+  if (animals.length > 0) {
+    console.log("Animals already exist, skipping spawn. Current count:", animals.length);
+    return animals.length;
+  }
+  
   console.log("Initial animalRegistry:", animalRegistry);
   console.log("Initial mountainLayers:", mountainLayers);
-  
-  // Clear any existing animals while maintaining the array reference
-  animals.length = 0;
-  if (typeof global !== 'undefined') {
-    global.animals = animals;
-  }
   
   // If there are no registered animal types, log an error and return
   if (animalRegistry.length === 0) {
     console.error("No animal types registered! Cannot spawn animals.");
-    return;
+    return 0;
   }
   
-  // Find bear data in the registry
+  // Always spawn the special forced bear first (PRESERVED FEATURE)
   const bearType = animalRegistry.find(animal => animal.type === 'bear');
   if (bearType) {
-    // Create a bear at the specific location
+    // Create a bear at the specific location with all required properties
     const bear = {
       type: "bear",
       x: 10, // Specific X position requested
@@ -245,12 +254,12 @@ function spawnInitialAnimals() {
     console.log(`Forced spawn of bear at (10, 19850) in layer 3`);
   }
   
-  // Iterate through each mountain layer
+  // Iterate through each mountain layer (PRESERVED FEATURE - hardcoded counts per biome/layer)
   mountainLayers.forEach((layer, index) => {
     const layerId = layer.id;
     const totalAnimalsForThisLayer = layer.totalAnimalsPerLayer || 0;
     
-    console.log(`Processing layer ${layerId} with totalAnimalsForThisLayer: ${totalAnimalsForThisLayer}`);
+    console.log(`Processing layer ${layerId} with totalAnimalsPerLayer: ${totalAnimalsForThisLayer}`);
     
     if (totalAnimalsForThisLayer <= 0) {
       console.warn(`Layer ${layerId} has no animals configured (totalAnimalsPerLayer is ${totalAnimalsForThisLayer}).`);
@@ -264,11 +273,11 @@ function spawnInitialAnimals() {
     
     console.log(`Populating layer ${layerId} (${biome}) with ${totalAnimalsForThisLayer} animals...`);
     
-    // Filter animal types based on biome compatibility
+    // Filter animal types based on biome compatibility (PRESERVED FEATURE)
     let validAnimalTypesForLayer;
     if (layerId === 3) {
       // Layer ID 3 is the Base Layer/starting zone - include all animal types
-      validAnimalTypesForLayer = animalRegistry.slice(); // Create a copy to avoid modifying the original
+      validAnimalTypesForLayer = animalRegistry.slice();
       console.log("This is the starting zone (Base Layer) - including all animal types:", validAnimalTypesForLayer);
     } else {
       // For non-starting zones, filter by valid biomes
@@ -298,7 +307,7 @@ function spawnInitialAnimals() {
       return;
     }
     
-    // Spawn the configured number of animals for this layer
+    // Spawn the configured number of animals for this layer (PRESERVED FEATURE - granular positioning)
     for (let i = 0; i < totalAnimalsForThisLayer; i++) {
       // Randomly select an animal type using spawn probabilities as weights
       let r = Math.random() * totalWeight;
@@ -317,12 +326,12 @@ function spawnInitialAnimals() {
         chosenAnimalType = validAnimalTypesForLayer[0];
       }
       
-      // Generate random coordinates within this layer
+      // Generate random coordinates within this layer (PRESERVED FEATURE - granular positioning)
       const spawnX = Math.random() * layer.width;
       const spawnY = layer.startY + Math.random() * (layer.endY - layer.startY);
       const altitude = Math.floor(Math.random() * 100);
       
-      // Calculate flee angle similar to original code
+      // Calculate flee angle similar to original code (PRESERVED FEATURE)
       const layerWidth = layer.width;
       let baseAngle = spawnX > layerWidth / 2 ?
                      Math.random() * (170 - 135) + 135 :
@@ -330,7 +339,7 @@ function spawnInitialAnimals() {
       let angleOffset = Math.random() * 15;
       let fleeAngleActual = baseAngle + (Math.random() < 0.5 ? -angleOffset : angleOffset);
       
-      // Create the animal object
+      // Create the animal object (PRESERVED FEATURE - all necessary properties)
       const animal = {
         type: chosenAnimalType.type,
         x: spawnX,
@@ -365,12 +374,24 @@ function spawnInitialAnimals() {
   });
   
   console.log(`Initial animal spawning complete. Total animals: ${animals.length}`);
-  console.log("Final animals array:", animals);
+  return animals.length;
 }
 
 function despawnAllAnimals() {
   console.log("Despawning all animals...");
+  
+  // Safety check - only despawn animals when explicitly requested by the game
+  // This function should only be called when returning to the house
+  const callerInfo = new Error().stack.split('\n')[2] || "unknown caller";
+  console.log(`Despawn animals called by: ${callerInfo}`);
+  
+  if (window.currentState !== window.GameState.HOUSE) {
+    console.warn("WARNING: Attempted to despawn animals outside of HOUSE state - ignoring request");
+    return;
+  }
+  
   if (animals) {
+    console.log(`Despawning ${animals.length} animals`);
     animals.length = 0;
   }
   if (activeAnimal) {
@@ -491,6 +512,11 @@ function drawAnimalAt(x, y, animal) {
 function updateAllAnimals() {
   if (!animals || !animals.length) return;
   
+  // Log animal count periodically (every ~10 seconds)
+  if (Math.random() < 0.01) {
+    console.log(`Updating ${animals.length} animals in ${window.currentState} state`);
+  }
+  
   animals.forEach(animal => {
     // Skip animals too far from player for performance (outside of 3x screen height)
     if (Math.abs(animal.y - player.absY) > canvas.height * 3) return;
@@ -521,7 +547,11 @@ function updateAllAnimals() {
       let distanceSquared = dx * dx + dy * dy;
       
       if (distanceSquared < animal.detectionRadius * animal.detectionRadius) {
-        console.log(`Player too close to ${animal.type} at (${animal.x.toFixed(1)}, ${animal.y.toFixed(1)}) - animal fleeing`);
+        // Only log when state actually changes to avoid spam
+        if (animal.state !== "fleeing") {
+          console.log(`Player too close to ${animal.type} at (${animal.x.toFixed(1)}, ${animal.y.toFixed(1)}) - animal fleeing`);
+        }
+        
         animal.state = "fleeing";
         animal.fleeingLogOnce = false;
         
@@ -537,6 +567,10 @@ function updateAllAnimals() {
         animal.fleeingLogOnce = true;
       }
       
+      // Save old position for logging significant changes
+      const oldX = animal.x;
+      const oldY = animal.y;
+      
       let rad = animal.fleeAngleActual * Math.PI / 180;
       let newX = animal.x + Math.cos(rad) * animal.speed * 0.5;
       animal.y += Math.sin(rad) * animal.speed * 0.5;
@@ -547,6 +581,11 @@ function updateAllAnimals() {
       
       // Apply wrapping for horizontal movement
       animal.x = calculateWrappedX(newX, animalLayer.width);
+      
+      // Log significant position changes (for debugging, throttled)
+      if (Math.random() < 0.01 && (Math.abs(animal.x - oldX) > 5 || Math.abs(animal.y - oldY) > 5)) {
+        console.log(`Animal ${animal.type} moved from (${oldX.toFixed(1)}, ${oldY.toFixed(1)}) to (${animal.x.toFixed(1)}, ${animal.y.toFixed(1)})`);
+      }
     } 
     // Handle sitting state - small chance to spontaneously flee
     else if (animal.state === "sitting") {
