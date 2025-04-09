@@ -15,7 +15,7 @@ function throttledRenderLog(message, throttleTime = 5000) {
 // Store camera position for smooth interpolation
 let cameraX = 0;
 let cameraTargetX = 0;
-const cameraLerpFactor = 0.08; // Slightly reduced for smoother transitions
+const cameraLerpFactor = 0.1; // Adjust for smoother or snappier camera follow
 
 // Make camera variables available globally
 window.cameraX = cameraX;
@@ -135,6 +135,10 @@ function render() {
   // Clear the canvas each frame
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+  // Background color depends on state
+  ctx.fillStyle = (window.currentState === window.GameState.DOWNHILL) ? "#ADD8E6" : "#98FB98";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
   // Get player's current layer for camera and wrapping
   const playerLayer = getLayerByY(player.absY);
   const layerWidth = playerLayer.width;
@@ -142,72 +146,12 @@ function render() {
   // Update camera position with wrapping support
   updateCameraX(player.x, layerWidth);
 
-  // Draw background
-  drawBackground();
-
-  // Draw entities
   drawEntities();
-
-  // Apply edge fog effect
-  drawEdgeFogEffect();
-  
-  // Draw UI elements
   ctx.save();
   window.floatingTexts.forEach(text => text.draw(ctx, player.absY - canvas.height / 2));
   ctx.restore();
   drawReHitIndicator();
   throttledRenderLog("render END", 5000);
-}
-
-/**
- * Draws a simple background
- */
-function drawBackground() {
-  // Get the current game state to determine color scheme
-  const isDownhill = window.currentState === window.GameState.DOWNHILL;
-  
-  // Background gradient colors
-  const topColor = isDownhill ? "#87CEEB" : "#ADD8E6"; // Sky blue
-  const bottomColor = isDownhill ? "#ADD8E6" : "#98FB98"; // Light blue/green
-  
-  // Create gradient for the background
-  const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-  gradient.addColorStop(0, topColor);
-  gradient.addColorStop(1, bottomColor);
-  
-  // Fill the background with gradient
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-}
-
-/**
- * Draws a subtle fog/fade effect at the edges of the screen to mask wrapping
- */
-function drawEdgeFogEffect() {
-  const gradientWidth = canvas.width / 5; // Width of the gradient on each side
-  
-  // Create left edge gradient
-  const leftGradient = ctx.createLinearGradient(0, 0, gradientWidth, 0);
-  leftGradient.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
-  leftGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-  
-  // Create right edge gradient
-  const rightGradient = ctx.createLinearGradient(canvas.width - gradientWidth, 0, canvas.width, 0);
-  rightGradient.addColorStop(0, 'rgba(255, 255, 255, 0)');
-  rightGradient.addColorStop(1, 'rgba(255, 255, 255, 0.3)');
-  
-  // Draw the fog effect
-  ctx.save();
-  
-  // Left edge
-  ctx.fillStyle = leftGradient;
-  ctx.fillRect(0, 0, gradientWidth, canvas.height);
-  
-  // Right edge
-  ctx.fillStyle = rightGradient;
-  ctx.fillRect(canvas.width - gradientWidth, 0, gradientWidth, canvas.height);
-  
-  ctx.restore();
 }
 
 function drawEntities() {
@@ -302,10 +246,6 @@ function drawEntities() {
 
   drawCameraOverlay();
   drawAnimal();
-  // Draw all animals from the animals array
-  if (typeof window.drawAllAnimals === 'function') {
-    window.drawAllAnimals();
-  }
 }
 
 /**
@@ -438,35 +378,8 @@ function drawCameraOverlayAt(centerX, centerY) {
   ctx.strokeStyle = altitudeColor;
   ctx.lineWidth = 3;
 
-  // Check both activeAnimal and animals array for animals in the cone
-  let shouldFlash = false;
-  let flashSpeed = TWEAK.altitudeFlashMinSpeed; // Default to slow flash speed
-  
-  // Check activeAnimal first (legacy)
   if (activeAnimal && isAnimalInsideCone(activeAnimal)) {
-    shouldFlash = true;
-    flashSpeed = mapRange(Math.abs(player.altitudeLine - activeAnimal.altitude), 0, 100, 
-                         TWEAK.altitudeFlashMaxSpeed, TWEAK.altitudeFlashMinSpeed);
-  }
-  
-  // Check global animals array (may override activeAnimal flash speed with closest match)
-  if (window.animals && window.animals.length > 0) {
-    window.animals.forEach(animal => {
-      if (isAnimalInsideCone(animal)) {
-        shouldFlash = true;
-        // Calculate flash speed based on altitude difference
-        let animalFlashSpeed = mapRange(Math.abs(player.altitudeLine - animal.altitude), 0, 100, 
-                                      TWEAK.altitudeFlashMaxSpeed, TWEAK.altitudeFlashMinSpeed);
-        // Use the fastest flash speed (which corresponds to the closest altitude match)
-        if (animalFlashSpeed < flashSpeed) {
-          flashSpeed = animalFlashSpeed;
-        }
-      }
-    });
-  }
-  
-  // Draw the altitude line, flashing if an animal is in the cone
-  if (shouldFlash) {
+    let flashSpeed = mapRange(Math.abs(player.altitudeLine - activeAnimal.altitude), 0, 100, TWEAK.altitudeFlashMaxSpeed, TWEAK.altitudeFlashMinSpeed);
     if (Math.floor(Date.now() / flashSpeed) % 2 === 0) {
       ctx.beginPath();
       ctx.moveTo(x1, y1);
@@ -474,7 +387,6 @@ function drawCameraOverlayAt(centerX, centerY) {
       ctx.stroke();
     }
   } else {
-    // Draw non-flashing line if no animals in cone
     ctx.beginPath();
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);

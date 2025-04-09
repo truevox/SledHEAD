@@ -8,11 +8,21 @@ function updateUphill(deltaTime) {
   if (keysDown["w"]) { player.absY -= upSpeed; }
   if (keysDown["s"]) { player.absY += upSpeed; }
   
-  // Horizontal movement with bounds checking
+  // Get the current layer based on player's Y position
+  const currentLayer = getLayerByY(player.absY);
+  
+  // Update player's layer index
+  if (window.updatePlayerLayer) {
+    window.updatePlayerLayer();
+  }
+  
+  // Horizontal movement with wrapping around cylinder
   let newXUphill = player.x;
   if (keysDown["a"]) { newXUphill -= upSpeed; }
   if (keysDown["d"]) { newXUphill += upSpeed; }
-  player.x = clamp(newXUphill, player.width/2, canvas.width - player.width/2);
+  
+  // Use wrapping instead of clamping for cylindrical world
+  player.x = calculateWrappedX(newXUphill, currentLayer.width);
 
   // Prevent going beyond mountain bounds vertically
   player.absY = clamp(player.absY, 0, mountainHeight);
@@ -32,11 +42,15 @@ function updateUphill(deltaTime) {
   
   // Check for collisions with terrain
   terrain.forEach(obstacle => {
+    // Get the layer for the obstacle
+    const obstacleLayer = getLayerByY(obstacle.y);
+    
     if (checkCollision(
         player.x - player.width / 2, player.absY - player.height / 2,
         player.width, player.height,
         obstacle.x, obstacle.y,
-        obstacle.width, obstacle.height
+        obstacle.width, obstacle.height,
+        obstacleLayer.width // Pass layer width for wrapped collision detection
     )) {
       console.log("Collision on uphill.");
       resolveCollision(player, obstacle);
@@ -45,6 +59,11 @@ function updateUphill(deltaTime) {
   
   // Call animal update from wildlife.js
   updateAnimal();
+  
+  // Call update for all animals in the global array
+  if (typeof window.updateAllAnimals === 'function') {
+    window.updateAllAnimals();
+  }
   
   // Return to house if player reaches bottom of mountain
   if (player.absY >= mountainHeight) {

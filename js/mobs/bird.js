@@ -14,15 +14,16 @@
         speed: (typeof TWEAK !== 'undefined' && TWEAK.birdSpeed) || 12,
         basePhotoBonus: 5, // Birds yield a lower photo bonus
         color: "#1E90FF",
+        validBiomes: ['forest', 'alpine', 'peak', 'grassland', 'starterMountain'], // Added starterMountain
         spawningBiomes: [
             { biome: "starterMountain" }  // Spawns on all layers of the Starter Mountain
         ],
         customUpdate: null,
-        customDraw: function(animal, screenY, ctx) {
+        customDraw: function(animal, screenY, ctx, drawX) {
             // Draw the bird's body
             ctx.fillStyle = "#1E90FF";
             ctx.fillRect(
-                animal.x - animal.width / 2,
+                drawX - animal.width / 2,
                 screenY - animal.height / 2,
                 animal.width,
                 animal.height
@@ -31,16 +32,16 @@
             ctx.fillStyle = "#000000";
             if (Math.floor(Date.now() / 200) % 2 === 0) {
                 ctx.beginPath();
-                ctx.moveTo(animal.x, screenY);
-                ctx.lineTo(animal.x - 20, screenY - 10);
-                ctx.lineTo(animal.x + 20, screenY - 10);
+                ctx.moveTo(drawX, screenY);
+                ctx.lineTo(drawX - 20, screenY - 10);
+                ctx.lineTo(drawX + 20, screenY - 10);
                 ctx.closePath();
                 ctx.fill();
             } else {
                 ctx.beginPath();
-                ctx.moveTo(animal.x, screenY);
-                ctx.lineTo(animal.x - 20, screenY + 5);
-                ctx.lineTo(animal.x + 20, screenY + 5);
+                ctx.moveTo(drawX, screenY);
+                ctx.lineTo(drawX - 20, screenY + 5);
+                ctx.lineTo(drawX + 20, screenY + 5);
                 ctx.closePath();
                 ctx.fill();
             }
@@ -49,7 +50,7 @@
             let altitudeColor = lerpColor("#FF0000", "#0000FF", t);
             ctx.fillStyle = altitudeColor;
             ctx.fillRect(
-                animal.x + animal.width / 2 + 5,
+                drawX + animal.width / 2 + 5,
                 screenY - 5,
                 10,
                 10

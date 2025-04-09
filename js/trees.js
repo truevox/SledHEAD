@@ -14,9 +14,16 @@ function generateTreeClumps(options) {
   
   for (let i = 0; i < count; i++) {
     const clump = [];
-    const clumpSize = 2 + Math.floor(Math.random() * 3); // 2-4 trees per clump
-    const clumpX = terrainBounds.xMin + Math.random() * (terrainBounds.xMax - terrainBounds.xMin);
+    // Generate Y position first to determine layer
     const clumpY = terrainBounds.yMin + Math.random() * (terrainBounds.yMax - terrainBounds.yMin);
+    
+    // Get the appropriate layer for this Y position
+    const layer = getLayerByY(clumpY);
+    
+    // Adjust X position based on layer width
+    const clumpX = Math.random() * layer.width;
+    
+    const clumpSize = 2 + Math.floor(Math.random() * 3); // 2-4 trees per clump
 
     for (let j = 0; j < clumpSize; j++) {
       const sizeFactor = 0.5 + Math.random() * 1.5; // 50–200%
@@ -29,7 +36,8 @@ function generateTreeClumps(options) {
         y: clumpY + offsetY,
         width: squareSize,
         height: squareSize,
-        type: 'tree'
+        type: 'tree',
+        layer: layer.id // Store which layer this tree belongs to
       });
     }
     

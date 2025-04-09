@@ -19,14 +19,22 @@ function updateDownhill(deltaTime) {
   let friction = TWEAK.baseFriction - (window.playerUpgrades.optimalOptics * TWEAK.optimalOpticsFrictionFactorPerLevel);
   if (friction < 0.8) friction = 0.8;
   
+  // Get the current layer based on player's Y position
+  const currentLayer = getLayerByY(player.absY);
+  
+  // Update player's layer index
+  if (window.updatePlayerLayer) {
+    window.updatePlayerLayer();
+  }
+  
   // Horizontal movement handling with bounds checking
   if (window.keysDown["a"]) { player.xVel -= horizontalAccel; }
   if (window.keysDown["d"]) { player.xVel += horizontalAccel; }
   player.xVel *= friction;
   player.xVel = clamp(player.xVel, -maxXVel, maxXVel);
   let newX = player.x + player.xVel;
-  // Prevent going off screen horizontally
-  player.x = clamp(newX, player.width/2, window.canvas.width - player.width/2);
+  // Use wrapping instead of clamping for cylindrical world
+  player.x = calculateWrappedX(newX, currentLayer.width);
   
   // --- Jump Input Handling ---
   // Immediate Mode:
@@ -155,11 +163,15 @@ function updateDownhill(deltaTime) {
       // Check for landing collisions after checking trick state
       for (let i = 0; i < terrain.length; i++) {
         let obstacle = terrain[i];
+        // Get the layer for the obstacle
+        const obstacleLayer = getLayerByY(obstacle.y);
+        
         if (checkCollision(
             player.x - player.width / 2, player.absY - player.height / 2,
             player.width, player.height,
             obstacle.x, obstacle.y,
-            obstacle.width, obstacle.height
+            obstacle.width, obstacle.height,
+            obstacleLayer.width // Pass layer width for wrapped collision detection
         )) {
           console.log("Collision on landing.");
           // terrain.splice(i, 1); // Commented out obstacle destruction
@@ -198,11 +210,15 @@ function updateDownhill(deltaTime) {
   if (!player.isJumping) {
     for (let i = 0; i < terrain.length; i++) {
       let obstacle = terrain[i];
+      // Get the layer for the obstacle
+      const obstacleLayer = getLayerByY(obstacle.y);
+      
       if (checkCollision(
           player.x - player.width / 2, player.absY - player.height / 2,
           player.width, player.height,
           obstacle.x, obstacle.y,
-          obstacle.width, obstacle.height
+          obstacle.width, obstacle.height,
+          obstacleLayer.width // Pass layer width for wrapped collision detection
       )) {
         console.log("Collision on downhill.");
         // terrain.splice(i, 1); // Commented out obstacle destruction
@@ -229,7 +245,12 @@ function updateDownhill(deltaTime) {
   player.velocityY += player.isJumping ? TWEAK.baseGravity : gravity;
   player.absY += player.velocityY;
   updateLiveMoney();
-
+  
+  // Update all animals in the global array
+  if (typeof window.updateAllAnimals === 'function') {
+    window.updateAllAnimals();
+  }
+  
   // Check for transition to UPHILL mode near bottom
   if (player.absY >= mountainHeight - (player.height * 4)) {
     player.absY = mountainHeight - (player.height * 4);

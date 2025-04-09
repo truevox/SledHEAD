@@ -13,6 +13,9 @@ let player = {
   // Camera aim properties
   cameraAngle: 270,  // Camera rotation in degrees
   altitudeLine: 50,  // Starts at 50% of the view range
+  
+  // Layer tracking for mountain segmentation
+  currentLayerIndex: 0, // Start in the top layer (index 0)
 
   // Trick system properties
   currentTrick: null,        // Currently active trick
@@ -56,5 +59,85 @@ function initializePlayerMoney() {
   }
 }
 
+// Initialize player position based on layer width
+function initializePlayerPosition() {
+  // Set fixed starting position at the bottom of the mountain
+  player.x = 10; // Start at x = 10
+  player.absY = 19930; // Start at y = 19930 (bottom)
+  
+  // Get the layer for this position
+  const layer = getLayerByY(player.absY);
+  if (layer) {
+    // Initialize the player's layer index
+    player.currentLayerIndex = layer.id;
+    console.log("Player positioned at x:", player.x, "y:", player.absY, "in layer:", player.currentLayerIndex);
+  }
+}
+
+/**
+ * Updates the player's current layer index based on their vertical position
+ * Handles seamless transition between layers when crossing layer boundaries
+ * Called every frame during game update
+ */
+function updatePlayerLayer() {
+  const layer = getLayerByY(player.absY);
+  
+  if (layer && layer.id !== player.currentLayerIndex) {
+    const previousLayerIndex = player.currentLayerIndex;
+    const previousLayer = mountainLayers[previousLayerIndex];
+    
+    // Store the previous layer's width before updating the current layer index
+    const previousLayerWidth = previousLayer.width;
+    const oldX = player.x;
+    
+    // Update to the new layer
+    player.currentLayerIndex = layer.id;
+    
+    // Get the new layer's width
+    const newLayerWidth = layer.width;
+    
+    // Calculate the scaling factor (prevent division by zero)
+    const scaleFactor = previousLayerWidth > 0 ? newLayerWidth / previousLayerWidth : 1;
+    
+    // Handle special case: if player is exactly at the right edge, keep them at the right edge
+    if (player.x === previousLayerWidth) {
+      player.x = newLayerWidth;
+    } else {
+      // Scale the player's horizontal position proportionally
+      player.x = player.x * scaleFactor;
+      
+      // Only apply wrapping if the position is actually out of bounds
+      if (player.x >= newLayerWidth || player.x < 0) {
+        player.x = calculateWrappedX(player.x, newLayerWidth);
+      }
+    }
+    
+    // Log the scaling information
+    console.log(`Horizontal scaling: oldX=${oldX.toFixed(1)}, oldWidth=${previousLayerWidth}, newWidth=${newLayerWidth}, scaleFactor=${scaleFactor.toFixed(3)}, newX=${player.x.toFixed(1)}`);
+    
+    // Determine transition direction (up or down)
+    if (previousLayerIndex > layer.id) {
+      // Moving UP to a higher layer (lower index)
+      console.log(`Transitioning UP to Layer ${layer.id} (from ${previousLayerIndex})`);
+      
+      // Place player at the bottom edge of the new higher layer
+      // Adjust player position to just inside the endY boundary of the new layer
+      player.absY = layer.endY - 1;
+      
+    } else {
+      // Moving DOWN to a lower layer (higher index)
+      console.log(`Transitioning DOWN to Layer ${layer.id} (from ${previousLayerIndex})`);
+      
+      // Place player at the top edge of the new lower layer
+      // Set player position to exactly at startY boundary of the new layer
+      player.absY = layer.startY;
+    }
+    
+    console.log(`Player repositioned to Y=${player.absY.toFixed(1)} at ${layer.id === previousLayerIndex - 1 ? 'bottom' : 'top'} of layer ${layer.id}`);
+  }
+}
+
 // Call this function after TWEAK is initialized (e.g., from game.js)
 window.initializePlayerMoney = initializePlayerMoney;
+window.initializePlayerPosition = initializePlayerPosition;
+window.updatePlayerLayer = updatePlayerLayer;

@@ -1,0 +1,21 @@
+{
+  "name": "sledhead",
+  "version": "0.1.0",
+  "description": "SledHEAD Game",
+  "main": "index.html",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ],
+    "transform": {},
+    "transformIgnorePatterns": []
+  }
+}

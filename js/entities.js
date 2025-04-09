@@ -2,24 +2,58 @@
 
 // Resolves collisions between the player and obstacles.
 function resolveCollision(player, obstacle) {
+  // Get the correct layer width for this obstacle
+  const layer = getLayerByY(obstacle.y);
+  const layerWidth = layer.width;
+  
   let playerCenterX = player.x;
   let playerCenterY = player.absY;
   let obstacleCenterX = obstacle.x + obstacle.width / 2;
   let obstacleCenterY = obstacle.y + obstacle.height / 2;
+  
+  // Calculate the minimum x-distance considering wrapping
+  let dx = calculateWrappedDistanceX(playerCenterX, obstacleCenterX, layerWidth);
+  let dy = playerCenterY - obstacleCenterY;
+  
   let halfWidthPlayer = player.width / 2;
   let halfWidthObstacle = obstacle.width / 2;
   let halfHeightPlayer = player.height / 2;
   let halfHeightObstacle = obstacle.height / 2;
-  let dx = playerCenterX - obstacleCenterX;
-  let dy = playerCenterY - obstacleCenterY;
+  
+  // For wrapped collision detection, if dx is the wrapped distance, we need
+  // to determine if the player is to the left or right of the obstacle
+  // Positive dx means player is to the right of obstacle's center
+  let isToRight = true;
+  
+  // Determine actual position relationship (for collision response)
+  // If wrapped distance < direct distance, we're wrapping
+  let directDx = playerCenterX - obstacleCenterX;
+  if (Math.abs(directDx) > Math.abs(dx)) {
+    // We're wrapping around
+    // If player is to the right edge and obstacle to left edge, dx should be negative
+    if (playerCenterX > obstacleCenterX) {
+      isToRight = !(playerCenterX - obstacleCenterX > layerWidth / 2);
+    } else {
+      isToRight = (obstacleCenterX - playerCenterX > layerWidth / 2);
+    }
+  } else {
+    isToRight = directDx > 0;
+  }
+  
   let overlapX = halfWidthPlayer + halfWidthObstacle - Math.abs(dx);
   let overlapY = halfHeightPlayer + halfHeightObstacle - Math.abs(dy);
+  
   if (overlapX < 0 || overlapY < 0) return;
+  
   if (overlapX < overlapY) {
-    if (dx > 0) {
+    if (isToRight) {
       player.x += overlapX * 0.3;
+      // Wrap if needed
+      player.x = calculateWrappedX(player.x, layerWidth);
     } else {
       player.x -= overlapX * 0.3;
+      // Wrap if needed
+      player.x = calculateWrappedX(player.x, layerWidth);
     }
   } else {
     if (dy > 0) {
@@ -55,7 +89,7 @@ function drawCameraOverlay() {
 
   // Draw the altitude line.
   // Map altitudeLine [0,100] to an offset along the camera's central axis:
-  // 0 aligns with the player sprite’s bottom, 100 with its top.
+  // 0 aligns with the player sprite's bottom, 100 with its top.
   let offsetTop = ((coneLength / 2) + player.height);
   let offsetBottom = player.height / 2;
   let offset = mapRange(player.altitudeLine, 0, 100, offsetTop, offsetBottom);
@@ -88,6 +122,10 @@ function drawCameraOverlay() {
 
 // Draws the game entities such as the background, terrain, player, and sled.
 function drawEntities() {
+  // Get player's current layer
+  const playerLayer = getLayerByY(player.absY);
+  const layerWidth = playerLayer.width;
+  
   let cameraOffset = getCameraOffset(player.absY, canvas.height, mountainHeight);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -95,11 +133,77 @@ function drawEntities() {
   ctx.fillStyle = window.currentState === window.GameState.DOWNHILL ? "#ADD8E6" : "#98FB98";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Draw terrain obstacles.
+  // Draw terrain obstacles, handling wrapping when needed
   terrain.forEach(obstacle => {
+    // Check if obstacle is visible (vertically)
     if (obstacle.y >= cameraOffset - 50 && obstacle.y <= cameraOffset + canvas.height + 50) {
-      ctx.fillStyle = "#808080"; // Obstacles are drawn in grey.
-      ctx.fillRect(obstacle.x, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
+      // If obstacle and player are on the same layer, handle wrapping
+      if (obstacle.layer === playerLayer.id) {
+        // Get distance from player to obstacle (consider wrapping)
+        const obstacleCenter = obstacle.x + obstacle.width / 2;
+        const distanceX = calculateWrappedDistanceX(player.x, obstacleCenter, layerWidth);
+        
+        // Find the wrapped position of the obstacle relative to player
+        let renderX = obstacle.x;
+        
+        // If obstacle is closer when wrapped, adjust its render position
+        if (Math.abs(player.x - obstacleCenter) > Math.abs(distanceX)) {
+          // If player is to the right and obstacle is to the left edge
+          if (player.x > obstacleCenter && distanceX > 0) {
+            renderX = obstacle.x + layerWidth;
+          }
+          // If player is to the left and obstacle is to the right edge
+          else if (player.x < obstacleCenter && distanceX < 0) {
+            renderX = obstacle.x - layerWidth;
+          }
+        }
+        
+        // Draw the obstacle
+        if (obstacle.type === 'tree') {
+          // Draw special tree shape if drawTree function exists
+          if (typeof drawTree === 'function') {
+            const treeObj = { ...obstacle, x: renderX };
+            drawTree(ctx, { ...treeObj, y: treeObj.y - cameraOffset });
+          } else {
+            ctx.fillStyle = "#228B22"; // Green for trees
+            ctx.fillRect(renderX, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
+          }
+        } else {
+          // Default rock obstacle
+          ctx.fillStyle = "#808080"; // Obstacles are drawn in grey.
+          ctx.fillRect(renderX, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
+        }
+        
+        // If the obstacle is near the edge, draw it again on the other side
+        const canvasWidth = canvas.width;
+        if (renderX + obstacle.width > layerWidth - canvasWidth/2) {
+          // Draw duplicate on the left side
+          if (obstacle.type === 'tree' && typeof drawTree === 'function') {
+            const treeObj = { ...obstacle, x: renderX - layerWidth };
+            drawTree(ctx, { ...treeObj, y: treeObj.y - cameraOffset });
+          } else {
+            ctx.fillStyle = obstacle.type === 'tree' ? "#228B22" : "#808080";
+            ctx.fillRect(renderX - layerWidth, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
+          }
+        } else if (renderX < canvasWidth/2) {
+          // Draw duplicate on the right side
+          if (obstacle.type === 'tree' && typeof drawTree === 'function') {
+            const treeObj = { ...obstacle, x: renderX + layerWidth };
+            drawTree(ctx, { ...treeObj, y: treeObj.y - cameraOffset });
+          } else {
+            ctx.fillStyle = obstacle.type === 'tree' ? "#228B22" : "#808080";
+            ctx.fillRect(renderX + layerWidth, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
+          }
+        }
+      } else {
+        // For obstacles on other layers, just draw them normally
+        if (obstacle.type === 'tree' && typeof drawTree === 'function') {
+          drawTree(ctx, { ...obstacle, y: obstacle.y - cameraOffset });
+        } else {
+          ctx.fillStyle = obstacle.type === 'tree' ? "#228B22" : "#808080";
+          ctx.fillRect(obstacle.x, obstacle.y - cameraOffset, obstacle.width, obstacle.height);
+        }
+      }
     }
   });
 

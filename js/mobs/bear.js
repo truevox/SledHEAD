@@ -14,15 +14,16 @@
         speed: (typeof TWEAK !== 'undefined' && TWEAK.bearSpeed) || 8,
         basePhotoBonus: 10, // Bears yield a higher photo bonus
         color: "#8B4513",
+        validBiomes: ['forest', 'alpine', 'starterMountain'], // Added starterMountain to valid biomes
         spawningBiomes: [
             { biome: "starterMountain" }  // Spawns on all layers of the Starter Mountain
         ],
         customUpdate: null,
-        customDraw: function(animal, screenY, ctx) {
+        customDraw: function(animal, screenY, ctx, drawX) {
             // Draw the bear's body
             ctx.fillStyle = "#8B4513";
             ctx.fillRect(
-                animal.x - animal.width / 2,
+                drawX - animal.width / 2,
                 screenY - animal.height / 2,
                 animal.width,
                 animal.height
@@ -30,13 +31,13 @@
             // Draw bear ears as simple rectangles
             ctx.fillStyle = "#000000";
             ctx.fillRect(
-                animal.x - animal.width / 3,
+                drawX - animal.width / 3,
                 screenY - animal.height / 2 - 10,
                 10,
                 10
             );
             ctx.fillRect(
-                animal.x + animal.width / 3 - 10,
+                drawX + animal.width / 3 - 10,
                 screenY - animal.height / 2 - 10,
                 10,
                 10
@@ -46,7 +47,7 @@
             let altitudeColor = lerpColor("#FF0000", "#0000FF", t);
             ctx.fillStyle = altitudeColor;
             ctx.fillRect(
-                animal.x + animal.width / 2 + 5,
+                drawX + animal.width / 2 + 5,
                 screenY - 5,
                 10,
                 10

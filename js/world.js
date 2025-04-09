@@ -1,8 +1,8 @@
 /* world.js */
-const mountainHeight = 200000; // Mountain is now 100x bigger!
+const mountainHeight = 20000; // Mountain is now at a more reasonable height
 let terrain = [];
-const obstacleCount = 1500; // Reduced rock count to make room for trees
-const treeClusterCount = 3000; // Number of tree clusters to generate
+const obstacleCount = 600; // Reduced rock count to make room for trees
+const treeClusterCount = 600; // Number of tree clusters to generate
 let earlyFinish = false;
 const heightMultiplierBase = 1; // Base value for height multiplier - can be adjusted later
 const distanceMultiplierBase = 1; // Base value for distance multiplier - can be adjusted later
@@ -13,20 +13,29 @@ function generateTerrain() {
   
   // Generate rock obstacles
   for (let i = 0; i < obstacleCount; i++) {
+    // Get Y position first to determine which layer this obstacle belongs to
+    const obstacleY = Math.random() * mountainHeight;
+    const layer = getLayerByY(obstacleY);
+    
     let obstacle = {
-      x: Math.random() * (canvas.width - 70) + 10,
-      y: Math.random() * mountainHeight,
+      x: Math.random() * (layer.width - 70) + 10, // Use layer width instead of canvas width
+      y: obstacleY,
       width: 30 + Math.random() * 40,
       height: 10 + Math.random() * 20,
-      type: 'rock' // Explicitly mark as rock
+      type: 'rock', // Explicitly mark as rock
+      layer: layer.id // Store which layer this obstacle belongs to
     };
     terrain.push(obstacle);
   }
   
   // Generate tree clusters
+  // Use the largest layer (bottom layer) width for the terrain bounds
+  // but we'll adjust individual tree positions based on their specific layer
+  const bottomLayer = getLayerByY(mountainHeight - 1);
+  
   const terrainBounds = { 
     xMin: 0, 
-    xMax: canvas.width, 
+    xMax: bottomLayer.width, // Use the bottom layer's width as the maximum
     yMin: 0, 
     yMax: mountainHeight 
   };
