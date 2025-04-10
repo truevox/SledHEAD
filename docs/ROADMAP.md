@@ -328,49 +328,120 @@ Performing tricks during downhill runs boosts **viewer engagement, increasing ca
 
 ---
 
-### 2. **Fishing** 🎣🐟  
+### 2. **Fishing** 📸🐟  
 - **Objective:**  
-  Catch fish using various techniques and bait types.
+  Photograph fish underwater by deploying a specialized camera rig on a pole.
+
 - **Mechanics:**  
-  - Dynamic water simulation with varied fish behaviors.  
-  - Choose your bait, casting angle, and reel technique (e.g., slow pull, rapid jerk, deep drag).  
-  - Legendary fish yield major rewards.
+  - The player becomes stationary, anchoring themselves in place.  
+  - The **camera rig** is lowered into the water via rod and line.  
+  - Use the **arrow keys** to rotate and aim the camera underwater, with standard wildlife photography left-right cone and altitude bar.
+  - Fish only appear when the camera is fully submerged, and each species has unique behaviors and movement patterns.  
+  - Stealth and timing are key—photographing rare or fast-moving fish requires precision and patience.
+
 - **Upgrades:**  
-  - Stronger fishing lines, advanced lures, and sonar detection.
-- **Special Events:**  
-  - Fishing tournaments and rare migration patterns.
-- **Risk/Challenge:**  
-  - Line snapping and predator interference.
+  - **Camera Clarity:** Improves visibility and resolution underwater.  
+
+- **Special Event:**  
+  - **Eco Survey Missions:** Collaborate with in-game researchers to catalog species for rewards. See Wildlife Researcher for more details.
 
 ---
 
 ### 3. **Lockpicking in Abandoned Buildings** 🔐🏚️  
 - **Objective:**  
-  Unlock doors, safes, and hidden compartments.
+  When you bought the mountain, a number of abandoned buildings were on the property. They're locked up, but they're yours now. Unlock doors, safes, and gain access to mid-mountain buildings.
 - **Mechanics:**  
   - Use tools like **rakes, hooks, and tension wrenches**.  
-  - Navigate traps such as alarms and rusted internals.
 - **Upgrades:**  
   - High-quality picks, electronic bypass tools, and vibration sensors.
-- **Special Events:**  
-  - Timed heists and races with rival scavengers.
-- **Risk/Challenge:**  
-  - Unstable buildings and hazards that may alert authorities.
 
 ---
 
-### 4. **Treasure Hunting** 🏴‍☠️🔍  
-- **Objective:**  
-  Find buried treasure using maps, clues, and metal detectors.
-- **Mechanics:**  
-  - Decode old maps, identify landmarks, and use metal detectors for precision.  
-  - Digging requires stamina management and upgraded tools.
-- **Upgrades:**  
-  - Advanced metal detectors, excavation tools, and digging drones.
-- **Special Events:**  
-  - NPC treasure races and secret cache discoveries.
-- **Risk/Challenge:**  
-  - Booby traps, hostile environments, and law enforcement risks.
+### 4. 🧠 **Deep Diggin’**
+
+SledHEAD has a wealth of history, much of which is buried under the snow and ice. Use your new Panttock (a combination of the earth moving, rock picking mattock and a river-sloshing gold pan) to unearth buried treasure, prospect for raw unrefined wealth, and calcified history in the form of cryptid fossils.
+
+#### 🪙 Shovelin' **Dig Spots** (Soft Earth)
+
+- Hidden beneath snow or in barely-noticeable terrain features.
+- Yield: **Treasure** and **Fossils**
+- Locations: Anything diggable (Snow, dirt, etc).
+- **Risk:** None—just the chance of digging up nothing or low-value junk if you pick poorly.
+- **Upgrades:**
+  - Increased visibility
+  - More efficient tool = less stamina/time spent
+
+---
+
+#### ⛏️ Pickin' **Pick Spots** (Ice & Rock)
+
+- Found as subtle glints, cracks, or faint sparkles on rock surfaces.
+- Yield: **Gems**, **Minerals**, and **Fossils**
+- Locations: Anything pickable (Ice, rock, etc).
+- **Risk:** Nada! No cave-ins or hand-smashin’ here—just the classic “oops, wrong vein” situation.
+- **Upgrades:**
+  - Increased visibility
+  - More efficient tool = less stamina/time spent
+
+---
+
+#### 🌊 **Panning in Rivers**
+
+- Can be done in *any* flowing water on the mountain.
+- Yield: **All four types**, in **tiny bits**
+- Locations: Anything pannable (Rivers, Streams, etc.)
+- **Risk:** None at all—just slow returns if you’re in a low-yield stream or not upgraded.
+- **Upgrades:**
+  - More efficient tool = less stamina/time spent
+
+---
+
+#### 🔍 **Legendary Lenses**
+
+Only one lens may be worn at a time, and they must be swapped out at base. Lenses are upgraded separately. If a lens radius is large enough to "see" something that's off screen, a visual indicator in the direction of what is seen is shown until it is on screen.
+
+| Lens                            | Benefit                                           | Upgrade Effects                                                                      |
+| ------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| 🏴‍☠️ Pirate "Lens" (Eye Patch) | Reveals Treasure by improving visibility          | Larger Radius                                                                        |
+| 🧬 Amber Lens                   | Reveals Fossils by improving visibility           | Larger Radius                                                                        |
+| 💎 Diamond Lens                 | Reveals Gems and Minerals by improving visibility | Larger Radius                                                                        |
+| 🌊 Rippleglass Lens             | Better chances while Panning                      | Continually improving chances while panning                                          |
+| 🧠 Rainbow Lens                 | Combo vision (all types, short range)             | Larger Radius                                                                        |
+| 🐝 Wax Lens                     | Better bee visibility for finding wild hives      | Further improved visibility and radius                                               |
+| 🐟 Fisheye Lens                 | Better chances while Fishing                      | Made from the lens of a Greenland Shark; Continually improving chances while fishing |
+| 🔥 Infrared Lens                | Reveals recent wildlife trails                    | Highlights fading heat signatures and animal paths for better tracking and photos    |
+| 📹 FPV Lens                     | Enhances control of RC MotorSled                  | Increases control range, speed, and precision with each upgrade                      |
+
+---
+
+#### ❄️ **Exploration Loop**
+
+- Wander the mountain.
+- Spot a glimmer, divot, or strange shape.
+- Scan with a lens if you got one.
+- Choose to dig, pick, or pan.
+- No time pressure, no hazards, just discovery and satisfaction.
+- Upgrade your gear, refine your eye, and fill your collection log.
+
+---
+
+#### 👧 **Tilly – The Convenience Store Owner**
+
+Tilly runs the cozy little convenience store nestled near the trailhead and base camp. She grew up on this mountain—sledding it, hiking it, panning its rivers, and listening to every wild tale folks whispered around campfires. Prospecting tools, backpacks, river pans, rods, bait, and quirky old maps? She’s got ‘em. But more importantly, by the door sits an eye-catching **rack of Legendary Lenses**, there to tempt curious adventurers to part with their own treasure.
+
+**Role:** Starting point and upgrade hub for all things Treasure, Prospecting, Panning, and Fossil gear. She sells you your Panttock, as well as upgrades it.
+
+**Vibe:** Understated expert with sharp instincts and a dry wit. She knows this mountain like her own reflection, but she won’t spoon-feed you the secrets. That’s the fun part.
+
+> *“If it looks like junk, dig anyway. This mountain hides her best stuff under the worst rocks.”*
+>
+> *“The river don’t care what you’re hopin’ to find—but it’ll show you what you need.”*
+>
+> *“Folks come lookin’ for gold. They leave with stories. Guess which one I trade in?”*
+>
+> *“I don’t sell luck. But I do sell the things luck likes to hang around.”*
+>
+> *“You learn the mountain by listenin’. And diggin’. And then listenin’ again when it buries your gear.”*
 
 ---
 
@@ -389,38 +460,7 @@ Performing tricks during downhill runs boosts **viewer engagement, increasing ca
 
 ---
 
-### 6. **Prospecting (Pan & Pickaxe Mining)** ⛏️💎  
-- **Objective:**  
-  Search for valuable minerals, gems, and gold.
-- **Mechanics:**  
-  - Explore rivers, caves, and rock formations.  
-  - **Panning:** Swirl water to separate gold.  
-  - **Pickaxe Mining:** Break rocks for hidden gems.
-- **Upgrades:**  
-  - High-tech panning kits, seismic scanners, precision drills.
-- **Special Events:**  
-  - Gold rush hotspots, rare mineral finds, and cave-ins.
-- **Risk/Challenge:**  
-  - Unstable ground and rival prospectors.
-
----
-
-### 7. **Cryptid Fossil Digging** 🦴🔍  
-- **Objective:**  
-  Unearth and assemble fossils of **Champ**, the legendary cryptid of Lake Champlain.
-- **Mechanics:**  
-  - Use brushes, chisels, and excavation tools to reveal fossils.  
-  - Transport fossils to the museum at the base of the first mountain.
-- **Upgrades:**  
-  - Precision excavation kits, automated digging arms, and fossil resin stabilizers.
-- **Special Events:**  
-  - Competing paleontologists and hidden dig sites.
-- **Risk/Challenge:**  
-  - Fragile fossils, extreme weather, cave-ins, and unexpected cryptid sightings.
-
----
-
-### 8. **Sled Tricking** 🛷✨  
+### 6. **Sled Tricking** 🛷✨  
 - **Objective:**  
   Chain together aerial sled tricks to earn cash and boost fan engagement.
 - **Mechanics:**  
@@ -435,7 +475,7 @@ Performing tricks during downhill runs boosts **viewer engagement, increasing ca
 
 ---
 
-### 9. **Time Trial Racing** 🏁🛷  
+### 7. **Time Trial Racing** 🏁🛷  
 - **Objective:**  
   Trigger time trial races by hitting gates while sledding for money rewards.
 - **Mechanics:**  
@@ -446,7 +486,7 @@ Performing tricks during downhill runs boosts **viewer engagement, increasing ca
 
 ---
 
-### 10. **RC Motor Sled** ❄️🏎️  
+### 8. **RC Motor Sled** ❄️🏎️  
 - **Objective:**  
   Control a high-speed RC snowmobile for scouting, trick-based racing, and retrieving stamina-boosting supplies.
 - **Mechanics:**  
@@ -460,7 +500,7 @@ Performing tricks during downhill runs boosts **viewer engagement, increasing ca
 
 ---
 
-### 11. **Sap Sugaring** 🍁🔥  
+### 9. **Sap Sugaring** 🍁🔥  
 - **Objective:**  
   Tap into nature’s sweetest resource—maple syrup! Harvest sap from trees to create energy-restoring treats and valuable trade goods.  
 - **Mechanics:**  
@@ -474,21 +514,77 @@ Performing tricks during downhill runs boosts **viewer engagement, increasing ca
 
 ---
 
-### 12. **Beekeeping** 🐝🍯  
-- **Objective:**  
-  Raise and breed bees to produce high-quality honey and wax, each offering unique benefits for sledding, income, and buffs.  
-- **Mechanics:**  
-  - Manage beehives and optimize honey production.  
-  - Crossbreed bees to develop specialized traits.  
-  - Explore forests to find and capture new queen bees.  
-  - Maintain hive conditions to ensure steady honey and wax yields.  
-- **Upgrades:**  
-  - **Deluxe Hives:** Improve bee happiness and productivity.  
-  - **Queen Breeding Chambers:** Unlock advanced genetic traits for custom honey effects.  
-  - **Protective Suits & Smokers:** Handle bees safely and reduce swarm risks.  
-- **Special Events:**  
-  - **Swarm Rescues:** Save lost colonies for rare genetic lines.  
-  - **Beekeeper Pete’s Challenges:** Complete tricky hive management tasks for rewards.  
+### 🐝 **Beekeeping**
+
+The mountain is alive with more than just snow and treasure—hidden in trees, under ledges, and tucked along sun-warmed ridgelines are **wild mountain hives**, buzzing with activity and potential. As a beekeeper, you’ll locate these elusive hives, carefully collect precious **wax, honey, and royal jelly**, and even guide new hives to safer, more productive spots.
+
+#### 🐾 **Finding Hives**
+
+- Hives are **hidden in natural terrain** like trees and rock hollows.
+- Appear faintly or not at all without proper tools or lens support.
+- Use the **🐝 Wax Lens** to have greater visibility for bee lining.
+
+#### 🧭 **Bee Lining: Tracking the Wild Hive**
+
+- Start by spotting foraging bees at flower patches or bait stations (a mix of honey and sugar water).
+- Trap a few in a **bee box**—a small wooden box with a viewing window.
+- Let them feed, then release them one at a time and **track their flight path**.
+- Repeat from several spots to triangulate the location of a wild hive—usually tucked inside a hollow tree.
+
+#### 👑 Getting the Queen:
+
+Attempt a **cutout**:
+
+- Calm bees with smokers before approaching.
+- Use an **axe** to carefully open the hive location.
+- Watch bee behavior to locate the queen—she’s usually surrounded by a tight cluster.
+- Gently capture her using a **queen clip or cage**.
+- Transfer her with several combs and workers into a new hive box, starting a new domestic hive back at base.
+- Use a **collection kit** to extract wax, honey, or queen pheromones.
+
+#### 🎒 **Harvest Rewards**
+
+- **Honey:** Used for energy restoration and temporary power-ups.
+- **Wax:** Used to make your sled go faster.
+- **Royal Jelly:** Rare drop—quite valuable!
+
+#### 🔧 **Upgrades**
+
+Most gear is available through **Pete the Beekeeper**, the mountain's laid-back buzz-buddy who talks to bees more than people and swears by the calming power of fresh pine smoke:
+
+- **Smokers –** calms bees before harvest or queen capture
+- **Hive Boxes –** used for relocating and domesticating wild colonies
+- **Axes –** for felling trees and carefully cutting into hive trees during a cutout
+- **Bee Boxes –** for trapping and tracking forager bees during bee lining
+- **Bee Breeding –** breed your bees to get other, exotic species of bee that produces even more incredible honey (think Frost Bees and Fire Bees for example)
+
+#### 📍 **Exploration Loop**
+
+- Wander the wilds.
+- Watch for visual or audio signs of bee activity.
+- Equip the Wax Lens to make it easier to see migrating bees.
+- Carefully harvest  hives.
+- Return materials to base or use them in crafting.
+
+---
+
+#### 🧑‍🌾 **Pete the Beekeeper**
+
+Known to locals as **"Encyclopedia Pete"**, this seasoned mountain man has spent a lifetime logging, beekeeping, and learnin’ every sound this mountain makes. Pete lives at the bottom of the mountain in a cabin that hums—literally—with hive boxes built into the siding and axes lined up just as neatly. His days are split between tending wild hives and felling trees, and he’ll gladly sell you the tools to do both—**axes, wax kits, and bee gear included**. Pete teaches new beekeepers how to spot wild hives, so they can follow the path of the apiarist.
+
+**Role:** Source of gear, upgrades, and wisdom for the **Wild Hive Beekeeping** minigame and tree felling. Offers beekeeping tools like smokers and hives, and axes.
+
+**Vibe:** Old Vermont soul with a dry wit and deep roots. Talks slow, moves slower, but knows more about the mountain than anyone else alive. Always smells faintly of oak, smoke, and honey.
+
+> *“Bees don’t bother nobody who minds their manners. Same goes for trees, mostly.”*
+>
+> *“You wanna learn somethin' out here, keep yer mouth shut and yer eyes open.”*
+>
+> *“It doesn't take me a full day to do a full day of work."*
+>
+> *“Trees'll tell ya when they’re ready. Bees too. Just gotta be listenin’.”*
+>
+> *“Don’t swat. Don’t panic. Don’t try to outsmart a queen.”*
 
 ---
 
@@ -522,7 +618,7 @@ These **support your base mountain**—they run the town, drive your economy, an
 
 #### 🏪 **Convenience Store Owner Tilly**
 - **Purpose:** Sells consumables, **prospecting gear**, and utility tools.
-- **Example Stock:** **Batteries, flares, bait, shovels.**
+- **Example Stock:** **Prospecting tools, backpacks, river pans, rods, bait, and quirky old maps**
 - **Best Quote:** *"You never know when you’ll need an extra pack of hand warmers."*
 
 #### 🏔️ **Resort Manager Montana Snow**
