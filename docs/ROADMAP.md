@@ -588,6 +588,69 @@ Known to locals as **"Encyclopedia Pete"**, this seasoned mountain man has spent
 
 ---
 
+## 🌲🪓 Wood Chopping 
+“Bees don’t bother nobody who minds their manners. Same goes for trees, mostly.” – Pete the Beekeeper
+
+### Objective:
+Fell trees during the Uphill Phase to create temporary downhill shortcuts and gather wood for crafting. But watch it, bud—trees don’t grow back on command. Chop too many, and you’ll change the mountain in ways ya might regret.
+
+### Mechanics:
+
+#### Interactable Trees: Trees can be chopped, felling them, and clearing the way.
+
+#### Mini-Game: Chopping triggers a timed input challenge, like Kite Flying.
+
+#### Tools Needed: You’ll need an Axe, buyable from Tilly or Pete, and upgradable for speed, reach, or yield.
+
+#### Stamina Cost: Every chop uses stamina, so you’ll need to weigh yer options carefully on the climb.
+
+### Results & Benefits:
+
+#### Trailblazing:
+
+Chopped trees open up smoother sled routes, create drop-ins, or reveal hidden ramps.
+
+Trails last until regrowth—could be days, hours, or a surprise snowstorm.
+
+#### Resource Gathering:
+
+Felled trees drop wood, used for crafting furniture, upgrades, signs, or even building cozy structures at home.
+
+Higher-tier trees may offer unique lumber for rare blueprints.
+
+### Natural Regrowth System:
+
+Trees regrow naturally and randomly over time based on elevation, weather, and how many are still standing nearby.
+
+A dynamic forest balance system tracks how “healthy” a region is:
+
+Clear a small patch = regrowth likely
+
+Chop everything = growth slows or stops entirely (and the birds stop singin’ too 🐦💔)
+
+### Saplings and Growth Stages:
+
+Chopped areas might sprout baby trees that can’t be chopped (yet).
+
+Mature trees offer full benefits—but ya gotta wait, or help ‘em along with upgrades.
+
+### Upgrades & Systems:
+
+#### Upgrade	Effect
+🪓 Sharpened Axe	Faster chops, lower stamina use.
+
+🌿 Reforester's Charm	Slightly increases tree regrowth speed in surrounding areas.
+
+### Risks & Strategy:
+
+Chop too many trees and you'll risk barren slopes—no shortcuts, no wood, no wildlife.
+
+Animals avoid over-cleared areas, affecting your photo score.
+
+Trees may grow into trails if neglected, blocking shortcuts.
+
+---
+
 ## 🌆 **NPCs & Mountain Ecosystem**
 A thriving **mountain resort** needs a mix of **essential services, skilled specialists, and quirky legends**. These NPCs **enhance gameplay, create dynamic events, and unlock hidden mechanics**.
 
