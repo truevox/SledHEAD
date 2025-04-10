@@ -580,76 +580,116 @@ Known to locals as **"Encyclopedia Pete"**, this seasoned mountain man has spent
 >
 > *“You wanna learn somethin' out here, keep yer mouth shut and yer eyes open.”*
 >
-> *“It doesn't take me a full day to do a full day of work."*
+> *“It doesn't take me 8 hours to do a full day of work."*
 >
 > *“Trees'll tell ya when they’re ready. Bees too. Just gotta be listenin’.”*
 >
-> *“Don’t swat. Don’t panic. Don’t try to outsmart a queen.”*
+> *“Go on - give it a try if ya wanna. How long could it take?”*
 
 ---
 
-## 🌲🪓 Wood Chopping 
-“Bees don’t bother nobody who minds their manners. Same goes for trees, mostly.” – Pete the Beekeeper
-
-### Objective:
-Fell trees during the Uphill Phase to create temporary downhill shortcuts and gather wood for crafting. But watch it, bud—trees don’t grow back on command. Chop too many, and you’ll change the mountain in ways ya might regret.
-
-### Mechanics:
-
-#### Interactable Trees: Trees can be chopped, felling them, and clearing the way.
-
-#### Mini-Game: Chopping triggers a timed input challenge, like Kite Flying.
-
-#### Tools Needed: You’ll need an Axe, buyable from Tilly or Pete, and upgradable for speed, reach, or yield.
-
-#### Stamina Cost: Every chop uses stamina, so you’ll need to weigh yer options carefully on the climb.
-
-### Results & Benefits:
-
-#### Trailblazing:
-
-Chopped trees open up smoother sled routes, create drop-ins, or reveal hidden ramps.
-
-Trails last until regrowth—could be days, hours, or a surprise snowstorm.
-
-#### Resource Gathering:
-
-Felled trees drop wood, used for crafting furniture, upgrades, signs, or even building cozy structures at home.
-
-Higher-tier trees may offer unique lumber for rare blueprints.
-
-### Natural Regrowth System:
-
-Trees regrow naturally and randomly over time based on elevation, weather, and how many are still standing nearby.
-
-A dynamic forest balance system tracks how “healthy” a region is:
-
-Clear a small patch = regrowth likely
-
-Chop everything = growth slows or stops entirely (and the birds stop singin’ too 🐦💔)
-
-### Saplings and Growth Stages:
-
-Chopped areas might sprout baby trees that can’t be chopped (yet).
-
-Mature trees offer full benefits—but ya gotta wait, or help ‘em along with upgrades.
-
-### Upgrades & Systems:
-
-#### Upgrade	Effect
-🪓 Sharpened Axe	Faster chops, lower stamina use.
-
-🌿 Reforester's Charm	Slightly increases tree regrowth speed in surrounding areas.
-
-### Risks & Strategy:
-
-Chop too many trees and you'll risk barren slopes—no shortcuts, no wood, no wildlife.
-
-Animals avoid over-cleared areas, affecting your photo score.
-
-Trees may grow into trails if neglected, blocking shortcuts.
+## 🌲🪓 Wood Chopping  
+> *“Bees don’t bother nobody who minds their manners. Same goes for trees, mostly.”* – Pete the Beekeeper
 
 ---
+
+### 🎯 **Objective**
+Fell trees during the **Uphill Phase** to create **temporary downhill shortcuts** and gather **wood for crafting**.  
+But watch it, bud—trees don’t grow back on command. **Chop too many**, and you’ll change the mountain in ways ya might regret. 🌲💔
+
+---
+
+### ⚙️ **Mechanics**
+
+#### 🌳 **Interactable Trees**  
+Trees can be chopped, felling them and clearing the way.
+
+#### ⏱️ **Mini-Game**  
+Chopping triggers a **timed input challenge**, like **Kite Flying** 🎯.
+
+#### 🪓 **Tools Needed**  
+You’ll need an **Axe**, buyable from **Tilly** or **Pete**, and **upgradable** for speed, reach, or yield.
+
+#### 💪 **Stamina Cost**  
+Every chop uses **stamina**, so you’ll need to **weigh your options** carefully on the climb.
+
+---
+
+### 🎁 **Results & Benefits**
+
+#### 🛷 **Trailblazing**
+- Chopped trees **open up smoother sled routes**, create drop-ins, or reveal hidden ramps.  
+- Trails last until regrowth—could be **days, hours, or a surprise snowstorm** 🌨️.
+
+#### 🪵 **Resource Gathering**
+- Felled trees drop **wood**, used for **crafting furniture, upgrades, signs**, or even **building cozy structures at home**.  
+- Higher-tier trees may offer **unique lumber** for rare blueprints.
+
+---
+
+### 🌱 **Natural Regrowth System**
+
+- Trees regrow **naturally and randomly** over time based on **elevation, weather**, and how many are still standing nearby.
+- A **dynamic forest balance system** tracks how “healthy” a region is:
+
+  - ✅ Clear a small patch = regrowth likely  
+  - ❌ Chop everything = growth slows or stops entirely (and the birds stop singin’ too 🐦💔)
+
+---
+
+### 🌿 **Saplings and Growth Stages**
+
+- Chopped areas might sprout **baby trees** that can’t be chopped (yet).  
+- **Mature trees** offer full benefits—but ya gotta wait, or help ‘em along with upgrades. 🌱➡️🌲
+
+---
+
+### 🔧 **Upgrades & Systems**
+
+| 🔨 **Upgrade**         | 🎯 **Effect**                                                                 |
+|------------------------|------------------------------------------------------------------------------|
+| 🪓 Sharpened Axe       | Faster chops, lower stamina use.                                             |
+| 🌿 Reforester's Charm  | Slightly increases tree regrowth speed in surrounding areas.                 |
+
+---
+
+### ⚠️ **Risks & Strategy**
+
+- Chop too many trees and you'll risk **barren slopes**—no shortcuts, no wood, no wildlife. 🚫🌲  
+- Animals **avoid over-cleared areas**, affecting your **photo score** 📸🐾  
+- Trees may **grow into trails** if neglected, **blocking shortcuts**. 😬
+
+---
+
+### 🧑‍🌲 **Pete the Beekeeper (and Woodsman)**  
+Pete ain’t just the guy buzzin’ about bees—he’s been **felling timber** since before you were knee-high in powder. ❄️🪓  
+Around these parts, folks say **Pete knows every tree by name**, and every stump by its story. It's why they call him **Encyclopedia Pete**.
+
+He lives at the **edge of the tree line** in a cabin stacked with **firewood, handmade tools**, and **axes sharp enough to split a sneeze**.  
+While he’s the one who’ll sell you your **first axe** and teach you how to swing it true, he’s also the first to **warn you not to take more than the mountain gives**.
+
+---
+
+### 🏔️ **Role**
+- Supplies **axes and woodcutting upgrades**  
+- Teaches **sustainable harvesting** 🌳  
+- Serves as the **in-game conscience** when it comes to **deforestation**  
+- If you’re overharvesting, expect a **quiet visit and a firm word**
+
+---
+
+### 💬 **Vibe**
+Stoic, rooted, and wise in that way only folks who **listen to trees** can be.  
+He doesn’t say much, but when he does, it sticks.  
+Smells faintly of **oak, smoke, and pine sap**. 🪵🌫️🌲
+
+---
+
+> *“You don’t chop a tree to make your path easier. You chop it to make it better.”*  
+> *“Any fool can swing an axe. A logger knows when not to.”*  
+> *“You think the mountain don’t notice when you clearcut a hillside? Wait till the wind shifts. Don't get into a puppy-snatch.”*  
+> *“Every trail you make is a promise. Don’t break it just to shave a second.”*  
+> *“Cut with care. Leave roots when you can. And if a tree’s leanin’ toward you, maybe she’s askin’ for a hug, not an axe.”*
 
 ## 🌆 **NPCs & Mountain Ecosystem**
 A thriving **mountain resort** needs a mix of **essential services, skilled specialists, and quirky legends**. These NPCs **enhance gameplay, create dynamic events, and unlock hidden mechanics**.
