@@ -822,10 +822,39 @@ They **come and go**, bringing **special challenges, rare gear, and unpredictabl
 ### ❄️ **Legendary NPCs**
 These are **mythic figures**, unlocking **wild game mechanics, hidden areas, and secret challenges**.
 
-#### 🌨️ **Winter Shaman Bromley**
-- **Purpose:** **Controls weather effects**—snowstorms, icy terrain, wind boosts.
-- **Example Unlocks:** **Weather manipulation quests, legendary snowboards.**
-- **Best Quote:** *"The mountain speaks… and I listen."*
+#### ❄️🪶 Winter Shaman Bromley – Trail-Namer, Lift Whisperer & Keeper of the Blue Ribbon  
+> *“The mountain remembers. So should you.”*
+
+---
+
+##### ❄️ **Role**
+- Unlocks **weather manipulation mechanics**.  
+
+---
+
+##### 🧠 **Mechanics Unlocked**
+- 🌨️ **Weather Weaving** – Influence weather patterns temporarily through rituals, affecting trail conditions.  
+
+---
+
+##### 🔧 **Upgrades Offered**
+
+| 🛠️ Upgrade                 | 🎁 Effect                                                                 |
+|----------------------------|--------------------------------------------------------------------------|
+| 🧣 **Ancestor's Scarf**     | Provides resistance against harsh weather conditions.                    |
+| 🪓 **Pabst's Honor Axe**    | Enhances woodcutting efficiency during storms.     |
+| 🍺 **Blue Ribbon Elixir**   | Temporarily boosts speed and agility on downhill runs.                   |
+
+---
+
+##### 🎤 **Personality & Vibe**
+Bromley is a **mystic elder**, embodying the spirit of the mountain. Draped in layers of vintage ski gear adorned with feathers and patches, he carries the weight of history with a twinkle in his eye. He speaks in riddles, often referencing past events as if they happened yesterday, and guides players to find harmony between thrill and tradition.
+
+> *“Every trail has a tale. Listen closely.”*  
+> *“Snow remembers the first tracks. Make yours count.”*  
+> *“Wangfang. Ride the Rhino.”*  
+> *“Names hold power. Choose them wisely.”*
+> *"Beware the Snow Sharks!"*
 
 #### 🐻🔥 Bear Whisperer Carrie – Animal Trainer, Race Facilitator, and Feral Energy in a Hoodie
 
