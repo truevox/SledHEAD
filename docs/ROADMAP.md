@@ -734,10 +734,46 @@ These **support your base mountain**—they run the town, drive your economy, an
 ### 🏆 **Trick & Racing-Oriented NPCs**
 These **drive skill progression**—unlocking **better tricks, harder competitions, and high-stakes challenges**.
 
-#### 📸 **Hype Photographer Darlene**
-- **Purpose:** **Photo verification & bonus earnings** for sick tricks.
-- **Example Unlocks:** **Sponsor deals, cinematic trick replays.**
-- **Best Quote:** *"If it ain't on camera, did it even happen?"*
+#### 📸🧠 Darlene – Wildlife Researcher & Trick Shot Analyst  
+> *“If it moves fast or looks majestic—I’m shootin’ it, tagging it, and sellin’ the poster.”*
+
+---
+
+##### 📸 **Role**
+- Manages **photographic missions**, **wildlife research**, and **extreme trick payouts**.  
+- Handles **rare animal spotting quests**, and **photo bounties**.  
+- Works with **Beekeeper Pete** to track **ecosystem health** based on player **tree felling**.
+- Runs a **wildlife photography magazine**, publishing her own shots *and* **paying players for great wildlife or fish photos**—that’s the basis for the **wildlife photo bonus** and **fish photo bonus**.  
+- Advocates for balance and stewardship—**if you’re disrupting the ecosystem**, Darlene will let you know.
+
+---
+
+##### 🧠 **Mechanics Unlocked**
+- 🦊 **Animal Rarity Database** – Increases the value of animal photos, as you can prioritize the rare ones.
+- 🎞️ **Trick Replay System** – Darlene shoots and edits your tricks before publishing them.
+- 📔 **Cryptid Logs** – Darlene is especially interested in... rare... wildlife, and will pay commensurately.
+
+---
+
+##### 🔧 **Upgrades Offered**
+
+| 🎯 Upgrade            | 🎁 Effect                                                                      |
+|-----------------------|--------------------------------------------------------------------------------|
+| 📸 **Optimized Optics**| Increases the optics cone, and makes the sweet spot of the altitude bar larger.                       |
+| 🎥 **Trick Tracker**   | Upgrades Darlene's telescope, icreaseing what tricks are worth.                                  |
+| 🐾 **Cryptid Lure**   | Increases cryptid spawn rate for a limited time.                          |
+
+---
+
+##### 🎤 **Personality & Vibe**
+Darlene is **sharp, kind, and absolutely unshakable**. A lifelong advocate for people and nature alike, she brings a **people-first mindset** to everything she does—from coaching new riders on trick form to protecting the mountain’s ecosystem.  
+
+Fast-talking, camera-slingin’, and **always on the move**, she calls out sled tricks with the same passion she uses to spot a rare lynx in the trees. Her warmth and leadership make her one of the most trusted figures on the mountain, but **don’t mistake kindness for weakness**—she’ll call out sloppy work or careless players in a heartbeat.
+
+> *“That 360 corkscrew over the flaming fox den? Legendary. Now do it again while a moose photobombs you.”*  
+> *“If I had a nickel for every falcon shot I missed, I’d have enough to buy a decent zoom lens. But I don’t. So hustle.”*  
+> *“Nature don’t pose. You get one shot—make it count.”*
+
 
 #### 🏅 **Stunt Organizer Whistler**
 - **Purpose:** Hosts **extreme challenge events**—big air, freestyle sessions.
@@ -754,15 +790,7 @@ These **drive skill progression**—unlocking **better tricks, harder competitio
 - **Example Unlocks:** **Sled-to-board transitions, trick combos.**
 - **Best Quote:** *"Back in my day, we landed tricks with style. I can show ya how."*
 
----
 
-### 🏔️ **World-Building & Exploration NPCs**
-These **add depth, side quests, and hidden mechanics** to the world.
-
-#### 🐾 **Wildlife Researcher**
-- **Purpose:** Tracks **rare animal spawns, photographic missions, fishing spots.**
-- **Example Unlocks:** **Bear sightings, falcon partner, eco-tourism quests.**
-- **Best Quote:** *"You ever seen a snow leopard up close? Neither have I… yet."*
 
 #### 🚑 **Sled Patrol Captain**
 - **Purpose:** Leads **rescue missions & avalanche drills.**
