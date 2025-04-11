@@ -719,10 +719,91 @@ These **support your base mountain**—they run the town, drive your economy, an
 - **Example Unlocks:** **Penthouse suites, reputation perks, tourism boosts.**
 - **Best Quote:** *"The more people love this place, the more we all win."*
 
-#### 🏪 **Convenience Store Owner Tilly**
-- **Purpose:** Sells consumables, **prospecting gear**, and utility tools.
-- **Example Stock:** **Prospecting tools, backpacks, river pans, rods, bait, and quirky old maps**
-- **Best Quote:** *"You never know when you’ll need an extra pack of hand warmers."*
+#### 🏪🎒 Tilly – Trailside Outfitter, Treasure Whisperer, and Dealer of Gear You Didn’t Know You Needed  
+> *“You pack for the trip you think you're takin’. I pack for the one you're *gonna* have.”*
+
+---
+
+##### 🏪 **Role**
+- Runs the **mountain’s go-to convenience shack**, specializing in **prospecting gear**, **utility tools**, and **weird old maps that probably weren’t supposed to be sold**.  
+- Acts as the **player’s main point-of-contact** for starting and upgrading **digging, panning, fishing**, and **lens-based discovery systems**.  
+- Unlocks **Treasure Tech**, including the **Panttock**—a single tool for dig, pan, and pick actions.  
+- Offers **practical wisdom and gear with just a hint of folklore**, always hinting she knows more than she lets on.
+
+---
+
+##### 🧠 **Mechanics Unlocked**
+- ⛏️ **Multi-Tool Prospecting** – With the Panttock in hand, unlock access to dig spots, breakables, and gold-rich streambeds.  
+- 🐟 **Fishing & Foraging** – Get outfitted with bait, rods, and region-specific tips for catching and cooking.  
+- 👁️ **Legendary Lenses** – Visual upgrades that let players **see hidden trails, glints, or fossils** that are otherwise invisible.  
+- 🗺️ **Map Scraps & Lore Trails** – Hidden areas, cryptic clues, and bonus missions via Tilly’s rotating stock of “authentic-ish” maps.
+
+---
+
+##### 🔧 **Upgrades Offered**
+
+| 🛠️ Upgrade                   | 🎁 Effect                                                                 |
+|------------------------------|--------------------------------------------------------------------------|
+| 🥄 **Panttock Enhancements** | Improves speed and success rate for dig, pan, and pick actions.          |
+| 🎒 **Utility Pack Slots**     | Carry more tools, samples, or bait types on the go.                      |
+| 🗺️ **Rough Sketch Maps**      | Unlock hidden sub-areas and rumored dig zones.                          |
+| 👓 **Lens Frame Kit**         | Mount multiple lenses and cycle between modes faster.                   |
+
+---
+
+##### 🎤 **Personality & Vibe**
+Tilly’s not flashy, and she’s not out there trickin’ off glaciers—but she *is* the one who sold gear to the guy who did. She’s the kind of local who’s been here forever, never left, and doesn’t *need* to prove it. You ask for rope and she hands you one tied in seven useful knots. You ask for directions, and she gives you a story and a trail riddle.  
+
+She respects the mountain the same way she respects her shelves—kept sharp, kept stocked, and always slightly dusty with mystery. Practical, direct, and not too interested in your excuses—Tilly gives you **what you earn**, not what you ask for.
+
+> *“I’ve seen four different people find four different things in the same hole. Figure that one out.”*  
+> *“It ain’t lost. It’s just waitin’ for you to be the right person to find it.”*  
+> *“You can’t pan with a full pack or a full head. Drop somethin’ first.”*  
+> *“People talk about treasure like it’s buried. Most of it’s just hidin’ under the right light.”*  
+> *“Mountain’s got secrets. I just happen to sell the keys.”*
+
+> *“You never know when you’ll need an extra pack of hand warmers.”*
+
+---
+
+##### 🏪 **Role**
+- Operates the cozy trailhead **Convenience Store**, supplying gear for **prospecting, treasure hunting, panning, and survival**.  
+- Serves as the **starting point and upgrade hub** for all things related to **fossils, minerals, buried treasure**, and **legendary lenses**.  
+- Sells the all-important **Panttock**—the multipurpose tool for **digging, picking, and panning**.  
+- Offers quirky advice, mysterious maps, and just enough help to get you curious—but never enough to spoil the surprise.
+
+---
+
+##### 🧠 **Mechanics Unlocked**
+- 🪙 **Treasure Digging** – Soft ground yields lost coins, gear, and rare artifacts.  
+- ⛏️ **Rock Picking** – Break icy or rocky terrain to find fossils and minerals.  
+- 🌊 **River Panning** – Sift through streams for a little of everything—if you’re patient.  
+- 👓 **Legendary Lenses** – Unlock special vision modes to spot hidden loot, wildlife, and secrets.
+
+---
+
+##### 🔧 **Upgrades Offered**
+
+| 🛠️ Upgrade                   | 🎁 Effect                                                                 |
+|------------------------------|--------------------------------------------------------------------------|
+| 🥄 **Panttock Enhancements** | Reduces stamina cost and improves dig/pick/pan efficiency.              |
+| 🧭 **Explorer’s Pack**       | Increases inventory space and tool durability.                          |
+| 🗺️ **Quirky Old Maps**       | Reveals cryptic hints and mystery spots on the mountain.                |
+| 👓 **Lens Rack**             | Expands storage for more Legendary Lenses, allowing fast swapping.      |
+
+---
+
+##### 🎤 **Personality & Vibe**
+Tilly grew up on this mountain—sledding it, climbing it, digging holes in it, and *listening to it*. She's got a dry wit, a sharp eye, and the uncanny ability to sell you exactly what you didn’t know you needed.  
+
+She’s not flashy—she’s **solid**. A quiet legend in her own right, always organizing gear, scribblin’ in ledgers, and somehow knowing exactly when someone’s gonna walk in needing a **wax lens and two baits before sundown**.
+
+> *“If it looks like junk, dig anyway. This mountain hides her best stuff under the worst rocks.”*  
+> *“The river don’t care what you’re hopin’ to find—but it’ll show you what you need.”*  
+> *“Folks come lookin’ for gold. They leave with stories. Guess which one I trade in?”*  
+> *“I don’t sell luck. But I do sell the things luck likes to hang around.”*  
+> *“You learn the mountain by listenin’. And diggin’. And then listenin’ again when it buries your gear.”*
+
 
 #### 🏔️ **Resort Manager Montana Snow**
 - **Purpose:** Oversees **mountain upgrades & expansion.**
@@ -789,8 +870,6 @@ Fast-talking, camera-slingin’, and **always on the move**, she calls out sled 
 - **Purpose:** **Teaches advanced tricks & unlocks sledboarding**.
 - **Example Unlocks:** **Sled-to-board transitions, trick combos.**
 - **Best Quote:** *"Back in my day, we landed tricks with style. I can show ya how."*
-
-
 
 #### 🚑 **Sled Patrol Captain**
 - **Purpose:** Leads **rescue missions & avalanche drills.**
