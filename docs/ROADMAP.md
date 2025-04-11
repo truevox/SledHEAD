@@ -827,15 +827,93 @@ These are **mythic figures**, unlocking **wild game mechanics, hidden areas, and
 - **Example Unlocks:** **Weather manipulation quests, legendary snowboards.**
 - **Best Quote:** *"The mountain speaks… and I listen."*
 
-#### 🐻 **Bear Whisperer Carrie**
-- **Purpose:** Unlocks **bear-racing.**
-- **Example Unlocks:** **Bear races, such as Time Trials and Elimination.**
-- **Best Quote:** *"Bears don’t bite... if you know how to ask nicely."*
+#### 🐻🔥 Bear Whisperer Carrie – Animal Trainer, Race Facilitator, and Feral Energy in a Hoodie
 
-#### 🐝 **Beekeeper Pete**
-- **Purpose:** Sells **beekeeping upgrades**.
-- **Example Unlocks:** **Speed honey, frost-resistant sled wax.**
-- **Best Quote:** *"Snow bees? Oh yeah, they’re real… and fast."*
+*"Bears don’t bite... if you know how to ask nicely."*
+
+---
+
+##### 🐻 **Role**
+
+- Unlocks **bear-racing**, a wild and unforgettable downhill challenge.  
+- Offers **Time Trials**, **Trickoffs,** and **Elimination Races**\!  
+- Human vs Bear \- **Who Will Win?**
+
+---
+
+##### 🧠 **Mechanics Unlocked**
+
+- 🐾 **Bear Racing** – High-speed, high-risk downhill races where you compete against trained racing bears.
+
+---
+
+##### 🔧 **Upgrades Offered**
+
+| 🛠️ Upgrade | 🎁 Effect |
+| :---- | :---- |
+| 🍯 **Honey-Lure Tincture** | Attracts a specific rare bear type for one session. |
+
+---
+
+##### 🎤 **Personality & Vibe**
+
+Carrie doesn’t *tame* bears. She meets them where they are. She’s been a paraeducator, a technologist, and she’s raised two boys, she’s part animal behaviorist, part adrenaline junkie, and part gentle philosopher who just happens to **slide down cliffs on the back of a 900-pound predator**.
+
+She talks to bears like old friends, whispers to cubs in languages only the mountain knows, and once got in a standoff with a moose and *won by blinking slower*. While most folks are runnin’ from wildlife, Carrie’s out there **sharing trail snacks and takin’ notes**.
+
+Nobody really knows where she learned this stuff—she just showed up one winter with **a sled, a bear, and zero fear**, and people figured it was best not to ask.
+
+*“It’s not about makin’ them obey. It’s about makin’ them wanna run with you.”*  
+*“Claws on the ice? It’s like poetry... if poetry could maul you.”*  
+*“The first step to racing a bear is trust. The second step is making sure you’re not snack-shaped.”*  
+*“You can’t out-muscle a bear. But you can out-vibe one.”*  
+*"You think BEARS are hard to train? Try human kids!"*
+
+#### 🐝🌲 Beekeeper Pete – Hive Whisperer, Forest Steward, and Old-School Logger  
+> *"Snow bees? Oh yeah, they’re real… and fast."*
+
+---
+
+##### 🐝 **Role**
+- Guides players through the **Beekeeping** and **Wood Chopping** systems.  
+- Offers tools and wisdom for tracking, harvesting, and managing **wild hives** and **tree ecosystems**.  
+- Sells and upgrades essential gear: **smokers, bee boxes, axes**, and more.  
+- Oversees the mountain’s delicate balance between **extraction and stewardship**—he’ll notice if you take too much.
+
+---
+
+##### 🧠 **Mechanics Unlocked**
+- 🐝 **Wild Hive Beekeeping** – Locate, harvest, and relocate natural bee colonies.  
+- 🌲 **Sustainable Logging** – Chop trees for resources and trailblazing, while avoiding ecological harm.  
+- 🔍 **Bee Lining & Cutouts** – Mini-games for triangulating and harvesting wild hives.  
+- 🧪 **Specialty Resources** – Collect **wax**, **honey**, and **royal jelly** for crafting and upgrades.
+
+---
+
+##### 🔧 **Upgrades Offered**
+
+| 🛠️ Upgrade               | 🎁 Effect                                                                          |
+|---------------------------|------------------------------------------------------------------------------------|
+| 🍯 **Smokers**            | Calms wild bees for safer harvesting and better yield.                            |
+| 🐝 **Hive Boxes**         | Allows you to relocate wild hives to base for passive resource generation.        |
+| 🪓 **Sharpened Axe**       | Reduces stamina cost and increases efficiency while chopping trees.               |
+| 🧭 **Bee Box & Tracker Kit** | Helps trap and follow foraging bees back to their hive.                         |
+| 🌿 **Reforester’s Charm** | Slightly boosts tree regrowth rate in nearby cleared zones.                       |
+
+---
+
+##### 🎤 **Personality & Vibe**
+Pete is the mountain’s **quiet heartbeat**—an old soul who’s been out here longer than anyone can remember. They call him **“Encyclopedia Pete”**, ‘cause he knows every tree’s age and every bee’s purpose.  
+He talks to the land like it’s an old friend—and it listens.  
+
+Living in a cabin where the walls literally buzz, Pete splits his time between **caring for his hives** and **swingin’ an axe with surgical precision**. He won’t stop you from harvestin’, but he’ll teach you to **take only what you need, and leave the roots**.
+
+> *“Bees don’t bother nobody who minds their manners. Same goes for trees, mostly.”*  
+> *“You wanna learn somethin’ out here, keep yer mouth shut and yer eyes open.”*  
+> *“You think the mountain don’t notice when you clearcut a hillside? Wait till the wind shifts.”*  
+> *“Harvestin’s not the same as takin’. One leaves roots. The other leaves nothin’.”*  
+> *“Cut with care. Leave room for regrowth. The bees’ll thank you. The trees too.”*
+
 
 #### ⏳ **The Time Traveler**
 - **Purpose:** Unlocks **cryptid fossil digging & timeline anomalies.**
