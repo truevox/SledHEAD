@@ -305,6 +305,176 @@ Performing tricks during downhill runs boosts **viewer engagement, increasing ca
 
 ---
 
+## ⚖️ Weight is Strategy: You Climb What You Carry
+> “Every bolt, every crate, every choice—the mountain feels it, and so will your legs.”
+
+---
+
+### 🎯 Objective  
+Your sled isn’t just a ride down—it’s your **command center** on the climb up. Build light to move fast, or go heavy to haul it all—but remember: **weight is your stamina tax**, and every bolt you bring will cost you on the climb.
+
+Use the **modular sled system** to construct anything from a stripped-down **Jack Jumper** for quick ascents, to a massive **Gravity-Sledge** ready to haul enough maple, honey, gems, ores, and various other treasures to stock a trading post. Wanna haul around the bones of **Champs ancestors** - you need a **Sledge**!
+
+---
+
+### 🛠️ Mechanics  
+
+#### 🔩 Modular Components
+- **Swappable Parts:** Core body, rails, skids, front, rear, and side attachables.
+- **Minigame Loadouts:** Add-ons for *digging*, *panning*, *beekeeping*, *sap collection*, and more.
+- **Inventory Scaling:** Bigger sleds = more storage = longer runs without heading home.
+- **Weight Scaling:** But heavier sleds = faster stamina burn on climbs.
+
+#### 🛷 Sled Size Tiers  
+- 🐇 **Jack Jumper:** Light, fast, perfect for quick climbs and short missions.  
+- 🛷 **Toboggan:** Traditional and reliable—adds more haul space with minimal drag.  
+- 🛷 **Bobsled:** Balanced stamina and capacity—a mid-game staple.  
+- 🛻 **Gravity-Sledge:** Big boy. Built for long hauls, big rewards, and slow climbs.  
+- ⚡ **Powered Sledge:** Endgame gear. Built-in motor is powerful, but runs on fire-seeds from Vertigo Vents.
+
+Modular parts adapt to different terrain types and playstyles. Each mountain introduces new **tiered gear**, encouraging players to craft the perfect sled for the challenge ahead.
+
+Tiers are defined by mountain difficulty:
+- **Early Game**: Tutorial + base snow mountain
+- **Example Mid Game**: Candy Cane Canyon, Garbage Dump Glacier, Crystal Caves
+- **Example Late Game**: Fire Mountain, Space Mountain, Steampunk Slopes 
+
+---
+
+##### 🌲 Early Game Example Tier (for illustration only, actual upgrades may change)
+
+###### 🛷 Runners / Skis / Rails
+- **Birchwood Skids** – Lightweight, great air, poor traction  
+- **Steel Runners** – Balanced grip and durability  
+- **Waxed Maple Rails** – Boosts speed on groomed trails
+
+###### 🧱 Body
+- **Pineframe Hull** – Standard durability, light carry  
+- **Hollowcore Deck** – Reduces weight but fragile on impact  
+- **Woven Bark Shell** – Slightly reduces stamina cost on climb
+
+###### 🧳 Front Attachments
+- **Mini Dig Kit** – Small shovel + brush set for shallow treasure zones  
+- **Photo Crate** – Basic wildlife camera & lens mount  
+- **Bee Box Jr.** – Compact hive box, good for early-game beekeeping
+
+###### 🧳 Rear Attachments
+- **Trail Crate** – Holds 1 extra item  
+- **Thermos Drum** – Provides minor stamina use reduction
+- **Sap Bag** – Holds early-game syrup collection
+
+###### 🧳 Side Attachments
+- **Supply Satchels** – +1 item slot each  
+- **Basic Shock Pads** – Slightly improves trick landing control  
+- **Wax Holsters** – Hold multiple wax types for terrain swapping
+
+---
+
+##### ❄️ Mid Game Example Tier (for illustration only, actual upgrades may change)
+
+###### 🛷 Runners / Skis / Rails
+- **Frostbite Rails** – Extra grip on ice, trick control reduced  
+- **Sugarwax Skids** – Boost jump height on soft terrain  
+- **Crystal Edges** – Precision sledding, fragile on landing
+
+###### 🧱 Body
+- **Plastic Composite Shell** – Corrosion-resistant and smooth on garbage  
+- **Candycar Frame** – Slippery but fast, themed for sweet terrain  
+- **Dumpster Diver Deck** – Heavy but has bonus junk pickup radius
+
+###### 🧳 Front Attachments
+- **Deluxe Dig Kit** – Panning & pick support included  
+- **Crane Camera Rig** – Boosts wildlife photo value and rare animal spawn  
+- **Weather Vane Mount** – Improves weather prediction and storm nav
+
+###### 🧳 Rear Attachments
+- **Coolant Tank** – Slows stamina drain in hot zones  
+- **Mystery Box Rack** – Adds chance to collect bonus junk while sledding  
+- **Glacier Barrel** – Improves fish/ice storage during cold runs
+
+###### 🧳 Side Attachments
+- **Gear Caddies** – Organize and swap minigame kits mid-run  
+- **Stabilizer Runners** – Enhance cornering at high speeds  
+- **Candy Lights** – Boost fan appeal on style zones (bonus cash)
+
+---
+
+##### 🔥 Late Game Example Tier (for illustration only, actual upgrades may change)
+
+###### 🛷 Runners / Skis / Rails
+- **Molten Rails** – Immune to lava, boosts downhill acceleration  
+- **Lunar Skids** – Floaty with huge airtime, bad handling on Earth  
+- **Cogwheel Runners** – Self-adjusting mechanical rails that grip terrain dynamically; can misfire on high-speed landings
+
+###### 🧱 Body
+- **Volcanic Alloy Core** – Insane durability, massive weight  
+- **Zero-G Frame** – No weight cost, but no storage or defense  
+- **Boilplate Chassis** – Brass-plated hull with integrated gearboxes; auto-manages loadout but prone to overclock jamming
+
+###### 🧳 Front Attachments
+- **Plasma Dig Spade** – Cuts through crystal & magma zones  
+- **Drone Rig Mount** – Deploys recon sled drone for photo or scouting  
+- **Steam-Powered Survey Arm** – Deploys retractable claw + lens rig for scanning treasures mid-sled
+
+###### 🧳 Rear Attachments
+- **Jet Fan Housing** – Trick lift boost, doubles as mid-air air brake  
+- **Royal Sap Tank** – Stores rare sap from exotic trees  
+- **Chrono Trunk** – Stores more gear and occasionally “rewinds” to earlier contents (unpredictable!)
+
+###### 🧳 Side Attachments
+- **Energy Amplifiers** – Boost trick multiplier thresholds  
+- **Magnetic Catchers** – Auto-grab dropped treasure or gear  
+- **Pressure Valves** – Regulate sled systems, reducing trick cooldown and smoothing performance—can hiss when overloaded
+
+
+---
+
+> *"One sled won’t climb every mountain, but every mountain leaves behind the parts you’ll need."*  
+> – Sled Tech Steve, welding a USB C port to a... sledrunner?!.
+
+---
+
+### 💡 Strategy & Loop  
+- **Climb Strategy:** Plan your route, weigh the reward. Can you reach the high-level cryptid fossil site with a full panning kit and digging gear? Maybe—but it’ll take stamina.  
+- **Run Planning:** Load light for trick runs or fast climbs. Load heavy for treasure, panning, or multi-minigame combos.  
+- **Upgrade Path:** Invest in *stamina buffs*, *better wax*, and *sled mods* to offset weight and keep pushing higher.
+
+> *“Think of stamina like cash, and weight like taxes. Spend wisely, friend.”*  
+> – **Sled Tech Steve**, sketching blueprints on a greasy napkin while sipping espresso from a spark plug
+
+---
+
+### 🔧 Upgrades & Support  
+**Sled Tech Steve** is your **go-to grease guru**, the man who knows every part, every bolt pattern, and exactly why that sled feels like it's hummin' wrong today.              |
+
+> *“You’re not just building a sled. You’re buildin’ the **reason** you get to the summit today.”*  
+> – Steve, handing you a bolt and a burrito and suggesting you to eat both
+
+---
+
+### ⚠️ Risks & Strategy  
+- **Overload & Burnout:** Go too heavy without the stamina to back it, and you’ll wipe out halfway up.  
+- **Breakage:** Rough terrain or bad landings can bust your gear. Carry *repair kits* or plan a route with rest stations.
+
+---
+
+### 🎤 Sled Tech Steve – The Mechanic Who Makes It Work  
+He’s the guy who fixes what you break, builds what you dream, and mutters prophetic wisdom while tightening bolts.
+
+#### 🛠️ Role  
+- Crafts, repairs, and upgrades every sled component.  
+- Offers expert advice on build balance, gear synergy, and hauling smart.  
+
+#### 💬 Vibe  
+Part sage, part mad engineer, part crusty uncle who lives in a garage with three working engines and one broken toaster sled.  
+**Smells like axle grease and triumph.**
+
+> *“Don’t ride a sled you don’t love. Don’t climb a hill you ain’t ready for. Don’t bolt on a turbo tank unless you know how to land it.”*  
+> *“Every run’s a test. Every build’s a blueprint of your brain.”*  
+> *“When the sled’s right, you won’t even feel the climb. Just the hum.”*
+
+---
+
 ## 🎮 **Mini-Games in SledHEAD**
 
 ### 1. **Animal Photography** 📸🐾
@@ -526,19 +696,57 @@ Minnie runs the cozy little convenience store nestled near the trailhead and bas
 ---
 
 ### 6. **Sled Tricking** 🛷✨  
+
 - **Objective:**  
-  Chain together aerial sled tricks to earn cash and boost fan engagement.
-- **Mechanics:**  
-  - Utilize a trick system featuring helicopter spins, flips, air brakes, corkscrews, and ghost rider moves.  
-  - Chain tricks for higher multipliers.
-- **Upgrades:**  
-  - Trick-enhancing sled mods, jump-boosting gear, and aerial control boosters.
-- **Special Events:**  
-  - Trick challenges and fan-requested stunt competitions.
-- **Risk/Challenge:**  
-  - Mistimed tricks can cause crashes and loss of earnings.
+  Launch yourself into the air, chain together daring stunts, and carve your name into the cold sky. Build 📸 fan hype, earn 💰 trick cash, and prove you’ve got the grace and grit to earn a nod from Jake—the man who quite literally built the floor beneath your feet.
 
 ---
+
+- **🎮 Mechanics:**  
+  - **Trick Input System:**  
+    - Use directional combos you learn from Jake to pull off tricks like **Ghost Rider**, **Helicopter Spins**, **Corkscrews**, **Air Brakes**. Maybe someday you can even learn to **Stand while Sledding** - the art of **Sledboarding**.  
+
+
+  - **Combo System:**  
+    - Land clean to maintain your **multiplier chain**.  
+    - Mix it up—repeat tricks lower rewards, but variety unlocks **fan bonuses** and **style streaks**.  
+
+  - **Momentum Flow:**  
+    - Certain tricks slow descent, others give more air time burst.  
+    - Mastering when to hold, twist, or toss is what separates a rider from an artist.
+
+---
+
+- **🛠️ Upgrades & Gear:**  
+  - 🛷 **Trick-Tuned Mods** – Increases spin rate and air finesse.  
+  - 🪂 **Altitude Boosters** – More lift = more tricks.  
+  - 🌀 **Wind Tail Fin** – Sharper aerial control and faster recovery spins.  
+  - 🎮 **Reflex Dampeners** – Smooths input timing for high-combo riders.  
+  - ✨ **Jake’s Signature Move: Sledboarding** – Transition from sitting to ridding while standing!
+
+---
+
+- **🎯 Special Events & Bonuses:**  
+  - 🎥 **Fan Trick-Sprees** – Performing tricks with multiple fans on-screen starts a bonus chaing, starting a short countdown within which you are given bonus rewards for performing more tricks. You can keep the timer resetting by performing more tricks with different fans on screen down hill of the first group.  
+  - 🏁 **Trick Zones** – Areas hand-built for massive stunts and flowing chains.  
+
+---
+
+- **⚠️ Risks & Challenge:**  
+  - ❌ **Crash Penalty** – Lose your combo and gear durability if you biff it.  
+  - 🌀 **Over-rotation & Drift** – Bad inputs can throw your whole landing outta whack.  
+
+---
+
+- **🏔️ NPC: Jake – Sledboarding Pioneer, Trick Philosopher, and Builder of Mountains**  
+  - Jake is a legend not just for what he rode, but for what he *built*.  
+  - He is a sledboarding pioneer and carved out the first trick zones by hand. These days, he’s the one who constructs what others only imagine—rails, ramps, photo decks, and even lift stations. If something works up here, it’s because Jake made it strong enough to hold.  
+  - Off the slope, he’s a quiet carpenter who works in a small shed tucked into a windbreak of trees. But if you’re worthy, he’ll show you how to move like the mountain’s listening. He knows every move in the book - he invented most of 'em!
+
+> *“Style isn’t flash. It’s control without shouting.”*  
+> *“Every trick begins before you leave the ground. Every landing finishes long after you hit it.”*  
+> *“Balance is a kind of listening.”*  
+> *“What you build reflects what you believe. So build things that last.”*  
 
 ### 7. **Time Trial Racing** 🏁🛷  
 - **Objective:**  
@@ -790,7 +998,7 @@ These **support your base mountain**—they run the town, drive your economy, an
 ---
 
 ##### 🏪 **Role**
-- Runs the **mountain’s go-to convenience shack**, specializing in **prospecting gear**, **utility tools**, and **weird old maps that probably weren’t supposed to be sold**.  
+- Runs the **mountain’s go-to convenience shack**, specializing in **prospecting gear**, **utility tools**, and **and everything else you've wanted to buy more of**.  
 - Acts as the **player’s main point-of-contact** for starting and upgrading **digging, panning, fishing**, and **lens-based discovery systems**.  
 - Unlocks **Treasure Tech**, including the **Panttock**—a single tool for dig, pan, and pick actions.  
 - Offers **practical wisdom and gear with just a hint of folklore**, always hinting she knows more than she lets on.
@@ -1078,7 +1286,7 @@ Nobody really knows where she learned this stuff—she just showed up one winter
 ---
 
 ##### 🎤 **Personality & Vibe**
-Pete is the mountain’s **quiet heartbeat**—an old soul who’s been out here longer than anyone can remember. They call him **“Encyclopedia Pete”**, ‘cause he knows every tree’s age and every bee’s purpose.  
+Pete is the mountain’s **quiet heartbeat**—an old soul who’s been out here longer than anyone can remember. They call him **“Encyclopedia Pete”**, ‘cause he knows everything from how to run an Apiary, to how to Zip the limbs off of a felled tree.
 He talks to the land like it’s an old friend—and it listens.  
 
 Living in a cabin where the walls literally buzz, Pete splits his time between **caring for his hives** and **swingin’ an axe with surgical precision**. He won’t stop you from harvestin’, but he’ll teach you to **take only what you need, and leave the roots**.
@@ -1100,13 +1308,28 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 
 ## 🏔️ **Mountain Themes & Progression**
 
-### Lava Mountain 🌋
-- **Description:** Sizzling volcanic slopes with flowing lava rivers, steaming geysers, and rocky outcrops. Watch out for molten streams, lava bombs, and volcanic tremors.  
+### 🔥 Vertigo Vents 🌋💨
+
+- **Description:**  
+  Sizzling volcanic slopes with flowing lava rivers, steaming geysers, and jagged obsidian cliffs. This is **trickster paradise**, where the heat is deadly, but the **airtime is divine**. Volcanic vents blast you sky-high, turning every ramp into a launchpad for mid-air madness.
+
 - **Mechanics:**  
-  - **Heat Meter:** Overheat means game over unless you hit cool-off zones.  
-  - **Ash Clouds:** Temporarily block visibility.
-- **Power-Up:** **Heat Shielding Sled Coating**  
-  *Required upgrade to unlock Lava Mountain. Provides heat protection and slightly reduces friction on other levels.*
+  - **Heat Meter:** Stay in the hot zones too long and you’ll fry—seek out sled-mounted **cooling tanks**.  
+  - **Ash Clouds:** Sudden visibility loss forces quick reaction sledding.  
+  - **Geothermal Geysers:** Act as **natural trick boosters**, launching you for combos and big air.  
+  - **Vulcanic Wind Corridors:** Let you chain even more tricks for **massive multipliers**.  
+
+- **Special Feature:**  
+  - **Style Zones:** Naturally occurring lava halfpipes and vent blasts set up prime trick sequences.  
+  - **Eruption Events:** Mid-run eruptions can end your run early at best, and rack up a significant rescue bill at the worst.
+
+- **Power-Up:**  
+  🔥 **Heat Shielding Sled Coating**  
+  *Required to enter. Shields your sled from burn damage and slightly improves glide friction across all terrain. Upgrading it will keep you from melting longer.*
+
+- **Jake’s Comment:**  
+  > “You only *think* you’ve hit max airtime—wait till the mountain spits fire under you.”
+
 
 ---
 
@@ -1165,15 +1388,6 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 
 ---
 
-### Haunted Graveyard Hill 👻
-- **Description:** Spooky slopes with gravestones, eerie trees, and wandering ghosts.  
-- **Mechanics:**  
-  - **Ghost Encounters & Phantom Fans:** Can hinder or help your progress with unexpected effects.
-- **Power-Up:** **Spirit Lantern**  
-  *Required to access Haunted Graveyard Hill. Illuminates hidden pathways and improves overall visibility.*
-
----
-
 ### Sky Jellyfish Mountain ☁️🪼
 - **Description:** Ethereal, bouncy slopes with luminous sky jellyfish and shifting cloud platforms.  
 - **Mechanics:**  
@@ -1183,7 +1397,7 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 
 ---
 
-### Mechanical Mountain (Steampunk Slopes) ⚙️🎩
+### Steampunk Slopes ⚙️🎩
 - **Description:** Steampunk-inspired terrain with gears, conveyor belts, and mechanical contraptions.  
 - **Mechanics:**  
   - **Timed Obstacles & Gear Grinds:** Require precise timing and offer big cash bonuses.
@@ -1201,14 +1415,45 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 
 ---
 
-### Digital Mountain (Cyber Slopes) 💻🔮
-- **Description:** Neon-lit digital slopes filled with glitches, data streams, and pop-up malware ads.  
-- **Mechanics:**  
-  - **Glitch Zones & Malware Hazards:** Cause unpredictable teleportation and control issues.
-- **Power-Up:** **Data Shielding**  
-  *Required to access Digital Mountain. Protects against digital hazards and improves overall stability.*
+### 💻 Bitstream Bluffs 🔮📶
 
----
+- **Description:**  
+  Bitstream Bluffs ain’t on any map—'cause it ain’t real. It’s a fully-virtual **digital mountain**, accessed through a glitchy old **arcade cabinet** you can install at your lodge.  
+  You don’t ride your usual sled here. Instead, you pilot a **digital proxy sled**, using the **exact same control layout and responsiveness** as your RC Sled. Spooky? Or lucky?  
+
+  **Your skills carry over—but none of your gear does.**
+
+- **Gameplay Rules:**  
+  - You ride a **Digital Sled**, rendered entirely in a simulated world.  
+  - It **feels just like your RC Sled**—same physics tuning, control setup, and handling style—but it’s not your actual sled.  
+  - No sled mods or limited inventory apply—this is a **skill-focused simulation** with randomized hazards.  
+  - Every session is a **procedural remix**, offering new glitch patterns, track shapes, hazards, and gravity rules.
+
+- **Mechanics:**  
+  - **Glitch Zones & Malware Hazards:** Scramble vision, invert terrain, or randomize momentary movement.  
+  - **Bit Bridges & Datastream Trails:** High-speed trick rails through corrupted memory sectors.  
+  - **Firewall Gates:** Fry control stability unless avoided or properly timed.  
+  - **Packet Winds:** Buffeting data gusts that can carry you—or crash you—into digital space.  
+  - **Bitstream Drift:** Anti-grav momentum puzzles that test your sled finesse.
+
+- **Special Features:**  
+  - 🕹️ **Arcade Access:** Requires unlocking the **Bitstream Cabinet** and installing it at home.  
+  - 🔁 **Ever-Shifting Layouts:** Glitches rewrite the mountain on every entry—no two runs are alike.   
+  - 📼 **Daily Patch Cycles:** Each real-world day downloads new terrain permutations, visual filters, and challenge rules.  
+    Examples: *Upside-Down Mode*, *No Jumping Allowed*, *One-Life Turbo Run*.
+
+- **Power-Up:**  
+  💾 **Data Shielding**  
+  *Prevents crashes from glitch walls, corrects brief input corruption, and adds a buffer against malware trail effects.*
+
+- **Tinkerer’s Tip:**  
+  > “It ain’t your RC sled... but it should *feel* like it is. Whoever made it mirrored the controls perfectly, down to the frame... what are the odds?
+
+- **Lore Hook:**  
+  Nobody knows where the cabinet came from. The Tinkerer says he found it buzzing in a field, logged into a low earth satellite based server. The weirdest part is that it wasn't even plugged in.  
+  It updates itself. The leaderboard tracks high scores. And it remembers things **you never told it.**  
+  Is it haunted? AI? Or just **the mountain’s reflection in the machine**?  
+  Either way... it **wants** to be sledded.
 
 🔄 Infinite Upgrades with Soft Caps
 ===================================
