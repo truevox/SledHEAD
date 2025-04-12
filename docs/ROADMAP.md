@@ -347,13 +347,42 @@ Performing tricks during downhill runs boosts **viewer engagement, increasing ca
 
 ---
 
-### 3. **Lockpicking in Abandoned Buildings** 🔐🏚️  
+### 3. **Lockpicking in Abandoned Buildings** 🔐🏚️🧰  
 - **Objective:**  
-  When you bought the mountain, a number of abandoned buildings were on the property. They're locked up, but they're yours now. Unlock doors, safes, and gain access to mid-mountain buildings.
-- **Mechanics:**  
-  - Use tools like **rakes, hooks, and tension wrenches**.  
-- **Upgrades:**  
-  - High-quality picks, electronic bypass tools, and vibration sensors.
+  When you bought the mountain, you inherited a mess of **abandoned structures**—old **lift shacks**, **research stations**, even a few **ranger outposts**. They’re locked tight, but now they’re yours to crack.  
+  Break into **doors**, **safes**, and **tool lockers** to uncover 🔦 **mid-mountain hideouts**, 💎 **hidden gear**, and 📖 **long-buried lore** from those who came before.
+
+---
+
+- **🔧 Mechanics:**  
+  - **Initiated at locked interactables** found across old buildings and icy outposts.  
+  - Gameplay uses a **dual-input system**:  
+    - One hand applies **rotational tension** (like a wrench),  
+    - The other manipulates a **lock pick** across a row of **virtual tumblers**.  
+  - Each lock is **procedurally generated**:  
+    - Randomized **pin positions**,  
+    - Varying **resistance thresholds**,  
+    - And different **feedback styles**—listen for **clicks**, feel for **wiggles**, watch for **HUD shivers**.  
+  - **Hold tension steady**—apply too much or too little and you’ll **reset all unset pins**.  
+  - Higher-tier locks introduce:
+    - 🌀 **False sets** (feel real but drop later),  
+    - 🔄 **Multi-stage tumblers**,  
+  - **Failing** too many times can result in a **broken pick**
+
+---
+
+- **🛠️ Upgrades:**  
+  - 🪛 **Precision Picks** – Smoother glide, better feedback on tough pins.  
+  - ✋ **Grip Master Tensioner** – Wider “sweet spot,” more forgiving tension range.  
+  - 🔇 **Stealth Kit** – Allows you to approch wildlife closer before spooking them. 
+
+---
+
+- **⚠️ Risks & Challenge:**  
+  - **Pick durability** breaks with poor technique—snap a pick and you’re done unless you’ve got backups.  
+  - 🥶 **Bad Weather** increases pick wobble and slows hand speed—bring gloves or warm up first.  
+
+> *“Every lock’s got a language. Learn the clicks, feel the tension… and hope there ain’t a badger on the other side.”* – *Welma, Lift Shack Raider*
 
 ---
 
@@ -425,9 +454,9 @@ Only one lens may be worn at a time, and they must be swapped out at base. Lense
 
 ---
 
-#### 👧 **Tilly – The Convenience Store Owner**
+#### 👧 **Minnie – The Convenience Store Owner**
 
-Tilly runs the cozy little convenience store nestled near the trailhead and base camp. She grew up on this mountain—sledding it, hiking it, panning its rivers, and listening to every wild tale folks whispered around campfires. Prospecting tools, backpacks, river pans, rods, bait, and quirky old maps? She’s got ‘em. But more importantly, by the door sits an eye-catching **rack of Legendary Lenses**, there to tempt curious adventurers to part with their own treasure.
+Minnie runs the cozy little convenience store nestled near the trailhead and base camp. She grew up on this mountain—sledding it, hiking it, panning its rivers, and listening to every wild tale folks whispered around campfires. Prospecting tools, backpacks, river pans, rods, bait? She’s got ‘em.She even has a slightly marked up "Everything Else" shelf! But more importantly, by the door sits an eye-catching **rack of Legendary Lenses**, there to tempt curious adventurers to part with their own treasure.
 
 **Role:** Starting point and upgrade hub for all things Treasure, Prospecting, Panning, and Fossil gear. She sells you your Panttock, as well as upgrades it.
 
@@ -445,18 +474,54 @@ Tilly runs the cozy little convenience store nestled near the trailhead and base
 
 ---
 
-### 5. **Kite Flying** 🪁🌬️  
-- **Objective:**  
-  Control a kite during uphill climbs, then reap aerial bonuses during sled runs.
-- **Mechanics:**  
-  - **Uphill:** Switch to a Guitar Hero-style directional arrow input to keep the kite stable.  
-  - **Downhill:** Kites extend air time and grant special bonuses.
-- **Upgrades:**  
-  - **Glide Boost, Speed Stream, and Aero Control.**
-- **Special Events:**  
-  - **Storm Riding** with higher boosts but riskier winds.
-- **Risk/Challenge:**  
-  - Strong gusts may destabilize your kite.
+### 5. **Kite Flying** 🪁🌬️🎶  
+#### - #### **Objective:**  
+  Take to the skies during **uphill climbs** with a trusty kite, using wind and rhythm to lift you to new heights—literally. Your kite’s more than a toy—it’s a tool for discovery, glide-based trickery, and unlocking secrets only visible from above.  
+  Master the flow, and you’ll earn ✨ **airborne bonuses**, and 🪁 **flight-only shortcuts**.
+
+---
+
+#### - **🎮 Mechanics:**  
+#####   - **Uphill Phase:**  
+    - Control your kite using a **music-style rhythm system**—directional prompts appear like notes in a jam session.  
+    - Nail the beat to stabilize, catch wind currents, and **ride the thermals like a verse you wrote yourself**.  
+    - Botch the timing and your kite’ll flutter down like Jay after a particularly mellow afternoon.  
+
+#####   - **Downhill Phase:**  
+    - Your kite becomes a **glider**, extending airtime.  
+    - Different kite types offer different styles—agile kites offer greater control, larger ones will fly further, aerogel kites are heat resistant, bubble "kites" hold extra air underwater and in vacuum!  
+
+---
+
+#### - **🛠️ Kites & Upgrades:**  
+  Your kite *is* your upgrade. Each one offers a unique feel, function, and flair based on the environment or your playstyle:
+
+  - 🪁 **Jay’s First Kite** – A balanced, starter-friendly glider. Good control and decent airtime. Fades to red in stormlight.  
+  - 🌀 **Windwhip** – Lightweight and ultra-agile. Perfect for trick runs. Loses distance in strong wind.  
+  - 🏄 **Stormkite** – Reinforced rigging and heavy fabric. Handles extreme gusts and lightning zones. Tricky to steer.  
+  - 🔥 **Aerogel Wing** – Heat-resistant and stable. Soars over volcanic vents and desert thermals. Heavy and slow to lift.  
+  - 🫧 **Bubbleknot** – Sealed, floaty "kite" that holds breathable air. Works underwater and in thin-atmosphere zones. Nearly useless in regular air.  
+  - 🌕 **Lunarch** – Ultra-wide, low-gravity sail designed for thin-air, nighttime, or vacuum mountain regions. Poor steering but massive airtime.  
+
+> *“I always say... a kite's like a muician: some are meant to dance, some are meant to sing, and some wanna get higher.”* – Jay
+
+
+---
+
+#### - **🎯 Special Events & Bonuses:**  
+  - ⚡ **Storm Riding** – Extreme winds = extreme lift. Ride lightning skies for massive trick bonuses.
+  - 🎒 **Floating Loot Drops** – Balloons with loot attached to them sometimes float by - use your kite to pop the balloon and collect the fallen goods!
+
+---
+
+> *"Wind’s just music without the intent, man."*  
+> *"Every kite string’s a melody waitin’ to play itself—you just gotta be the hands."*  
+> *"I don’t fall, I descend artistically."*  
+> *"Most folks chase the peask. Me? I chase the air between 'em'."*  
+> *"People say the mountain talks. Nah, man. It sings."*  
+>  
+> – *Lift Operator Jay, musician, wind whisperer, habitual floater*
+
 
 ---
 
@@ -514,7 +579,7 @@ Tilly runs the cozy little convenience store nestled near the trailhead and base
 
 ---
 
-### 🐝 **Beekeeping**
+### 10. 🐝 **Beekeeping**
 
 The mountain is alive with more than just snow and treasure—hidden in trees, under ledges, and tucked along sun-warmed ridgelines are **wild mountain hives**, buzzing with activity and potential. As a beekeeper, you’ll locate these elusive hives, carefully collect precious **wax, honey, and royal jelly**, and even guide new hives to safer, more productive spots.
 
@@ -588,46 +653,46 @@ Known to locals as **"Encyclopedia Pete"**, this seasoned mountain man has spent
 
 ---
 
-## 🌲🪓 Wood Chopping  
+### 11. Wood Chopping 🌲🪓   
 > *“Bees don’t bother nobody who minds their manners. Same goes for trees, mostly.”* – Pete the Beekeeper
 
 ---
 
-### 🎯 **Objective**
+#### 🎯 **Objective**
 Fell trees during the **Uphill Phase** to create **temporary downhill shortcuts** and gather **wood for crafting**.  
 But watch it, bud—trees don’t grow back on command. **Chop too many**, and you’ll change the mountain in ways ya might regret. 🌲💔
 
 ---
 
-### ⚙️ **Mechanics**
+#### ⚙️ **Mechanics**
 
-#### 🌳 **Interactable Trees**  
+##### 🌳 **Interactable Trees**  
 Trees can be chopped, felling them and clearing the way.
 
-#### ⏱️ **Mini-Game**  
+##### ⏱️ **Mini-Game**  
 Chopping triggers a **timed input challenge**, like **Kite Flying** 🎯.
 
-#### 🪓 **Tools Needed**  
-You’ll need an **Axe**, buyable from **Tilly** or **Pete**, and **upgradable** for speed, reach, or yield.
+##### 🪓 **Tools Needed**  
+You’ll need an **Axe**, buyable from **Minnie** or **Pete**, and **upgradable** for speed, reach, or yield.
 
-#### 💪 **Stamina Cost**  
+##### 💪 **Stamina Cost**  
 Every chop uses **stamina**, so you’ll need to **weigh your options** carefully on the climb.
 
 ---
 
-### 🎁 **Results & Benefits**
+#### 🎁 **Results & Benefits**
 
-#### 🛷 **Trailblazing**
+##### 🛷 **Trailblazing**
 - Chopped trees **open up smoother sled routes**, create drop-ins, or reveal hidden ramps.  
 - Trails last until regrowth—could be **days, hours, or a surprise snowstorm** 🌨️.
 
-#### 🪵 **Resource Gathering**
+##### 🪵 **Resource Gathering**
 - Felled trees drop **wood**, used for **crafting furniture, upgrades, signs**, or even **building cozy structures at home**.  
 - Higher-tier trees may offer **unique lumber** for rare blueprints.
 
 ---
 
-### 🌱 **Natural Regrowth System**
+#### 🌱 **Natural Regrowth System**
 
 - Trees regrow **naturally and randomly** over time based on **elevation, weather**, and how many are still standing nearby.
 - A **dynamic forest balance system** tracks how “healthy” a region is:
@@ -637,14 +702,14 @@ Every chop uses **stamina**, so you’ll need to **weigh your options** carefull
 
 ---
 
-### 🌿 **Saplings and Growth Stages**
+#### 🌿 **Saplings and Growth Stages**
 
 - Chopped areas might sprout **baby trees** that can’t be chopped (yet).  
 - **Mature trees** offer full benefits—but ya gotta wait, or help ‘em along with upgrades. 🌱➡️🌲
 
 ---
 
-### 🔧 **Upgrades & Systems**
+#### 🔧 **Upgrades & Systems**
 
 | 🔨 **Upgrade**         | 🎯 **Effect**                                                                 |
 |------------------------|------------------------------------------------------------------------------|
@@ -653,7 +718,7 @@ Every chop uses **stamina**, so you’ll need to **weigh your options** carefull
 
 ---
 
-### ⚠️ **Risks & Strategy**
+#### ⚠️ **Risks & Strategy**
 
 - Chop too many trees and you'll risk **barren slopes**—no shortcuts, no wood, no wildlife. 🚫🌲  
 - Animals **avoid over-cleared areas**, affecting your **photo score** 📸🐾  
@@ -661,7 +726,7 @@ Every chop uses **stamina**, so you’ll need to **weigh your options** carefull
 
 ---
 
-### 🧑‍🌲 **Pete the Beekeeper (and Woodsman)**  
+#### 🧑‍🌲 **Pete the Beekeeper (and Woodsman)**  
 Pete ain’t just the guy buzzin’ about bees—he’s been **felling timber** since before you were knee-high in powder. ❄️🪓  
 Around these parts, folks say **Pete knows every tree by name**, and every stump by its story. It's why they call him **Encyclopedia Pete**.
 
@@ -670,7 +735,7 @@ While he’s the one who’ll sell you your **first axe** and teach you how to s
 
 ---
 
-### 🏔️ **Role**
+#### 🏔️ **Role**
 - Supplies **axes and woodcutting upgrades**  
 - Teaches **sustainable harvesting** 🌳  
 - Serves as the **in-game conscience** when it comes to **deforestation**  
@@ -678,7 +743,7 @@ While he’s the one who’ll sell you your **first axe** and teach you how to s
 
 ---
 
-### 💬 **Vibe**
+#### 💬 **Vibe**
 Stoic, rooted, and wise in that way only folks who **listen to trees** can be.  
 He doesn’t say much, but when he does, it sticks.  
 Smells faintly of **oak, smoke, and pine sap**. 🪵🌫️🌲
@@ -719,7 +784,7 @@ These **support your base mountain**—they run the town, drive your economy, an
 - **Example Unlocks:** **Penthouse suites, reputation perks, tourism boosts.**
 - **Best Quote:** *"The more people love this place, the more we all win."*
 
-#### 🏪🎒 Tilly – Trailside Outfitter, Treasure Whisperer, and Dealer of Gear You Didn’t Know You Needed  
+#### 🏪🎒 Minnie – Trailside Outfitter, Treasure Whisperer, and Dealer of Gear You Didn’t Know You Needed  
 > *“You pack for the trip you think you're takin’. I pack for the one you're *gonna* have.”*
 
 ---
@@ -736,7 +801,7 @@ These **support your base mountain**—they run the town, drive your economy, an
 - ⛏️ **Multi-Tool Prospecting** – With the Panttock in hand, unlock access to dig spots, breakables, and gold-rich streambeds.  
 - 🐟 **Fishing & Foraging** – Get outfitted with bait, rods, and region-specific tips for catching and cooking.  
 - 👁️ **Legendary Lenses** – Visual upgrades that let players **see hidden trails, glints, or fossils** that are otherwise invisible.  
-- 🗺️ **Map Scraps & Lore Trails** – Hidden areas, cryptic clues, and bonus missions via Tilly’s rotating stock of “authentic-ish” maps.
+- 🗺️ **Map Scraps & Lore Trails** – Hidden areas, cryptic clues, and bonus missions via Minnie’s rotating stock of “authentic-ish” maps.
 
 ---
 
@@ -752,9 +817,9 @@ These **support your base mountain**—they run the town, drive your economy, an
 ---
 
 ##### 🎤 **Personality & Vibe**
-Tilly’s not flashy, and she’s not out there trickin’ off glaciers—but she *is* the one who sold gear to the guy who did. She’s the kind of local who’s been here forever, never left, and doesn’t *need* to prove it. You ask for rope and she hands you one tied in seven useful knots. You ask for directions, and she gives you a story and a trail riddle.  
+Minnie’s not flashy, and she’s not out there trickin’ off glaciers—but she *is* the one who sold gear to the guy who did. She’s the kind of local who’s been here forever, never left, and doesn’t *need* to prove it. You ask for rope and she hands you one tied in seven useful knots. You ask for directions, and she gives you a story and a trail riddle.  
 
-She respects the mountain the same way she respects her shelves—kept sharp, kept stocked, and always slightly dusty with mystery. Practical, direct, and not too interested in your excuses—Tilly gives you **what you earn**, not what you ask for.
+She respects the mountain the same way she respects her shelves—kept sharp, kept stocked, and always slightly dusty with mystery. Practical, direct, and not too interested in your excuses—Minnie gives you **what you earn**, not what you ask for.
 
 > *“I’ve seen four different people find four different things in the same hole. Figure that one out.”*  
 > *“It ain’t lost. It’s just waitin’ for you to be the right person to find it.”*  
@@ -770,6 +835,7 @@ She respects the mountain the same way she respects her shelves—kept sharp, ke
 - Operates the cozy trailhead **Convenience Store**, supplying gear for **prospecting, treasure hunting, panning, and survival**.  
 - Serves as the **starting point and upgrade hub** for all things related to **fossils, minerals, buried treasure**, and **legendary lenses**.  
 - Sells the all-important **Panttock**—the multipurpose tool for **digging, picking, and panning**.  
+- Once you've bought an item from someone else, Minnie will source it's upgrades for you from the original seller in the future (though at a slightly inflated price to account for her overhead)
 - Offers quirky advice, mysterious maps, and just enough help to get you curious—but never enough to spoil the surprise.
 
 ---
@@ -794,7 +860,7 @@ She respects the mountain the same way she respects her shelves—kept sharp, ke
 ---
 
 ##### 🎤 **Personality & Vibe**
-Tilly grew up on this mountain—sledding it, climbing it, digging holes in it, and *listening to it*. She's got a dry wit, a sharp eye, and the uncanny ability to sell you exactly what you didn’t know you needed.  
+Minnie grew up on this mountain—sledding it, climbing it, digging holes in it, and *listening to it*. She's got a dry wit, a sharp eye, and the uncanny ability to sell you exactly what you didn’t know you needed.  
 
 She’s not flashy—she’s **solid**. A quiet legend in her own right, always organizing gear, scribblin’ in ledgers, and somehow knowing exactly when someone’s gonna walk in needing a **wax lens and two baits before sundown**.
 
@@ -901,7 +967,7 @@ They **come and go**, bringing **special challenges, rare gear, and unpredictabl
 ### ❄️ **Legendary NPCs**
 These are **mythic figures**, unlocking **wild game mechanics, hidden areas, and secret challenges**.
 
-#### ❄️🪶 Winter Shaman Bromley – Trail-Namer, Lift Whisperer & Keeper of the Blue Ribbon  
+#### ❄️🪶 Winter Shaman Bromley – Trail-Tagger, Weather Whisperer & Keeper of the Blue Ribbon  
 > *“The mountain remembers. So should you.”*
 
 ---
@@ -920,9 +986,10 @@ These are **mythic figures**, unlocking **wild game mechanics, hidden areas, and
 
 | 🛠️ Upgrade                 | 🎁 Effect                                                                 |
 |----------------------------|--------------------------------------------------------------------------|
-| 🧣 **Ancestor's Scarf**     | Provides resistance against harsh weather conditions.                    |
-| 🪓 **Pabst's Honor Axe**    | Enhances woodcutting efficiency during storms.     |
-| 🍺 **Blue Ribbon Elixir**   | Temporarily boosts speed and agility on downhill runs.                   |
+| 🧥 **Bromley's Standard-Issue Winter Coat**     | Provides resistance against harsh weather conditions.                    |
+| 🪓 **Pabst's Ski Poles**    | Enhances jumping.     |
+| 🍺 **Blue Ribbon Elixir**   | Temporarily gives a greater chance to see Cryptids, and unearth Cryptid fossils.                   |
+| 🏅  **Bromley's Blue Ribbon**   | Let's you call upon Shaman Bromley to change the weather in your favor.                   |
 
 ---
 
@@ -1021,12 +1088,6 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 > *“You think the mountain don’t notice when you clearcut a hillside? Wait till the wind shifts.”*  
 > *“Harvestin’s not the same as takin’. One leaves roots. The other leaves nothin’.”*  
 > *“Cut with care. Leave room for regrowth. The bees’ll thank you. The trees too.”*
-
-
-#### ⏳ **The Time Traveler**
-- **Purpose:** Unlocks **cryptid fossil digging & timeline anomalies.**
-- **Example Unlocks:** **Ancient sleds, legendary trails, prehistoric snowboard challenges.**
-- **Best Quote:** *"The past isn’t gone—it’s just buried under the snow."*
 
 ---
 
