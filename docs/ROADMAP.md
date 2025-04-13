@@ -982,7 +982,7 @@ These **support your base mountain**—they run the town, drive your economy, an
 - **Example Unlocks:** **Kite rentals, lift season passes, wind path hints.**
 - **Best Quote:** *"Ever thought about catching air... without your sled?"*
 
-##### 🏨🍕 Aria – Hotel Manager, Culinary Whiz, and Mountain’s #1 Hype Chef
+#### 🏨🍕 Aria – Hotel Manager, Culinary Whiz, and Mountain’s #1 Hype Chef
 
 > *“Hiya, Cuz! Hope you’re hungry—big days need big flavors.”*
 
@@ -992,8 +992,9 @@ These **support your base mountain**—they run the town, drive your economy, an
 
 - Runs the **mountain’s central hotel (Vermont Homestyle Hotel) and restaurant (The Hearty Entree Restaurant)**, serving as your go-to for **delicious food, fan engagement, and passive income**.
 - Offers **buffs and performance boosts** through signature meals and snacks.
-- Unlocks **Auto-Vermunch Machines (AVMs)**, and provides ready-to-go  raw ingredient packs for the player to deliver—automagically producing ready-to-eat goodies.
+- Unlocks **Auto-Vermunch Machines (AVMs)**, and provides ready-to-go  raw ingredient packs for the player to deliver—automagically producing ready-to-eat goodies.
 - Manages **fan hype**, tourism bonuses, and **mountain reputation**—every crowd-pleaser goes through her.
+- Acts as your **main contact for Sap Tapping**, turning raw sap you deliver into high-grade syrup. She also sells **Sap Tapping upgrades** and  tools.
 
 ---
 
@@ -1002,7 +1003,8 @@ These **support your base mountain**—they run the town, drive your economy, an
 - 🍲 **Buff-Based Cooking** – Dishes grant temporary effects: warmth, stamina regen, burst speed, and more.
 - 🎰 **Auto-Vermunch Machines (AVMs)** – Once unlocked, place AVMs across the mountain; restock them using raw material packs from the restaurant kitchen.
 - 💼 **Tourism & Reputation Income** – Earnings from tourist hotel guests and fans grow as your renown rises. More guests = more tourists to dodge and more fans to trick for on the mountain.
-- 📣 **Fan Services** – Sells upgrades like **Crowd Hype-Man** and **Crowd Weaver** to improve event turnouts and boost trick score multipliers.
+- 📣 **Fan Services** – Sells upgrades like **Crowd Hype-Man** and **Crowd Weaver** to boost trick score multipliers and make tourists start dodging you when you sled.
+- 🍁 **Sap Tapping System** – Deliver sap to Aria for processing into syrups used in food and AVM items. Future mountains unlock new syrup types and tapping tools.
 
 ---
 
@@ -1014,6 +1016,8 @@ These **support your base mountain**—they run the town, drive your economy, an
 | 🍲 **Raw Ingredient Crate** | Consumable used for restocking AVMs                                                    |
 | 🎤 **Crowd Hype-Man**       | Fan Boosts are progressively increased                                                 |
 | 🧣 **Crowd Weaver**         | Tourists now have a progressively higher chance to jump out of your way, like fans do! |
+| 🍁 **Tap Line Upgrade**     | Improves sap collection rate or unlocks new syrup flavors                              |
+| 🍶 **Sap Storage Flask**    | Lets you carry more raw sap before needing to return to Aria                           |
 
 ---
 
@@ -1021,12 +1025,12 @@ These **support your base mountain**—they run the town, drive your economy, an
 
 These ready-to-eat items are available at any stocked AVM:
 
-- ☕ **Hot & Iced Cocoa** – Warmth or cool boost, and stamina boost. Made from local milk and Aria’s family’s Smooth Chocorator fudge—melted into creamy perfection and topped with a cloud of homemade marshmallows. The cocoa tastes like childhood winters, first chairlift rides, and everything good about coming in from the cold. The AVMs only make 2 versions, and the Smooth Chocorator fudge version is one for some reason. Aria doesn’t ask why, but she'll gladly make you a "cocoa" herself from any of the other 11 flavors of fudge she sells.
-- ☕ **Hot & Iced Coffee** – Warmth or cool boost, and  speed boost. Brewed from beans roasted right here at the hotel—by Aria herself. On roasting days, the whole mountain smells like a cuppa joe. She grinds fresh for guests and morning service, but the AVMs insist on getting the beans whole. “They like it that way; won't take 'em pre-ground” she says. And somehow, they still serve it hot or iced, ground and brewed to order.
-- ☕ **Hot & Iced Mocha** – Warmth or cool boost, and minor speed & stamina boost. Rich, chocolaty-smooth, and deeply caffeinated. This mocha is born from Aria’s Turkish Mocha Delight fudge—an intense mix of fine Turkish-ground coffee, dutched cocoa, and generations of family flavor science. Melted into locally-sourced milk and served hot or iced, it’s the only other cocoa variant the AVMs accept. She doesn’t argue. She just restocks.
-- 🧊 **Sugar on Snow** – Light stamina regen. Straight from the trail to your tastebuds. This is the exact same simple recipe Aria’s great-aunt used to sell at roadside stands. The syrup used in this mountain classic was tapped, bottled, and sold by you, then automagically caramelized over snow inside the AVM. Don’t think about it too hard—just grab one before it melts.
-- 🥒 **Pickled** **Habanero &** **Dill Sour Cucumber Pickle** – Portable stamina regen & warmth boost wrapped in a briny, nose-tinglin’ snap. Made with the same **fiery habaneros** from Aria’s Cowboy Candy but spun into a **dill-forward sour cucumber pickle** that clears your sinuses and jump-starts your core. Not sweet, not subtle—just crisp, bold, and more than a little warming.
-- **🥒 Homestyle Spice & Everything Nice Sweet Cucumber Pickle** – Cool boost & stamina regen wrapped in an allspice-sweet, clove-kissed crunch. Originally developed as a **fudge flavoring for a pickle festival contest**, Aria repurposed the family’s legendary "Homestyle Spice & Everything Nice" blend into these soothing **sweet pickles**.
+- ☕ **Hot & Iced Cocoa** – Warmth or cool boost, and stamina boost. Made from local milk and Aria’s family’s Smooth Chocorator fudge—melted into creamy perfection and topped with a cloud of homemade marshmallows. The cocoa tastes like childhood winters, first chairlift rides, and everything good about coming in from the cold. The AVMs only make 2 versions, and the Smooth Chocorator fudge version is one for some reason. Aria doesn’t ask why, but she'll gladly make you a "cocoa" herself from any of the other 11 flavors of fudge she sells.
+- ☕ **Hot & Iced Coffee** – Warmth or cool boost, and  speed boost. Brewed from beans roasted right here at the hotel—by Aria herself. On roasting days, the whole mountain smells like a cuppa joe. She grinds fresh for guests and morning service, but the AVMs insist on getting the beans whole. “They like it that way; won't take 'em pre-ground” she says. And somehow, they still serve it hot or iced, ground and brewed to order.
+- ☕ **Hot & Iced Mocha** – Warmth or cool boost, and minor speed & stamina boost. Rich, chocolaty-smooth, and deeply caffeinated. This mocha is born from Aria’s Turkish Mocha Delight fudge—an intense mix of fine Turkish-ground coffee, dutched cocoa, and generations of family flavor science. Melted into locally-sourced milk and served hot or iced, it’s the only other cocoa variant the AVMs accept. She doesn’t argue. She just restocks.
+- 🧊 **Sugar on Snow** – Light stamina regen. Straight from the trail to your tastebuds. This is the exact same simple recipe Aria’s great-aunt used to sell at roadside stands. The syrup used in this mountain classic was tapped, bottled, and sold by you, then automagically caramelized over snow inside the AVM. Don’t think about it too hard—just grab one before it melts.
+- 🥒 **Pickled** **Habanero &** **Dill Sour Cucumber Pickle** – Portable stamina regen & warmth boost wrapped in a briny, nose-tinglin’ snap. Made with the same **fiery habaneros** from Aria’s Cowboy Candy but spun into a **dill-forward sour cucumber pickle** that clears your sinuses and jump-starts your core. Not sweet, not subtle—just crisp, bold, and more than a little warming.
+- **🥒 Homestyle Spice & Everything Nice Sweet Cucumber Pickle** – Cool boost & stamina regen wrapped in an allspice-sweet, clove-kissed crunch. Originally developed as a **fudge flavoring for a pickle festival contest**, Aria repurposed the family’s legendary "Homestyle Spice & Everything Nice" blend into these soothing **sweet pickles**.
 - 🍕 **Personal Cowboy Candy & 3 Cheese Pizza** – High stamina restore & regen featuring **homemade Mozzarella & Feta** Cheeses from local milk, a locally **Vermont-made aged Cheddar** cheese, and the same homemade spicy **Blazing Bull Habanero Edition Cowboy Candy** sold in mason jars at the Vermont Homestyle Hotel Gift Shop (Aria also offers a Mutton Buster Mild Cubanelle edition and the Original Signature Jalapeno Edition, but the AVMs won't take 'em). You gotta **eat 'em hot** to really **enjoy 'em** proper-like.
 
 > AVMs **only accept raw ingredients**—players must supply salt, cucumbers, milk, flour, and more from Aria’s kitchen. They do seem to gather their own filtered ice and water at least.
@@ -1043,8 +1047,10 @@ Aria is also a seriously skilled cook—her recipes (like those legendary smoked
 
 > *“Can’t land a triple cork with an empty belly.”*\
 > *“Hospitality is just high-speed logistics in an apron.”*\
-> *“The secret to hotel management? Don’t stop movin’ ‘til everyone’s smilin’, sleepin' or fed. Sometimes all three.”*\
-> *“You handle the tricks—I’ll keep the cocoa flowin’.”*
+> *“The secret to hotel management? Don’t stop movin’, ‘til everyone’s smilin’, sleepin' or fed. Sometimes all three.”*\
+> *“You handle the tricks—I’ll keep the cocoa flowin’.”*\
+> *"Yeah, the sap takes a while to thicken up, but I've got a big solar-oven."*
+
 
 #### 🏪🎒 Minnie – Trailside Outfitter, Treasure Whisperer, and Dealer of Gear You Didn’t Know You Needed  
 > *“You pack for the trip you think you're takin’. I pack for the one you're *gonna* have.”*
