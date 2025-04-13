@@ -977,20 +977,74 @@ These **support your base mountain**—they run the town, drive your economy, an
 - **Example Upgrades Unlocked:** **Custom wax, shock absorbers, reinforced sleds.**
 - **Best Quote:** *"What’d ya do, run into a bear during a race? I can fix it… for a price."*
 
-#### 🍔 **Food Vendor**
-- **Purpose:** Sells food that provides **stamina buffs & temporary performance boosts**.
-- **Example Menu:** **Hot cocoa (warmth boost), Protein bars (stamina regen), Energy drinks (speed burst).**
-- **Best Quote:** *"You can't land tricks on an empty stomach!"*
-
 #### 🎈 **Lift Operator Jay** *(kite enthusiast)*
 - **Purpose:** Manages lifts, introduces **kite mechanics** for gliding shortcuts.
 - **Example Unlocks:** **Kite rentals, lift season passes, wind path hints.**
 - **Best Quote:** *"Ever thought about catching air... without your sled?"*
 
-#### 🏨 **The Hotel Hostess**
-- **Purpose:** Offers accommodations & **passive income based on popularity**.
-- **Example Unlocks:** **Penthouse suites, reputation perks, tourism boosts.**
-- **Best Quote:** *"The more people love this place, the more we all win."*
+##### 🏨🍕 Aria – Hotel Manager, Culinary Whiz, and Mountain’s #1 Hype Chef
+
+> *“Hiya, Cuz! Hope you’re hungry—big days need big flavors.”*
+
+---
+
+##### 🏨 **Role**
+
+- Runs the **mountain’s central hotel (Vermont Homestyle Hotel) and restaurant (The Hearty Entree Restaurant)**, serving as your go-to for **delicious food, fan engagement, and passive income**.
+- Offers **buffs and performance boosts** through signature meals and snacks.
+- Unlocks **Auto-Vermunch Machines (AVMs)**, and provides ready-to-go  raw ingredient packs for the player to deliver—automagically producing ready-to-eat goodies.
+- Manages **fan hype**, tourism bonuses, and **mountain reputation**—every crowd-pleaser goes through her.
+
+---
+
+##### 🧠 **Mechanics Unlocked**
+
+- 🍲 **Buff-Based Cooking** – Dishes grant temporary effects: warmth, stamina regen, burst speed, and more.
+- 🎰 **Auto-Vermunch Machines (AVMs)** – Once unlocked, place AVMs across the mountain; restock them using raw material packs from the restaurant kitchen.
+- 💼 **Tourism & Reputation Income** – Earnings from tourist hotel guests and fans grow as your renown rises. More guests = more tourists to dodge and more fans to trick for on the mountain.
+- 📣 **Fan Services** – Sells upgrades like **Crowd Hype-Man** and **Crowd Weaver** to improve event turnouts and boost trick score multipliers.
+
+---
+
+##### 🔧 **Upgrades Offered**
+
+| 🛠️ Upgrade                 | 🎁 Effect                                                                              |
+| --------------------------- | -------------------------------------------------------------------------------------- |
+| ☕ **AVM Unlock**            | Places a new Auto-Vermunch Machine on the mountain.                                    |
+| 🍲 **Raw Ingredient Crate** | Consumable used for restocking AVMs                                                    |
+| 🎤 **Crowd Hype-Man**       | Fan Boosts are progressively increased                                                 |
+| 🧣 **Crowd Weaver**         | Tourists now have a progressively higher chance to jump out of your way, like fans do! |
+
+---
+
+##### 🍽️ **AVM Menu (Auto-Vended Food Items)**
+
+These ready-to-eat items are available at any stocked AVM:
+
+- ☕ **Hot & Iced Cocoa** – Warmth or cool boost, and stamina boost. Made from local milk and Aria’s family’s Smooth Chocorator fudge—melted into creamy perfection and topped with a cloud of homemade marshmallows. The cocoa tastes like childhood winters, first chairlift rides, and everything good about coming in from the cold. The AVMs only make 2 versions, and the Smooth Chocorator fudge version is one for some reason. Aria doesn’t ask why, but she'll gladly make you a "cocoa" herself from any of the other 11 flavors of fudge she sells.
+- ☕ **Hot & Iced Coffee** – Warmth or cool boost, and  speed boost. Brewed from beans roasted right here at the hotel—by Aria herself. On roasting days, the whole mountain smells like a cuppa joe. She grinds fresh for guests and morning service, but the AVMs insist on getting the beans whole. “They like it that way; won't take 'em pre-ground” she says. And somehow, they still serve it hot or iced, ground and brewed to order.
+- ☕ **Hot & Iced Mocha** – Warmth or cool boost, and minor speed & stamina boost. Rich, chocolaty-smooth, and deeply caffeinated. This mocha is born from Aria’s Turkish Mocha Delight fudge—an intense mix of fine Turkish-ground coffee, dutched cocoa, and generations of family flavor science. Melted into locally-sourced milk and served hot or iced, it’s the only other cocoa variant the AVMs accept. She doesn’t argue. She just restocks.
+- 🧊 **Sugar on Snow** – Light stamina regen. Straight from the trail to your tastebuds. This is the exact same simple recipe Aria’s great-aunt used to sell at roadside stands. The syrup used in this mountain classic was tapped, bottled, and sold by you, then automagically caramelized over snow inside the AVM. Don’t think about it too hard—just grab one before it melts.
+- 🥒 **Pickled** **Habanero &** **Dill Sour Cucumber Pickle** – Portable stamina regen & warmth boost wrapped in a briny, nose-tinglin’ snap. Made with the same **fiery habaneros** from Aria’s Cowboy Candy but spun into a **dill-forward sour cucumber pickle** that clears your sinuses and jump-starts your core. Not sweet, not subtle—just crisp, bold, and more than a little warming.
+- **🥒 Homestyle Spice & Everything Nice Sweet Cucumber Pickle** – Cool boost & stamina regen wrapped in an allspice-sweet, clove-kissed crunch. Originally developed as a **fudge flavoring for a pickle festival contest**, Aria repurposed the family’s legendary "Homestyle Spice & Everything Nice" blend into these soothing **sweet pickles**.
+- 🍕 **Personal Cowboy Candy & 3 Cheese Pizza** – High stamina restore & regen featuring **homemade Mozzarella & Feta** Cheeses from local milk, a locally **Vermont-made aged Cheddar** cheese, and the same homemade spicy **Blazing Bull Habanero Edition Cowboy Candy** sold in mason jars at the Vermont Homestyle Hotel Gift Shop (Aria also offers a Mutton Buster Mild Cubanelle edition and the Original Signature Jalapeno Edition, but the AVMs won't take 'em). You gotta **eat 'em hot** to really **enjoy 'em** proper-like.
+
+> AVMs **only accept raw ingredients**—players must supply salt, cucumbers, milk, flour, and more from Aria’s kitchen. They do seem to gather their own filtered ice and water at least.
+
+---
+
+##### 🎤 **Personality & Vibe**
+
+Aria’s got **red hair, freckles, and hustle baked into her bones**. She’s **young**, sweet, and **focused as heck**. Whether she’s flipping pancakes, refilling towel warmers, or managing a tourism rush mid-storm—**she handles it with a smile and a spatula**.
+
+She’s a distant cousin of the player, and she lets ya know it—always with a warm *“Hiya, Cuz!”* before handing you something hot and comforting. She’d restock the AVMs herself if she could, but that’d mean closing the hotel, and **this girl doesn’t believe in shutting down**.
+
+Aria is also a seriously skilled cook—her recipes (like those legendary smoked jalapeño wontons and secret family blond brownies) are known across the slopes. Just don’t ask how the AVMs turn raw ingredients into pizza. Not even the Tinkerer knows. Nobody even can change their recipes... at least on this mountain.
+
+> *“Can’t land a triple cork with an empty belly.”*\
+> *“Hospitality is just high-speed logistics in an apron.”*\
+> *“The secret to hotel management? Don’t stop movin’ ‘til everyone’s smilin’, sleepin' or fed. Sometimes all three.”*\
+> *“You handle the tricks—I’ll keep the cocoa flowin’.”*
 
 #### 🏪🎒 Minnie – Trailside Outfitter, Treasure Whisperer, and Dealer of Gear You Didn’t Know You Needed  
 > *“You pack for the trip you think you're takin’. I pack for the one you're *gonna* have.”*
@@ -1140,9 +1194,9 @@ Fast-talking, camera-slingin’, and **always on the move**, she calls out sled 
 - **Example Unlocks:** **Speed sleds, racing circuits, timed event boards.**
 - **Best Quote:** *"Fastest run gets the trophy—simple as that."*
 
-#### 🏂 **Retired Pro Burton**
-- **Purpose:** **Teaches advanced tricks & unlocks sledboarding**.
-- **Example Unlocks:** **Sled-to-board transitions, trick combos.**
+#### 🏂 **Retired Pro Jake**
+- **Purpose:** **Builds to suit, teaches advanced tricks, & unlocks sledboarding**.
+- **Example Unlocks:** **Sledboard transitions, trick combos, building construction.**
 - **Best Quote:** *"Back in my day, we landed tricks with style. I can show ya how."*
 
 #### 🚑 **Sled Patrol Captain**
@@ -1150,24 +1204,9 @@ Fast-talking, camera-slingin’, and **always on the move**, she calls out sled 
 - **Example Unlocks:** **Emergency sled deployment, survival training.**
 - **Best Quote:** *"We save people, we don’t just watch ‘em wipe out."*
 
----
-
-### 🎭 **Traveling & Recurring NPCs**
-They **come and go**, bringing **special challenges, rare gear, and unpredictable encounters**.
-
-#### 🔥 **Rival**
-- **Purpose:** **Dynamic trick/time trial duels.**
-- **Example Unlocks:** **Personalized callouts, grudge matches, rare sled decals.**
-- **Best Quote:** *"You think you’re better than me? Prove it."*
-
-#### 🎩 **Mysterious Merchant**
-- **Purpose:** **Sells rare & high-risk tech**—limited stock, always random.
-- **Example Stock:** **Prototype sled engines, cloaking wax, ghost sled.**
-- **Best Quote:** *"I sell only to those who dare."*
-
 #### 🔧 **Tinkerer**
 - **Purpose:** **Experimental tech**—RC sleds, lock-picking, custom builds.
-- **Example Unlocks:** **Remote sleds, grappling hooks, hacking upgrades.**
+- **Example Unlocks:** **Remote sleds, lock-picking.**
 - **Best Quote:** *"You didn’t hear this from me, but I might’ve… *enhanced* a sled or two."*
 
 ---
