@@ -1353,7 +1353,7 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 
 ## 🏔️ **Mountain Themes & Progression**
 
-### 🔥 Vertigo Vents 🌋💨
+###  Vertigo Vents 🌋💨
 
 - **Description:**  
   Sizzling volcanic slopes with flowing lava rivers, steaming geysers, and jagged obsidian cliffs. This is **trickster paradise**, where the heat is deadly, but the **airtime is divine**. Volcanic vents blast you sky-high, turning every ramp into a launchpad for mid-air madness.
@@ -1406,15 +1406,6 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 
 ---
 
-### Micro Mountain 🐜🌱
-- **Description:** A microscopic adventure down blades of grass, dodging oversized ants, and navigating dew drops.  
-- **Mechanics:**  
-  - **Tiny Obstacles:** Garden insects and pollen clusters create dynamic hazards.
-- **Power-Up:** **Antigrav Wax**  
-  *Required for Micro Mountain. Dramatically reduces friction and improves glide efficiency across all terrains.*
-
----
-
 ### Candy Cane Canyon 🍭
 - **Description:** Sweet, candy-themed slopes with chocolate rivers, caramel waterfalls, and peppermint jumps.  
 - **Mechanics:**  
@@ -1457,6 +1448,56 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
   - **Sandstorms & Hidden Pitfalls:** Obscure vision and reveal secret ramps.
 - **Power-Up:** **Sandrunner Skis**  
   *Required for Pyramid Peak. Enables smooth gliding over sandy terrain and enhances performance on loose surfaces.*
+
+---
+
+### 🐜 Micro Mountain 🌱🔬
+
+- **Description:**\
+  Nestled in the humid glow of Pete’s greenhouse apiary, **Micro Mountain** is no illusion—it’s a living moss-covered mountain **scaled to a micro-drone sled** you’ll pilot using your **familiar RC Sled controls**.\
+  What looks like a few stones and some terrarium glass from outside becomes a towering jungle of dew-covered leaves, tumbling ant tunnels, pollen avalanches, and clover-blade cliffs when you’re on the inside.
+
+  It’s a **true miniature mountain**, and  **it never changes**—at least, not on its own...
+
+- **Gameplay Rules:**
+
+  - You ride a **Micro Sled**, a tiny physical drone which happens to match your RC sled’s handling exactly.
+  - None of your standard sled gear applies here—**only your RC Sled upgrades** (like handling, drift control, battery tuning, and precision kits) affect performance.
+  - Runs require **both a high RC Sledding and Beekeeping level** to unlock. Pete won’t let just anyone drive near his queens.
+  - You must **produce Royal Jelly Wax** and apply it to the sled’s micro-runners before each session—it’s the only way to glide through the dense, clumpy moss.
+
+- **Mechanics:**
+
+  - **Garden-Scale Hazards:**
+    - Rolling **dew droplets** can  or sweep you away.
+    - **Pollen dust clouds** choke visibility during flower bloom cycles.
+  - **Environmental Dynamics:**
+    - **Bees** Pete cares for in the larger greenhouse will influence what appears in Micro Mountain.
+    - Breed a new species? The micro-world might gain **new terrain, behavior changes, or rare hazards**.
+  - **Hydration Events:**
+    - Sprinklers above the terrarium trigger **weather patterns**, soaking moss into slick slides or flooding trails temporarily.
+
+- **Special Features:**
+
+  - 🧪 **Persistent Layout:** Micro Mountain never changes randomly—but it **evolves** based on your actions in the real world.
+  - 🐝 **Bee Influence System:**
+    - Introduce new bees to Pete’s hives? Expect new pollen types, tunnel behaviors, or even **insect allies** to show up in your micro-runs.
+  - 🕳️ **Tunnels & Trail Switches:** Secret wormholes and ant-dug paths allow for run routing choices—risky but rewarding.
+
+- **Power-Up Requirement:**\
+  🍯 **Royal Jelly Wax**\
+  *A high-efficiency nano-wax derived from rare bees. Applied to the runners of the Micro Sled before entry. Greatly reduces friction on organic terrain (moss, bark, clover). May attract bees.*
+
+- **Pete’s Warning:**
+
+  > “Ya want to sled near my bees, ya’d best learn to *respect* ‘em first. That wax you’re glidin’ on? Took twenty drones a week to make it. Don’t waste it on showboatin’.”
+
+- **Lore Hook:**\
+  Pete built Micro Mountain years ago to study pollination routes in miniature. But when he saw a bee riding a dew drop down a moss slide, he got an idea.\
+  He fitted a micro drone with a handy control harness and started testin’.\
+  Now? It’s your turn. But only if Pete thinks you’re ready—**and the bees agree**.\
+  Just remember: in here, **you’re not the apex predator**. You’re just another bug tryin’ to ride the slope.
+
 
 ---
 
