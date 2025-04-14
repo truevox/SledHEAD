@@ -1353,28 +1353,70 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 
 ## 🏔️ **Mountain Themes & Progression**
 
-###  Vertigo Vents 🌋💨
+### 🐫 Pyramid Peak 🏜️📿
 
-- **Description:**  
-  Sizzling volcanic slopes with flowing lava rivers, steaming geysers, and jagged obsidian cliffs. This is **trickster paradise**, where the heat is deadly, but the **airtime is divine**. Volcanic vents blast you sky-high, turning every ramp into a launchpad for mid-air madness.
+- **Description:**\
+  When the snow melts and sledding season shuts down back home, thrill-seekers head to **Pyramid Peak**—a sun-scorched dune mountain crowned by ancient ruins. Despite its name, the real sledding happens not on the pyramid itself, but on the **colossal sand dune beside it**, which towers high enough to catch the desert wind. From the summit, you can spot a single, distant pyramid silhouetted against the orange horizon.
 
-- **Mechanics:**  
-  - **Heat Meter:** Stay in the hot zones too long and you’ll fry—seek out sled-mounted **cooling tanks**.  
-  - **Ash Clouds:** Sudden visibility loss forces quick reaction sledding.  
-  - **Geothermal Geysers:** Act as **natural trick boosters**, launching you for combos and big air.  
-  - **Vulcanic Wind Corridors:** Let you chain even more tricks for **massive multipliers**.  
+- **Gameplay Rules:**
 
-- **Special Feature:**  
-  - **Style Zones:** Naturally occurring lava halfpipes and vent blasts set up prime trick sequences.  
-  - **Eruption Events:** Mid-run eruptions can end your run early at best, and rack up a significant rescue bill at the worst.
+  - You ride your regular sled, but you’ll need **Sandrunner Skis** to traverse shifting dunes and loose terrain.
+  - You can **pan the sand anywhere**—this mountain is a prospector’s dream.
+  - Home to two distinct bee species:
+    - 🐝 Dust Bees build **sand-hives along dune ridges**, harvesting **drift-pollen**—airborne **grains from flowers** carried in by **seasonal winds** and crushed into **fine powder** by the shifting sands. Their honey’s sweet, delicate, **powdery, and nearly weightless**.
+    - 🐝 Desert Bees, fondly nicknamed **Dessert Bees**, live in **sandstone and honey-daub hives**. Their cactus flower honey is so rich and naturally sweet, it’s a **signature ingredient** in **Aria’s Baklava**—and a favorite among **high-end chefs** across the globe.
 
-- **Power-Up:**  
-  🔥 **Heat Shielding Sled Coating**  
-  *Required to enter. Shields your sled from burn damage and slightly improves glide friction across all terrain. Upgrading it will keep you from melting longer.*
+- **Mechanics:**
 
-- **Jake’s Comment:**  
-  > “You only *think* you’ve hit max airtime—wait till the mountain spits fire under you.”
+  - **Sandstorms & Hidden Pitfalls:** Impede vision and open sudden trick paths or buried ruins.
+  - **Tumble Hazards:** Falling boulders and crumbling ledges require quick reactions.
+  - **Solar Intensity Zones:** Overheating risk unless cooled by shade or fan-supplied gear.
 
+- **Special Features:**
+
+  - 🏜️ **All-Sand Panning:** Every grain might hide treasure—gleaming gems, ancient relics, or bee-built artifacts.
+  - 💨 **Wind Surf Zones:** Use dunes and thermals for massive air tricks and combos.
+  - 🐪 **Mirage Events:** Rare illusion zones appear mid-run—sometimes loot, sometimes trick gates.
+
+- **Power-Up Requirement:**\
+  🏜️ **Sandrunner Skis**\
+  *Required to ride. Lets you glide across sand as if it were snow, reducing sink risk and boosting loose-surface speed.*
+
+- **Lore Hook:**\
+  Pyramid Peak was first discovered by sledders chasing warm-weather thrills during off-season. But once the mountain was mapped and the ancient scarabs stirred, the real treasure proved to be **beneath the sand**. These days, it’s a pilgrimage site for *prospectors, trickers, and bee hunters* alike.
+
+---
+
+### 🔮 Crystal Cavern 🌌💎
+
+- **Description:**\
+  Deep inside the **starter mountain** lies the shimmering, subterranean realm of **Crystal Cavern**. This sparkling maze of glowing crystal formations and slick mineral walls is **only accessible via Deep Diggin'** or hidden cave entrances. It’s the only mountain zone with **enhanced Pickin’**, and the home of the mysterious **Crystal Bees**.
+
+- **Gameplay Rules:**
+
+  - The cavern’s icy floor requires precision sledding and careful control.
+  - The **Crystal Bees** here don’t make edible honey—instead, they excrete a mineral-laced resin that hardens into diamond-grade hive walls.
+    - Their "honey" has no taste—just sharp little flecks of gemstone.
+  - Panning is ineffective here—**this is a dig-and-pick-only zone.**
+
+- **Mechanics:**
+
+  - **Fragile Obstacles:** Crystal walls shatter on contact, scattering reflective debris that temporarily blinds.
+  - **Echo Zones:** Trick sounds amplify for longer combo chains and hype generation.
+  - **Resonant Hazards:** Some crystal types hum—break 'em wrong, and they’ll explode in a soundburst.
+
+- **Special Features:**
+
+  - 💎 **Echo-Powered Tricks:** Certain tricks hit harder in echo zones.
+  - 🧪 **Gem-Infused Honey Shards:** Valuable loot dropped from Crystal Bee hives.
+  - 🛠️ **Mega Pick Events:** Large crystal blocks offer rare rewards if cracked just right.
+
+- **Power-Up Requirement:**\
+  🔍 **Crystal Clear Goggles**\
+  *Essential for navigating the cave. Reduce blinding effects and highlight crackable formations and pick spots.*
+
+- **Lore Hook:**\
+  Crystal Cavern was first uncovered by a sledder who heard her echo come back wrong. She followed the sound to find **a maze of luminous tunnels**, rich with treasure and danger. The Crystal Bees don’t sting—but their hives can cut you if you’re not careful. Miners say the caves grow deeper every year... but no one's found the bottom.
 
 ---
 
@@ -1415,15 +1457,6 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 
 ---
 
-### Crystal Cave Cavern 🔮
-- **Description:** Glittering caverns with stalactites, delicate crystal formations, and echoing acoustics.  
-- **Mechanics:**  
-  - **Fragile Obstacles:** Crystals break on impact, temporarily obscuring vision.
-- **Power-Up:** **Crystal Clear Goggles**  
-  *Required for Crystal Cave Cavern. Enhances visibility and reduces the impact of obstructions.*
-
----
-
 ### Sky Jellyfish Mountain ☁️🪼
 - **Description:** Ethereal, bouncy slopes with luminous sky jellyfish and shifting cloud platforms.  
 - **Mechanics:**  
@@ -1439,15 +1472,6 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
   - **Timed Obstacles & Gear Grinds:** Require precise timing and offer big cash bonuses.
 - **Power-Up:** **Clockwork Treads**  
   *Required to unlock Mechanical Mountain. Provides traction on moving surfaces and enhances handling.*
-
----
-
-### Pyramid Peak 🐫🏜️
-- **Description:** Ancient Egyptian slopes with sandy ruins, sandstorms, falling boulders, and scarab swarms.  
-- **Mechanics:**  
-  - **Sandstorms & Hidden Pitfalls:** Obscure vision and reveal secret ramps.
-- **Power-Up:** **Sandrunner Skis**  
-  *Required for Pyramid Peak. Enables smooth gliding over sandy terrain and enhances performance on loose surfaces.*
 
 ---
 
@@ -1540,6 +1564,32 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
   It updates itself. The leaderboard tracks high scores. And it remembers things **you never told it.**  
   Is it haunted? AI? Or just **the mountain’s reflection in the machine**?  
   Either way... it **wants** to be sledded.
+
+---
+
+###  Vertigo Vents 🌋💨
+
+- **Description:**  
+  Sizzling volcanic slopes with flowing lava rivers, steaming geysers, and jagged obsidian cliffs. This is **trickster paradise**, where the heat is deadly, but the **airtime is divine**. Volcanic vents blast you sky-high, turning every ramp into a launchpad for mid-air madness.
+
+- **Mechanics:**  
+  - **Heat Meter:** Stay in the hot zones too long and you’ll fry—seek out sled-mounted **cooling tanks**.  
+  - **Ash Clouds:** Sudden visibility loss forces quick reaction sledding.  
+  - **Geothermal Geysers:** Act as **natural trick boosters**, launching you for combos and big air.  
+  - **Vulcanic Wind Corridors:** Let you chain even more tricks for **massive multipliers**.  
+
+- **Special Feature:**  
+  - **Style Zones:** Naturally occurring lava halfpipes and vent blasts set up prime trick sequences.  
+  - **Eruption Events:** Mid-run eruptions can end your run early at best, and rack up a significant rescue bill at the worst.
+
+- **Power-Up:**  
+  🔥 **Heat Shielding Sled Coating**  
+  *Required to enter. Shields your sled from burn damage and slightly improves glide friction across all terrain. Upgrading it will keep you from melting longer.*
+
+- **Jake’s Comment:**  
+  > “You only *think* you’ve hit max airtime—wait till the mountain spits fire under you.”
+
+---
 
 🔄 Infinite Upgrades with Soft Caps
 ===================================
