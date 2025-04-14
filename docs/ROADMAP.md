@@ -969,8 +969,8 @@ A thriving **mountain resort** needs a mix of **essential services, skilled spec
 
 ---
 
-### 🏡 **Core Resort & Business Owners (Essential Infrastructure)**
-These **support your base mountain**—they run the town, drive your economy, and keep the game loop running.
+### ❄️🏡 **Legendary NPCs**
+These are **mythic figures that support your base mountain**—they run the town, drive your economy, and keep the game loop running.
 
 #### 🏂 **Sled Tech Steve**
 - **Purpose:** Repairs damage, sells sled mods.
@@ -1146,9 +1146,6 @@ She’s not flashy—she’s **solid**. A quiet legend in her own right, always 
 
 ---
 
-### 🏆 **Trick & Racing-Oriented NPCs**
-These **drive skill progression**—unlocking **better tricks, harder competitions, and high-stakes challenges**.
-
 #### 📸🧠 Darlene – Wildlife Researcher & Trick Shot Analyst  
 > *“If it moves fast or looks majestic—I’m shootin’ it, tagging it, and sellin’ the poster.”*
 
@@ -1210,15 +1207,56 @@ Fast-talking, camera-slingin’, and **always on the move**, she calls out sled 
 - **Example Unlocks:** **Emergency sled deployment, survival training.**
 - **Best Quote:** *"We save people, we don’t just watch ‘em wipe out."*
 
-#### 🔧 **Tinkerer**
-- **Purpose:** **Experimental tech**—RC sleds, lock-picking, custom builds.
-- **Example Unlocks:** **Remote sleds, lock-picking.**
-- **Best Quote:** *"You didn’t hear this from me, but I might’ve… *enhanced* a sled or two."*
+#### 🔧 Tinkerer Maxi – RC Sled Crafter, Lockpick Enthusiast, and Bitstream Interpreter
+
+> *"Noise is easy. Signal takes work.”*
 
 ---
 
-### ❄️ **Legendary NPCs**
-These are **mythic figures**, unlocking **wild game mechanics, hidden areas, and secret challenges**.
+##### 🔧 **Role**
+
+- Leads players through the worlds of **RC Sledding**, **lockpicking**, and **experimental tech**.
+- Developed the **Micro RC Sled** used in Micro Mountain's unstable environments.
+- Discovered **Bitstream Bluffs** and has been decoding and adapting its glitchy tech ever since.
+- Offers tools and upgrades for **RC Sleds**, **lockpicking gear**, and **mountain-legal remote mischief**.
+
+---
+
+##### 🧠 **Mechanics Unlocked**
+
+- ❄️ **RC Motor Sledding** – Control fast, nimble sleds with upgrades for speed, agility, and airborne tricks.
+- 🔐 **Lockpicking Systems** – Access abandoned cabins, safes, and facilities using tension tools, rakes, bypass chips, practice, and finesse.
+- 💾 **Bitstream Interpretation** – Detect and exploit tech-glitches in the strange digital terrain of Bitstream Bluffs.
+
+---
+
+##### 🔧 **Upgrades Offered**
+
+| 🛠️ Upgrade                  | 🎁 Effect                                                         |
+| ---------------------------- | ----------------------------------------------------------------- |
+| 🎮 **RC Control Boost**      | Enhances responsiveness and trick potential of RC sleds.          |
+| 🔐 **Tension Grip Enhancer** | Expands lockpick "sweet spot" and improves feedback.              |
+| 📡 **Bitstream Scanner**     | Reveals glitched terrain nodes and hidden tech secrets.           |
+| 🧲 **Magnetic Spool Kit**    | Lets you retrieve lost RC sleds and gear from inaccessible areas. |
+| ⚡ **Battery Mod Pack**       | Extends range and duration of all remote devices.                 |
+
+---
+
+##### 🎤 **Personality & Vibe**
+
+Maxi doesn’t *ride* sleds—she engineers them, *pilots* them, and sometimes makes 'em dance to her rhythm. With rainbow glasses and a soldering iron in-hand, she’s the reason Micro Mountain’s pint-sized courses even function—her RC sleds are tiny, turbo-charged miracles. She didn’t build Bitstream Bluffs, but she’s the first to find it, solder it, and she hasn't had any magic smoke escape yet!
+
+Her lift shack-turned-lab is a mess of wires, blinking lights, and half-finished blueprints, but she knows where *everything* is. If it beeps, zaps, or locks shut, Maxi’s already rebuilt it twice—and the new version makes toast. To her, the mountain is one big circuit board, and you’re just another spark lookin’ for ground.
+
+She’s young, with a sharp grin and sharper tools, thick hair up in bright rainbow pigtails, and boots that look like they’ve seen every kind of weather and wiring job. Her gloves are fingerless, her hoodie is well-patched from solder burns, her skirt is a kaleidoscope of color, and there’s almost always something blinking or buzzing quietly in her pocket. Her rainbow lenses flash like signal lights, and when she starts talking tech, it’s like listening to lightning figure itself out.
+
+> *“I wasn’t trying to make a drone sled with a chainsaw. But here we are.”*  \
+> *"Bitstream’s not broken. It’s just... dreaming."*  \
+> *"Locks are just puzzles with a guaranteed solution."*\
+> *“I didn’t break the lock. I simply unlocked permanently.”*  \
+> *"Bitstream is smart. That's why you have to out-weird it instead."*
+
+---
 
 #### ❄️🪶 Winter Shaman Bromley – Trail-Tagger, Weather Whisperer & Keeper of the Blue Ribbon  
 > *“The mountain remembers. So should you.”*
