@@ -1428,6 +1428,15 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 
 ---
 
+### Underwater Mountain 🌊
+- **Description:** Submerged slopes with slow-motion physics. Seaweed, coral formations, and hidden underwater currents abound.  
+- **Mechanics:**  
+  - **Air Meter (Stamina):** Acts like oxygen; replenished by air bubbles or surface spots.
+- **Power-Up:** **Aqua-Lung Mittens**  
+  *Required to enter Underwater Mountain. Constantly replenishes stamina underwater and reduces stamina drain on other mountains.*
+
+---
+
 ### 🔮 Crystal Cavern 🌌💎
 
 - **Description:**\
@@ -1468,15 +1477,6 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
   - **Meteor Showers:** Random meteor strikes introduce obstacles.
 - **Power-Up:** **Gravity Stabilizer Sled Upgrade**  
   *Required to unlock Space Mountain. Stabilizes sled control in fluctuating gravity.*
-
----
-
-### Underwater Mountain 🌊
-- **Description:** Submerged slopes with slow-motion physics. Seaweed, coral formations, and hidden underwater currents abound.  
-- **Mechanics:**  
-  - **Air Meter (Stamina):** Acts like oxygen; replenished by air bubbles or surface spots.
-- **Power-Up:** **Aqua-Lung Mittens**  
-  *Required to enter Underwater Mountain. Constantly replenishes stamina underwater and reduces stamina drain on other mountains.*
 
 ---
 
@@ -1568,63 +1568,62 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 
 ### 💻 Bitstream Bluffs 🔮📶
 
-*“It’s not real. It’s just ones and zeros. But then again… maybe we are too.”* – Tinkerer Maxi
+> *“It’s not alive... just ones and zeros. But then... isn’t DNA the same trick, but in a zip file?”* – Tinkerer Maxi
 
 #### 🏔️ Description
 
-Bitstream Bluffs ain’t on any map—'cause it ain’t real. It’s a fully-virtual **digital mountain**, accessed through a glitchy old **arcade cabinet** you can install at your lodge.  
+Bitstream Bluffs ain’t on any map—'cause it ain’t real. It’s a fully-virtual **digital mountain**, accessed through a glitchy old **arcade cabinet** you can install at your lodge.\
 You don’t ride your usual sled here. Instead, you pilot a **digital proxy sled**, using the **exact same control layout and responsiveness** as your RC Sled. Spooky? Or lucky?
 
-**Your skills carry over—but none of your gear does.** This isn’t a joyride—it’s **a simulation carved in code**, a reflection of your sledding resonance written into the void.
+**Your skills carry over—but none of your gear does.** This isn’t a joyride—it’s **a simulation carved in code**..
 
 #### 🕹️ Gameplay Rules
 
-- You ride a **Digital Sled**, rendered entirely in a simulated world.  
-- It **feels just like your RC Sled**—same physics tuning, control setup, and handling style—but it’s not your actual sled.  
-- No sled mods or limited inventory apply—this is a **skill-focused simulation** with randomized hazards.  
-- Every session is a **procedural remix**, offering new glitch patterns, track shapes, hazards, and gravity rules.  
-- The **terrain integrates features from every mountain you’ve unlocked**—snowbanks from Garbage Glacier, wind ramps from Candy Cane Canyon, even low-grav lunar segments from Lunar Peak.
+- You ride a **Digital Sled**, rendered entirely in a simulated world.
+- It **feels just like your RC Sled**—same physics tuning, control setup, and handling style.
+- No sled mods or limited inventory apply—this is a **skill-focused simulation** with randomized hazards.
+- You start near the peak, and the **slopes never end**. There is no up, only down. **There is no climb, only carve.**
+- Every session is a **procedural remix**, offering new glitch patterns, track shapes, hazards, and gravity rules.
+- The **terrain integrates features from every mountain you’ve unlocked**—snowbanks from Garbage Glacier, dune-launch thermals from Pyramid Peak, or bubble-path airtime chains from Underwater Mountain.
 
 #### 🔧 Mechanics
 
-- **Glitch Zones & Malware Hazards:** Scramble vision, invert terrain, or randomize momentary movement.  
-- **Bit Bridges & Datastream Trails:** High-speed trick rails through corrupted memory sectors.  
-- **Firewall Gates:** Fry control stability unless avoided or properly timed.  
-- **Packet Winds:** Buffeting data gusts that can carry you—or crash you—into digital space.  
+- **Glitch Zones & Malware Hazards:** Scramble vision, invert terrain, or randomize momentary movement.
+- **Bit Bridges & Datastream Trails:** High-speed trails through corrupted memory sectors.
+- **Firewall Gates:** Fry control stability unless avoided or properly timed.
+- **Packet Winds:** Buffering data gusts that can lag you—or crash you—into digital space.
 - **Bitstream Drift:** Anti-grav momentum puzzles that test your sled finesse.
 
 #### ⭐ Special Features
 
-- 🕹️ **Arcade Access:** Requires unlocking the **Bitstream Cabinet** and installing it at home.  
-- 🔁 **Ever-Shifting Layouts:** Glitches rewrite the mountain on every entry—no two runs are alike.  
-- 📼 **Daily Patch Cycles:** Each real-world day downloads new terrain permutations, visual filters, and challenge rules.  
-  Examples: *Upside-Down Mode*, *No Jumping Allowed*, *One-Life Turbo Run*.  
+- 🕹️ **Arcade Access:** Requires unlocking the **Bitstream Cabinet** and installing it at home.
+- 🔁 **Ever-Shifting Layouts:** Glitches rewrite the mountain on every entry—no two runs are alike.
+- 📼 **Daily Patch Cycles:** Each real-world day downloads new terrain permutations, visual filters, and challenge rules.\
+  Examples: *Upside-Down Mode*, *No Jumping Allowed*, *One-Life Turbo Run*.
 - 🌐 **Resonance Echoing:** The more you sled Bitstream Bluffs, the more “in tune” it becomes with your style—future sessions might resemble your past runs, *as if the mountain is remembering you*.
 
 #### 💾 Power-Up
 
-**Data Shielding**  
+**Error Correction Engine**\
 *Prevents crashes from glitch walls, corrects brief input corruption, and adds a buffer against malware trail effects.*
 
 #### 🛠️ Tinkerer’s Tip
 
-*“It ain’t your RC sled... but it should feel like it is. Whoever made it mirrored the controls perfectly, down to the frame... what are the odds?”*
+> *“It ain’t your RC sled... but it should **feel** like it is. Whoever made it mirrored the controls perfectly, down to the frame... what are the odds?”*
 
 #### 🌀 Lore Hook
 
-Nobody knows where the cabinet came from. The Tinkerer swears he found it buzzing in a field, half-buried, still warm.  
-It updates itself. It’s not plugged in.  
+Nobody knows where the cabinet came from. The Tinkerer Maxi swears she found it buzzing in a field, half-buried, still warm.\
+It updates itself. It runs, whether you plug it in or not. Maybe plug it in though - I think it likes the buzzing.\
 The leaderboard refreshes hourly. Sometimes... it knows your name.
 
-Some say it's just a ghost in the machine.  
-Others say it’s a window—**a way to sled somewhere else**.  
+Some say it's just a ghost in the machine.\
+Others say it’s a window—**a way to sled somewhere else**.\
 Somewhere deeper. Older.
 
-Whatever it is...  
-it’s waiting.  
+Whatever it is...\
+it’s waiting.\
 And it **wants** to be sledded.
-
----
 
 ###  Vertigo Vents 🌋💨
 
