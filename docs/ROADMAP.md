@@ -453,8 +453,7 @@ Tiers are defined by mountain difficulty:
 ---
 
 ### ⚠️ Risks & Strategy  
-- **Overload & Burnout:** Go too heavy without the stamina to back it, and you’ll wipe out halfway up.  
-- **Breakage:** Rough terrain or bad landings can bust your gear. Carry *repair kits* or plan a route with rest stations.
+- **Dead Battery:** Go too heavy without the stamina to back it, and you’ll be so tuckered out Sled Patrol will have to rescue you when your stamina is drained.
 
 ---
 
@@ -552,7 +551,7 @@ Part sage, part mad engineer, part crusty uncle who lives in a garage with three
   - **Pick durability** breaks with poor technique—snap a pick and you’re done unless you’ve got backups.  
   - 🥶 **Bad Weather** increases pick wobble and slows hand speed—bring gloves or warm up first.  
 
-> *“Every lock’s got a language. Learn the clicks, feel the tension… and hope there ain’t a badger on the other side.”* – *Welma, Lift Shack Raider*
+> *“Every lock sings its own little tune. You gotta wiggle your tools to the pins’ rhythm, feel that spring under your fingertips… and hope there isn’t a snarlin’ catamount lurking just past the door.”* – *Tinkerer Maxi*
 
 ---
 
