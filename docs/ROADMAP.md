@@ -747,6 +747,7 @@ Minnie runs the cozy little convenience store nestled near the trailhead and bas
 > *“Every trick begins before you leave the ground. Every landing finishes long after you hit it.”*  
 > *“Balance is a kind of listening.”*  
 > *“What you build reflects what you believe. So build things that last.”*  
+> *“You think sleddin’s about winnin’? Nah. It’s about wakin’. Every carve, every crash, every laugh—it’s code. You were speakin’ the language of the universe, and it finally heard ya. Now go… Dream bigger.”*  
 
 ### 7. **Time Trial Racing** 🏁🛷  
 - **Objective:**  
@@ -1379,6 +1380,8 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 > *“You think the mountain don’t notice when you clearcut a hillside? Wait till the wind shifts.”*  
 > *“Harvestin’s not the same as takin’. One leaves roots. The other leaves nothin’.”*  
 > *“Cut with care. Leave room for regrowth. The bees’ll thank you. The trees too.”*
+> *"They tried to nickname me Logger Pete, but it sounded too much like a bitter drink to me."*
+> *"Beekeeper Pete has a sweeter tone to it, if ya ask me."*
 
 ---
 
@@ -1565,43 +1568,61 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 
 ### 💻 Bitstream Bluffs 🔮📶
 
-- **Description:**  
-  Bitstream Bluffs ain’t on any map—'cause it ain’t real. It’s a fully-virtual **digital mountain**, accessed through a glitchy old **arcade cabinet** you can install at your lodge.  
-  You don’t ride your usual sled here. Instead, you pilot a **digital proxy sled**, using the **exact same control layout and responsiveness** as your RC Sled. Spooky? Or lucky?  
+*“It’s not real. It’s just ones and zeros. But then again… maybe we are too.”* – Tinkerer Maxi
 
-  **Your skills carry over—but none of your gear does.**
+#### 🏔️ Description
 
-- **Gameplay Rules:**  
-  - You ride a **Digital Sled**, rendered entirely in a simulated world.  
-  - It **feels just like your RC Sled**—same physics tuning, control setup, and handling style—but it’s not your actual sled.  
-  - No sled mods or limited inventory apply—this is a **skill-focused simulation** with randomized hazards.  
-  - Every session is a **procedural remix**, offering new glitch patterns, track shapes, hazards, and gravity rules.
+Bitstream Bluffs ain’t on any map—'cause it ain’t real. It’s a fully-virtual **digital mountain**, accessed through a glitchy old **arcade cabinet** you can install at your lodge.  
+You don’t ride your usual sled here. Instead, you pilot a **digital proxy sled**, using the **exact same control layout and responsiveness** as your RC Sled. Spooky? Or lucky?
 
-- **Mechanics:**  
-  - **Glitch Zones & Malware Hazards:** Scramble vision, invert terrain, or randomize momentary movement.  
-  - **Bit Bridges & Datastream Trails:** High-speed trick rails through corrupted memory sectors.  
-  - **Firewall Gates:** Fry control stability unless avoided or properly timed.  
-  - **Packet Winds:** Buffeting data gusts that can carry you—or crash you—into digital space.  
-  - **Bitstream Drift:** Anti-grav momentum puzzles that test your sled finesse.
+**Your skills carry over—but none of your gear does.** This isn’t a joyride—it’s **a simulation carved in code**, a reflection of your sledding resonance written into the void.
 
-- **Special Features:**  
-  - 🕹️ **Arcade Access:** Requires unlocking the **Bitstream Cabinet** and installing it at home.  
-  - 🔁 **Ever-Shifting Layouts:** Glitches rewrite the mountain on every entry—no two runs are alike.   
-  - 📼 **Daily Patch Cycles:** Each real-world day downloads new terrain permutations, visual filters, and challenge rules.  
-    Examples: *Upside-Down Mode*, *No Jumping Allowed*, *One-Life Turbo Run*.
+#### 🕹️ Gameplay Rules
 
-- **Power-Up:**  
-  💾 **Data Shielding**  
-  *Prevents crashes from glitch walls, corrects brief input corruption, and adds a buffer against malware trail effects.*
+- You ride a **Digital Sled**, rendered entirely in a simulated world.  
+- It **feels just like your RC Sled**—same physics tuning, control setup, and handling style—but it’s not your actual sled.  
+- No sled mods or limited inventory apply—this is a **skill-focused simulation** with randomized hazards.  
+- Every session is a **procedural remix**, offering new glitch patterns, track shapes, hazards, and gravity rules.  
+- The **terrain integrates features from every mountain you’ve unlocked**—snowbanks from Garbage Glacier, wind ramps from Candy Cane Canyon, even low-grav lunar segments from Lunar Peak.
 
-- **Tinkerer’s Tip:**  
-  > “It ain’t your RC sled... but it should *feel* like it is. Whoever made it mirrored the controls perfectly, down to the frame... what are the odds?
+#### 🔧 Mechanics
 
-- **Lore Hook:**  
-  Nobody knows where the cabinet came from. The Tinkerer says he found it buzzing in a field, logged into a low earth satellite based server. The weirdest part is that it wasn't even plugged in.  
-  It updates itself. The leaderboard tracks high scores. And it remembers things **you never told it.**  
-  Is it haunted? AI? Or just **the mountain’s reflection in the machine**?  
-  Either way... it **wants** to be sledded.
+- **Glitch Zones & Malware Hazards:** Scramble vision, invert terrain, or randomize momentary movement.  
+- **Bit Bridges & Datastream Trails:** High-speed trick rails through corrupted memory sectors.  
+- **Firewall Gates:** Fry control stability unless avoided or properly timed.  
+- **Packet Winds:** Buffeting data gusts that can carry you—or crash you—into digital space.  
+- **Bitstream Drift:** Anti-grav momentum puzzles that test your sled finesse.
+
+#### ⭐ Special Features
+
+- 🕹️ **Arcade Access:** Requires unlocking the **Bitstream Cabinet** and installing it at home.  
+- 🔁 **Ever-Shifting Layouts:** Glitches rewrite the mountain on every entry—no two runs are alike.  
+- 📼 **Daily Patch Cycles:** Each real-world day downloads new terrain permutations, visual filters, and challenge rules.  
+  Examples: *Upside-Down Mode*, *No Jumping Allowed*, *One-Life Turbo Run*.  
+- 🌐 **Resonance Echoing:** The more you sled Bitstream Bluffs, the more “in tune” it becomes with your style—future sessions might resemble your past runs, *as if the mountain is remembering you*.
+
+#### 💾 Power-Up
+
+**Data Shielding**  
+*Prevents crashes from glitch walls, corrects brief input corruption, and adds a buffer against malware trail effects.*
+
+#### 🛠️ Tinkerer’s Tip
+
+*“It ain’t your RC sled... but it should feel like it is. Whoever made it mirrored the controls perfectly, down to the frame... what are the odds?”*
+
+#### 🌀 Lore Hook
+
+Nobody knows where the cabinet came from. The Tinkerer swears he found it buzzing in a field, half-buried, still warm.  
+It updates itself. It’s not plugged in.  
+The leaderboard refreshes hourly. Sometimes... it knows your name.
+
+Some say it's just a ghost in the machine.  
+Others say it’s a window—**a way to sled somewhere else**.  
+Somewhere deeper. Older.
+
+Whatever it is...  
+it’s waiting.  
+And it **wants** to be sledded.
 
 ---
 
