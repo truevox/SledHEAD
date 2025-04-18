@@ -11,7 +11,7 @@ Your sled was never just a vehicle.\
 It was a key punch, and the mountain was the punch card.\
 Your tricks, your crashes, your sheer stubbornness—they weren’t just experiences; they were physical code, etched in snow and stone, transmitting information through mass and gravity down into the waiting core.
 
-Each mountain—**The Stater Mountain, Undersea Mountain, Crystal Caverns,  ************************************************************************************************Vertigo Vents************************************************************************************************, Lunar Peak**—wasn't a mere challenge to overcome.\
+Each mountain—**Debumont, Undersea Mountain, Crystal Caverns,  Vertigo Vents, Lunar Peak**—wasn't a mere challenge to overcome.\
 They were **waveguides**, meticulously designed gravitational pathways, leading your joyful expressions deep into Earth’s core, imprinting exactly the frequencies required for awakening.
 
 And now?
