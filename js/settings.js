@@ -57,8 +57,8 @@ var TWEAK = {
     // Camera and aiming
     basePOVAngle: 30,
     optimalOpticsPOVIncrease: 5,
-    altitudeFlashMinSpeed: 200,
-    altitudeFlashMaxSpeed: 10,
+    altitudeFlashMinSpeed: 2000,
+    altitudeFlashMaxSpeed: 50, 
     altitudeGradientStart: "blue",
     altitudeGradientEnd: "red",
 
