@@ -8,28 +8,46 @@ export const upgradeCategories = [
           key: "rocketSurgery",
           label: "Rocket Surgery",
           desc: "Boosts top speed & acceleration for faster downhill runs.",
-          max: 10,
+          // Infinite with soft cap: Diminishing returns after level 15
+          softCap: 15, // Level after which scalingFactor is reduced
+          scalingType: "sqrt", // Use sqrt for speed/acceleration
+          scalingFactor: 0.25, // Each level adds less after soft cap
+          baseValue: 1.0, // Base multiplier
           icon: "🚀"
         },
         {
           key: "optimalOptics",
           label: "Optimal Optics",
           desc: "Frees focus & boosts fan engagement for easier weaving.",
-          max: 10,
+          // Infinite with soft cap: Diminishing returns after level 20
+          softCap: 20, // Level after which scaling slows
+          scalingType: "sqrt",
+          scalingFactor: 0.15,
+          baseValue: 1.0,
           icon: "📸"
         },
         {
           key: "sledDurability",
           label: "Sled Durability",
           desc: "Reinforce your sled to withstand bigger impacts.",
-          max: 10,
+          // Infinite with soft cap: Diminishing returns after level 30
+          softCap: 30,
+          scalingType: "log",
+          scalingFactor: 0.08,
+          baseValue: 1.0,
+
           icon: "🛷"
         },
         {
           key: "fancierFootwear",
           label: "Fancier Footwear",
           desc: "Less time climbing, more time sledding.",
-          max: 10,
+          // Infinite with soft cap: Diminishing returns after level 25
+          softCap: 25,
+          scalingType: "log",
+          scalingFactor: 0.12,
+          baseValue: 1.0,
+
           icon: "👢"
         },
         {

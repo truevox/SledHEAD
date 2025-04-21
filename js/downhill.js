@@ -8,15 +8,17 @@ import {
 
 
 
+// Use window.getUpgradeEffect for upgrade scaling (see upgradeLogic.js)
 // Update all downhill-specific physics and mechanics
 function updateDownhill(deltaTime) {
-  let rocketFactor = 1 + (window.playerUpgrades.rocketSurgery * TWEAK.rocketSurgeryFactorPerLevel);
+  // Use soft cap/infinite scaling for upgrades
+  let rocketFactor = window.getUpgradeEffect('rocketSurgery', window.playerUpgrades.rocketSurgery);
+  let opticsFactor = window.getUpgradeEffect('optimalOptics', window.playerUpgrades.optimalOptics);
   let gravity = TWEAK.baseGravity * rocketFactor;
-  let maxXVel = TWEAK.baseMaxXVel * (rocketFactor - (window.playerUpgrades.optimalOptics * TWEAK.optimalOpticsFrictionFactorPerLevel));
+  let maxXVel = TWEAK.baseMaxXVel * rocketFactor * (1 - 0.1 * (1 - 1/opticsFactor)); // Example: opticsFactor reduces friction penalty
   maxXVel = Math.max(0, maxXVel);
-  let opticsFactor = 1 + (window.playerUpgrades.optimalOptics * TWEAK.optimalOpticsAccelFactorPerLevel);
   let horizontalAccel = TWEAK.baseHorizontalAccel * opticsFactor;
-  let friction = TWEAK.baseFriction - (window.playerUpgrades.optimalOptics * TWEAK.optimalOpticsFrictionFactorPerLevel);
+  let friction = TWEAK.baseFriction / opticsFactor;
   if (friction < 0.8) friction = 0.8;
   
   // Get the current layer based on player's Y position

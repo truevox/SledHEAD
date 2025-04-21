@@ -24,12 +24,20 @@ function createUpgradeElement(upgrade, isPlayerUpgrade = true) {
   button.id = btnId;
   button.innerText = getUpgradeDisplayText(upgrade.key, currentLevel, maxLevel);
 
-  // Disable if maxed or locked
-  if (maxLevel === 0 || currentLevel >= maxLevel) {
+  // Disable if maxed, locked, or explicitly disabled (-1)
+  if (maxLevel === -1) {
+    button.disabled = true;
+    button.classList.add('upgrade-disabled');
+  } else if (maxLevel === 0 || currentLevel >= maxLevel) {
     button.disabled = true;
   }
 
-  button.addEventListener('click', () => {
+  button.addEventListener('click', (e) => {
+    if (button.disabled) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
     purchaseUpgrade(upgradeType, upgrade.key);
   });
 

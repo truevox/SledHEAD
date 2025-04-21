@@ -149,9 +149,10 @@ var TWEAK = {
     set bounceImpulse(val) { this._bounceImpulse = val; }
 };
   
-// New: function to compute max collisions
+// Use window.getUpgradeEffect for upgrade scaling (see upgradeLogic.js)
+// New: function to compute max collisions using soft cap/infinite scaling for sledDurability
 TWEAK.getMaxCollisions = function() {
     // Ensure playerUpgrades exists before accessing it
-    return TWEAK.baseCollisionsAllowed + (typeof playerUpgrades !== "undefined" && playerUpgrades.sledDurability ? playerUpgrades.sledDurability : 0);
+    return TWEAK.baseCollisionsAllowed * window.getUpgradeEffect('sledDurability', (typeof playerUpgrades !== "undefined" && playerUpgrades.sledDurability ? playerUpgrades.sledDurability : 0));
 };
 

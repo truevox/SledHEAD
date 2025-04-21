@@ -1,8 +1,10 @@
 /* uphill.js - Uphill Movement & Camera Control */
 
+// Use window.getUpgradeEffect for upgrade scaling (see upgradeLogic.js)
 // Handle all uphill movement, camera controls, and related mechanics
 function updateUphill(deltaTime) {
-  let upSpeed = TWEAK.baseUpSpeed + (playerUpgrades.fancierFootwear * TWEAK.fancierFootwearUpSpeedPerLevel);
+  // Use soft cap/infinite scaling for fancierFootwear
+  let upSpeed = TWEAK.baseUpSpeed * window.getUpgradeEffect('fancierFootwear', playerUpgrades.fancierFootwear);
   
   // Vertical movement
   if (keysDown["w"]) { player.absY -= upSpeed; }
