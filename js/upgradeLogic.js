@@ -139,18 +139,32 @@ function getUpgradeEffect(upgradeKey, level) {
   }
   if (!upgradeDef) return 1.0;
   const { softCap, scalingType, scalingFactor, baseValue } = upgradeDef;
-  if (!scalingType || !scalingFactor || !baseValue) return 1.0;
-  let effectiveLevel = level;
-  if (softCap && level > softCap) {
-    // Diminish scaling factor after soft cap
-    effectiveLevel = softCap + (level - softCap) * 0.5;
+  if (!scalingType || !scalingFactor || typeof baseValue === 'undefined') return 1.0;
+  if (scalingType === "linear") {
+    // Always treat level as a number
+    level = Number(level) || 0;
+    if (level <= 0) return 1.0;
+    if (softCap && level > softCap) {
+      // Constant gain up to softCap, then half gain after
+      // effect = 1.0 + (20*softCap + 10*(level-softCap))/100
+      return 1.0 + (scalingFactor * softCap + scalingFactor * 0.5 * (level - softCap)) / 100;
+    } else {
+      // effect = 1.0 + (20*level)/100
+      return 1.0 + (scalingFactor * level) / 100;
+    }
+  } else {
+    let effectiveLevel = level;
+    if (softCap && level > softCap) {
+      // Diminish scaling factor after soft cap
+      effectiveLevel = softCap + (level - softCap) * 0.5;
+    }
+    if (scalingType === "sqrt") {
+      return baseValue + scalingFactor * Math.sqrt(effectiveLevel);
+    } else if (scalingType === "log") {
+      return baseValue * (1 + scalingFactor * Math.log(effectiveLevel + 1));
+    }
+    return baseValue;
   }
-  if (scalingType === "sqrt") {
-    return baseValue + scalingFactor * Math.sqrt(effectiveLevel);
-  } else if (scalingType === "log") {
-    return baseValue * (1 + scalingFactor * Math.log(effectiveLevel + 1));
-  }
-  return baseValue;
 }
 
 // Expose getUpgradeEffect globally for classic scripts

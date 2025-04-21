@@ -87,7 +87,7 @@ var TWEAK = {
     _fancierFootwearUpSpeedPerLevel: 0.3,
     _baseUpSpeed: 2,
     _baseCollisionsAllowed: 3,
-    _starterCash: 200, // Jacked up for testing
+    _starterCash: 20000, // Jacked up for testing
     
     _bounceImpulse: 3,  // New bounce impulse value
 
