@@ -39,8 +39,8 @@ var TWEAK = {
     jumpBaseAscent: 1000,                 // Base ascent time (ms)
     jumpMaxHoldTime: 1000,               // Maximum charge duration (1 sec)
     jumpPeakScale: 2,                    // Base peak visual jump scale
-    jumpHeightPerRocketSurgery: 0.05,    // Each level adds 5% to jump height
-    jumpTimePerRocketSurgery: 0.05,      // Each level adds 5% to jump duration
+    jumpHeightPerRocketSurgery: 0.00,    // Each level adds 0% to jump height [Rocket Surgery now affects speed only]
+    jumpTimePerRocketSurgery: 0.00,      // Each level adds 0% to jump duration [Rocket Surgery now affects speed only]
     jumpZoomPerHeightIncrease: 0.5,      // For every 100% height increase, add 50% more zoom
 
     // Re-Hit Jump System
