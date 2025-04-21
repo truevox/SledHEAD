@@ -55,7 +55,7 @@ var TWEAK = {
     airBrakeFrictionMultiplier: 0.85,    // Speed reduction during air brake
 
     // Camera and aiming
-    basePOVAngle: 30,
+    basePOVAngle: 30,   
     optimalOpticsPOVIncrease: 5,
     altitudeFlashMinSpeed: 2000,
     altitudeFlashMaxSpeed: 50, 

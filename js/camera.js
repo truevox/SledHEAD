@@ -9,95 +9,91 @@ var lastPhotoTime = 0;
 // Handles taking a photo of an animal when conditions are met.
 function takePhoto() {
   let now = Date.now();
-  if (now - lastPhotoTime < TWEAK.photoCooldown) return; // Enforce cooldown
-  
-  // First, check animals in the global array (these take priority)
+  if (now - lastPhotoTime < TWEAK.photoCooldown) return;
+
+  // Gather all animals in the cone
+  let animalsInShot = [];
   if (animals && animals.length > 0) {
-    // Find the best animal to photograph (closest to center of view)
-    let bestAnimal = null;
-    let bestAngleDiff = Infinity;
-    
     animals.forEach(animal => {
       if (isAnimalInsideCone(animal)) {
-        // Calculate how centered this animal is
+        // Calculate center angle difference and distance
         let dx = animal.x - player.x;
         let dy = animal.y - player.absY;
         let animalAngle = Math.atan2(dy, dx) * (180 / Math.PI);
         if (animalAngle < 0) animalAngle += 360;
         let diffAngle = Math.abs(animalAngle - player.cameraAngle);
         if (diffAngle > 180) diffAngle = 360 - diffAngle;
-        
-        // Keep the most centered animal
-        if (diffAngle < bestAngleDiff) {
-          bestAnimal = animal;
-          bestAngleDiff = diffAngle;
-        }
+        let dist = Math.sqrt(dx*dx + dy*dy);
+        animalsInShot.push({ animal, diffAngle, dist });
       }
     });
-    
-    // If we found an animal in the animals array, photograph it
-    if (bestAnimal) {
-      photographAnimal(bestAnimal);
-      return;
-    }
   }
-  
-  // Fallback to the legacy activeAnimal if no animals in array were found
-  if (!activeAnimal || !isAnimalInsideCone(activeAnimal)) return;
-  photographAnimal(activeAnimal);
+  // Fallback to legacy activeAnimal
+  if ((!animalsInShot || animalsInShot.length === 0) && activeAnimal && isAnimalInsideCone(activeAnimal)) {
+    let dx = activeAnimal.x - player.x;
+    let dy = activeAnimal.y - player.absY;
+    let animalAngle = Math.atan2(dy, dx) * (180 / Math.PI);
+    if (animalAngle < 0) animalAngle += 360;
+    let diffAngle = Math.abs(animalAngle - player.cameraAngle);
+    if (diffAngle > 180) diffAngle = 360 - diffAngle;
+    let dist = Math.sqrt(dx*dx + dy*dy);
+    animalsInShot.push({ animal: activeAnimal, diffAngle, dist });
+  }
+  if (animalsInShot.length === 0) return;
+  // Find primary: closest to center, then closest by distance
+  animalsInShot.sort((a, b) => a.diffAngle !== b.diffAngle ? a.diffAngle - b.diffAngle : a.dist - b.dist);
+  photographAnimals(animalsInShot.map(obj => obj.animal), 0, animalsInShot);
 }
 
 // Helper function to calculate and award money for photographing an animal
-function photographAnimal(animal) {
+// Multi-animal photo logic using pure logic from photoLogic.js
+function photographAnimals(animalArr, primaryIdx = 0, infoArr = null) {
   lastPhotoTime = Date.now();
-  
-  let baseValue = TWEAK.basePhotoValue;
-  // Altitude Bonus: exponential falloff within 50 units.
-  let diffAlt = Math.abs(player.altitudeLine - animal.altitude);
-  let altitudeMatchBonus;
-  if (diffAlt > 50) {
-    altitudeMatchBonus = 1;
-  } else {
-    altitudeMatchBonus = 1 + (TWEAK.altitudeMatchMultiplier - 1) * Math.exp(-diffAlt / 15);
+  // Compose infoArr if not provided
+  if (!infoArr) {
+    infoArr = animalArr.map(animal => {
+      let dx = animal.x - player.x;
+      let dy = animal.y - player.absY;
+      let animalAngle = Math.atan2(dy, dx) * (180 / Math.PI);
+      if (animalAngle < 0) animalAngle += 360;
+      let diffAngle = Math.abs(animalAngle - player.cameraAngle);
+      if (diffAngle > 180) diffAngle = 360 - diffAngle;
+      let dist = Math.sqrt(dx*dx + dy*dy);
+      return { animal, diffAngle, dist };
+    });
   }
-  
-  // Center Bonus: based on the angle difference between camera direction and animal.
-  let animalAngle = Math.atan2(animal.y - player.absY, animal.x - player.x) * (180 / Math.PI);
-  if (animalAngle < 0) animalAngle += 360;
-  let diffAngle = Math.abs(animalAngle - player.cameraAngle);
-  if (diffAngle > 180) diffAngle = 360 - diffAngle;
-  let coneAngle = TWEAK.basePOVAngle + (playerUpgrades.optimalOptics * TWEAK.optimalOpticsPOVIncrease);
-  let sweetSpotPercentage = 0.10 + (playerUpgrades.optimalOptics * 0.01);
-  let sweetSpotAngle = coneAngle * sweetSpotPercentage;
-  let centerBonus;
-  if (diffAngle <= sweetSpotAngle) {
-    centerBonus = TWEAK.centerPOVMultiplier;
-  } else if (diffAngle < coneAngle / 2) {
-    let factor = (diffAngle - sweetSpotAngle) / (coneAngle / 2 - sweetSpotAngle);
-    centerBonus = 1 + (TWEAK.centerPOVMultiplier - 1) * Math.exp(-factor * 3);
-  } else {
-    centerBonus = 1;
+  // Prepare player and upgrades for pure logic
+  const playerState = Object.assign({}, player, { upgrades: playerUpgrades });
+  // Use the pure logic (browser global)
+  if (!window.calculatePhotoResults) {
+    throw new Error('calculatePhotoResults is not defined on window. Make sure photoLogic.js is loaded before camera.js.');
   }
-  
-  // Movement Bonus and Animal Type Multiplier:
-  let movementBonus = animal.state !== "sitting" ? TWEAK.fleeingAnimalMultiplier : 1;
-  let animalTypeMultiplier = animal.type === "bear" ? TWEAK.bearMultiplier : TWEAK.birdMultiplier;
-  let repeatPenalty = animal.hasBeenPhotographed ? TWEAK.repeatPhotoPenalty : 1;
-  
-  let totalMoney = Math.floor(baseValue * altitudeMatchBonus * centerBonus * movementBonus * animalTypeMultiplier * repeatPenalty);
-  player.money += totalMoney;
-  showMoneyGain(totalMoney, `(📸 ${animal.type})`);
-  addFloatingText(`+$${totalMoney} 📸`, player.x, player.absY);
-  console.log(`Captured ${animal.type}! Calculation details: Base=$${baseValue}, AltitudeBonus=${altitudeMatchBonus.toFixed(2)}, CenterBonus=${centerBonus.toFixed(2)}, MovementBonus=${movementBonus.toFixed(2)}, AnimalTypeMultiplier=${animalTypeMultiplier}, RepeatPenalty=${repeatPenalty}, Total=$${totalMoney}.`);
-  
-  // After taking a photo, animal should always flee
-  if (animal.state === "sitting") {
-    console.log(`Animal (${animal.type}) startled by camera - changing state from sitting to fleeing`);
-    animal.state = "fleeing";
-    animal.fleeingLogOnce = false; // Reset so we get the fleeing log message
-  }
-  
-  animal.hasBeenPhotographed = true;
+  const results = window.calculatePhotoResults(infoArr, playerState, TWEAK, primaryIdx);
+
+  let feedbackLines = [];
+  let logLines = [];
+  results.forEach((res, idx) => {
+    player.money += res.totalMoney;
+    showMoneyGain(res.totalMoney, `(📸 ${res.animal.type}${res.isPrimary ? ' [PRIMARY]' : ''})`);
+    addFloatingText(`+$${res.totalMoney} 📸${res.isPrimary ? ' [PRIMARY]' : ''}`, player.x, player.absY - idx * 25);
+    feedbackLines.push(`${res.isPrimary ? '[PRIMARY] ' : ''}${res.animal.type} +$${res.totalMoney} (center: ${res.centerBonus.toFixed(2)}, altitude: ${res.altitudeBonus.toFixed(2)})`);
+    logLines.push(`${res.isPrimary ? '[PRIMARY] ' : ''}${res.animal.type}: $${res.totalMoney} [Base=$${res.details.base}, AltitudeBonus=${res.altitudeBonus.toFixed(2)}, CenterBonus=${res.centerBonus.toFixed(2)}, MovementBonus=${res.details.movementBonus.toFixed(2)}, AnimalTypeMultiplier=${res.details.animalTypeMultiplier}, RepeatPenalty=${res.details.repeatPenalty}, Multiplier=${res.details.multiplier}]`);
+    // Flee logic
+    if (res.animal.state === "sitting") {
+      res.animal.state = "fleeing";
+      res.animal.fleeingLogOnce = false;
+    }
+    res.animal.hasBeenPhotographed = true;
+  });
+  // On-screen feedback (primary animal's floating text is already shown)
+  addFloatingText(`Photo: ${feedbackLines.join(', ')}`, player.x, player.absY - 60);
+  // Console log
+  console.log(`Photo taken: ${logLines.join(' | ')}`);
+}
+
+// Legacy single-animal fallback for compatibility
+function photographAnimal(animal) {
+  photographAnimals([animal], 0);
 }
 
 // Check if the animal is inside the camera cone
@@ -119,7 +115,8 @@ function isAnimalInsideCone(animal) {
   return diffAngle <= coneAngle / 2;
 }
 
-// Export the camera functions to the global window object
+// Export camera functions for browser global access (for render.js, utils.js, etc)
+// This is required for legacy and non-module usage. Do not remove!
 if (typeof window !== 'undefined') {
   window.takePhoto = takePhoto;
   window.isAnimalInsideCone = isAnimalInsideCone;
