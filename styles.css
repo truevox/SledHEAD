@@ -66,6 +66,16 @@
   background-color: #555;
   cursor: not-allowed;
 }
+
+/* Explicitly disabled upgrades (locked/unavailable) */
+.upgrade-disabled {
+  background-color: #333 !important;
+  color: #bbb !important;
+  opacity: 0.65;
+  border: 1px dashed #888;
+  cursor: not-allowed !important;
+  text-shadow: none;
+}
 .upgrade-desc {
   font-size: 14px;
   line-height: 1.2;

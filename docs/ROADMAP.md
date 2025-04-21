@@ -453,8 +453,7 @@ Tiers are defined by mountain difficulty:
 ---
 
 ### ⚠️ Risks & Strategy  
-- **Overload & Burnout:** Go too heavy without the stamina to back it, and you’ll wipe out halfway up.  
-- **Breakage:** Rough terrain or bad landings can bust your gear. Carry *repair kits* or plan a route with rest stations.
+- **Dead Battery:** Go too heavy without the stamina to back it, and you’ll be so tuckered out Sled Patrol will have to rescue you when your stamina is drained.
 
 ---
 
@@ -552,7 +551,7 @@ Part sage, part mad engineer, part crusty uncle who lives in a garage with three
   - **Pick durability** breaks with poor technique—snap a pick and you’re done unless you’ve got backups.  
   - 🥶 **Bad Weather** increases pick wobble and slows hand speed—bring gloves or warm up first.  
 
-> *“Every lock’s got a language. Learn the clicks, feel the tension… and hope there ain’t a badger on the other side.”* – *Welma, Lift Shack Raider*
+> *“Every lock sings its own little tune. You gotta wiggle your tools to the pins’ rhythm, feel that spring under your fingertips… and hope there isn’t a snarlin’ catamount lurking just past the door.”* – *Tinkerer Maxi*
 
 ---
 
@@ -747,6 +746,7 @@ Minnie runs the cozy little convenience store nestled near the trailhead and bas
 > *“Every trick begins before you leave the ground. Every landing finishes long after you hit it.”*  
 > *“Balance is a kind of listening.”*  
 > *“What you build reflects what you believe. So build things that last.”*  
+> *“You think sleddin’s about winnin’? Nah. It’s about wakin’. Every carve, every crash, every laugh—it’s code. You were speakin’ the language of the universe, and it finally heard ya. Now go… Dream bigger.”*  
 
 ### 7. **Time Trial Racing** 🏁🛷  
 - **Objective:**  
@@ -969,8 +969,8 @@ A thriving **mountain resort** needs a mix of **essential services, skilled spec
 
 ---
 
-### 🏡 **Core Resort & Business Owners (Essential Infrastructure)**
-These **support your base mountain**—they run the town, drive your economy, and keep the game loop running.
+### ❄️🏡 **Legendary NPCs**
+These are **mythic figures that support your base mountain**—they run the town, drive your economy, and keep the game loop running.
 
 #### 🏂 **Sled Tech Steve**
 - **Purpose:** Repairs damage, sells sled mods.
@@ -1146,9 +1146,6 @@ She’s not flashy—she’s **solid**. A quiet legend in her own right, always 
 
 ---
 
-### 🏆 **Trick & Racing-Oriented NPCs**
-These **drive skill progression**—unlocking **better tricks, harder competitions, and high-stakes challenges**.
-
 #### 📸🧠 Darlene – Wildlife Researcher & Trick Shot Analyst  
 > *“If it moves fast or looks majestic—I’m shootin’ it, tagging it, and sellin’ the poster.”*
 
@@ -1210,15 +1207,56 @@ Fast-talking, camera-slingin’, and **always on the move**, she calls out sled 
 - **Example Unlocks:** **Emergency sled deployment, survival training.**
 - **Best Quote:** *"We save people, we don’t just watch ‘em wipe out."*
 
-#### 🔧 **Tinkerer**
-- **Purpose:** **Experimental tech**—RC sleds, lock-picking, custom builds.
-- **Example Unlocks:** **Remote sleds, lock-picking.**
-- **Best Quote:** *"You didn’t hear this from me, but I might’ve… *enhanced* a sled or two."*
+#### 🔧 Tinkerer Maxi – RC Sled Crafter, Lockpick Enthusiast, and Bitstream Interpreter
+
+> *"Noise is easy. Signal takes work.”*
 
 ---
 
-### ❄️ **Legendary NPCs**
-These are **mythic figures**, unlocking **wild game mechanics, hidden areas, and secret challenges**.
+##### 🔧 **Role**
+
+- Leads players through the worlds of **RC Sledding**, **lockpicking**, and **experimental tech**.
+- Developed the **Micro RC Sled** used in Micro Mountain's unstable environments.
+- Discovered **Bitstream Bluffs** and has been decoding and adapting its glitchy tech ever since.
+- Offers tools and upgrades for **RC Sleds**, **lockpicking gear**, and **mountain-legal remote mischief**.
+
+---
+
+##### 🧠 **Mechanics Unlocked**
+
+- ❄️ **RC Motor Sledding** – Control fast, nimble sleds with upgrades for speed, agility, and airborne tricks.
+- 🔐 **Lockpicking Systems** – Access abandoned cabins, safes, and facilities using tension tools, rakes, bypass chips, practice, and finesse.
+- 💾 **Bitstream Interpretation** – Detect and exploit tech-glitches in the strange digital terrain of Bitstream Bluffs.
+
+---
+
+##### 🔧 **Upgrades Offered**
+
+| 🛠️ Upgrade                  | 🎁 Effect                                                         |
+| ---------------------------- | ----------------------------------------------------------------- |
+| 🎮 **RC Control Boost**      | Enhances responsiveness and trick potential of RC sleds.          |
+| 🔐 **Tension Grip Enhancer** | Expands lockpick "sweet spot" and improves feedback.              |
+| 📡 **Bitstream Scanner**     | Reveals glitched terrain nodes and hidden tech secrets.           |
+| 🧲 **Magnetic Spool Kit**    | Lets you retrieve lost RC sleds and gear from inaccessible areas. |
+| ⚡ **Battery Mod Pack**       | Extends range and duration of all remote devices.                 |
+
+---
+
+##### 🎤 **Personality & Vibe**
+
+Maxi doesn’t *ride* sleds—she engineers them, *pilots* them, and sometimes makes 'em dance to her rhythm. With rainbow glasses and a soldering iron in-hand, she’s the reason Micro Mountain’s pint-sized courses even function—her RC sleds are tiny, turbo-charged miracles. She didn’t build Bitstream Bluffs, but she’s the first to find it, solder it, and she hasn't had any magic smoke escape yet!
+
+Her lift shack-turned-lab is a mess of wires, blinking lights, and half-finished blueprints, but she knows where *everything* is. If it beeps, zaps, or locks shut, Maxi’s already rebuilt it twice—and the new version makes toast. To her, the mountain is one big circuit board, and you’re just another spark lookin’ for ground.
+
+She’s young, with a sharp grin and sharper tools, thick hair up in bright rainbow pigtails, and boots that look like they’ve seen every kind of weather and wiring job. Her gloves are fingerless, her hoodie is well-patched from solder burns, her skirt is a kaleidoscope of color, and there’s almost always something blinking or buzzing quietly in her pocket. Her rainbow lenses flash like signal lights, and when she starts talking tech, it’s like listening to lightning figure itself out.
+
+> *“I wasn’t trying to make a drone sled with a chainsaw. But here we are.”*  \
+> *"Bitstream’s not broken. It’s just... dreaming."*  \
+> *"Locks are just puzzles with a guaranteed solution."*\
+> *“I didn’t break the lock. I simply unlocked permanently.”*  \
+> *"Bitstream is smart. That's why you have to out-weird it instead."*
+
+---
 
 #### ❄️🪶 Winter Shaman Bromley – Trail-Tagger, Weather Whisperer & Keeper of the Blue Ribbon  
 > *“The mountain remembers. So should you.”*
@@ -1341,6 +1379,8 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 > *“You think the mountain don’t notice when you clearcut a hillside? Wait till the wind shifts.”*  
 > *“Harvestin’s not the same as takin’. One leaves roots. The other leaves nothin’.”*  
 > *“Cut with care. Leave room for regrowth. The bees’ll thank you. The trees too.”*
+> *"They tried to nickname me Logger Pete, but it sounded too much like a bitter drink to me."*
+> *"Beekeeper Pete has a sweeter tone to it, if ya ask me."*
 
 ---
 
@@ -1352,6 +1392,49 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 ---
 
 ## 🏔️ **Mountain Themes & Progression**
+
+### 🏔️ Debumont – “The Old Vermont Starter” 🍁❄️
+
+- **Description:**\
+  **Debumont** is the **first, friendliest peak** on your SledHEAD journey—a mid‑sized, maple‑and-pine forested Vermont mountain famous for its **rolling groomers**, tuck‑away shortcuts, and cozy base‐village vibe. The slopes are gentle enough for tourists yet varied enough to teach real **trick‑flow**—without overwhelming new riders. By day you’ll sled past Vermunch machines and frost‑tipped pines; by night the summit beacon glows warm amber, guiding late‑run daredevils back to Aria’s cocoa window.
+
+- **Gameplay Rules:**
+
+  - No special gear required—**standard sled & wax** work fine.
+  - **Panning Spots** concentrate near creek beds; digging & picking appear in soft drifts and rock outcrops.
+  - Native bee species:
+    - 🐝 **Snow Bees** build waxy hives in snow‑covered trees; their mint‑cool honey restores stamina faster in cold zones.
+  - Pay off your **Debumont Debt** (loans + base upgrades) to unlock other peaks like Garbage Mountain.
+
+- **Mechanics:**
+
+  - **Variable Groomers:** Wide, forgiving lines intercut with hidden stashes for first trick chains.
+  - **Learn‑by‑Doing Events:**
+    - *First Photo Bounty* from Darlene (snap a deer or jay).
+    - *Intro Beekeeping* with Pete (locate a Snow Bee hive).
+    - *Beginner Dig Spot* flagged by Minnie (find a lost ski badge).
+  - **Micro Weather Swings:** Quick flurries drop fresh powder that slows heavy sleds but increases jump loft.
+
+- **Special Features:**
+
+  - 🛷 **Beginner friendly:** Safe landings tuned for early combo practice.
+
+- **Power‑Up Requirement:**\
+  None. **Debumont** is your baseline—gear from here works everywhere else, but every upgrade shines first on home snow.
+
+- **Lore Hook:**\
+  Locals claim Debumont’s name comes from an old French trapper who shouted *“Je débute!”* (“I’m starting out!”) before his maiden sled run. Modern sledders still echo his spirit—**every legend begins here**, carving their first line past maple trees, friendly Snow Bees, and Aria’s cocoa window. Pay off the lodge loan, earn the town’s respect, and Debumont’s banner is hoisted at your base cabin forever. The man who sold you Debumont used the money to buy a wedding ring.
+
+---
+
+### Garbage Dump Glacier 🗑️❄️
+- **Description:** Icy runs through a frozen landfill filled with discarded items, oil slicks, and seagull attacks.  
+- **Mechanics:**  
+  - **Sticky Garbage Areas:** Slow down your sled unless special upgrades are used.
+- **Power-Up:** **Slick Wax Spray**  
+  *Required to unlock Garbage Dump Glacier. Prevents sticky terrain and provides a speed boost on all levels.*
+
+---
 
 ### 🐫 Pyramid Peak 🏜️📿
 
@@ -1384,6 +1467,15 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 
 - **Lore Hook:**\
   Pyramid Peak was first discovered by sledders chasing warm-weather thrills during off-season. But once the mountain was mapped and the ancient scarabs stirred, the real treasure proved to be **beneath the sand**. These days, it’s a pilgrimage site for *prospectors, trickers, and bee hunters* alike.
+
+---
+
+### Underwater Mountain 🌊
+- **Description:** Submerged slopes with slow-motion physics. Seaweed, coral formations, and hidden underwater currents abound.  
+- **Mechanics:**  
+  - **Air Meter (Stamina):** Acts like oxygen; replenished by air bubbles or surface spots.
+- **Power-Up:** **Aqua-Lung Mittens**  
+  *Required to enter Underwater Mountain. Constantly replenishes stamina underwater and reduces stamina drain on other mountains.*
 
 ---
 
@@ -1427,24 +1519,6 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
   - **Meteor Showers:** Random meteor strikes introduce obstacles.
 - **Power-Up:** **Gravity Stabilizer Sled Upgrade**  
   *Required to unlock Space Mountain. Stabilizes sled control in fluctuating gravity.*
-
----
-
-### Underwater Mountain 🌊
-- **Description:** Submerged slopes with slow-motion physics. Seaweed, coral formations, and hidden underwater currents abound.  
-- **Mechanics:**  
-  - **Air Meter (Stamina):** Acts like oxygen; replenished by air bubbles or surface spots.
-- **Power-Up:** **Aqua-Lung Mittens**  
-  *Required to enter Underwater Mountain. Constantly replenishes stamina underwater and reduces stamina drain on other mountains.*
-
----
-
-### Garbage Dump Glacier 🗑️❄️
-- **Description:** Icy runs through a frozen landfill filled with discarded items, oil slicks, and seagull attacks.  
-- **Mechanics:**  
-  - **Sticky Garbage Areas:** Slow down your sled unless special upgrades are used.
-- **Power-Up:** **Slick Wax Spray**  
-  *Required to unlock Garbage Dump Glacier. Prevents sticky terrain and provides a speed boost on all levels.*
 
 ---
 
@@ -1527,45 +1601,62 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 
 ### 💻 Bitstream Bluffs 🔮📶
 
-- **Description:**  
-  Bitstream Bluffs ain’t on any map—'cause it ain’t real. It’s a fully-virtual **digital mountain**, accessed through a glitchy old **arcade cabinet** you can install at your lodge.  
-  You don’t ride your usual sled here. Instead, you pilot a **digital proxy sled**, using the **exact same control layout and responsiveness** as your RC Sled. Spooky? Or lucky?  
+> *“It’s not alive... just ones and zeros. But then... isn’t DNA the same trick, but in a zip file?”* – Tinkerer Maxi
 
-  **Your skills carry over—but none of your gear does.**
+#### 🏔️ Description
 
-- **Gameplay Rules:**  
-  - You ride a **Digital Sled**, rendered entirely in a simulated world.  
-  - It **feels just like your RC Sled**—same physics tuning, control setup, and handling style—but it’s not your actual sled.  
-  - No sled mods or limited inventory apply—this is a **skill-focused simulation** with randomized hazards.  
-  - Every session is a **procedural remix**, offering new glitch patterns, track shapes, hazards, and gravity rules.
+Bitstream Bluffs ain’t on any map—'cause it ain’t real. It’s a fully-virtual **digital mountain**, accessed through a glitchy old **arcade cabinet** you can install at your lodge.\
+You don’t ride your usual sled here. Instead, you pilot a **digital proxy sled**, using the **exact same control layout and responsiveness** as your RC Sled. Spooky? Or lucky?
 
-- **Mechanics:**  
-  - **Glitch Zones & Malware Hazards:** Scramble vision, invert terrain, or randomize momentary movement.  
-  - **Bit Bridges & Datastream Trails:** High-speed trick rails through corrupted memory sectors.  
-  - **Firewall Gates:** Fry control stability unless avoided or properly timed.  
-  - **Packet Winds:** Buffeting data gusts that can carry you—or crash you—into digital space.  
-  - **Bitstream Drift:** Anti-grav momentum puzzles that test your sled finesse.
+**Your skills carry over—but none of your gear does.** This isn’t a joyride—it’s **a simulation carved in code**..
 
-- **Special Features:**  
-  - 🕹️ **Arcade Access:** Requires unlocking the **Bitstream Cabinet** and installing it at home.  
-  - 🔁 **Ever-Shifting Layouts:** Glitches rewrite the mountain on every entry—no two runs are alike.   
-  - 📼 **Daily Patch Cycles:** Each real-world day downloads new terrain permutations, visual filters, and challenge rules.  
-    Examples: *Upside-Down Mode*, *No Jumping Allowed*, *One-Life Turbo Run*.
+#### 🕹️ Gameplay Rules
 
-- **Power-Up:**  
-  💾 **Data Shielding**  
-  *Prevents crashes from glitch walls, corrects brief input corruption, and adds a buffer against malware trail effects.*
+- You ride a **Digital Sled**, rendered entirely in a simulated world.
+- It **feels just like your RC Sled**—same physics tuning, control setup, and handling style.
+- No sled mods or limited inventory apply—this is a **skill-focused simulation** with randomized hazards.
+- You start near the peak, and the **slopes never end**. There is no up, only down. **There is no climb, only carve.**
+- Every session is a **procedural remix**, offering new glitch patterns, track shapes, hazards, and gravity rules.
+- The **terrain integrates features from every mountain you’ve unlocked**—snowbanks from Garbage Glacier, dune-launch thermals from Pyramid Peak, or bubble-path airtime chains from Underwater Mountain.
 
-- **Tinkerer’s Tip:**  
-  > “It ain’t your RC sled... but it should *feel* like it is. Whoever made it mirrored the controls perfectly, down to the frame... what are the odds?
+#### 🔧 Mechanics
 
-- **Lore Hook:**  
-  Nobody knows where the cabinet came from. The Tinkerer says he found it buzzing in a field, logged into a low earth satellite based server. The weirdest part is that it wasn't even plugged in.  
-  It updates itself. The leaderboard tracks high scores. And it remembers things **you never told it.**  
-  Is it haunted? AI? Or just **the mountain’s reflection in the machine**?  
-  Either way... it **wants** to be sledded.
+- **Glitch Zones & Malware Hazards:** Scramble vision, invert terrain, or randomize momentary movement.
+- **Bit Bridges & Datastream Trails:** High-speed trails through corrupted memory sectors.
+- **Firewall Gates:** Fry control stability unless avoided or properly timed.
+- **Packet Winds:** Buffering data gusts that can lag you—or crash you—into digital space.
+- **Bitstream Drift:** Anti-grav momentum puzzles that test your sled finesse.
 
----
+#### ⭐ Special Features
+
+- 🕹️ **Arcade Access:** Requires unlocking the **Bitstream Cabinet** and installing it at home.
+- 🔁 **Ever-Shifting Layouts:** Glitches rewrite the mountain on every entry—no two runs are alike.
+- 📼 **Daily Patch Cycles:** Each real-world day downloads new terrain permutations, visual filters, and challenge rules.\
+  Examples: *Upside-Down Mode*, *No Jumping Allowed*, *One-Life Turbo Run*.
+- 🌐 **Resonance Echoing:** The more you sled Bitstream Bluffs, the more “in tune” it becomes with your style—future sessions might resemble your past runs, *as if the mountain is remembering you*.
+
+#### 💾 Power-Up
+
+**Error Correction Engine**\
+*Prevents crashes from glitch walls, corrects brief input corruption, and adds a buffer against malware trail effects.*
+
+#### 🛠️ Tinkerer’s Tip
+
+> *“It ain’t your RC sled... but it should **feel** like it is. Whoever made it mirrored the controls perfectly, down to the frame... what are the odds?”*
+
+#### 🌀 Lore Hook
+
+Nobody knows where the cabinet came from. The Tinkerer Maxi swears she found it buzzing in a field, half-buried, still warm.\
+It updates itself. It runs, whether you plug it in or not. Maybe plug it in though - I think it likes the buzzing.\
+The leaderboard refreshes hourly. Sometimes... it knows your name.
+
+Some say it's just a ghost in the machine.\
+Others say it’s a window—**a way to sled somewhere else**.\
+Somewhere deeper. Older.
+
+Whatever it is...\
+it’s waiting.\
+And it **wants** to be sledded.
 
 ###  Vertigo Vents 🌋💨
 
@@ -1591,7 +1682,7 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 
 ---
 
-🔄 Infinite Upgrades with Soft Caps
+## 🔄 Infinite Upgrades with Soft Caps
 ===================================
 
 **Expanding Progression Without Breaking Balance**
@@ -1601,7 +1692,7 @@ Currently, upgrades in **SledHEAD** have **hard caps**, limiting how many times 
 need to be rebought for each new mountain purchased, and
 may or may not be infinite as appropriate to the upgrade.
 
-🎯 Proposed Solution
+### 🎯 Proposed Solution
 --------------------
 
 -   **All upgrades become infinitely upgradable.**
@@ -1611,7 +1702,7 @@ may or may not be infinite as appropriate to the upgrade.
     -   **Trick bonuses** could scale freely until **Level 20** before slowing down.
 -   **Mathematical balancing** ensures that upgrades remain **meaningful** but **don't become overpowered**.
 
-📊 Scaling Formula: Exponential & Logarithmic Decay
+### 📊 Scaling Formula: Exponential & Logarithmic Decay
 ---------------------------------------------------
 
 Instead of **linear scaling** (e.g., "+1 Speed per level"), we use **diminishing returns** to keep upgrades valuable without breaking balance.
@@ -1631,7 +1722,7 @@ newValue = baseValue * (1 + (scalingFactor * log(level + 1)))
 
 -   Great for upgrades like **boost charge rates or sled handling**, where a **big early impact** makes sense but **total mastery should be gradual**.
 
-✅ Benefits of Infinite Upgrades with Soft Caps
+### ✅ Benefits of Infinite Upgrades with Soft Caps
 ----------------------------------------------
 
 ✔ **Keeps long-term progression engaging** -- No artificial "max level" bottleneck.\
@@ -1639,7 +1730,7 @@ newValue = baseValue * (1 + (scalingFactor * log(level + 1)))
 ✔ **Prevents upgrade obsolescence** -- Players **always have something meaningful to invest in**.\
 ✔ **Maintains challenge balance** -- Runs become **progressively stronger**, but not infinitely easy.
 
-📌 Tasks & Implementation Plan
+### 📌 Tasks & Implementation Plan
 ------------------------------
 
 -   [ ]  **Remove hard upgrade caps** for all current upgrades.
@@ -1674,6 +1765,141 @@ This system ensures **players always have room to grow**, while keeping **SledHE
 - Fully expand trick system
 - Complete mini-games and endgame challenges
 - Polish UI/UX and refine progression systems
+
+---
+
+## 🚚 0 • Westinghouse **Edison‑EV** Prime Mover
+
+| Spec                          | Detail                                                                                                                                     | Little Extras                                                                                                    |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| **Drive Train**               | Quad in‑hub motors, instant torque for steep haul roads.                                                                                   | Regenerative braking dumps juice back into the pack on the ride down the pass—Maxi loves watchin’ the kWh climb. |
+| **Range‑Extender**            | 4‑cyl. hyper‑efficient diesel (runs on used fryer oil or #2).                                                                              | Aria skims the spent oil from her fry‑pot, Maxi filters it, *boom* free top‑ups.                                 |
+| **Dual Driver Cabin**         | Left seat: Maxi (programmable pedals). Right seat: **Bruin the Bear**—reinforced paw‑grips, high‑torque steer servo, bear‑sized seat belt. | Dash plaque reads *“BJ & The Bear II – No Monkey Business!”*                                                     |
+| **Cab‑to‑Coach Walk‑Through** | Pressure‑sealed door to Trailer 1.                                                                                                         | Means Carrie can sip cocoa, Bruin can keep one paw on the wheel, and nobody freezes.                             |
+| **Exterior Flair**            | *DON’T DEADHEAD, SLEDHEAD!* in bold Yellow on Snow Blue.                                                                                   | Back‑lit letters double as hazard panel at night.                                                                |
+
+---
+
+### 🏡 1 • TRAILER 1 – “The Lodge Car”
+
+#### ▼ Lower Deck – **Front‑of‑House, Kitchen, Cozy Lounge**
+
+| Zone                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Fixtures                                                                                                                                                                                                                                         | Daily Life Snippets                                                                                                                                                                       |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Covered Side Porch**                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Pop‑out stairs + under‑step boot heaters.                                                                                                                                                                                                        | Guests stamp snow, hang parkas, then shuffle inside.                                                                                                                                      |
+| **Check‑in / Service Bar**                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Polished maple slab, six log stools, two POS tablets, chalkboard specials.                                                                                                                                                                       | Aria spins to plate, spins back to checkin & chat—zero steps.                                                                                                                             |
+| **Aria’s **************************************************************************************************************************************************************************************************************************************Open************************************************************************************************************************************************************************************************************************************** Kitchen** | Behind the bar, face‑to‑face with customers. Double oven, 6‑burner propane top, flat‑top griddle, sous‑vide circulator, walk‑in pantry, chest freezer for wontons & pizza dough. **Exterior Pass‑Through Window** slides open street‑food style. | – *Inside service*: stools & dining nook.– *Outside service*: pass‑through window for slope‑side cocoa, slices, and soup.Aria can whip cocoa, shout “Hiya Cuz!” and never move her boots. |
+| **Dining Nook**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Two 4‑tops plus drop‑leaf extenders → seats 12 in a pinch. Hidden storage benches for extra cutlery & board games.                                                                                                                               | Weekly “Cocoa & Cryptids” trivia night hosted by Darlene.                                                                                                                                 |
+| **Lobby Lounge**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Picture window framing the slope. Four deep chairs, rugged coffee‑table made from retired sled rails, roaring pellet stove, magazine rack. **Bruin's Bear Chair** recliner (Kevlar fabric, seatbelt) next to the stove.                          | Bruin snoozes here when not driving or lumberin’ about. Carrie will often sit nearby when she & Bruin aren't out with the other bears.                                                    |
+| **Access Tunnel**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Accordion‑sealed hallway through articulation to Trailer 2.                                                                                                                                                                                      | Sheltered and out of the weather.                                                                                                                                                         |
+
+#### ▲ Upper Deck – **Crew Quarters & Bath**
+
+- **Three Triple‑Bunk Rooms** (9 pods):
+  - Individual reading lights, USB‑C ports, privacy curtain, quilted wool blankets from Vermont sheep.
+  - Lockers under the lower bunk; middle bunk folds to couch day‑mode.
+- **Shared Bath Module**: on‑demand hot‑water shower, vacuum‑flush toilet, fold‑down sink, grey‑water recycler feeds greenhouse radiator coils.
+- **Fire‑Pole & Stair**: drop down to the bar for midnight cocoa raids; stair for normal folk.
+
+---
+
+### 🔧 2 • TRAILER 2 – “Ops & Shops Car”
+
+#### ▲ Upper Deck – **Labs & Private Cabins**
+
+| Half                               | Occupant | Details                                                                                                                                                                                                                                                                                                                                                |
+| ---------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Forward 50 % – Maxi’s Tech‑Lab** | Maxi     | • Triple‑screen dev rig, solder station, Li‑Po charge bank, 3‑D printer tower (PLA, PETG, ABS, conductive).• RC‑sled telemetry wall, drone parts drawers, spare flight‑controllers.• Murphy‑style bunk folds out of wall; LED star‑ceiling for code‑in‑bed vibes.• Secret sub‑floor prototypes labelled “Amphibius-Westinghouse Mk I” in sticky‑notes. |
+| **Rear 50 % – Marbee’s Cabin**     | Marbee   | • Full‑size bed, honey‑pine bookshelves stuffed with books.• Compact half‑bath (sink + toilet).• Magnetic whiteboard covered in sled  sketches and rushed scribbles.                                                                                                                                                                                   |
+
+#### ▼ Lower Deck – **Retail & Workshop**
+
+| Zone                                             | Crew         | Fixtures                                                                                                                                                                                                                                | Fun Bits                                                                            |
+| ------------------------------------------------ | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| **Minnie’s Gift & Gear Shop** (fore half)        | Minnie       | • Counter with brass bell, antique cash drawer.• **Legendary‑Lens Spinner Rack** (lit acrylic ).• **“Everything” Catch‑All Rack** (hex‑bin wall).• Pegboard for Panttocks, rods, panning pans.• Deep Diggin’ pick displays under glass. | Minnie’s motto over the door: *“If it shines, digs, or spins—you’ll find it here.”* |
+| **Jake & Steve’s Sled/Carpentry Bay** (aft half) | Jake & Steve | • Belt‑driven lathe, TIG welder, compound miter saw, overhead chain hoist.• Sled‑runner clamp‑jig doubles as beam press for mountain construction projects.• Wax melter & buff wheel for quick race tunes.                              | Smells like maple, axle grease, and campfire coffee.                                |
+
+*Large roll‑up curb-side door = sleds roll right onto snow OR 12‑ft lumber slides straight inside.*
+
+---
+
+### 🐝 3 • Pete’s Hinged‑Glass **Micro‑Mountain Apiary** (Tail‑Module)
+
+| Element                          | Detail                                                                                                                              |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| **Hive Stacks**                  | Two vertical rack frames, colour‑coded Langstroth boxes.                                                                            |
+| **Glass Dome**                   | Tempered, UV‑treated; hinges on top, latches on bottom; pneumatic struts hold it open like a giant terrarium door.                  |
+| **Interior Climate Fans**        | Kick on when glass is closed to keep temps steady.                                                                                  |
+| **Fold Down Mini‑Terrain Table** | Bonsai evergreens, Micro Mountain, snow‑foam so Pete can teach bee‑lining demos, flowered vines reach up the back around bee boxes. |
+
+Dome stays shut in transit / storms, swings open when Pete wants to check frames or harvest honeycomb for wax lens polish.
+
+---
+
+### 🦅 4 • Roof Deck – “The Crow’s Nest” (continuous)
+
+| Zone                    | Resident   | Kit & Purpose                                                                                                                                               |
+| ----------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Rescue Perch** (fore) | Stratton   | Swivel captain’s chair, gyro‑binoculars, MURS & GMRS rescue radios, avalanche beacon repeater, quick‑drop ladder down to his patrol sled hung on side rack. |
+| **Lens & Scope Bay**    | Darlene    | 500 mm tele‑lens on motorized mount, wildlife cam array, weatherproof photo‑server box streaming RAW files to the lab below, fold‑out dark‑cloth hood.      |
+| **Launch Pad**          | Maxi & Jay | Yellow circle with deck plates, four drone charging nests, retractable kite reels (lock when truck’s moving).                                               |
+| **Solar‑Wind Farm**     | –          | 48 m² bifacial PV carpet, two micro wind turbines on telescopic masts; feed 400‑V DC bus via MPPT charger.                                                  |
+
+Safety rail around entire deck, heated ladder to stairwell, hot tub.
+
+---
+
+### 🛠 5 • Side Racks & Exterior Storage
+
+- **Sled Racks:** 10 sleds nose‑down, hinged arms fold into travel slots.
+- **Utility Lockers (skirt‑level):** diesel genset, battery modules, spare runner bundles, avalanche probes, collapsible stretcher, kite spars, Vermunch Refill Dispenser provisioned directly below the kitchen.
+- **Tow‑Eye Hook:** fits ski‑tow,or flatbed.
+
+---
+
+### 🏃‍♂️ 6 • Daily Loop – Expanded
+
+1. **Morning Open:**
+
+   - Bruin pads down from the lounge chair to the driver seat; Maxi boots the Edison‑EV, runs diagnostics.
+   - Aria fires stoves; smell of maple‑fudge cocoa wafts down both trailers.
+   - Solar array tilts toward sunrise.
+
+2. **Guest Arrival:**
+
+   - Visitors climb heated stairs, stomp boots.
+   - Aria greets ’em at bar, takes names/checkin, dishes tasty grub.
+   - Pass‑through window pops open so slope‑side folks can grab warm food too.
+
+3. **Gearing Up:**
+
+   - Guests stroll articulation tunnel → Minnie’s shop (lenses, Panttocks) → Jake & Steve’s bay for wax tune.
+   - Grab sled from side rack; drop down the rear ramp or nearest snow stair.
+
+4. **Slope Time:**
+
+   - Stratton scans ridgeline; Darlene snaps wildlife & Marbee if he's out tricking.
+   - Maxi tests new RC controller on drone from roof pad; Jay launches a kite to check wind aloft.
+   - Pete opens dome, hums to his bees, maybe harvests a frame.
+
+5. **Rescue Flow:**
+
+   - Rescue beacon pings → Stratton radios *“Dispatch, I’m rolling.”*
+   - He slides down ladder, hops into patrol sled hung on side rack, zips off.
+   - If it’s textbook, he handles solo. **Only** if he’s swamped does he radio Marbee for a player‑quest assist.
+
+6. **Evening Wind‑Down:**
+
+   - Darlene live‑casts her best cryptid shot to the lobby holo; trivia night commences.
+   - Aria plates pizzas, wontons, maple‑BBQ wings; full menu always available inside.
+   - Vermunch machines on‑mountain keep humming the limited menu (warm and cold drinks, pickles (Sweet and Sour both), personal 3-cheese cowboy candy pizzas).
+   - Crew crashes: Maxi folds down her murphy bunk in the lab; Marbee to his cabin; everyone else climbs to triple‑bunks; Bruin curls in the Bear Chair.
+
+7. **Night Mode:**
+
+   - PV carpet folds flat; wind masts lock.
+   - Deck lights on warm amber; bee‑dome fans maintain hive temp.
+   - Jake & Steve might pull a late weld—soft flashes visible through workshop skylight.
 
 ---
 

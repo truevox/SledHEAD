@@ -1,0 +1,9 @@
+---
+description: SledHEAD rules and coding conventions
+globs: "**/*"
+alwaysApply: true
+---
+
+All development must follow the full project rules defined in [`/sledhead-windsurf.md`](../sledhead-windsurf.md).
+
+Do not summarize or restate the rules here. This file exists only to link Cursor to the canonical rule set.
