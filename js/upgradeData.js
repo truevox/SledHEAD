@@ -60,7 +60,11 @@ export const upgradeCategories = [
         {
           key: "attendLegDay",
           label: "Attend Leg Day",
-          desc: "Reduce stamina cost for climbing back up.",
+          desc: "Increase your max stamina for longer uphill pushes.",
+          softCap: 20,
+          scalingType: "log",
+          scalingFactor: 0.18,
+          baseValue: 1.0,
           max: 0,
           icon: "🏋️"
         },

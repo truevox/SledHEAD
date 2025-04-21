@@ -40,7 +40,7 @@ const upgradeMaxLevel = {
   sledDurability: 0,
   fancierFootwear: 0,
   grapplingAnchor: -1,
-  attendLegDay: -1,
+  attendLegDay: 0,
   shortcutAwareness: -1,
   crowdHypeman: -1,
   crowdWeaver: -1,

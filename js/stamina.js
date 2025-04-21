@@ -4,8 +4,9 @@ let reentryCount = 0;
 // In stamina.js
 class Stamina {
     constructor() {
-      this.maxStamina = 100;
-      this.currentStamina = this.maxStamina;
+      // Max stamina is dynamic: base value * Attend Leg Day upgrade effect
+      this.baseMaxStamina = 100;
+      this.currentStamina = this.getMaxStamina();
       this.staminaDrainWalking = 0.1;  // Drains steadily when walking uphill
       this.staminaDrainJumping = 2.0;    // Drains once on jump launch
       this.staminaDrainSledding = 0.01;  // Drains very slowly when sledding
@@ -25,6 +26,15 @@ class Stamina {
       document.body.appendChild(this.canvas);
     }
   
+    // Calculate dynamic max stamina based on upgrade level
+    getMaxStamina() {
+      // We use the Attend Leg Day upgrade effect to scale max stamina (soft cap applies)
+      if (typeof window.getUpgradeEffect === 'function' && window.playerUpgrades) {
+        return Math.round(this.baseMaxStamina * window.getUpgradeEffect('attendLegDay', window.playerUpgrades.attendLegDay));
+      }
+      return this.baseMaxStamina;
+    }
+
     // New method to drain stamina on jump initiation
     drainJump() {
       if (!this.jumpTriggered) {
@@ -84,7 +94,7 @@ class Stamina {
       this.isVisible = (window.currentState !== window.GameState.HOUSE);
       if (!this.isVisible) {
         if (enteringHouse) {
-          this.currentStamina = this.maxStamina; // Reset stamina only when entering the house
+          this.currentStamina = this.getMaxStamina(); // Reset stamina only when entering the house (dynamic max)
           this.throttledLog("At home - resetting stamina");
         }
         this.canvas.style.display = "none";
@@ -114,8 +124,8 @@ class Stamina {
         this.handleStaminaDepletion();
       }
   
-      // Clamp stamina value between 0 and max
-      this.currentStamina = parseFloat(Math.max(0, Math.min(this.currentStamina, this.maxStamina)).toFixed(2));
+      // Clamp stamina value between 0 and dynamic max
+      this.currentStamina = parseFloat(Math.max(0, Math.min(this.currentStamina, this.getMaxStamina())).toFixed(2));
   
       // Render the stamina bar
       this.render();
@@ -128,7 +138,8 @@ class Stamina {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   
       // Determine stamina bar color based on stamina percentage
-      let staminaRatio = this.currentStamina / this.maxStamina;
+      // Always use dynamic max stamina for rendering
+      let staminaRatio = this.currentStamina / this.getMaxStamina();
       let color = "#00FF00"; // Green (full stamina)
       if (staminaRatio < 0.5) color = "#FFA500"; // Orange (moderate stamina)
       if (staminaRatio < 0.2) color = "#FF0000"; // Red (critical stamina)
