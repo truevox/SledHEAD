@@ -403,6 +403,7 @@ async function completeStateChange(newState, prevState) { // Make async
   // --- Fade to Black (if needed) ---
   if (isHouseTransition) {
     logGame("House transition detected. Fading TO black...");
+    if (typeof clearAllInputStates === 'function') clearAllInputStates();
     await effects.sceneFadeWithBlack(); // Await fade to black before making changes
     logGame("Fade TO black complete. Proceeding with state changes.");
   } else {
