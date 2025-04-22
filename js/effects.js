@@ -2,9 +2,9 @@
  * SledHEAD Windsurf: /js/effects.js
  *
  * Integration steps:
- * - Call `await sceneFade(true)` in completeStateChange() BEFORE DOM swaps (e.g., entering House or mountain layer).
- * - Call `await sceneFade(false)` AFTER DOM swaps or when mountain-layer change has finished.
- * - Exposes `window.sceneFade` for dev console use.
+ * - Call `await sceneFadeWithBlack()` in completeStateChange() BEFORE DOM swaps (e.g., entering House or mountain layer).
+ * - Call `await sceneFadeFromBlack()` AFTER DOM swaps or when mountain-layer change has finished.
+ * - Exposes `window.sceneFadeWithBlack` and `window.sceneFadeFromBlack` for dev console use.
  *
  * Handles full-viewport black fade transitions and input locking for state changes.
  *
@@ -15,11 +15,17 @@ let inputLocked = false;
 let keydownListener = null;
 let keyupListener = null;
 let fadeOverlay = null;
-let stickyWatcher = null;
+let stickyWatcher = null; // <-- This can likely be removed now, but leave for now.
+
+// Add a helper for timestamped logs
+function logEffect(message) {
+  console.log(`[Effects - ${performance.now().toFixed(2)}ms] ${message}`);
+}
 
 // WHY: Prevent user input during transitions or fades
 export function lockInput() {
   if (inputLocked) return;
+  logEffect("Locking input.");
   inputLocked = true;
   window.inputLocked = true;
 
@@ -32,6 +38,7 @@ export function lockInput() {
 
 export function unlockInput() {
   if (!inputLocked) return;
+  logEffect("Unlocking input.");
   inputLocked = false;
   window.inputLocked = false;
 
@@ -68,6 +75,7 @@ function ensureFadeOverlay() {
 }
 
 function animateOpacity(from, to, duration) {
+  logEffect(`Animating opacity from ${from} to ${to} over ${duration}ms.`);
   // WHY: Promise-based fade for precise timing
   return new Promise((resolve) => {
     const overlay = ensureFadeOverlay();
@@ -82,6 +90,12 @@ function animateOpacity(from, to, duration) {
       resolve();
     };
     overlay.addEventListener('transitionend', handle);
+    // Add a timeout fallback in case transitionend doesn't fire (e.g., element removed)
+    setTimeout(() => {
+        logEffect(`Opacity animation fallback timeout triggered for ${from} -> ${to}.`);
+        overlay.removeEventListener('transitionend', handle); // Clean up listener
+        resolve(); // Resolve promise anyway
+    }, duration + 100); // Wait a bit longer than duration
   });
 }
 
@@ -92,68 +106,43 @@ function animateOpacity(from, to, duration) {
  * Usage:
  *   await sceneFadeWithBlack(); // resolves when black
  *   // ...do DOM swap or scene logic...
- *   await sceneFade(false);     // resolves after fade out
+ *   await sceneFadeFromBlack();     // resolves after fade out
  */
 export function sceneFadeWithBlack() {
   const overlay = ensureFadeOverlay();
+  logEffect("Starting sceneFadeWithBlack: Fading TO black.");
   lockInput();
   // Fade in (black), resolve when fully black
-  return animateOpacity('0', '1', 250);
-}
-
-/**
- * sceneFade: Handles both sticky and non-sticky fades.
- * - In non-sticky mode, fades to black, holds, then fades out.
- * - In sticky mode, stays black until window.fadedToBlack = false.
- *
- * For scene transitions, use sceneFadeWithBlack() to know when to swap.
- */
-export async function sceneFade(sticky = false) {
-  const overlay = ensureFadeOverlay();
-
-  if (!sticky) {
-    await sceneFadeWithBlack();
-    // WHY: Unlock input at first frame of fade-in for responsive chaining
-    unlockInput();
-    // Hold black
-    await new Promise((res) => setTimeout(res, 500));
-    // Fade out
-    await animateOpacity('1', '0', 250);
-    overlay.style.opacity = '0';
-    return;
-  }
-
-  // Sticky mode: fade to black and stay until window.fadedToBlack = false
-  window.fadedToBlack = true;
-  lockInput();
-  await animateOpacity('0', '1', 250);
-  overlay.style.opacity = '1';
-
-  // WHY: Watch for external code to set fadedToBlack = false
-  if (stickyWatcher) {
-    clearInterval(stickyWatcher);
-    stickyWatcher = null;
-  }
-  await new Promise((resolve) => {
-    stickyWatcher = setInterval(() => {
-      if (!window.fadedToBlack) {
-        clearInterval(stickyWatcher);
-        stickyWatcher = null;
-        // Fade out
-        animateOpacity('1', '0', 250).then(() => {
-          overlay.style.opacity = '0';
-          unlockInput();
-          resolve();
-        });
-      }
-    }, 50);
+  return animateOpacity('0', '1', 250).then(() => {
+    logEffect("sceneFadeWithBlack: Fade TO black complete. Screen is black.");
+    overlay.style.opacity = '1'; // Ensure it's fully black
   });
 }
 
+/**
+ * sceneFadeFromBlack: Assumes screen is already black. Holds briefly, then fades out.
+ * Use this AFTER scene changes (e.g. DOM swaps) are complete.
+ */
+export async function sceneFadeFromBlack() {
+  const overlay = ensureFadeOverlay();
+  logEffect("Starting sceneFadeFromBlack: Holding black, then fading OUT.");
+
+  // Ensure overlay is black before starting
+  overlay.style.transition = 'none';
+  overlay.style.opacity = '1';
+  void overlay.offsetWidth; // Force style flush
+
+  // Hold black briefly
+  await new Promise((res) => setTimeout(res, 50)); // Shorter hold than before
+  logEffect("sceneFadeFromBlack: Hold complete. Fading OUT now.");
+
+  // Fade out (back to transparent)
+  await animateOpacity('1', '0', 250);
+  overlay.style.opacity = '0'; // Ensure it's fully transparent
+  logEffect("sceneFadeFromBlack: Fade OUT complete.");
+  unlockInput(); // Unlock input *after* fade out is complete
+}
+
 // WHY: Expose for dev console
-window.sceneFade = sceneFade;
 window.sceneFadeWithBlack = sceneFadeWithBlack;
-
-
-// WHY: Expose for dev console
-window.sceneFade = sceneFade;
+window.sceneFadeFromBlack = sceneFadeFromBlack; // Expose new function
