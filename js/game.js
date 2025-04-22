@@ -234,7 +234,14 @@ function changeState(newState) {
 // Add a flag to track if animals have been spawned
 let animalsAlreadySpawned = false;
 
-function completeStateChange(newState, prevState) {
+async function completeStateChange(newState, prevState) {
+  // Only fade if entering or leaving HOUSE (WHY: hide only major scene swaps, not hill <-> uphill)
+  const effects = await import('./effects.js');
+  const isHouseTransition = (newState === window.GameState.HOUSE || prevState === window.GameState.HOUSE);
+  if (isHouseTransition) {
+    await effects.sceneFadeWithBlack();
+  }
+
   window.currentState = newState;
   if (window.currentState === window.GameState.HOUSE) {
     document.getElementById("upgrade-menu").style.display = "block";
@@ -345,6 +352,11 @@ function completeStateChange(newState, prevState) {
     player.xVel = 0;
   }
   console.log(`Game state changed: ${prevState} -> ${window.currentState}`);
+
+  // Only fade back in if we faded out
+  if (isHouseTransition) {
+    await effects.sceneFade(false);
+  }
 }
 
 // Function to reset the animal spawn flag
