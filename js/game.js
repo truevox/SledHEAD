@@ -1,7 +1,11 @@
 /* game.js - Core Loop & State Management (Phaserized) */
 
+// --- GLOBAL KEY STATE ---
+window.keys = {};
+
 // Import necessary functions and variables
 import * as effects from './effects.js'; // Import the effects module
+// getLayerByY is attached to window for browser compatibility
 import { playerUpgrades, mountainUpgrades, initUpgradeButton, purchaseUpgrade, updateMoneyDisplay } from './upgradeLogic.js';
 
 // Global flag for debouncing upgrade clicks
@@ -21,6 +25,10 @@ var isFirstHouseEntry = true;
 var houseReEntry = 0;
 var playerStartAbsY = 0;
 window.playerStartAbsY = playerStartAbsY; // Make playerStartAbsY globally accessible
+
+// Variables for layer transition
+let currentLayerId = null; // Track the current layer ID
+let isLayerTransitioning = false; // Flag to prevent updates during fade
 
 // Add a throttled logging mechanism
 const logThrottleTimes = {};
@@ -64,6 +72,62 @@ function handleUpgradeClick(upgradeType, upgradeKey) {
   return true; // Click handled (processed)
 }
 
+// --- Input Handling Functions (Moved Before MainScene) ---
+// Moved handleKeyDown and handleKeyUp here to ensure they are defined before being used in MainScene.create
+
+function handleKeyDown(event) {
+    // Allow number keys for layer switching in dev mode
+    if (window.DEV_MODE && event.key >= '0' && event.key <= '9') {
+        const targetLayerIndex = parseInt(event.key, 10);
+        if (targetLayerIndex >= 0 && targetLayerIndex < mountainLayers.length) {
+            const targetLayer = mountainLayers[targetLayerIndex];
+            // Center Y within the target layer for testing
+            const targetY = targetLayer.startY + (targetLayer.endY - targetLayer.startY) / 2;
+            console.log(`DEV: Teleporting to layer ${targetLayerIndex} (Y: ${targetY})`);
+            player.absY = targetY;
+            // Optional: Reset camera/player X if needed for consistency
+            player.x = window.canvas.width / 2;
+            camera.y = player.absY - window.canvas.height / 2; 
+        } else {
+            console.log(`DEV: Invalid layer index: ${targetLayerIndex}`);
+        }
+        return; // Don't process game input if it was a dev key
+    }
+
+    // Existing key handling logic
+    if (window.inputLocked) return;
+    
+    keys[event.key] = true;
+
+    // Trigger key specific actions
+    if (event.key === 'ArrowUp' && (window.currentState === window.GameState.DOWNHILL || window.currentState === window.GameState.UPHILL)) {
+        player.isAccelerating = true;
+    }
+    if (event.key === 'ArrowDown' && window.currentState === window.GameState.DOWNHILL) {
+        player.isBraking = true;
+    }
+    if (event.key === ' ' && !player.isJumping && (window.currentState === window.GameState.DOWNHILL || window.currentState === window.GameState.UPHILL)) {
+        startJump();
+    }
+}
+
+function handleKeyUp(event) {
+    if (window.inputLocked) return;
+    
+    keys[event.key] = false;
+
+    // Trigger key specific release actions
+    if (event.key === 'ArrowUp') {
+        player.isAccelerating = false;
+    }
+    if (event.key === 'ArrowDown') {
+        player.isBraking = false;
+    }
+    if (event.key === ' ' && player.isJumping) {
+        // Optional: could add logic here if jump height depended on hold duration
+    }
+}
+
 // Create a Phaser Scene to run your game logic
 class MainScene extends Phaser.Scene {
   constructor() {
@@ -76,6 +140,7 @@ class MainScene extends Phaser.Scene {
 
   create() {
     // Initialize global game state
+    logGame("MainScene create() started.");
     window.currentState = window.GameState.HOUSE;
     
     // Create a Canvas Texture of the same size as your old canvas
@@ -190,15 +255,44 @@ class MainScene extends Phaser.Scene {
     updateLoanButton();
     
     changeState(window.GameState.HOUSE);
+
+    // Launch the initial state setup (will set initial layer if starting outside house)
+    completeStateChange(window.currentState, null); // Indicate no previous state initially
+
+    // Add input listeners (using Phaser's input system)
+    this.input.keyboard.on('keydown', handleKeyDown);
+    this.input.keyboard.on('keyup', handleKeyUp);
+
+    logGame("MainScene create() finished.");
   }
 
   update(time, delta) {
+    // If a layer transition is happening, pause game updates
+    if (isLayerTransitioning) {
+        // Optional: could add a very subtle visual cue here if needed
+        return;
+    }
+
+    // Standard game update logic
+    const now = performance.now();
     throttledLog("MainScene update START", 5000);
     // Update game mechanics (delta in ms)
     updateMechanics(delta);
 
     // Update floating texts
     window.floatingTexts = window.floatingTexts.filter(text => text.update(delta));
+
+    // --- Check for Layer Change ---
+    if (window.currentState === window.GameState.DOWNHILL || window.currentState === window.GameState.UPHILL) {
+        const playerLayer = window.getLayerByY(player.absY);
+        const newLayerId = playerLayer ? playerLayer.id : null;
+
+        // Check if the layer has changed and we are not already transitioning
+        if (newLayerId !== null && newLayerId !== currentLayerId) {
+            logGame(`Layer change detected: ${currentLayerId} -> ${newLayerId}. Starting transition.`);
+            handleLayerTransition(newLayerId); // Don't await here, let it run async
+        }
+    }
 
     // Call the render function (draws onto ctx)
     render();
@@ -211,6 +305,41 @@ class MainScene extends Phaser.Scene {
     
     throttledLog("MainScene update END", 5000);
   }
+}
+
+// Function to handle the fade sequence for layer transitions
+async function handleLayerTransition(newLayerId) {
+    if (isLayerTransitioning) {
+        logGame("handleLayerTransition called while already transitioning. Ignoring.");
+        return; // Prevent overlapping transitions
+    }
+
+    isLayerTransitioning = true;
+    const oldLayerId = currentLayerId;
+    logGame(`Starting layer transition fade: ${oldLayerId} -> ${newLayerId}`);
+
+    try {
+        await effects.sceneFadeWithBlack();
+        logGame("Layer transition: Screen faded black.");
+
+        // --- Update Layer State (while screen is black) ---
+        currentLayerId = newLayerId;
+        logGame(`Layer updated: Current layer is now ${currentLayerId}.`);
+        // Add any other layer-specific logic here if needed in the future
+        // e.g., clear old layer animals, spawn new layer animals?
+
+        await effects.sceneFadeFromBlack();
+        logGame("Layer transition: Fade back in complete.");
+
+    } catch (error) {
+        logGame(`Error during layer transition: ${error}`);
+        console.error(error);
+        // Attempt recovery: ensure input is unlocked and transition flag is reset
+        effects.unlockInput(); 
+    } finally {
+        isLayerTransitioning = false;
+        logGame(`Layer transition finished: ${oldLayerId} -> ${currentLayerId}. Resuming game updates.`);
+    }
 }
 
 // Original changeState function (modified)
@@ -237,9 +366,10 @@ async function completeStateChange(newState, prevState) { // Make async
   // Determine if it's a house transition (needs fade)
   const isEnteringHouse = newState === window.GameState.HOUSE && prevState !== window.GameState.HOUSE;
   const isLeavingHouse = prevState === window.GameState.HOUSE && newState !== window.GameState.HOUSE;
+  const isEnteringMountain = (newState === window.GameState.DOWNHILL || newState === window.GameState.UPHILL) && prevState === window.GameState.HOUSE;
   const isHouseTransition = isEnteringHouse || isLeavingHouse;
 
-  logGame(`isEnteringHouse: ${isEnteringHouse}, isLeavingHouse: ${isLeavingHouse}, isHouseTransition: ${isHouseTransition}`);
+  logGame(`isEnteringHouse: ${isEnteringHouse}, isLeavingHouse: ${isLeavingHouse}, isHouseTransition: ${isHouseTransition}, isEnteringMountain: ${isEnteringMountain}`);
 
   // --- Fade to Black (if needed) ---
   if (isHouseTransition) {
@@ -296,6 +426,10 @@ async function completeStateChange(newState, prevState) { // Make async
     }
     updateMoneyDisplay();
     logGame("HOUSE state setup complete.");
+    currentLayerId = null; // Reset layer when entering house
+    // Clear any existing animal entities when entering the house
+    logGame("Clearing animals for house entry.");
+    window.animals = [];
   }
   else if (newState === window.GameState.DOWNHILL) {
     logGame(`Setting up DOWNHILL state (previous: ${prevState}).`);
@@ -320,13 +454,15 @@ async function completeStateChange(newState, prevState) { // Make async
       logGame(`Set player start position: x=${player.x}, absY=${player.absY}`);
 
       // Recalculate startLayer based on the new fixed position if needed for logging/other logic
-      const startLayer = getLayerByY(player.absY); 
+      const startLayer = window.getLayerByY(player.absY); 
       
       downhillStartTime = performance.now();
       window.downhillStartTime = downhillStartTime; // Ensure global value is updated
       playerStartAbsY = player.absY;
       window.playerStartAbsY = playerStartAbsY; // Update global value
       logGame(`DOWNHILL starting: startTime=${downhillStartTime.toFixed(2)}, startY=${playerStartAbsY}, layer: ${startLayer ? startLayer.id : 'unknown'}`);
+      currentLayerId = startLayer ? startLayer.id : null; // Initialize current layer ID
+      logGame(`Initialized currentLayerId: ${currentLayerId}`);
     }
     else if (prevState === window.GameState.UPHILL) {
       logGame("Transitioning from UPHILL to DOWNHILL.");
@@ -336,7 +472,10 @@ async function completeStateChange(newState, prevState) { // Make async
       window.downhillStartTime = downhillStartTime; // Ensure global value is updated
       playerStartAbsY = player.absY;
       window.playerStartAbsY = playerStartAbsY; // Update global value
+      const currentLayer = window.getLayerByY(player.absY); // Get current layer when switching DOWNHILL from UPHILL
+      currentLayerId = currentLayer ? currentLayer.id : null;
       logGame(`DOWNHILL restart: startTime=${downhillStartTime.toFixed(2)}, startY=${playerStartAbsY}`);
+      logGame(`Set currentLayerId on DOWNHILL restart: ${currentLayerId}`);
     }
     logGame("DOWNHILL state setup complete.");
   }
@@ -362,12 +501,18 @@ async function completeStateChange(newState, prevState) { // Make async
       logGame(`Set player start position: x=${player.x}, absY=${player.absY}`);
       player.velocityY = 0; // Ensure no residual velocity
       player.xVel = 0;
+      const startLayer = window.getLayerByY(player.absY);
+      currentLayerId = startLayer ? startLayer.id : null; // Initialize current layer ID
+      logGame(`Initialized currentLayerId: ${currentLayerId}`);
     }
     
     if (prevState === window.GameState.DOWNHILL) {
       logGame("Transitioning from DOWNHILL to UPHILL.");
       awardMoney();
       logGame("Awarded money.");
+      const currentLayer = window.getLayerByY(player.absY); // Get current layer when switching UPHILL from DOWNHILL
+      currentLayerId = currentLayer ? currentLayer.id : null;
+      logGame(`Set currentLayerId on UPHILL restart: ${currentLayerId}`);
     }
     player.xVel = 0;
     logGame("UPHILL state setup complete.");

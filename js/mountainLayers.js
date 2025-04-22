@@ -44,6 +44,7 @@ const mountainLayers = [
  * @param {number} absoluteY - The absolute Y coordinate to check
  * @returns {Object|null} The layer object containing the Y coordinate, or null if outside all layers
  */
+// Remove export, function is assigned to window later
 function getLayerByY(absoluteY) {
   // Return the first layer that contains the Y coordinate
   const layer = mountainLayers.find(layer => 
@@ -80,7 +81,6 @@ function scaleXPositionBetweenLayers(currentX, sourceLayer, targetLayer) {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     mountainLayers,
-    getLayerByY,
     scaleXPositionBetweenLayers
   };
 } else {
