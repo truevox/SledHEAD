@@ -75,6 +75,29 @@ function handleUpgradeClick(upgradeType, upgradeKey) {
 // --- Input Handling Functions (Moved Before MainScene) ---
 // Moved handleKeyDown and handleKeyUp here to ensure they are defined before being used in MainScene.create
 
+/**
+ * Clears all held input states and resets player input flags.
+ * This should be called before locking input for a fade, to prevent sticky controls.
+ */
+function clearAllInputStates() {
+    for (const key in window.keys) {
+        if (window.keys[key]) {
+            // Dispatch a synthetic keyup event for all keys that are currently down
+            const event = new KeyboardEvent('keyup', { key });
+            window.dispatchEvent(event);
+            window.keys[key] = false;
+            // Release player control flags as appropriate
+            if (key === 'ArrowUp') player.isAccelerating = false;
+            if (key === 'ArrowDown') player.isBraking = false;
+            // Add any other keys that set player state here
+        }
+    }
+    // Defensive: also clear jump state if needed
+    if (player.isJumping && !window.keys[' ']) {
+        // Optionally handle jump release here if needed
+    }
+}
+
 function handleKeyDown(event) {
     // Allow number keys for layer switching in dev mode
     if (window.DEV_MODE && event.key >= '0' && event.key <= '9') {
@@ -319,8 +342,14 @@ async function handleLayerTransition(newLayerId) {
     logGame(`Starting layer transition fade: ${oldLayerId} -> ${newLayerId}`);
 
     try {
+        // --- Fix sticky input: clear all input states before fade ---
+        if (typeof clearAllInputStates === 'function') clearAllInputStates();
+
         await effects.sceneFadeWithBlack();
         logGame("Layer transition: Screen faded black.");
+
+        // --- Hold at black for 300ms for polish ---
+        await new Promise(res => setTimeout(res, 300));
 
         // --- Update Layer State (while screen is black) ---
         currentLayerId = newLayerId;
