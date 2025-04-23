@@ -37,6 +37,7 @@ const logThrottleTimes = {};
 function logGame(message) {
   console.log(`[Game - ${performance.now().toFixed(2)}ms] ${message}`);
 }
+window.logGame = logGame;
 
 function throttledLog(message, throttleTime = 5000) {
   const currentTime = Date.now();
@@ -312,8 +313,11 @@ class MainScene extends Phaser.Scene {
 
         // Check if the layer has changed and we are not already transitioning
         if (newLayerId !== null && newLayerId !== currentLayerId) {
-            logGame(`Layer change detected: ${currentLayerId} -> ${newLayerId}. Starting transition.`);
-            handleLayerTransition(newLayerId); // Don't await here, let it run async
+          // Log detailed layer boundary crossing info for debugging
+          const oldLayerInfo = window.mountainLayers && window.mountainLayers[currentLayerId];
+          const nextLayerInfo = window.mountainLayers && window.mountainLayers[newLayerId];
+          logGame(`[LAYER-DETECT] Boundary cross: ${currentLayerId}->${newLayerId}. absY=${player.absY}, oldLayerRange=[${oldLayerInfo.startY}-${oldLayerInfo.endY}], newLayerRange=[${nextLayerInfo.startY}-${nextLayerInfo.endY}]`);
+          handleLayerTransition(newLayerId); // Don't await here, let it run async
         }
     }
 
@@ -345,6 +349,11 @@ async function handleLayerTransition(newLayerId) {
         // --- Fix sticky input: clear all input states before fade ---
         if (typeof clearAllInputStates === 'function') clearAllInputStates();
 
+        // Log pre-teleport details for debugging
+        const prevLayerInfo = window.mountainLayers && window.mountainLayers[oldLayerId];
+        const targetLayerInfo = window.mountainLayers && window.mountainLayers[newLayerId];
+        logGame(`[LAYER-TRANSITION] Teleport start: oldLayerId=${oldLayerId}, newLayerId=${newLayerId}, player.absY=${player.absY}, oldLayerStartY=${prevLayerInfo ? prevLayerInfo.startY : 'unknown'}, newLayerStartY=${targetLayerInfo ? targetLayerInfo.startY : 'unknown'}`);
+
         await effects.sceneFadeWithBlack();
         logGame("Layer transition: Screen faded black.");
 
@@ -353,7 +362,28 @@ async function handleLayerTransition(newLayerId) {
 
         // --- Update Layer State (while screen is black) ---
         currentLayerId = newLayerId;
-        logGame(`Layer updated: Current layer is now ${currentLayerId}.`);
+        player.currentLayerIndex = newLayerId;
+        logGame(`Layer updated: Current layer is now ${currentLayerId}. (player.currentLayerIndex also set)`);
+
+        // --- SCALE player X position for new layer width ---
+        const oldLayer = window.mountainLayers && window.mountainLayers[oldLayerId];
+        const newLayer = window.mountainLayers && window.mountainLayers[newLayerId];
+        if (oldLayer && newLayer) {
+            // Calculate scaled X position based on layer widths
+            if (typeof window.scaleXPositionBetweenLayers === 'function') {
+                const oldX = player.x;
+                player.x = window.scaleXPositionBetweenLayers(player.x, oldLayer, newLayer);
+                logGame(`[FADE] Player X scaled for layer ${newLayerId}: oldX=${oldX.toFixed(2)}, newX=${player.x.toFixed(2)}, oldWidth=${oldLayer.width}, newWidth=${newLayer.width}`);
+            } else {
+                logGame(`[FADE] Warning: scaleXPositionBetweenLayers function not found. Setting player.x to default 10.`);
+                player.x = 10; // Fallback if scaling function isn't loaded
+            }
+            // Y position is handled by normal movement, no teleport needed here.
+        } else {
+            logGame(`[FADE] Warning: mountainLayers[${oldLayerId}] or [${newLayerId}] not found for X scaling.`);
+            player.x = 10; // Fallback if layer data is missing
+        }
+        logGame(`[FADE] Player X scaling complete, about to fade in.`);
         // Add any other layer-specific logic here if needed in the future
         // e.g., clear old layer animals, spawn new layer animals?
 
@@ -415,6 +445,16 @@ async function completeStateChange(newState, prevState) { // Make async
 
   if (newState === window.GameState.HOUSE) {
     logGame("Setting up HOUSE state.");
+    // Always set player to bottom of mountain when entering house
+    if (window.mountainLayers && window.mountainLayers.length > 0) {
+      player.x = 10;
+      player.absY = window.mountainLayers[window.mountainLayers.length - 1].endY - 70;
+      logGame(`Set player start position (HOUSE): x=${player.x}, absY=${player.absY}`);
+    } else {
+      player.x = 10;
+      player.absY = 19930;
+      logGame(`Set player start position (HOUSE, fallback): x=${player.x}, absY=${player.absY}`);
+    }
     document.getElementById("upgrade-menu").style.display = "block";
     document.getElementById("game-screen").style.display = "none";
     const bestTimeText = document.getElementById("bestTimeText");
@@ -478,7 +518,9 @@ async function completeStateChange(newState, prevState) { // Make async
       earlyFinish = false;
       player.collisions = 0;
       
-      // Set fixed starting position at the bottom of the mountain
+      // Only set a fixed starting position when entering DOWNHILL from the HOUSE.
+      // This prevents unwanted teleportation during normal state/layer transitions.
+      // We intentionally do NOT reset player.absY or player.x for other transitions (e.g., UPHILL <-> DOWNHILL, layer changes)
       player.x = 10; // Start at x = 10
       player.absY = 19930; // Start at y = 19930 (bottom)
       logGame(`Set player start position: x=${player.x}, absY=${player.absY}`);

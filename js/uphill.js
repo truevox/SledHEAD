@@ -26,8 +26,10 @@ function updateUphill(deltaTime) {
   // Use wrapping instead of clamping for cylindrical world
   player.x = calculateWrappedX(newXUphill, currentLayer.width);
 
-  // Prevent going beyond mountain bounds vertically
-  player.absY = clamp(player.absY, 0, mountainHeight);
+  // Only clamp if player actually exceeds the mountain bounds
+  if (player.absY < 0) player.absY = 0;
+  // At the bottom, only clamp if we're transitioning to the house
+  if (player.absY > mountainHeight) player.absY = mountainHeight;
 
   // Camera and altitude control
   if (keysDown["ArrowLeft"]) { player.cameraAngle -= 2; }
@@ -70,6 +72,7 @@ function updateUphill(deltaTime) {
   // Return to house if player reaches bottom of mountain
   if (player.absY >= mountainHeight) {
     player.absY = mountainHeight;
+    logGame(`[DEBUG] player.absY clamped to ${player.absY} at absolute bottom in updateUphill`);
     console.log("Reached bottom. Returning to house.");
     changeState(GameState.HOUSE);
   }
