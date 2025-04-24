@@ -367,10 +367,14 @@ async function handleLayerTransition(newLayerId) {
         const oldLayer = window.mountainLayers && window.mountainLayers[oldLayerId];
         const newLayer = window.mountainLayers && window.mountainLayers[newLayerId];
         if (oldLayer && newLayer) {
-            // Calculate scaled X position based on layer widths
+            // Perform X scaling ONLY while fully black, and finish before fade-in
             if (typeof window.scaleXPositionBetweenLayers === 'function') {
                 const oldX = player.x;
+                // INSTANT teleport/scale -- if you want a lerp, replace this with a blackout-timed lerp
                 player.x = window.scaleXPositionBetweenLayers(player.x, oldLayer, newLayer);
+                // Clear velocity after teleport to prevent post-fade sliding
+                if ('velocityX' in player) player.velocityX = 0;
+                if ('velocityY' in player) player.velocityY = 0;
                 logGame(`[FADE] Player X scaled for layer ${newLayerId}: oldX=${oldX.toFixed(2)}, newX=${player.x.toFixed(2)}, oldWidth=${oldLayer.width}, newWidth=${newLayer.width}`);
             } else {
                 logGame(`[FADE] Warning: scaleXPositionBetweenLayers function not found. Setting player.x to default 10.`);
