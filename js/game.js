@@ -335,10 +335,7 @@ class MainScene extends Phaser.Scene {
 }
 
 // Function to handle the fade sequence for layer transitions
-// Function to handle the fade sequence for layer transitions
 async function handleLayerTransition(newLayerId) {
-    const now = () => Date.now(); // For timestamped logs
-
     if (isLayerTransitioning) {
         logGame("handleLayerTransition called while already transitioning. Ignoring.");
         return; // Prevent overlapping transitions
@@ -346,28 +343,30 @@ async function handleLayerTransition(newLayerId) {
 
     isLayerTransitioning = true;
     const oldLayerId = currentLayerId;
-    logGame(`[${now()}] Starting layer transition fade: ${oldLayerId} -> ${newLayerId}`);
+    logGame(`Starting layer transition fade: ${oldLayerId} -> ${newLayerId}`);
 
     try {
-        // --- Begin fade to black over 0.25s ---
-        logGame(`[${now()}] FADE OUT START`);
-        await effects.sceneFadeWithBlack(0.25);
-        logGame(`[${now()}] FULL BLACK START`);
-
-        // --- Once fully black: clear all input states, lock input, block new keydowns ---
+        // --- Fix sticky input: clear all input states before fade ---
         if (typeof clearAllInputStates === 'function') clearAllInputStates();
-        window.inputLocked = true;
-        logGame(`[${now()}] Input locked and all keys released at black.`);
 
-        // --- Move/teleport player as needed (X scaling for new layer) ---
+        // Log pre-teleport details for debugging
         const prevLayerInfo = window.mountainLayers && window.mountainLayers[oldLayerId];
         const targetLayerInfo = window.mountainLayers && window.mountainLayers[newLayerId];
-        logGame(`[${now()}] [LAYER-TRANSITION] Teleport start: oldLayerId=${oldLayerId}, newLayerId=${newLayerId}, player.absY=${player.absY}, oldLayerStartY=${prevLayerInfo ? prevLayerInfo.startY : 'unknown'}, newLayerStartY=${targetLayerInfo ? targetLayerInfo.startY : 'unknown'}`);
+        logGame(`[LAYER-TRANSITION] Teleport start: oldLayerId=${oldLayerId}, newLayerId=${newLayerId}, player.absY=${player.absY}, oldLayerStartY=${prevLayerInfo ? prevLayerInfo.startY : 'unknown'}, newLayerStartY=${targetLayerInfo ? targetLayerInfo.startY : 'unknown'}`);
 
+        await effects.sceneFadeWithBlack();
+        logGame("Layer transition: Screen faded black.");
+
+        // --- Block input and clear held keys IMMEDIATELY after fade out ---
+        effects.lockInput(); // WHY: Prevent new keydown events during black
+        if (typeof clearAllInputStates === 'function') clearAllInputStates(); // WHY: Simulate keyup for all held keys
+
+        // --- Update Layer State (teleport/move while hidden) ---
         currentLayerId = newLayerId;
         player.currentLayerIndex = newLayerId;
-        logGame(`[${now()}] Layer updated: Current layer is now ${currentLayerId}. (player.currentLayerIndex also set)`);
+        logGame(`Layer updated: Current layer is now ${currentLayerId}. (player.currentLayerIndex also set)`);
 
+        // --- SCALE player X position for new layer width ---
         const oldLayer = window.mountainLayers && window.mountainLayers[oldLayerId];
         const newLayer = window.mountainLayers && window.mountainLayers[newLayerId];
         if (oldLayer && newLayer) {
@@ -375,29 +374,26 @@ async function handleLayerTransition(newLayerId) {
             if (typeof window.scaleXPositionBetweenLayers === 'function') {
                 const oldX = player.x;
                 player.x = window.scaleXPositionBetweenLayers(player.x, oldLayer, newLayer);
-                logGame(`[${now()}] [FADE] Player X normalization (layer-change x normalization): oldX=${oldX.toFixed(2)}, newX=${player.x.toFixed(2)}, oldWidth=${oldLayer.width}, newWidth=${newLayer.width}`);
+                logGame(`[FADE] Player X scaled for layer ${newLayerId}: oldX=${oldX.toFixed(2)}, newX=${player.x.toFixed(2)}, oldWidth=${oldLayer.width}, newWidth=${newLayer.width}`);
             } else {
-                logGame(`[${now()}] [FADE] Warning: scaleXPositionBetweenLayers function not found. Setting player.x to default 10.`);
-                player.x = 10;
+                logGame(`[FADE] Warning: scaleXPositionBetweenLayers function not found. Setting player.x to default 10.`);
+                player.x = 10; // Fallback if scaling function isn't loaded
             }
+            // Y position is handled by normal movement, no teleport needed here.
         } else {
-            logGame(`[${now()}] [FADE] Warning: mountainLayers[${oldLayerId}] or [${newLayerId}] not found for X scaling.`);
-            player.x = 10;
+            logGame(`[FADE] Warning: mountainLayers[${oldLayerId}] or [${newLayerId}] not found for X scaling.`);
+            player.x = 10; // Fallback if layer data is missing
         }
-        logGame(`[${now()}] [FADE] Player X scaling complete, holding black before fade in.`);
+        logGame(`[FADE] Player X scaling complete, about to fade in.`);
 
-        // --- Hold black for 0.5s (500ms) ---
+        // --- Hold at black for 500ms for polish ---
         await new Promise(res => setTimeout(res, 500));
-        logGame(`[${now()}] FULL BLACK END`);
 
-        // --- After black hold, unlock input to allow new keydowns ---
-        window.inputLocked = false;
-        logGame(`[${now()}] Input unlocked after black hold. Accepting new keydown events.`);
+        // --- Allow input again just before fade in ---
+        effects.unlockInput(); // WHY: New keydown events allowed after black hold
 
-        // --- Fade back in over 0.25s ---
-        logGame(`[${now()}] FADE IN START`);
-        await effects.sceneFadeFromBlack(0.25);
-        logGame(`[${now()}] FADE IN END`);
+        await effects.sceneFadeFromBlack();
+        logGame("Layer transition: Fade back in complete.");
 
     } catch (error) {
         logGame(`Error during layer transition: ${error}`);
@@ -409,7 +405,6 @@ async function handleLayerTransition(newLayerId) {
         logGame(`Layer transition finished: ${oldLayerId} -> ${currentLayerId}. Resuming game updates.`);
     }
 }
-
 
 // Original changeState function (modified)
 function changeState(newState) {

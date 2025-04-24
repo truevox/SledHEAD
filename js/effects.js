@@ -110,12 +110,8 @@ function animateOpacity(from, to, duration) {
  */
 export function sceneFadeWithBlack() {
   // Release all held keys to prevent sticky controls after fade
-  if (typeof clearAllInputStates === 'function') {
-    clearAllInputStates();
-  }
   const overlay = ensureFadeOverlay();
   logEffect("Starting sceneFadeWithBlack: Fading TO black.");
-  lockInput();
   // Fade in (black), resolve when fully black
   return animateOpacity('0', '1', 250).then(() => {
     logEffect("sceneFadeWithBlack: Fade TO black complete. Screen is black.");
@@ -144,7 +140,6 @@ export async function sceneFadeFromBlack() {
   await animateOpacity('1', '0', 250);
   overlay.style.opacity = '0'; // Ensure it's fully transparent
   logEffect("sceneFadeFromBlack: Fade OUT complete.");
-  unlockInput(); // Unlock input *after* fade out is complete
 }
 
 // WHY: Expose for dev console
