@@ -291,11 +291,8 @@ class MainScene extends Phaser.Scene {
   }
 
   update(time, delta) {
-    // If a layer transition is happening, pause game updates
-    if (isLayerTransitioning) {
-        // Optional: could add a very subtle visual cue here if needed
-        return;
-    }
+    // Allow update loop to run even during layer transitions (fade/blackout)
+    // Only user input is blocked during transition; movement/camera/game logic continue
 
     // Standard game update logic
     const now = performance.now();
