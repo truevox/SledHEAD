@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SledHEAD - Coming Soon!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for pixelated elements and specific color overrides */
+        body {
+            font-family: 'Inter', sans-serif; /* Default body font */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        h1, h2, h3, .pixel-font {
+            font-family: 'Press Start 2P', cursive; /* Pixel font for headings and specific elements */
+        }
+
+        /* Custom pixelated section divider */
+        .section-divider {
+            border: none;
+            height: 6px;
+            background:
+                repeating-linear-gradient(
+                    45deg,
+                    #FFD700,
+                    #FFD700 6px,
+                    #073763 6px,
+                    #073763 12px
+                );
+            margin-top: 2.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .btn-pixel {
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        .highlight-goldenrod-shadow {
+            color: #FFD700; /* sledhead-goldenrod */
+            text-shadow: 2px 2px 0px #073763; /* Dark blue shadow */
+        }
+
+        img {
+            background-color: #f0f0f0;
+            display: block;
+        }
+
+    </style>
+    <script>
+        // Tailwind Custom Configuration
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'sledhead-light-blue': '#E0F2FE',
+                        'sledhead-dark-blue': '#073763',
+                        'sledhead-goldenrod': '#FFD700',
+                        'sledhead-rich-blue': '#0047AB',
+                        'sledhead-lore-text': '#274e13',
+                    },
+                    fontFamily: {
+                        'press-start': ['"Press Start 2P"', 'cursive'],
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-sledhead-light-blue text-sledhead-dark-blue bg-[url('BACKGROUND%20-%20A%20pixel%20art%20scene%20of%20a%20snowy%20mountaintop.webp')]">
+    <div class="container mx-auto max-w-4xl bg-white/75 backdrop-blur-sm shadow-2xl rounded-lg my-8 p-6 md:p-10">
+
+        <header class="text-center mb-10">
+            <img src="logo.png"
+                 alt="SledHEAD Logo"
+                 class="mx-auto mb-6 w-64 sm:w-80 md:w-96 h-auto border-4 border-sledhead-goldenrod rounded-md shadow-lg"
+                 onerror="this.onerror=null; this.src='https://placehold.co/300x150/073763/FFD700?text=SledHEAD+Logo'; this.alt='SledHEAD Logo Placeholder';">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl text-sledhead-goldenrod drop-shadow-[3px_3px_0_rgba(7,55,99,1)]">The Mountain Awaits...</h1>
+        </header>
+
+        <main>
+            <section class="mb-10">
+                <p class="text-lg md:text-xl italic text-sledhead-lore-text mb-6 leading-relaxed">
+                    From childhood memories on Grandpa’s hill, where the snow was always <span class="font-semibold text-white">whiter above</span> and <span class="font-semibold text-gray-500">dirtier below</span>, a dream was born. A dream of conquering the ultimate slope, of becoming a legend. Welcome to the exhilarating world of <span class="font-press-start"><span class="text-sledhead-goldenrod [text-shadow:2px_2px_0px_#073763]">Sled</span><span class="text-sledhead-rich-blue [text-shadow:2px_2px_0px_#073763]">HEAD</span></span>!
+                </p>
+                <p class="text-base md:text-lg leading-relaxed">
+                    Get ready to carve your legacy into the frosty peaks of <span class="font-semibold highlight-goldenrod-shadow">Debumont</span> and beyond! SledHEAD is an upcoming <span class="font-semibold text-sledhead-rich-blue">Trick & Time Trial Racer Adventure</span>. You are an aspiring sledding champion and content creator, destined to master an enormous, wild mountain.
+                </p>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <section class="mb-10">
+                <h2 class="text-2xl sm:text-3xl text-sledhead-goldenrod mb-6 drop-shadow-[2px_2px_0_rgba(7,55,99,1)]">What is SledHEAD?</h2>
+                <p class="text-base md:text-lg mb-4 leading-relaxed">
+                    It's more than just sledding; it's an epic adventure! You've purchased an entire <span class="font-semibold">procedurally generated mountain</span> to train and broadcast your extreme sled runs. Optimize your descents for breathtaking speed and dazzling tricks, manage your stamina on the challenging climbs, and watch your fanbase grow with every daring feat!
+                </p>
+                <p class="text-base md:text-lg mb-4 leading-relaxed">
+                    Your journey begins on <span class="font-semibold highlight-goldenrod-shadow">Debumont</span>, a welcoming peak famed for its rolling groomers and cozy village charm. Learn the ropes, pay off your initial debts, and prepare to unlock a universe of new, challenging mountains. Each peak boasts unique environments and mechanics – from the treacherous, icy paths of the <span class="font-semibold text-sledhead-rich-blue">Garbage Dump Glacier</span>, to the sun-scorched dunes of <span class="font-semibold text-sledhead-rich-blue">Pyramid Peak</span>, and even into the neon-drenched, digital depths of <span class="font-semibold text-sledhead-rich-blue">Bitstream Bluffs</span>!
+                </p>
+                <p class="text-base md:text-lg mb-6 leading-relaxed">
+                    But there's so much more to discover! The mountain is alive with opportunities: engage in thrilling <span class="font-semibold text-sledhead-rich-blue">minigames</span> like wildlife photography, treasure hunting through digging and panning, high-flying kite adventures, meticulous beekeeping, exciting RC sledding, and even sweet sap sugaring. You'll meet a cast of <span class="font-semibold text-sledhead-rich-blue">quirky and helpful NPCs</span> like Jake the old sledboarding pro, Bearwhisperer Carrie, the liaison to the sled-racing bears, the ever-hospitable Aria at the Vermont Homestyle Hotel, Minnie with her treasure-finding tools, and Pete the Beekeeper, who knows the secrets of the forest. They'll offer quests, upgrades, and bring the world of SledHEAD to vibrant life!
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
+                    <img src="GroupPhotoFlavorArt.png"
+                         alt="SledHEAD Flavor Art - Group Photo"
+                         class="w-full h-auto rounded-md border-2 border-sledhead-dark-blue shadow-lg object-cover aspect-[4/3]"
+                         onerror="this.onerror=null; this.src='https://placehold.co/400x300/073763/FFD700?text=Flavor+Art+1'; this.alt='Flavor Art Placeholder 1';">
+                    <img src="MenloMagicianFlavorArt.png"
+                         alt="SledHEAD Flavor Art - Menlo Magician"
+                         class="w-full h-auto rounded-md border-2 border-sledhead-dark-blue shadow-lg object-cover aspect-[4/3]"
+                         onerror="this.onerror=null; this.src='https://placehold.co/400x300/073763/FFD700?text=Flavor+Art+2'; this.alt='Flavor Art Placeholder 2';">
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-10">
+                <section class="text-center flex flex-col items-center">
+                    <h2 class="text-2xl sm:text-3xl text-sledhead-goldenrod mb-4 drop-shadow-[2px_2px_0_rgba(7,55,99,1)]">Track Our Opensource Progress!</h2>
+                    <img src="SledHEADCoverArt.png"
+                             alt="SledHEAD Game Cover Art"
+                             class="mx-auto mb-6 w-full max-w-xs h-auto rounded-md border-2 border-sledhead-dark-blue shadow-lg object-contain"
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x300/073763/FFD700?text=SledHEAD+WIP+Cover'; this.alt='SledHEAD WIP Cover Art Placeholder';">
+                    <div class="flex-grow mb-6">
+                        <p class="text-base md:text-lg leading-relaxed">
+                            The full SledHEAD experience is actively under development. While primary focus has temporarily shifted to complete the <span class="font-semibold highlight-goldenrod-shadow">Bitstream Bluffs</span> teaser game, you can still check out the main game's opensource progress and witness the mountain evolve!
+                        </p>
+                    </div>
+                    <a href="http://go.sledhead.ing" target="_blank"
+                       class="btn-pixel mt-auto inline-block bg-sledhead-goldenrod text-sledhead-dark-blue hover:bg-sledhead-rich-blue hover:text-white py-3 px-6 rounded-md text-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 active:scale-95 border-2 border-sledhead-dark-blue hover:border-sledhead-goldenrod">
+                        Explore SledHEAD (WIP)
+                    </a>
+                </section>
+
+                <section class="text-center flex flex-col items-center">
+                    <h2 class="text-2xl sm:text-3xl text-sledhead-goldenrod mb-4 drop-shadow-[2px_2px_0_rgba(7,55,99,1)]">Glitch into the Simulation!</h2>
+                     <img src="BitstreamBluffsCoverArt.png"
+                             alt="Bitstream Bluffs Cover Art"
+                             class="mx-auto mb-6 w-full max-w-xs h-auto rounded-md border-2 border-sledhead-dark-blue shadow-lg object-contain"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/073763/FFD700?text=Bitstream+Bluffs+Cover'; this.alt='Bitstream Bluffs Cover Art Placeholder';">
+                    <div class="flex-grow mb-6">
+                        <p class="text-base md:text-lg leading-relaxed">
+                            Get a taste of SledHEAD with <span class="font-semibold highlight-goldenrod-shadow">Bitstream Bluffs</span>! A downhill-only, momentum-driven sim where glitch is gospel and every run tells a unique story. Master distinct tricks, navigate procedural hazards, and embrace the bit-rot aesthetic in this fast-paced teaser.
+                        </p>
+                    </div>
+                    <a href="http://simulate.sledhead.ing" target="_blank"
+                       class="btn-pixel mt-auto inline-block bg-sledhead-dark-blue text-sledhead-goldenrod hover:bg-sledhead-goldenrod hover:text-sledhead-dark-blue py-3 px-6 rounded-md text-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 active:scale-95 border-2 border-sledhead-goldenrod hover:border-sledhead-dark-blue">
+                        Play Bitstream Bluffs!
+                    </a>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <footer class="text-center mt-10 mb-8 py-6 bg-sledhead-dark-blue/80 text-white w-full">
+        <p class="pixel-font text-sm">&copy; 2025 SledHEAD - Coming Soon to <a href="https://sledhead.ing" class="text-sledhead-goldenrod hover:underline">sledhead.ing</a>!</p>
+        <p class="mt-2 text-xs font-inter">Follow the cold call to adventure!</p>
+    </footer>
+
+</body>
+</html>
