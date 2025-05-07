@@ -246,6 +246,7 @@ function updateDownhill(deltaTime) {
   
   player.velocityY += player.isJumping ? TWEAK.baseGravity : gravity;
   player.absY += player.velocityY;
+  logGame(`[DEBUG] player.absY set to ${player.absY} after += velocityY in updateDownhill`);
   updateLiveMoney();
   
   // Update all animals in the global array
@@ -256,6 +257,7 @@ function updateDownhill(deltaTime) {
   // Check for transition to UPHILL mode near bottom
   if (player.absY >= mountainHeight - (player.height * 4)) {
     player.absY = mountainHeight - (player.height * 4);
+    logGame(`[DEBUG] player.absY clamped to ${player.absY} at bottom soft limit in updateDownhill`);
     player.velocityY = 0;
     console.log("Reached transition point. Switching to uphill mode.");
     
@@ -274,6 +276,7 @@ function updateDownhill(deltaTime) {
   // Check for actual bottom
   if (player.absY >= mountainHeight) {
     player.absY = mountainHeight;
+    logGame(`[DEBUG] player.absY clamped to ${player.absY} at absolute bottom in updateDownhill`);
     console.log("Reached bottom. Returning to house.");
     awardMoney();
     changeState(GameState.HOUSE);

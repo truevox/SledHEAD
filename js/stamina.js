@@ -151,6 +151,22 @@ class Stamina {
       // Draw the stamina portion
       this.ctx.fillStyle = color;
       this.ctx.fillRect(0, 0, this.canvas.width * staminaRatio, this.canvas.height);
+
+      // Overlay current/max stamina as text for player clarity
+      // Use white text with a dark outline for maximum readability over any bar color
+      const current = Math.floor(this.currentStamina);
+      const max = this.getMaxStamina();
+      const text = `${current} / ${max}`;
+      this.ctx.font = 'bold 15px sans-serif';
+      this.ctx.textAlign = 'center';
+      this.ctx.textBaseline = 'middle';
+      // Draw outline for contrast
+      this.ctx.strokeStyle = '#222';
+      this.ctx.lineWidth = 3;
+      this.ctx.strokeText(text, this.canvas.width / 2, this.canvas.height / 2);
+      // Draw main text
+      this.ctx.fillStyle = '#fff';
+      this.ctx.fillText(text, this.canvas.width / 2, this.canvas.height / 2);
     }
   }
   

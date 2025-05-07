@@ -90,23 +90,24 @@ function updatePlayerLayer() {
     const previousLayerWidth = previousLayer.width;
     const oldX = player.x;
     
-    // Update to the new layer
-    player.currentLayerIndex = layer.id;
+    // Layer crossing detected: defer all layer index and Y changes to handleLayerTransition
+    // (No update of player.currentLayerIndex here)
     
-    // Get the new layer's width
+    // Get the new layer's width for horizontal scaling
     const newLayerWidth = layer.width;
     
     // Calculate the scaling factor (prevent division by zero)
     const scaleFactor = previousLayerWidth > 0 ? newLayerWidth / previousLayerWidth : 1;
     
-    // Handle special case: if player is exactly at the right edge, keep them at the right edge
+    // Handle horizontal position scaling and wrapping
     if (player.x === previousLayerWidth) {
+      // Handle special case: if player is exactly at the right edge, keep them at the right edge
       player.x = newLayerWidth;
     } else {
       // Scale the player's horizontal position proportionally
       player.x = player.x * scaleFactor;
       
-      // Only apply wrapping if the position is actually out of bounds
+      // Apply wrapping if the scaled position is out of the new layer's bounds
       if (player.x >= newLayerWidth || player.x < 0) {
         player.x = calculateWrappedX(player.x, newLayerWidth);
       }
@@ -114,26 +115,6 @@ function updatePlayerLayer() {
     
     // Log the scaling information
     console.log(`Horizontal scaling: oldX=${oldX.toFixed(1)}, oldWidth=${previousLayerWidth}, newWidth=${newLayerWidth}, scaleFactor=${scaleFactor.toFixed(3)}, newX=${player.x.toFixed(1)}`);
-    
-    // Determine transition direction (up or down)
-    if (previousLayerIndex > layer.id) {
-      // Moving UP to a higher layer (lower index)
-      console.log(`Transitioning UP to Layer ${layer.id} (from ${previousLayerIndex})`);
-      
-      // Place player at the bottom edge of the new higher layer
-      // Adjust player position to just inside the endY boundary of the new layer
-      player.absY = layer.endY - 1;
-      
-    } else {
-      // Moving DOWN to a lower layer (higher index)
-      console.log(`Transitioning DOWN to Layer ${layer.id} (from ${previousLayerIndex})`);
-      
-      // Place player at the top edge of the new lower layer
-      // Set player position to exactly at startY boundary of the new layer
-      player.absY = layer.startY;
-    }
-    
-    console.log(`Player repositioned to Y=${player.absY.toFixed(1)} at ${layer.id === previousLayerIndex - 1 ? 'bottom' : 'top'} of layer ${layer.id}`);
   }
 }
 
