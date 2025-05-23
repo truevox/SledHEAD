@@ -1768,65 +1768,66 @@ This system ensures **players always have room to grow**, while keeping **SledHE
 
 ---
 
-## 🚚 0 • Westinghouse **Edison‑EV** Prime Mover
+## 🚚 0 • Menlo Magician **EVison** Prime Mover
 
 | Spec                          | Detail                                                                                                                                     | Little Extras                                                                                                    |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| **Drive Train**               | Quad in‑hub motors, instant torque for steep haul roads.                                                                                   | Regenerative braking dumps juice back into the pack on the ride down the pass—Maxi loves watchin’ the kWh climb. |
+| :---------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------- |
+| **Drive Train**               | Quad in‑hub motors, instant torque for steep haul roads.                                                                                   | Regenerative braking dumps juice back into the pack on the ride down the pass—Maxi loves watchin’ the kWh climb. |
 | **Range‑Extender**            | 4‑cyl. hyper‑efficient diesel (runs on used fryer oil or #2).                                                                              | Aria skims the spent oil from her fry‑pot, Maxi filters it, *boom* free top‑ups.                                 |
-| **Dual Driver Cabin**         | Left seat: Maxi (programmable pedals). Right seat: **Bruin the Bear**—reinforced paw‑grips, high‑torque steer servo, bear‑sized seat belt. | Dash plaque reads *“BJ & The Bear II – No Monkey Business!”*                                                     |
-| **Cab‑to‑Coach Walk‑Through** | Pressure‑sealed door to Trailer 1.                                                                                                         | Means Carrie can sip cocoa, Bruin can keep one paw on the wheel, and nobody freezes.                             |
-| **Exterior Flair**            | *DON’T DEADHEAD, SLEDHEAD!* in bold Yellow on Snow Blue.                                                                                   | Back‑lit letters double as hazard panel at night.                                                                |
+| **Dual Driver Cabin**         | Left seat: Maxi (programmable pedals). Right seat: **Bruin the Bear**—reinforced paw‑grips, high‑torque steer servo, bear‑sized seat belt. | Dash plaque reads *“BJ & The Bear II – No Monkey Business!”*                                                     |
+| **Cab‑to‑Coach Walk‑Through** | Pressure‑sealed door to Trailer 1.                                                                                                         | Means Carrie can sip cocoa, Bruin can keep one paw on the wheel, and nobody freezes.                             |
+| **Exterior Flair**            | *DON’T DEADHEAD, SLEDHEAD!* in bold Yellow on Snow Blue.                                                                                   | Back‑lit letters double as hazard panel at night.                                                                |
 
 ---
 
-### 🏡 1 • TRAILER 1 – “The Lodge Car”
+### 🏡 1 • TRAILER 1 – “The Lodge Car”
 
 #### ▼ Lower Deck – **Front‑of‑House, Kitchen, Cozy Lounge**
 
-| Zone                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Fixtures                                                                                                                                                                                                                                         | Daily Life Snippets                                                                                                                                                                       |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Covered Side Porch**                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Pop‑out stairs + under‑step boot heaters.                                                                                                                                                                                                        | Guests stamp snow, hang parkas, then shuffle inside.                                                                                                                                      |
-| **Check‑in / Service Bar**                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Polished maple slab, six log stools, two POS tablets, chalkboard specials.                                                                                                                                                                       | Aria spins to plate, spins back to checkin & chat—zero steps.                                                                                                                             |
-| **Aria’s **************************************************************************************************************************************************************************************************************************************Open************************************************************************************************************************************************************************************************************************************** Kitchen** | Behind the bar, face‑to‑face with customers. Double oven, 6‑burner propane top, flat‑top griddle, sous‑vide circulator, walk‑in pantry, chest freezer for wontons & pizza dough. **Exterior Pass‑Through Window** slides open street‑food style. | – *Inside service*: stools & dining nook.– *Outside service*: pass‑through window for slope‑side cocoa, slices, and soup.Aria can whip cocoa, shout “Hiya Cuz!” and never move her boots. |
-| **Dining Nook**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Two 4‑tops plus drop‑leaf extenders → seats 12 in a pinch. Hidden storage benches for extra cutlery & board games.                                                                                                                               | Weekly “Cocoa & Cryptids” trivia night hosted by Darlene.                                                                                                                                 |
-| **Lobby Lounge**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Picture window framing the slope. Four deep chairs, rugged coffee‑table made from retired sled rails, roaring pellet stove, magazine rack. **Bruin's Bear Chair** recliner (Kevlar fabric, seatbelt) next to the stove.                          | Bruin snoozes here when not driving or lumberin’ about. Carrie will often sit nearby when she & Bruin aren't out with the other bears.                                                    |
-| **Access Tunnel**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Accordion‑sealed hallway through articulation to Trailer 2.                                                                                                                                                                                      | Sheltered and out of the weather.                                                                                                                                                         |
+| Zone                       | Fixtures                                                                                                                                                                                                                                         | Daily Life Snippets                                                                                                                                                                        |
+| :------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Covered Side Porch**     | Pop‑out stairs + under‑step boot heaters.                                                                                                                                                                                                        | Guests stamp snow, hang parkas, then shuffle inside.                                                                                                                                       |
+| **Check‑in / Service Bar** | Polished maple slab, six log stools, two POS tablets, chalkboard specials.                                                                                                                                                                       | Aria spins to plate, spins back to checkin & chat—zero steps.                                                                                                                              |
+| **Aria’s Open Kitchen**    | Behind the bar, face‑to‑face with customers. Double oven, 6‑burner propane top, flat‑top griddle, sous‑vide circulator, walk‑in pantry, chest freezer for wontons & pizza dough. **Exterior Pass‑Through Window** slides open street‑food style. | – *Inside service*: stools & dining nook.– *Outside service*: pass‑through window for slope‑side cocoa, slices, and soup. Aria can whip cocoa, shout “Hiya Cuz!” and never move her boots. |
+| **Dining Nook**            | Two 4‑tops plus drop‑leaf extenders → seats 12 in a pinch. Hidden storage benches for extra cutlery & board games.                                                                                                                               | Weekly “Cocoa & Cryptids” trivia night hosted by Darlene.                                                                                                                                  |
+| **Lobby Lounge**           | Picture window framing the slope. Four deep chairs, rugged coffee‑table made from retired sled rails, roaring pellet stove, magazine rack. **Bruin's Bear Chair** recliner (Kevlar fabric, seatbelt) next to the stove.                          | Bruin snoozes here when not driving or lumberin’ about. Carrie will often sit nearby when she & Bruin aren't out with the other bears.                                                     |
+| **Access Tunnel**          | Accordion‑sealed hallway through articulation to Trailer 2.                                                                                                                                                                                      | Sheltered and out of the weather.                                                                                                                                                          |
 
 #### ▲ Upper Deck – **Crew Quarters & Bath**
 
-- **Three Triple‑Bunk Rooms** (9 pods):
-  - Individual reading lights, USB‑C ports, privacy curtain, quilted wool blankets from Vermont sheep.
-  - Lockers under the lower bunk; middle bunk folds to couch day‑mode.
-- **Shared Bath Module**: on‑demand hot‑water shower, vacuum‑flush toilet, fold‑down sink, grey‑water recycler feeds greenhouse radiator coils.
-- **Fire‑Pole & Stair**: drop down to the bar for midnight cocoa raids; stair for normal folk.
+* **Three Triple‑Bunk Rooms** (9 pods):
+
+  * Individual reading lights, USB‑C ports, privacy curtain, quilted wool blankets from Vermont sheep.
+  * Lockers under the lower bunk; middle bunk folds to couch day‑mode.
+* **Shared Bath Module**: on‑demand hot‑water shower, vacuum‑flush toilet, fold‑down sink, grey‑water recycler feeds greenhouse radiator coils.
+* **Fire‑Pole & Stair**: drop down to the bar for midnight cocoa raids; stair for normal folk.
 
 ---
 
-### 🔧 2 • TRAILER 2 – “Ops & Shops Car”
+### 🔧 2 • TRAILER 2 – “Ops & Shops Car”
 
 #### ▲ Upper Deck – **Labs & Private Cabins**
 
 | Half                               | Occupant | Details                                                                                                                                                                                                                                                                                                                                                |
-| ---------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Forward 50 % – Maxi’s Tech‑Lab** | Maxi     | • Triple‑screen dev rig, solder station, Li‑Po charge bank, 3‑D printer tower (PLA, PETG, ABS, conductive).• RC‑sled telemetry wall, drone parts drawers, spare flight‑controllers.• Murphy‑style bunk folds out of wall; LED star‑ceiling for code‑in‑bed vibes.• Secret sub‑floor prototypes labelled “Amphibius-Westinghouse Mk I” in sticky‑notes. |
-| **Rear 50 % – Marbee’s Cabin**     | Marbee   | • Full‑size bed, honey‑pine bookshelves stuffed with books.• Compact half‑bath (sink + toilet).• Magnetic whiteboard covered in sled  sketches and rushed scribbles.                                                                                                                                                                                   |
+| :--------------------------------- | :------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Forward 50 % – Maxi’s Tech‑Lab** | Maxi     | • Triple‑screen dev rig, solder station, Li‑Po charge bank, 3‑D printer tower (PLA, PETG, ABS, conductive).• RC‑sled telemetry wall, drone parts drawers, spare flight‑controllers.• Murphy‑style bunk folds out of wall; LED star‑ceiling for code‑in‑bed vibes.• Secret sub‑floor prototypes labelled “Amphibius-Westinghouse Mk I” in sticky‑notes. |
+| **Rear 50 % – Marbee’s Cabin**     | Marbee   | • Full‑size bed, honey‑pine bookshelves stuffed with books.• Compact half‑bath (sink + toilet).• Magnetic whiteboard covered in sled  sketches and rushed scribbles.                                                                                                                                                                                   |
 
 #### ▼ Lower Deck – **Retail & Workshop**
 
 | Zone                                             | Crew         | Fixtures                                                                                                                                                                                                                                | Fun Bits                                                                            |
-| ------------------------------------------------ | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| :----------------------------------------------- | :----------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------- |
 | **Minnie’s Gift & Gear Shop** (fore half)        | Minnie       | • Counter with brass bell, antique cash drawer.• **Legendary‑Lens Spinner Rack** (lit acrylic ).• **“Everything” Catch‑All Rack** (hex‑bin wall).• Pegboard for Panttocks, rods, panning pans.• Deep Diggin’ pick displays under glass. | Minnie’s motto over the door: *“If it shines, digs, or spins—you’ll find it here.”* |
-| **Jake & Steve’s Sled/Carpentry Bay** (aft half) | Jake & Steve | • Belt‑driven lathe, TIG welder, compound miter saw, overhead chain hoist.• Sled‑runner clamp‑jig doubles as beam press for mountain construction projects.• Wax melter & buff wheel for quick race tunes.                              | Smells like maple, axle grease, and campfire coffee.                                |
+| **Jake & Steve’s Sled/Carpentry Bay** (aft half) | Jake & Steve | • Belt‑driven lathe, TIG welder, compound miter saw, overhead chain hoist.• Sled‑runner clamp‑jig doubles as beam press for mountain construction projects.• Wax melter & buff wheel for quick race tunes.                              | Smells like maple, axle grease, and campfire coffee.                                |
 
 *Large roll‑up curb-side door = sleds roll right onto snow OR 12‑ft lumber slides straight inside.*
 
 ---
 
-### 🐝 3 • Pete’s Hinged‑Glass **Micro‑Mountain Apiary** (Tail‑Module)
+### 🐝 3 • Pete’s Hinged‑Glass **Micro‑Mountain Apiary** (Tail‑Module)
 
 | Element                          | Detail                                                                                                                              |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| :------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
 | **Hive Stacks**                  | Two vertical rack frames, colour‑coded Langstroth boxes.                                                                            |
 | **Glass Dome**                   | Tempered, UV‑treated; hinges on top, latches on bottom; pneumatic struts hold it open like a giant terrarium door.                  |
 | **Interior Climate Fans**        | Kick on when glass is closed to keep temps steady.                                                                                  |
@@ -1836,70 +1837,70 @@ Dome stays shut in transit / storms, swings open when Pete wants to check frames
 
 ---
 
-### 🦅 4 • Roof Deck – “The Crow’s Nest” (continuous)
+### 🦅 4 • Roof Deck – “The Crow’s Nest” (continuous)
 
-| Zone                    | Resident   | Kit & Purpose                                                                                                                                               |
-| ----------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Rescue Perch** (fore) | Stratton   | Swivel captain’s chair, gyro‑binoculars, MURS & GMRS rescue radios, avalanche beacon repeater, quick‑drop ladder down to his patrol sled hung on side rack. |
-| **Lens & Scope Bay**    | Darlene    | 500 mm tele‑lens on motorized mount, wildlife cam array, weatherproof photo‑server box streaming RAW files to the lab below, fold‑out dark‑cloth hood.      |
-| **Launch Pad**          | Maxi & Jay | Yellow circle with deck plates, four drone charging nests, retractable kite reels (lock when truck’s moving).                                               |
-| **Solar‑Wind Farm**     | –          | 48 m² bifacial PV carpet, two micro wind turbines on telescopic masts; feed 400‑V DC bus via MPPT charger.                                                  |
+| Zone                    | Resident      | Kit & Purpose                                                                                                                                               |
+| :---------------------- | :------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Rescue Perch** (fore) | Stratton      | Swivel captain’s chair, gyro‑binoculars, MURS & GMRS rescue radios, avalanche beacon repeater, quick‑drop ladder down to his patrol sled hung on side rack. |
+| **Lens & Scope Bay**    | Darlene       | 500 mm tele‑lens on motorized mount, wildlife cam array, weatherproof photo‑server box streaming RAW files to the lab below, fold‑out dark‑cloth hood.      |
+| **Launch Pad**          | Maxi & Carrie | Yellow circle with deck plates, four drone charging nests, retractable kite reels (lock when truck’s moving).                                               |
+| **Solar‑Wind Farm**     | –             | 48 m² bifacial PV carpet, two micro wind turbines on telescopic masts; feed 400‑V DC bus via MPPT charger.                                                  |
 
 Safety rail around entire deck, heated ladder to stairwell, hot tub.
 
 ---
 
-### 🛠 5 • Side Racks & Exterior Storage
+### 🚲 5 • Side Racks & Exterior Storage
 
-- **Sled Racks:** 10 sleds nose‑down, hinged arms fold into travel slots.
-- **Utility Lockers (skirt‑level):** diesel genset, battery modules, spare runner bundles, avalanche probes, collapsible stretcher, kite spars, Vermunch Refill Dispenser provisioned directly below the kitchen.
-- **Tow‑Eye Hook:** fits ski‑tow,or flatbed.
+* **Sled Racks:** 10 sleds nose‑down, hinged arms fold into travel slots.
+* **Utility Lockers (skirt‑level):** diesel genset, battery modules, spare runner bundles, avalanche probes, collapsible stretcher, kite spars, Vermunch Refill Dispenser provisioned directly below the kitchen.
+* **Tow‑Eye Hook:** fits ski‑tow,or flatbed.
 
 ---
 
-### 🏃‍♂️ 6 • Daily Loop – Expanded
+### 🏃‍♂️ 6 • Daily Loop – Expanded
 
 1. **Morning Open:**
 
-   - Bruin pads down from the lounge chair to the driver seat; Maxi boots the Edison‑EV, runs diagnostics.
-   - Aria fires stoves; smell of maple‑fudge cocoa wafts down both trailers.
-   - Solar array tilts toward sunrise.
+   * Bruin pads down from the lounge chair to the driver seat; Maxi boots the EVison Prime, runs diagnostics.
+   * Aria fires stoves; smell of maple‑fudge cocoa wafts down both trailers.
+   * Solar array tilts toward sunrise.
 
 2. **Guest Arrival:**
 
-   - Visitors climb heated stairs, stomp boots.
-   - Aria greets ’em at bar, takes names/checkin, dishes tasty grub.
-   - Pass‑through window pops open so slope‑side folks can grab warm food too.
+   * Visitors climb heated stairs, stomp boots.
+   * Aria greets ’em at bar, takes names/checkin, dishes tasty grub.
+   * Pass‑through window pops open so slope‑side folks can grab warm food too.
 
-3. **Gearing Up:**
+3. **Gearing Up:**
 
-   - Guests stroll articulation tunnel → Minnie’s shop (lenses, Panttocks) → Jake & Steve’s bay for wax tune.
-   - Grab sled from side rack; drop down the rear ramp or nearest snow stair.
+   * Guests stroll articulation tunnel → Minnie’s shop (lenses, Panttocks) → Jake & Steve’s bay for wax tune.
+   * Grab sled from side rack; drop down the rear ramp or nearest snow stair.
 
-4. **Slope Time:**
+4. **Slope Time:**
 
-   - Stratton scans ridgeline; Darlene snaps wildlife & Marbee if he's out tricking.
-   - Maxi tests new RC controller on drone from roof pad; Jay launches a kite to check wind aloft.
-   - Pete opens dome, hums to his bees, maybe harvests a frame.
+   * Stratton scans ridgeline; Darlene snaps wildlife & Marbee if he's out tricking.
+   * Maxi tests new RC controller on drone from roof pad; Carrie launches a kite to check wind aloft.
+   * Pete opens dome, hums to his bees, maybe harvests a frame.
 
 5. **Rescue Flow:**
 
-   - Rescue beacon pings → Stratton radios *“Dispatch, I’m rolling.”*
-   - He slides down ladder, hops into patrol sled hung on side rack, zips off.
-   - If it’s textbook, he handles solo. **Only** if he’s swamped does he radio Marbee for a player‑quest assist.
+   * Rescue beacon pings → Stratton radios *“Dispatch, I’m rolling.”*
+   * He slides down ladder, hops into patrol sled hung on side rack, zips off.
+   * If it’s textbook, he handles solo. **Only** if he’s swamped does he radio Marbee for a player‑quest assist.
 
 6. **Evening Wind‑Down:**
 
-   - Darlene live‑casts her best cryptid shot to the lobby holo; trivia night commences.
-   - Aria plates pizzas, wontons, maple‑BBQ wings; full menu always available inside.
-   - Vermunch machines on‑mountain keep humming the limited menu (warm and cold drinks, pickles (Sweet and Sour both), personal 3-cheese cowboy candy pizzas).
-   - Crew crashes: Maxi folds down her murphy bunk in the lab; Marbee to his cabin; everyone else climbs to triple‑bunks; Bruin curls in the Bear Chair.
+   * Darlene live‑casts her best cryptid shot to the lobby holo; trivia night commences.
+   * Aria plates pizzas, wontons, maple‑BBQ wings; full menu always available inside.
+   * Vermunch machines on‑mountain keep humming the limited menu (warm and cold drinks, pickles (Sweet and Sour both), personal 3‑cheese cowboy candy pizzas).
+   * Crew crashes: Maxi folds down her murphy bunk in the lab; Marbee to his cabin; everyone else climbs to triple‑bunks; Bruin curls in the Bear Chair.
 
-7. **Night Mode:**
+7. **Night Mode:**
 
-   - PV carpet folds flat; wind masts lock.
-   - Deck lights on warm amber; bee‑dome fans maintain hive temp.
-   - Jake & Steve might pull a late weld—soft flashes visible through workshop skylight.
+   * PV carpet folds flat; wind masts lock.
+   * Deck lights on warm amber; bee‑dome fans maintain hive temp.
+   * Jake & Steve might pull a late weld—soft flashes visible through workshop skylight.
 
 ---
 
