@@ -434,7 +434,7 @@ Tiers are defined by mountain difficulty:
 ---
 
 > *"One sled won’t climb every mountain, but every mountain leaves behind the parts you’ll need."*  
-> – Sled Tech Steve, welding a USB C port to a... sledrunner?!.
+> – Sled Tech Steve, welding a USB C port to a... sledrunner?!
 
 ---
 
@@ -544,16 +544,16 @@ Part sage, part mad engineer, part crusty uncle who lives in a garage with three
 
 ---
 
-- **🛠️ Upgrades:**  
-  - 🪛 **Precision Picks** – Smoother glide, better feedback on tough pins.  
-  - ✋ **Grip Master Tensioner** – Wider “sweet spot,” more forgiving tension range.  
-  - 🔇 **Stealth Kit** – Allows you to approch wildlife closer before spooking them. 
+#### 🛠️ Upgrades
+- 🪛 **Precision Picks** – Smoother glide, better feedback on tough pins.
+- ✋ **Grip Master Tensioner** – Wider "sweet spot," more forgiving tension range.
+- 🔇 **Stealth Kit** – Allows you to approach wildlife closer before spooking them.
 
 ---
 
-- **⚠️ Risks & Challenge:**  
-  - **Pick durability** breaks with poor technique—snap a pick and you’re done unless you’ve got backups.  
-  - 🥶 **Bad Weather** increases pick wobble and slows hand speed—bring gloves or warm up first.  
+#### ⚠️ Risks & Challenge
+- **Pick durability** breaks with poor technique—snap a pick and you're done unless you've got backups.
+- 🥶 **Bad Weather** increases pick wobble and slows hand speed—bring gloves or warm up first.  
 
 > *“Every lock sings its own little tune. You gotta wiggle your tools to the pins’ rhythm, feel that spring under your fingertips… and hope there isn’t a snarlin’ catamount lurking just past the door.”* – *Tinkerer Maxi*
 
@@ -677,7 +677,7 @@ Your kite *is* your upgrade. Each one offers a unique feel, function, and flair 
   - 🫧 **Bubbleknot** – Sealed, floaty "kite" that holds breathable air. Works underwater and in thin-atmosphere zones. Nearly useless in regular air.  
   - 🌕 **Lunarch** – Ultra-wide, low-gravity sail designed for thin-air, nighttime, or vacuum mountain regions. Poor steering but massive airtime.  
 
-> *“I always say... a kite's like a muician: some are meant to dance, some are meant to sing, and some wanna get higher.”* – Jay
+> *"I always say... a kite's like a musician: some are meant to dance, some are meant to sing, and some wanna get higher."* – Jay
 
 
 ---
@@ -691,7 +691,7 @@ Your kite *is* your upgrade. Each one offers a unique feel, function, and flair 
 > *"Wind’s just music without the intent, man."*  
 > *"Every kite string’s a melody waitin’ to play itself—you just gotta be the hands."*  
 > *"I don’t fall, I descend artistically."*  
-> *"Most folks chase the peask. Me? I chase the air between 'em'."*  
+> *"Most folks chase the peaks. Me? I chase the air between 'em'."*  
 > *"People say the mountain talks. Nah, man. It sings."*  
 >  
 > – *Lift Operator Jay, musician, wind whisperer, habitual floater*
@@ -701,51 +701,50 @@ Your kite *is* your upgrade. Each one offers a unique feel, function, and flair 
 
 ### 6. **Sled Tricking** 🛷✨  
 
-- **Objective:**  
-  Launch yourself into the air, chain together daring stunts, and carve your name into the cold sky. Build 📸 fan hype, earn 💰 trick cash, and prove you’ve got the grace and grit to earn a nod from Jake—the man who quite literally built the floor beneath your feet.
+#### Objective
+Launch yourself into the air, chain together daring stunts, and carve your name into the cold sky. Build 📸 fan hype, earn 💰 trick cash, and prove you've got the grace and grit to earn a nod from Jake—the man who quite literally built the floor beneath your feet.
 
 ---
 
-- **🎮 Mechanics:**  
-  - **Trick Input System:**  
-    - Use directional combos you learn from Jake to pull off tricks like **Ghost Rider**, **Helicopter Spins**, **Corkscrews**, **Air Brakes**. Maybe someday you can even learn to **Stand while Sledding** - the art of **Sledboarding**.  
+#### 🎮 Mechanics
+- **Trick Input System:**
+  - Use directional combos you learn from Jake to pull off tricks like **Ghost Rider**, **Helicopter Spins**, **Corkscrews**, **Air Brakes**. Maybe someday you can even learn to **Stand while Sledding** - the art of **Sledboarding**.
 
+- **Combo System:**
+  - Land clean to maintain your **multiplier chain**.
+  - Mix it up—repeat tricks lower rewards, but variety unlocks **fan bonuses** and **style streaks**.
 
-  - **Combo System:**  
-    - Land clean to maintain your **multiplier chain**.  
-    - Mix it up—repeat tricks lower rewards, but variety unlocks **fan bonuses** and **style streaks**.  
-
-  - **Momentum Flow:**  
-    - Certain tricks slow descent, others give more air time burst.  
-    - Mastering when to hold, twist, or toss is what separates a rider from an artist.
-
----
-
-- **🛠️ Upgrades & Gear:**  
-  - 🛷 **Trick-Tuned Mods** – Increases spin rate and air finesse.  
-  - 🪂 **Altitude Boosters** – More lift = more tricks.  
-  - 🌀 **Wind Tail Fin** – Sharper aerial control and faster recovery spins.  
-  - 🎮 **Reflex Dampeners** – Smooths input timing for high-combo riders.  
-  - ✨ **Jake’s Signature Move: Sledboarding** – Transition from sitting to ridding while standing!
+- **Momentum Flow:**
+  - Certain tricks slow descent, others give more air time burst.
+  - Mastering when to hold, twist, or toss is what separates a rider from an artist.
 
 ---
 
-- **🎯 Special Events & Bonuses:**  
-  - 🎥 **Fan Trick-Sprees** – Performing tricks with multiple fans on-screen starts a bonus chaing, starting a short countdown within which you are given bonus rewards for performing more tricks. You can keep the timer resetting by performing more tricks with different fans on screen down hill of the first group.  
-  - 🏁 **Trick Zones** – Areas hand-built for massive stunts and flowing chains.  
+#### 🛠️ Upgrades & Gear
+- 🛷 **Trick-Tuned Mods** – Increases spin rate and air finesse.
+- 🪂 **Altitude Boosters** – More lift = more tricks.
+- 🌀 **Wind Tail Fin** – Sharper aerial control and faster recovery spins.
+- 🎮 **Reflex Dampeners** – Smooths input timing for high-combo riders.
+- ✨ **Jake's Signature Move: Sledboarding** – Transition from sitting to riding while standing!
 
 ---
 
-- **⚠️ Risks & Challenge:**  
-  - ❌ **Crash Penalty** – Lose your combo and gear durability if you biff it.  
-  - 🌀 **Over-rotation & Drift** – Bad inputs can throw your whole landing outta whack.  
+#### 🎯 Special Events & Bonuses
+- 🎥 **Fan Trick-Sprees** – Performing tricks with multiple fans on-screen starts a bonus chain, starting a short countdown within which you are given bonus rewards for performing more tricks. You can keep the timer resetting by performing more tricks with different fans on screen down hill of the first group.
+- 🏁 **Trick Zones** – Areas hand-built for massive stunts and flowing chains.
 
 ---
 
-- **🏔️ NPC: Jake – Sledboarding Pioneer, Trick Philosopher, and Builder of Mountains**  
-  - Jake is a legend not just for what he rode, but for what he *built*.  
-  - He is a sledboarding pioneer and carved out the first trick zones by hand. These days, he’s the one who constructs what others only imagine—rails, ramps, photo decks, and even lift stations. If something works up here, it’s because Jake made it strong enough to hold.  
-  - Off the slope, he’s a quiet carpenter who works in a small shed tucked into a windbreak of trees. But if you’re worthy, he’ll show you how to move like the mountain’s listening. He knows every move in the book - he invented most of 'em!
+#### ⚠️ Risks & Challenge
+- ❌ **Crash Penalty** – Lose your combo and gear durability if you biff it.
+- 🌀 **Over-rotation & Drift** – Bad inputs can throw your whole landing outta whack.
+
+---
+
+#### 🏔️ NPC: Jake – Sledboarding Pioneer, Trick Philosopher, and Builder of Mountains
+- Jake is a legend not just for what he rode, but for what he *built*.
+- He is a sledboarding pioneer and carved out the first trick zones by hand. These days, he's the one who constructs what others only imagine—rails, ramps, photo decks, and even lift stations. If something works up here, it's because Jake made it strong enough to hold.
+- Off the slope, he's a quiet carpenter who works in a small shed tucked into a windbreak of trees. But if you're worthy, he'll show you how to move like the mountain's listening. He knows every move in the book - he invented most of 'em!
 
 > *“Style isn’t flash. It’s control without shouting.”*  
 > *“Every trick begins before you leave the ground. Every landing finishes long after you hit it.”*  
@@ -1307,8 +1306,8 @@ Bromley is a **mystic elder**, embodying the spirit of the mountain. Draped in l
 ##### 🐻 **Role**
 
 - Unlocks **bear-racing**, a wild and unforgettable downhill challenge.  
-- Offers **Time Trials**, **Trickoffs,** and **Elimination Races**\!  
-- Human vs Bear \- **Who Will Win?**
+- Offers **Time Trials**, **Trickoffs,** and **Elimination Races**!
+- Human vs Bear - **Who Will Win?**
 
 ---
 
@@ -1320,9 +1319,9 @@ Bromley is a **mystic elder**, embodying the spirit of the mountain. Draped in l
 
 ##### 🔧 **Upgrades Offered**
 
-| 🛠️ Upgrade | 🎁 Effect |
-| :---- | :---- |
-| 🍯 **Honey-Lure Tincture** | Attracts a specific rare bear type for one session. |
+| 🛠️ Upgrade                    | 🎁 Effect                                                |
+|-------------------------------|----------------------------------------------------------|
+| 🍯 **Honey-Lure Tincture**    | Attracts a specific rare bear type for one session.     |
 
 ---
 
@@ -1572,7 +1571,7 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 - **Mechanics:**
 
   - **Garden-Scale Hazards:**
-    - Rolling **dew droplets** can  or sweep you away.
+    - Rolling **dew droplets** can crush you or sweep you away.
     - **Pollen dust clouds** choke visibility during flower bloom cycles.
   - **Environmental Dynamics:**
     - **Bees** Pete cares for in the larger greenhouse will influence what appears in Micro Mountain.
