@@ -39,23 +39,24 @@ When transitioning **between vertical segments**:
    ```pseudocode
    scale_factor = new_layer.circumference / old_layer.circumference
    x_new = x_old * scale_factor
+   ```
 
 2. If the player **moves upward** past the top boundary of a layer:
-   - They **appear at the bottom** of the next layer up with **their horizontal position **scaled.
+   - They **appear at the bottom** of the next layer up with **their horizontal position scaled**.
 
-### 🏁 **Gameplay Implications**
-   - Predictable & Manageable: Keeps wraparound and movement feeling natural while allowing for different gameplay per layer.
+### 🏁 Gameplay Implications
+- Predictable & Manageable: Keeps wraparound and movement feeling natural while allowing for different gameplay per layer.
 
-### **Layer-Specific Challenges**:
-   - Broader paths at lower levels = more open sledding.
-   - Tighter paths at higher levels = more technical, precision-based gameplay.
-   - Performance-Friendly: Each layer is an isolated map segment, simplifying collision checks and procedural generation.
+### Layer-Specific Challenges
+- Broader paths at lower levels = more open sledding.
+- Tighter paths at higher levels = more technical, precision-based gameplay.
+- Performance-Friendly: Each layer is an isolated map segment, simplifying collision checks and procedural generation.
 
 ---
 
-## 🌄 **Light/Dark Gradient Altitude System**
+## 🌄 Light/Dark Gradient Altitude System
 
-- Introduce a dynamic visual gradient where snow and terrain visually shift, with the snow at higher altitudes lighter due to being cleaner, and the snow downhill from you appears darker (due to the dirt and debres that flows down hill). 🚀
+- Introduce a dynamic visual gradient where snow and terrain visually shift, with the snow at higher altitudes lighter due to being cleaner, and the snow downhill from you appears darker (due to the dirt and debris that flows down hill). 🚀
 - The gradient will provide a dynamic natural visual guide for players to intuitively gauge altitude and plan their climbs and descents. 🎯
 
 ---
@@ -80,8 +81,9 @@ When transitioning **between vertical segments**:
   - Stage 2: After paying off your mountain, a much bigger debt unlocks a new mountain (with fresh environments like Lava Mountain, Space Mountain, and Underwater Mountain).  
   - Note: You'll start off with zero mountain upgrades but keep your personal upgrades.  
   - Unique upgrades are required to access each new mountain, with limited availability—though more snowy peaks are always around to explore!
-### **⬆️1️⃣ Uphill Phase: Climbing & Exploration**
-#### 🚶 **Top-down adventure traversal with stamina management and exploration.**  
+### ⬆️1️⃣ Uphill Phase: Climbing & Exploration
+**🚶 Top-down adventure traversal with stamina management and exploration.**
+
 - **Goal:** Ascend to the top **by hiking, using ski lifts, snowmobiles, or taking shortcuts**.  
 - **Stamina System:**  
   - Stamina drains when moving.  
@@ -97,8 +99,9 @@ When transitioning **between vertical segments**:
     - Moving vs. stationary targets (moving = 3x value).
     - Animal Rarity (more exotic animals the further up the mountain you are).
 
-### **⬇️2️⃣ Sledding Phase (Downhill)**
-💨 **Fast-paced, high-speed, gravity-driven sledding with a trick system.**  
+### ⬇️2️⃣ Sledding Phase (Downhill)
+**💨 Fast-paced, high-speed, gravity-driven sledding with a trick system.**
+
 - **Goal:** Reach the bottom as efficiently as possible while **navigating obstacles, taking shortcuts, and pulling off tricks** for extra cash.  
 - **Terrain:** Procedurally generated **rocks, ramps, cliffs, ski lifts, obstacles, and hidden paths**.  
 - **Obstacles:**
@@ -112,8 +115,9 @@ When transitioning **between vertical segments**:
   - **Faster times = more money!**  
   - Not all runs are timed; only those where you activate a trial.
 
-### 🏠3️⃣ **Management Phase (House & Upgrades)**
-🏡 **Upgrade your gear, mountain, and social media presence.**  
+### 🏠3️⃣ Management Phase (House & Upgrades)
+**🏡 Upgrade your gear, mountain, and social media presence.**
+
 - **Spend earned money on:**
   - **Personal Upgrades:** Increase sledding ability, climbing endurance, photography precision.  
   - **Sled Upgrades:** Speed, handling, trick potential.  
@@ -140,36 +144,36 @@ With that, the tutorial **fully hands control to the player**, reinforcing the *
 
 ---
 
-## 🎮 **Tutorial Mechanics Introduced**
+## 🎮 Tutorial Mechanics Introduced
 The tutorial unfolds organically through **simple, playful challenges**, without heavy UI elements. Players **learn by doing**, with Grandpa offering **gentle, supportive guidance**.
 
-### **⬆️ Walking Uphill (Basic Movement & Stamina)**
-- Players move **uphill by walking**, learning that **whiter snow = uphill, darker snow = downhill**.  
-- Moving uphill **drains stamina** gradually.  
+### ⬆️ Walking Uphill (Basic Movement & Stamina)
+- Players move **uphill by walking**, learning that **whiter snow = uphill, darker snow = downhill**.
+- Moving uphill **drains stamina** gradually.
 - Grandpa occasionally calls out:
-  > **"You’re strong, kid! But ya gotta pace yourself—harder climbs mean ya gotta rest up after!"**
+  > **"You're strong, kid! But ya gotta pace yourself—harder climbs mean ya gotta rest up after!"**
 
-### **🛷 Sledding Downhill (Turning & Speed Control)**
-- Players start **at the top of the small hill** and practice their **first sled run**.  
-- **Turning left/right** is introduced, along with simple speed adjustments.  
+### 🛷 Sledding Downhill (Turning & Speed Control)
+- Players start **at the top of the small hill** and practice their **first sled run**.
+- **Turning left/right** is introduced, along with simple speed adjustments.
 - Grandpa **cheers when the player makes a smooth turn**:
-  > **"Look at that! You’re a natural! Sleddin’s all about balance—lean just right and the hill will do the rest!"**
+  > **"Look at that! You're a natural! Sleddin's all about balance—lean just right and the hill will do the rest!"**
 
-### **🔄 Climbing & Repeating Runs**
+### 🔄 Climbing & Repeating Runs
 - After a few runs, Grandpa suggests:
-  > **"Why don’t ya take a few more runs? See if ya can get all the way to the bottom without wipin’ out!"**  
-- The player is **free to keep practicing**, reinforcing that **sledding is about trial and improvement**.  
+  > **"Why don't ya take a few more runs? See if ya can get all the way to the bottom without wipin' out!"**
+- The player is **free to keep practicing**, reinforcing that **sledding is about trial and improvement**.
 - The game subtly **introduces self-motivated play**, rewarding experimentation.
 
-### **🏁 Tutorial Completion**
+### 🏁 Tutorial Completion
 - Once the player **feels confident**, a final sled run **transitions seamlessly into the present day**, cutting to the **modern protagonist** standing atop their massive new mountain.
-- **Grandpa’s words echo**, setting the tone for the adventure ahead:
-  > **"One day, you’ll take on bigger mountains than this… but no matter how high you go, never forget the joy of the ride."**  
+- **Grandpa's words echo**, setting the tone for the adventure ahead:
+  > **"One day, you'll take on bigger mountains than this… but no matter how high you go, never forget the joy of the ride."**
 - The camera pulls back, revealing the **full mountain**, and gameplay transitions into the **core SledHEAD experience**.
 
 ---
 
-## ✨ **Why This Works**
+## ✨ Why This Works
 - **Emotionally Engaging** – Connects the player to their childhood roots and motivation.  
 - **Smooth Learning Curve** – Teaches fundamental mechanics **without forced tutorials**.  
 - **Worldbuilding & Nostalgia** – Grandpa’s wisdom adds charm and meaning to the stamina system.  
@@ -264,8 +268,8 @@ Performing tricks during downhill runs boosts **viewer engagement, increasing ca
 
 *💡 Later Upgrade:* **"Sledboarding"** unlocks snowboard-style **grinds, flips, and advanced tricks**.
 
-### **Hazards & Interactions:**
-- **Tourists:** Sometimes they move, sometimes they don’t—dodge carefully!
+### Hazards & Interactions
+- **Tourists:** Sometimes they move, sometimes they don't—dodge carefully!
 - **Fans:** If you impress them with tricks, they’ll cheer you on and even give you boosts.
 - **Ice Patches:** Reduce control and make turns trickier.
 - **Snow Drifts & Ramps:** Use them for sick air and trick opportunities.
@@ -643,27 +647,28 @@ Minnie runs the cozy little convenience store nestled near the trailhead and bas
 
 ---
 
-### 5. **Kite Flying** 🪁🌬️🎶  
-#### - #### **Objective:**  
-  Take to the skies during **uphill climbs** with a trusty kite, using wind and rhythm to lift you to new heights—literally. Your kite’s more than a toy—it’s a tool for discovery, glide-based trickery, and unlocking secrets only visible from above.  
-  Master the flow, and you’ll earn ✨ **airborne bonuses**, and 🪁 **flight-only shortcuts**.
+### 5. **Kite Flying** 🪁🌬️🎶
+
+#### Objective:
+Take to the skies during **uphill climbs** with a trusty kite, using wind and rhythm to lift you to new heights—literally. Your kite's more than a toy—it's a tool for discovery, glide-based trickery, and unlocking secrets only visible from above. Master the flow, and you'll earn ✨ **airborne bonuses**, and 🪁 **flight-only shortcuts**.
 
 ---
 
-#### - **🎮 Mechanics:**  
-#####   - **Uphill Phase:**  
-    - Control your kite using a **music-style rhythm system**—directional prompts appear like notes in a jam session.  
-    - Nail the beat to stabilize, catch wind currents, and **ride the thermals like a verse you wrote yourself**.  
-    - Botch the timing and your kite’ll flutter down like Jay after a particularly mellow afternoon.  
+#### 🎮 Mechanics:
 
-#####   - **Downhill Phase:**  
-    - Your kite becomes a **glider**, extending airtime.  
-    - Different kite types offer different styles—agile kites offer greater control, larger ones will fly further, aerogel kites are heat resistant, bubble "kites" hold extra air underwater and in vacuum!  
+- **Uphill Phase:**
+  - Control your kite using a **music-style rhythm system**—directional prompts appear like notes in a jam session.
+  - Nail the beat to stabilize, catch wind currents, and **ride the thermals like a verse you wrote yourself**.
+  - Botch the timing and your kite'll flutter down like Jay after a particularly mellow afternoon.
+
+- **Downhill Phase:**
+  - Your kite becomes a **glider**, extending airtime.
+  - Different kite types offer different styles—agile kites offer greater control, larger ones will fly further, aerogel kites are heat resistant, bubble "kites" hold extra air underwater and in vacuum!  
 
 ---
 
-#### - **🛠️ Kites & Upgrades:**  
-  Your kite *is* your upgrade. Each one offers a unique feel, function, and flair based on the environment or your playstyle:
+#### 🛠️ Kites & Upgrades:
+Your kite *is* your upgrade. Each one offers a unique feel, function, and flair based on the environment or your playstyle:
 
   - 🪁 **Jay’s First Kite** – A balanced, starter-friendly glider. Good control and decent airtime. Fades to red in stormlight.  
   - 🌀 **Windwhip** – Lightweight and ultra-agile. Perfect for trick runs. Loses distance in strong wind.  
@@ -677,9 +682,9 @@ Minnie runs the cozy little convenience store nestled near the trailhead and bas
 
 ---
 
-#### - **🎯 Special Events & Bonuses:**  
-  - ⚡ **Storm Riding** – Extreme winds = extreme lift. Ride lightning skies for massive trick bonuses.
-  - 🎒 **Floating Loot Drops** – Balloons with loot attached to them sometimes float by - use your kite to pop the balloon and collect the fallen goods!
+#### 🎯 Special Events & Bonuses:
+- ⚡ **Storm Riding** – Extreme winds = extreme lift. Ride lightning skies for massive trick bonuses.
+- 🎒 **Floating Loot Drops** – Balloons with loot attached to them sometimes float by - use your kite to pop the balloon and collect the fallen goods!
 
 ---
 
@@ -1683,7 +1688,6 @@ And it **wants** to be sledded.
 ---
 
 ## 🔄 Infinite Upgrades with Soft Caps
-===================================
 
 **Expanding Progression Without Breaking Balance**
 
@@ -1693,7 +1697,6 @@ need to be rebought for each new mountain purchased, and
 may or may not be infinite as appropriate to the upgrade.
 
 ### 🎯 Proposed Solution
---------------------
 
 -   **All upgrades become infinitely upgradable.**
 -   Each upgrade **retains its effectiveness early on** but **scales down gradually** beyond a set level.
@@ -1703,7 +1706,6 @@ may or may not be infinite as appropriate to the upgrade.
 -   **Mathematical balancing** ensures that upgrades remain **meaningful** but **don't become overpowered**.
 
 ### 📊 Scaling Formula: Exponential & Logarithmic Decay
----------------------------------------------------
 
 Instead of **linear scaling** (e.g., "+1 Speed per level"), we use **diminishing returns** to keep upgrades valuable without breaking balance.
 
@@ -1731,7 +1733,6 @@ newValue = baseValue * (1 + (scalingFactor * log(level + 1)))
 ✔ **Maintains challenge balance** -- Runs become **progressively stronger**, but not infinitely easy.
 
 ### 📌 Tasks & Implementation Plan
-------------------------------
 
 -   [ ]  **Remove hard upgrade caps** for all current upgrades.
 -   [ ]  **Implement soft cap mechanics** using **square root or logarithmic scaling**.
