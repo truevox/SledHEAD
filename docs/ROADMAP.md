@@ -56,7 +56,7 @@ When transitioning **between vertical segments**:
 
 ## 🌄 Light/Dark Gradient Altitude System
 
-- Introduce a dynamic visual gradient where snow and terrain visually shift, with the snow at higher altitudes lighter due to being cleaner, and the snow downhill from you appears darker (due to the dirt and debris that flows down hill). 🚀
+- Introduce a dynamic visual gradient where snow and terrain visually shift, with the snow at higher altitudes lighter due to being cleaner, and the snow downhill from you appears darker (due to the dirt and debris that flows downhill). 🚀
 - The gradient will provide a dynamic natural visual guide for players to intuitively gauge altitude and plan their climbs and descents. 🎯
 
 ---
