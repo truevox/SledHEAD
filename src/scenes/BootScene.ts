@@ -58,6 +58,26 @@ export class BootScene extends Phaser.Scene {
       }
     ).setOrigin(0.5);
 
+    this.add.text(
+      this.cameras.main.width / 2,
+      300,
+      'Sledding Adventure',
+      {
+        fontSize: '32px',
+        color: '#ecf0f1',
+      }
+    ).setOrigin(0.5);
+
+    this.add.text(
+      this.cameras.main.width / 2,
+      500,
+      'Click or Press Any Key to Start',
+      {
+        fontSize: '24px',
+        color: '#bdc3c7',
+      }
+    ).setOrigin(0.5);
+
     // Pulsing animation for title
     this.tweens.add({
       targets: title,
@@ -68,12 +88,15 @@ export class BootScene extends Phaser.Scene {
       ease: 'Sine.easeInOut',
     });
 
-    // Wait 2 seconds then transition to menu
-    this.time.delayedCall(2000, () => {
-      this.cameras.main.fadeOut(500, 0, 0, 0);
-      this.cameras.main.once('camerafadeoutcomplete', () => {
-        this.scene.start('MenuScene');
-      });
+    // Wait for user input to proceed
+    this.input.once('pointerdown', () => this.startGame());
+    this.input.keyboard?.once('keydown', () => this.startGame());
+  }
+
+  private startGame(): void {
+    this.cameras.main.fadeOut(500, 0, 0, 0);
+    this.cameras.main.once('camerafadeoutcomplete', () => {
+      this.scene.start('MenuScene');
     });
   }
 }
