@@ -11,8 +11,7 @@ node_modules/
 # Dependencies
 node_modules/
 
-# Build output
-dist/
+# Local files
 *.local
 
 # Editor directories and files
