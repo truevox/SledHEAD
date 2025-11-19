@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
+import { GameStateManager } from '../utils/GameStateManager';
 
 export class TutorialScene extends Phaser.Scene {
+  private gameStateManager!: GameStateManager;
   private player!: Phaser.Physics.Arcade.Sprite;
   private grandpa!: Phaser.Physics.Arcade.Sprite;
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -38,6 +40,9 @@ export class TutorialScene extends Phaser.Scene {
   }
 
   create(): void {
+    // Initialize game state manager
+    this.gameStateManager = GameStateManager.getInstance();
+
     // Set world bounds for the small tutorial hill
     this.physics.world.setBounds(0, 0, 800, 600);
 
@@ -378,11 +383,14 @@ export class TutorialScene extends Phaser.Scene {
   }
 
   private completeTutorial(): void {
-    // Fade out and transition to menu/house scene
+    // Mark tutorial as complete (setState automatically saves)
+    this.gameStateManager.setState({ tutorialComplete: true });
+
+    // Fade out and transition to house scene
     this.cameras.main.fadeOut(1500, 0, 0, 0);
     this.cameras.main.once('camerafadeoutcomplete', () => {
-      // Transition to HouseScene (or MenuScene if HouseScene doesn't exist)
-      this.scene.start('MenuScene');
+      // Transition to HouseScene to start the real game
+      this.scene.start('HouseScene');
     });
   }
 }

@@ -25,6 +25,7 @@ export class GameStateManager {
       playerPosition: { x: 640, y: 600, layer: 0 },
       mountainSeed: this.generateSeed(),
       currentDay: 1,
+      tutorialComplete: false,
       upgrades: this.getDefaultUpgrades(),
       stats: this.getDefaultStats(),
       newGamePlus: this.getDefaultNewGamePlus(),

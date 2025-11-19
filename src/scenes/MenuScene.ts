@@ -235,9 +235,16 @@ export class MenuScene extends Phaser.Scene {
   }
 
   private startNewGame(): void {
+    const state = this.gameStateManager.getState();
+
     this.cameras.main.fadeOut(300, 0, 0, 0);
     this.cameras.main.once('camerafadeoutcomplete', () => {
-      this.scene.start('TutorialScene');
+      // Skip tutorial if already completed
+      if (state.tutorialComplete) {
+        this.scene.start('HouseScene');
+      } else {
+        this.scene.start('TutorialScene');
+      }
     });
   }
 

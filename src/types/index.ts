@@ -6,6 +6,7 @@ export interface GameState {
   playerPosition: { x: number; y: number; layer: number };
   mountainSeed: string;
   currentDay: number;
+  tutorialComplete: boolean;
   upgrades: UpgradeState;
   stats: GameStats;
   newGamePlus: NewGamePlusState;
