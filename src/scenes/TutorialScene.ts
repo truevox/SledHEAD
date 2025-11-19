@@ -19,6 +19,7 @@ export class TutorialScene extends Phaser.Scene {
   private sledSpeed: number = 0;
   private completedRuns: number = 0;
   private tutorialStep: number = 0;
+  private tutorialEnding: boolean = false;
 
   private dialogueBox!: Phaser.GameObjects.Container;
   private dialogueText!: Phaser.GameObjects.Text;
@@ -291,8 +292,8 @@ export class TutorialScene extends Phaser.Scene {
 
     this.player.setVelocity(velocityX, velocityY);
 
-    // Check if player pressed SPACE at the top
-    if (Phaser.Input.Keyboard.JustDown(this.spaceKey) && this.isNearTop()) {
+    // Check if player pressed SPACE at the top (but not if tutorial is ending)
+    if (Phaser.Input.Keyboard.JustDown(this.spaceKey) && this.isNearTop() && !this.tutorialEnding) {
       this.startSleddingMode();
     }
   }
@@ -335,15 +336,16 @@ export class TutorialScene extends Phaser.Scene {
     this.player.setAngle(0);
     this.completedRuns++;
 
-    // Complete tutorial after first run
-    this.time.delayedCall(1000, () => {
-      this.showDialogue("You're a natural! Time to hit Debumont!");
-      this.tutorialStep = 6;
+    // Prevent starting another run
+    this.tutorialEnding = true;
 
-      // Complete tutorial after a moment
-      this.time.delayedCall(3000, () => {
-        this.completeTutorial();
-      });
+    // Complete tutorial after first run
+    this.showDialogue("You're a natural! Time to hit Debumont!");
+    this.tutorialStep = 6;
+
+    // Complete tutorial after showing message
+    this.time.delayedCall(3000, () => {
+      this.completeTutorial();
     });
   }
 
@@ -377,13 +379,20 @@ export class TutorialScene extends Phaser.Scene {
   }
 
   private completeTutorial(): void {
+    // Prevent multiple calls
+    if (this.scene.isActive('HouseScene')) return;
+
     // Mark tutorial as complete (setState automatically saves)
     this.gameStateManager.setState({ tutorialComplete: true });
 
+    // Stop player input
+    if (this.input.keyboard) this.input.keyboard.enabled = false;
+
     // Fade out and transition to house scene
-    this.cameras.main.fadeOut(1500, 0, 0, 0);
+    this.cameras.main.fadeOut(1000, 0, 0, 0);
     this.cameras.main.once('camerafadeoutcomplete', () => {
-      // Transition to HouseScene to start the real game
+      // Stop this scene and start HouseScene
+      this.scene.stop('TutorialScene');
       this.scene.start('HouseScene');
     });
   }
