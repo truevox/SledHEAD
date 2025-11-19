@@ -335,22 +335,16 @@ export class TutorialScene extends Phaser.Scene {
     this.player.setAngle(0);
     this.completedRuns++;
 
-    if (this.completedRuns === 1) {
-      this.time.delayedCall(1000, () => {
-        this.showDialogue("Great! Now walk back up and try again.");
-        this.tutorialStep = 5;
-      });
-    } else if (this.completedRuns >= 2) {
-      this.time.delayedCall(1000, () => {
-        this.showDialogue("You're a natural! Ready for the big mountain?");
-        this.tutorialStep = 6;
+    // Complete tutorial after first run
+    this.time.delayedCall(1000, () => {
+      this.showDialogue("You're a natural! Time to hit Debumont!");
+      this.tutorialStep = 6;
 
-        // Complete tutorial after a moment
-        this.time.delayedCall(3000, () => {
-          this.completeTutorial();
-        });
+      // Complete tutorial after a moment
+      this.time.delayedCall(3000, () => {
+        this.completeTutorial();
       });
-    }
+    });
   }
 
   private checkTutorialProgress(): void {
