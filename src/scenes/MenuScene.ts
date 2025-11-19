@@ -96,37 +96,42 @@ export class MenuScene extends Phaser.Scene {
     const inputZone = this.add.zone(width / 2 - 200, 360, 400, 50).setOrigin(0, 0);
     inputZone.setInteractive({ useHandCursor: true });
 
-    // Skip Tutorial checkbox
-    const checkboxY = 450;
-    const checkboxSize = 20;
-    const checkboxX = width / 2 - 80;
+    // Skip Tutorial checkbox - PROMINENT VERSION
+    const checkboxY = 440;
+    const checkboxSize = 30;
+    const checkboxX = width / 2 - 120;
+
+    // Checkbox container background
+    const checkboxContainer = this.add.graphics();
+    checkboxContainer.fillStyle(0x34495e, 0.9);
+    checkboxContainer.fillRoundedRect(checkboxX - 15, checkboxY - 10, 280, 50, 8);
+    checkboxContainer.lineStyle(3, 0xf39c12, 1);
+    checkboxContainer.strokeRoundedRect(checkboxX - 15, checkboxY - 10, 280, 50, 8);
 
     // Checkbox background
     const checkboxBg = this.add.graphics();
     checkboxBg.fillStyle(0x2c3e50, 1);
     checkboxBg.fillRect(checkboxX, checkboxY, checkboxSize, checkboxSize);
-    checkboxBg.lineStyle(2, 0x95a5a6, 1);
+    checkboxBg.lineStyle(3, 0xf39c12, 1);
     checkboxBg.strokeRect(checkboxX, checkboxY, checkboxSize, checkboxSize);
 
     // Checkmark (initially hidden)
     const checkmark = this.add.text(checkboxX + checkboxSize / 2, checkboxY + checkboxSize / 2, '✓', {
-      fontSize: '16px',
+      fontSize: '24px',
       color: '#2ecc71',
       fontStyle: 'bold',
     }).setOrigin(0.5);
     checkmark.setVisible(false);
 
-    // Checkbox label
-    this.add.text(checkboxX + checkboxSize + 10, checkboxY + 2, 'Skip Tutorial', {
-      fontSize: '16px',
-      color: '#ecf0f1',
+    // Checkbox label with hotkey hint
+    this.add.text(checkboxX + checkboxSize + 15, checkboxY + 5, 'Skip Tutorial [T]', {
+      fontSize: '18px',
+      color: '#f39c12',
+      fontStyle: 'bold',
     });
 
-    // Make checkbox interactive
-    const checkboxZone = this.add.zone(checkboxX, checkboxY, 150, checkboxSize).setOrigin(0, 0);
-    checkboxZone.setInteractive({ useHandCursor: true });
-
-    checkboxZone.on('pointerdown', () => {
+    // Toggle function
+    const toggleSkipTutorial = () => {
       this.skipTutorial = !this.skipTutorial;
       checkmark.setVisible(this.skipTutorial);
 
@@ -134,8 +139,28 @@ export class MenuScene extends Phaser.Scene {
       checkboxBg.clear();
       checkboxBg.fillStyle(this.skipTutorial ? 0x27ae60 : 0x2c3e50, 1);
       checkboxBg.fillRect(checkboxX, checkboxY, checkboxSize, checkboxSize);
-      checkboxBg.lineStyle(2, this.skipTutorial ? 0x2ecc71 : 0x95a5a6, 1);
+      checkboxBg.lineStyle(3, this.skipTutorial ? 0x2ecc71 : 0xf39c12, 1);
       checkboxBg.strokeRect(checkboxX, checkboxY, checkboxSize, checkboxSize);
+
+      // Update container border
+      checkboxContainer.clear();
+      checkboxContainer.fillStyle(0x34495e, 0.9);
+      checkboxContainer.fillRoundedRect(checkboxX - 15, checkboxY - 10, 280, 50, 8);
+      checkboxContainer.lineStyle(3, this.skipTutorial ? 0x2ecc71 : 0xf39c12, 1);
+      checkboxContainer.strokeRoundedRect(checkboxX - 15, checkboxY - 10, 280, 50, 8);
+    };
+
+    // Make checkbox interactive
+    const checkboxZone = this.add.zone(checkboxX - 15, checkboxY - 10, 280, 50).setOrigin(0, 0);
+    checkboxZone.setInteractive({ useHandCursor: true });
+
+    checkboxZone.on('pointerdown', toggleSkipTutorial);
+
+    // Hotkey 'T' to toggle
+    this.input.keyboard?.on('keydown-T', () => {
+      if (!this.isInputActive) {
+        toggleSkipTutorial();
+      }
     });
 
     inputZone.on('pointerdown', () => {
