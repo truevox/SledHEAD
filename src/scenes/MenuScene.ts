@@ -6,6 +6,7 @@ export class MenuScene extends Phaser.Scene {
   private seedInputText: string = '';
   private seedInputBox?: Phaser.GameObjects.Text;
   private isInputActive: boolean = false;
+  private skipTutorial: boolean = false;
 
   constructor() {
     super({ key: 'MenuScene' });
@@ -95,6 +96,48 @@ export class MenuScene extends Phaser.Scene {
     const inputZone = this.add.zone(width / 2 - 200, 360, 400, 50).setOrigin(0, 0);
     inputZone.setInteractive({ useHandCursor: true });
 
+    // Skip Tutorial checkbox
+    const checkboxY = 450;
+    const checkboxSize = 20;
+    const checkboxX = width / 2 - 80;
+
+    // Checkbox background
+    const checkboxBg = this.add.graphics();
+    checkboxBg.fillStyle(0x2c3e50, 1);
+    checkboxBg.fillRect(checkboxX, checkboxY, checkboxSize, checkboxSize);
+    checkboxBg.lineStyle(2, 0x95a5a6, 1);
+    checkboxBg.strokeRect(checkboxX, checkboxY, checkboxSize, checkboxSize);
+
+    // Checkmark (initially hidden)
+    const checkmark = this.add.text(checkboxX + checkboxSize / 2, checkboxY + checkboxSize / 2, '✓', {
+      fontSize: '16px',
+      color: '#2ecc71',
+      fontStyle: 'bold',
+    }).setOrigin(0.5);
+    checkmark.setVisible(false);
+
+    // Checkbox label
+    this.add.text(checkboxX + checkboxSize + 10, checkboxY + 2, 'Skip Tutorial', {
+      fontSize: '16px',
+      color: '#ecf0f1',
+    });
+
+    // Make checkbox interactive
+    const checkboxZone = this.add.zone(checkboxX, checkboxY, 150, checkboxSize).setOrigin(0, 0);
+    checkboxZone.setInteractive({ useHandCursor: true });
+
+    checkboxZone.on('pointerdown', () => {
+      this.skipTutorial = !this.skipTutorial;
+      checkmark.setVisible(this.skipTutorial);
+
+      // Update checkbox appearance
+      checkboxBg.clear();
+      checkboxBg.fillStyle(this.skipTutorial ? 0x27ae60 : 0x2c3e50, 1);
+      checkboxBg.fillRect(checkboxX, checkboxY, checkboxSize, checkboxSize);
+      checkboxBg.lineStyle(2, this.skipTutorial ? 0x2ecc71 : 0x95a5a6, 1);
+      checkboxBg.strokeRect(checkboxX, checkboxY, checkboxSize, checkboxSize);
+    });
+
     inputZone.on('pointerdown', () => {
       this.isInputActive = true;
       inputBoxBg.clear();
@@ -133,8 +176,8 @@ export class MenuScene extends Phaser.Scene {
     });
 
     // Menu buttons
-    const buttonY = 490;
-    const buttonSpacing = 70;
+    const buttonY = 510;
+    const buttonSpacing = 60;
 
     // Check if there's a saved game (not first time)
     const hasSavedGame = state.stats.totalRuns > 0;
@@ -239,8 +282,12 @@ export class MenuScene extends Phaser.Scene {
 
     this.cameras.main.fadeOut(300, 0, 0, 0);
     this.cameras.main.once('camerafadeoutcomplete', () => {
-      // Skip tutorial if already completed
-      if (state.tutorialComplete) {
+      // Skip tutorial if checkbox is checked or already completed
+      if (this.skipTutorial || state.tutorialComplete) {
+        // Mark tutorial as complete if skipping
+        if (this.skipTutorial) {
+          this.gameStateManager.setState({ tutorialComplete: true });
+        }
         this.scene.start('HouseScene');
       } else {
         this.scene.start('TutorialScene');
