@@ -31,8 +31,12 @@ function updateUphill(deltaTime) {
   // Use wrapping instead of clamping for cylindrical world
   player.x = calculateWrappedX(newXUphill, currentLayer.width);
 
-  // Only clamp if player actually exceeds the mountain bounds
-  if (player.absY < 0) player.absY = 0;
+  // At the peak: auto-start the downhill race
+  if (player.absY <= 0) {
+    player.absY = 0;
+    changeState(GameState.DOWNHILL);
+    return;
+  }
   // At the bottom, only clamp if we're transitioning to the house
   if (player.absY > mountainHeight) player.absY = mountainHeight;
 

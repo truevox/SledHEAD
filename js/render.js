@@ -84,11 +84,20 @@ class FloatingText {
 
   draw(ctx, cameraY) {
     const alpha = 1 - (this.age / this.lifetime);
-    ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
-    ctx.font = "bold 24px Arial";
+    const fontSize = this.fontSize || 24;
+    const rgb = this.colorRgb || '0,0,0';
+    ctx.save();
+    ctx.font = `bold ${fontSize}px Arial`;
     ctx.textAlign = "center";
     const screenY = player.absY - cameraY + this.visualOffsetY;
+    if (this.strokeRgb) {
+      ctx.strokeStyle = `rgba(${this.strokeRgb},${alpha})`;
+      ctx.lineWidth = this.strokeWidth || 3;
+      ctx.strokeText(this.text, this.x, screenY);
+    }
+    ctx.fillStyle = `rgba(${rgb},${alpha})`;
     ctx.fillText(this.text, this.x, screenY);
+    ctx.restore();
   }
 }
 
@@ -130,6 +139,81 @@ function updateMoneyDisplay() {
   }
 }
 
+// Bear Radar: screen-edge indicators for off-screen racing bears
+// Only shown during DOWNHILL, only when bears are within warning range.
+function drawBearRadar() {
+  if (window.currentState !== window.GameState.DOWNHILL) return;
+  if (!window.animals) return;
+
+  const racingBears = window.animals.filter(a => a.type === 'bear' && a.raceMode);
+  if (racingBears.length === 0) return;
+
+  const WARN_RANGE  = canvas.height * 1.2;  // start showing indicator within this Y distance
+  const MARGIN      = 18;                   // px from screen edge
+  const cx = canvas.width  / 2;
+  const cy = canvas.height / 2;
+  const cameraY = player.absY - cy;
+  const cameraX = window.cameraX || 0;
+
+  racingBears.forEach(bear => {
+    // Rough distance check (Y only) — skip bears that are far away
+    const worldDy = bear.y - player.absY;
+    if (Math.abs(worldDy) > WARN_RANGE) return;
+
+    // Bear's position in screen space
+    const playerLayer = getLayerByY(player.absY);
+    const layerW = playerLayer ? playerLayer.width : canvas.width;
+    let rawDx = bear.x - (cameraX % layerW);
+    if (rawDx >  layerW / 2) rawDx -= layerW;
+    if (rawDx < -layerW / 2) rawDx += layerW;
+    const bsx = cx + rawDx;
+    const bsy = bear.y - cameraY;
+
+    // Only show radar if bear is actually off-screen
+    const onScreen = bsx >= 0 && bsx <= canvas.width && bsy >= 0 && bsy <= canvas.height;
+    if (onScreen) return;
+
+    // Clamp direction vector to screen edge
+    const vx = bsx - cx;
+    const vy = bsy - cy;
+    const scaleX = vx !== 0 ? (cx - MARGIN) / Math.abs(vx) : Infinity;
+    const scaleY = vy !== 0 ? (cy - MARGIN) / Math.abs(vy) : Infinity;
+    const scale  = Math.min(scaleX, scaleY);
+    const ex = cx + vx * scale;
+    const ey = cy + vy * scale;
+
+    // Fade in as bear gets closer (opacity 0.3–0.9)
+    const proximity = 1 - Math.abs(worldDy) / WARN_RANGE;
+    const alpha = 0.3 + proximity * 0.6;
+    const angle = Math.atan2(vy, vx);
+
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.translate(ex, ey);
+    ctx.rotate(angle);
+
+    // Arrow body pointing toward bear
+    ctx.fillStyle = '#8B4513';
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(12, 0);
+    ctx.lineTo(-6, -7);
+    ctx.lineTo(-3, 0);
+    ctx.lineTo(-6, 7);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    // Tiny bear ears on the arrowhead
+    ctx.fillStyle = '#5a2d0c';
+    ctx.fillRect(6, -11, 5, 4);
+    ctx.fillRect(12, -11, 5, 4);
+
+    ctx.restore();
+  });
+}
+
 // MAIN RENDER
 function render() {
   // Clear the canvas each frame
@@ -155,6 +239,7 @@ function render() {
   ctx.save();
   window.floatingTexts.forEach(text => text.draw(ctx, player.absY - canvas.height / 2));
   ctx.restore();
+  drawBearRadar();
   drawReHitIndicator();
   throttledRenderLog("render END", 5000);
 }

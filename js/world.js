@@ -8,6 +8,51 @@ const heightMultiplierBase = 1; // Base value for height multiplier - can be adj
 const distanceMultiplierBase = 1; // Base value for distance multiplier - can be adjusted later
 const speedMultiplierBase = 1; // Base value for speed multiplier - can be adjusted later
 
+function resolveRaceResult() {
+  if (!window.animals) return;
+
+  const bearsAhead  = window.animals.filter(a => a.type === 'bear' && a.raceFinished).length;
+  const bearsBehind = window.animals.filter(a => a.type === 'bear' && (a.raceMode || a.raceScattering)).length;
+  const totalRaced  = bearsAhead + bearsBehind;
+  if (totalRaced === 0) return; // no race happened
+
+  const bonusPerBear = 100;
+  const bonus = bearsBehind * bonusPerBear;
+
+  let text, rgb;
+  if (bearsAhead === 0) {
+    // Player beat every bear
+    text = `YOU WIN! ${bearsBehind} bear${bearsBehind > 1 ? 's' : ''} beaten! +$${bonus}`;
+    rgb = '30,180,30'; // green
+  } else if (bearsBehind > 0) {
+    // Mixed result
+    text = `Beat ${bearsBehind}, lost to ${bearsAhead}${bonus > 0 ? ` +$${bonus}` : ''}`;
+    rgb = '220,160,0'; // gold
+  } else {
+    // All bears beat you
+    text = bearsAhead === 1 ? 'A bear beat you!' : `All ${bearsAhead} bears beat you!`;
+    rgb = '180,80,20'; // bear brown
+  }
+
+  if (bonus > 0) {
+    player.money += bonus;
+    if (typeof updateMoneyDisplay === 'function') updateMoneyDisplay();
+  }
+
+  if (typeof addFloatingText === 'function') {
+    const ft = new FloatingText(text, player.x, player.absY);
+    ft.lifetime = 2500;
+    ft.fontSize = 28;
+    ft.colorRgb = rgb;
+    ft.strokeRgb = '0,0,0';
+    ft.strokeWidth = 4;
+    window.floatingTexts.push(ft);
+  }
+
+  console.log(`[Race] ${text} (ahead:${bearsAhead} behind:${bearsBehind})`);
+}
+window.resolveRaceResult = resolveRaceResult;
+
 function generateTerrain() {
   terrain = [];
   

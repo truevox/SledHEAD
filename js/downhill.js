@@ -253,6 +253,9 @@ function updateDownhill(deltaTime) {
   if (typeof window.updateAllAnimals === 'function') {
     window.updateAllAnimals();
   }
+
+  // Force-spawn a bear if the player has been racing alone for too long
+  tickNoRaceBearTimer(deltaTime);
   
   // Check for transition to UPHILL mode near bottom
   if (player.absY >= mountainHeight - (player.height * 4)) {
@@ -278,6 +281,7 @@ function updateDownhill(deltaTime) {
     player.absY = mountainHeight;
     logGame(`[DEBUG] player.absY clamped to ${player.absY} at absolute bottom in updateDownhill`);
     console.log("Reached bottom. Returning to house.");
+    if (typeof window.resolveRaceResult === 'function') window.resolveRaceResult();
     awardMoney();
     changeState(GameState.HOUSE);
   }
@@ -310,6 +314,25 @@ function lerpJumpZoomToZero(callback) {
 
   requestAnimationFrame(animate);
 }
+
+// Tracks ms elapsed without any racing bears — resets when a bear joins or race restarts
+let noRaceBearMs = 0;
+const NO_BEAR_THRESHOLD = 3000; // ms before a bear is force-spawned
+
+function tickNoRaceBearTimer(deltaTime) {
+  if (!window.animals) return;
+  const hasRacingBear = window.animals.some(a => a.type === 'bear' && a.raceMode);
+  if (hasRacingBear) {
+    noRaceBearMs = 0;
+  } else {
+    noRaceBearMs += deltaTime;
+    if (noRaceBearMs >= NO_BEAR_THRESHOLD) {
+      if (typeof window.spawnRaceBear === 'function') window.spawnRaceBear();
+      noRaceBearMs = 0;
+    }
+  }
+}
+window.resetNoRaceBearTimer = () => { noRaceBearMs = 0; };
 
 // Make functions available globally
 window.updateDownhill = updateDownhill;
