@@ -523,7 +523,8 @@ async function completeStateChange(newState, prevState) { // Make async
       
       earlyFinish = false;
       player.collisions = 0;
-      
+      if (typeof window.resetNoRaceBearTimer === 'function') window.resetNoRaceBearTimer();
+
       // Only set a fixed starting position when entering DOWNHILL from the HOUSE.
       // This prevents unwanted teleportation during normal state/layer transitions.
       // We intentionally do NOT reset player.absY or player.x for other transitions (e.g., UPHILL <-> DOWNHILL, layer changes)
@@ -546,6 +547,7 @@ async function completeStateChange(newState, prevState) { // Make async
       logGame("Transitioning from UPHILL to DOWNHILL.");
       player.velocityY = 0;
       player.xVel = 0;
+      if (typeof window.resetNoRaceBearTimer === 'function') window.resetNoRaceBearTimer();
       downhillStartTime = performance.now();
       window.downhillStartTime = downhillStartTime; // Ensure global value is updated
       playerStartAbsY = player.absY;
@@ -588,6 +590,26 @@ async function completeStateChange(newState, prevState) { // Make async
       logGame("Transitioning from DOWNHILL to UPHILL.");
       awardMoney();
       logGame("Awarded money.");
+
+      // Show race result before scatter clears the bear states
+      if (typeof window.resolveRaceResult === 'function') window.resolveRaceResult();
+
+      // Race over — bears dash off screen, then snap back to their home layers.
+      // The actual teleport happens inside bear.js's customUpdate once each bear is off screen.
+      if (window.animals) {
+        window.animals.forEach(animal => {
+          if (animal.type !== 'bear') return;
+          animal.raceMode = false;
+          animal.raceFinished = false;
+          animal.raceVelY = 0;
+          animal.raceVelX = 0;
+          animal.raceScattering = true;
+          animal.scatterAngle = 180 + Math.random() * 180; // upper half: uphill or sideways
+          animal.scatterSpeed = 5 + Math.random() * 4;
+          animal.state = 'scattering';
+        });
+        logGame("Bears scattering off screen after race.");
+      }
       const currentLayer = window.getLayerByY(player.absY); // Get current layer when switching UPHILL from DOWNHILL
       currentLayerId = currentLayer ? currentLayer.id : null;
       logGame(`Set currentLayerId on UPHILL restart: ${currentLayerId}`);

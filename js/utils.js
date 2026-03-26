@@ -93,7 +93,7 @@ window.addEventListener("keyup", function (e) {
         console.log("Space released, starting sled run.");
         unlockAudioContext();
         playStartGameSound();
-        changeState(window.GameState.DOWNHILL);
+        changeState(window.GameState.UPHILL);
     }
 });
 

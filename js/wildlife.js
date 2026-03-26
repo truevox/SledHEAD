@@ -559,8 +559,8 @@ function updateAllAnimals() {
       animal.customUpdate(animal);
     }
     
-    // Check if player is too close to animal
-    if (animal.state !== "fleeing") {
+    // Check if player is too close to animal (skip for racing/scattering bears)
+    if (animal.state !== "fleeing" && !animal.raceMode && !animal.raceScattering) {
       let dx = animal.x - player.x;
       let dy = animal.y - player.absY;
       
