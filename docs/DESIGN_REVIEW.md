@@ -42,6 +42,9 @@ Suggested cleanup once the new design doc exists: archive `1.0_README.md`, delet
 ### Engine
 - Leaning **Phaser 3 + Matter** (continuity with BitstreamBluffs; web-first). **Godot (with the Godot MCP)** was the alternative, chosen against mainly because the sled feel is already tuned in Phaser. Not final; see Q1.
 
+### Naming
+- The starter mountain is **Debutmont** ("Je débute!" pun). All occurrences in `docs/ROADMAP.md` were normalized. The other mountain names are still inconsistent (section 3).
+
 ### NPCs
 - The eight NPCs dropped from the 1.0 list are being **merged into existing characters as roles**, not removed wholesale.
   - Maxi -> likely takes the **Black Market Gear Dealer** role.
@@ -60,7 +63,7 @@ Suggested cleanup once the new design doc exists: archive `1.0_README.md`, delet
 | Loop direction | Top: start at base, climb, then sled (`ROADMAP:15-18`) | Downhill goal is still "reach the bottom" (`:105`); tutorial ends "atop" the mountain (`:169`). Prototype docs say sled first, then climb. |
 | Stamina drain | "Drains when moving" (`:89`) | "Moving uphill drains" (`:152`) |
 | Stamina recovery | Food stands, resting points, upgrades (`:90`); Grandpa says "rest up" | Prototype: restored by ending the day at the house. Windsurf rules (if retained): food only, hard daily cap, no passive regen. Needs one decision (Q3). |
-| Debt structure | Prototype: one loan, pay it off to win (`README`) | ROADMAP: repay mountain, then house, then bigger debts (`:78-83`); Debumont adds "lodge loan" and "Debumont Debt (loans + base upgrades)" (`:1411,1430`) |
+| Debt structure | Prototype: one loan, pay it off to win (`README`) | ROADMAP: repay mountain, then house, then bigger debts (`:78-83`); Debutmont adds "lodge loan" and "Debutmont Debt (loans + base upgrades)" (`:1411,1430`) |
 | Mountain upgrades | Unlocked after repaying the house (`:80`) | Core concept: resort is open and earning from the start (`:9-13`) |
 | Upgrade caps | "All upgrades become infinitely upgradable" (`:1700`) | Same section: mountain upgrades "may or may not be" infinite; many are binary; Sled Durability is +1 collision per level |
 | Lens swapping | One at a time, swapped only at base (`:603`) | Minnie sells Lens Frame Kit / Lens Rack for cycling (`:1087,1130`) |
@@ -71,7 +74,7 @@ Suggested cleanup once the new design doc exists: archive `1.0_README.md`, delet
 | Where NPCs live | Hotel, cabin, shed, lift shack, trailhead store | One articulated truck (`:1771-1905`) |
 | Fans vs tourists | Fans listed as obstacles | Crowd Weaver says tourists dodge "like fans do" |
 | Upgrade names | Optimal Optics, Crowd Hypeman | Optimized Optics (Darlene), Crowd Hype-Man (Aria); different effects |
-| Mountain names | Debumont, Vertigo Vents, Space Mountain, Crystal Cavern, Underwater Mountain, Garbage Dump Glacier, Steampunk Slopes | Debutmont (spoilers doc), Lava/Fire/Volcano Mountain, Lunar Peak, Crystal Caves, Undersea, Garbage Mountain/Glacier, Mechanical Mountain |
+| Mountain names | Vertigo Vents, Space Mountain, Crystal Cavern, Underwater Mountain, Garbage Dump Glacier, Steampunk Slopes | Lava/Fire/Volcano Mountain, Lunar Peak, Crystal Caves, Undersea, Garbage Mountain/Glacier, Mechanical Mountain. (The starter is settled as **Debutmont** and normalized in the ROADMAP; the others still need one canonical name each.) |
 | Out of stamina | CONTROLS: sent home, fee | ROADMAP: Sled Patrol rescue (`:460`) and rescue bill (`:1678`) |
 | Duplicated NPCs | Minnie has two full profiles with different upgrade tables, plus a third description under Deep Diggin'. Pete is described three times. | |
 

@@ -1397,10 +1397,10 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
 
 ## 🏔️ **Mountain Themes & Progression**
 
-### 🏔️ Debumont – “The Old Vermont Starter” 🍁❄️
+### 🏔️ Debutmont – “The Old Vermont Starter” 🍁❄️
 
 - **Description:**\
-  **Debumont** is the **first, friendliest peak** on your SledHEAD journey—a mid‑sized, maple‑and-pine forested Vermont mountain famous for its **rolling groomers**, tuck‑away shortcuts, and cozy base‐village vibe. The slopes are gentle enough for tourists yet varied enough to teach real **trick‑flow**—without overwhelming new riders. By day you’ll sled past Vermunch machines and frost‑tipped pines; by night the summit beacon glows warm amber, guiding late‑run daredevils back to Aria’s cocoa window.
+  **Debutmont** is the **first, friendliest peak** on your SledHEAD journey—a mid‑sized, maple‑and-pine forested Vermont mountain famous for its **rolling groomers**, tuck‑away shortcuts, and cozy base‐village vibe. The slopes are gentle enough for tourists yet varied enough to teach real **trick‑flow**—without overwhelming new riders. By day you’ll sled past Vermunch machines and frost‑tipped pines; by night the summit beacon glows warm amber, guiding late‑run daredevils back to Aria’s cocoa window.
 
 - **Gameplay Rules:**
 
@@ -1409,7 +1409,7 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
   - Native bee species:
     - 🐝 **Snow Bees** build frost-hives nestled in wind-sheltered crevices, using crystalized resin and frozen moss to weather blizzards. They forage what little they can—maple honeydew & spruce drips beneath the treeline, and alpine heather blooms, and even snow algae—crafting a honey that's rosy, rich, and cold on the tongue.
     - 🧣 Snow Bees always wear tiny red scarves, but no one knows where they get them from. Not even Pete.
-  - Pay off your **Debumont Debt** (loans + base upgrades) to unlock other peaks like Garbage Mountain.
+  - Pay off your **Debutmont Debt** (loans + base upgrades) to unlock other peaks like Garbage Mountain.
 
 - **Mechanics:**
 
@@ -1425,10 +1425,10 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
   - 🛷 **Beginner friendly:** Safe landings tuned for early combo practice.
 
 - **Power‑Up Requirement:**\
-  None. **Debumont** is your baseline—gear from here works everywhere else, but every upgrade shines first on home snow.
+  None. **Debutmont** is your baseline—gear from here works everywhere else, but every upgrade shines first on home snow.
 
 - **Lore Hook:**\
-  Locals claim Debumont’s name comes from an old French trapper who shouted *“Je débute!”* (“I’m starting out!”) before his maiden sled run. Modern sledders still echo his spirit—**every legend begins here**, carving their first line past maple trees, friendly Snow Bees, and Aria’s cocoa window. Pay off the lodge loan, earn the town’s respect, and Debumont’s banner is hoisted at your base cabin forever. The man who sold you Debumont used the money to buy a wedding ring.
+  Locals claim Debutmont’s name comes from an old French trapper who shouted *“Je débute!”* (“I’m starting out!”) before his maiden sled run. Modern sledders still echo his spirit—**every legend begins here**, carving their first line past maple trees, friendly Snow Bees, and Aria’s cocoa window. Pay off the lodge loan, earn the town’s respect, and Debutmont’s banner is hoisted at your base cabin forever. The man who sold you Debutmont used the money to buy a wedding ring.
 
 ---
 
