@@ -1407,7 +1407,8 @@ Living in a cabin where the walls literally buzz, Pete splits his time between *
   - No special gear required—**standard sled & wax** work fine.
   - **Panning Spots** concentrate near creek beds; digging & picking appear in soft drifts and rock outcrops.
   - Native bee species:
-    - 🐝 **Snow Bees** build waxy hives in snow‑covered trees; their mint‑cool honey restores stamina faster in cold zones.
+    - 🐝 **Snow Bees** build frost-hives nestled in wind-sheltered crevices, using crystalized resin and frozen moss to weather blizzards. They forage what little they can—maple honeydew & spruce drips beneath the treeline, and alpine heather blooms, and even snow algae—crafting a honey that's rosy, rich, and cold on the tongue.
+    - 🧣 Snow Bees always wear tiny red scarves, but no one knows where they get them from. Not even Pete.
   - Pay off your **Debumont Debt** (loans + base upgrades) to unlock other peaks like Garbage Mountain.
 
 - **Mechanics:**
